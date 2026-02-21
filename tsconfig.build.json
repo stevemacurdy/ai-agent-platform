@@ -1,0 +1,1 @@
+{ "extends": "./tsconfig.json", "exclude": ["master-files-backup", "node_modules"] }

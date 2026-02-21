@@ -1,0 +1,101 @@
+// ============================================================================
+// WMS DATA SCHEMA — Inventory, movements, pick waves, cycle counts
+// ============================================================================
+
+model InventoryItem {
+  id            String   @id @default(cuid())
+  companyId     String
+  sku           String
+  name          String
+  description   String?
+  category      String?          // 'racking' | 'conveyor' | 'safety' | 'packaging' | 'parts'
+  zone          String           // 'A' | 'B' | 'C' | 'D' | 'BULK' | 'COLD'
+  aisle         String
+  bin           String           // e.g. 'A-03-12'
+  quantity      Int      @default(0)
+  reservedQty   Int      @default(0)
+  availableQty  Int      @default(0)  // quantity - reservedQty
+  reorderPoint  Int      @default(0)
+  reorderQty    Int      @default(0)
+  unitCost      Float    @default(0)
+  totalValue    Float    @default(0)  // quantity * unitCost
+  weight        Float?            // lbs per unit
+  dimensions    String?           // "LxWxH"
+  uom           String   @default("EA")  // EA, CS, PL, LB, FT
+  velocityClass String   @default("C")   // A (fast), B (medium), C (slow), D (dead)
+  lastMovement  DateTime?
+  lastCounted   DateTime?
+  supplier      String?
+  leadTimeDays  Int      @default(7)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([companyId, sku])
+  @@index([companyId, zone, aisle, bin])
+  @@index([companyId, velocityClass])
+}
+
+model WarehouseMovement {
+  id            String   @id @default(cuid())
+  companyId     String
+  type          String           // 'receipt' | 'shipment' | 'transfer' | 'adjustment' | 'return'
+  referenceId   String?          // PO number, SO number, transfer ID
+  status        String   @default("pending")  // pending | in_progress | completed | cancelled
+  sku           String
+  itemName      String
+  fromLocation  String?          // zone-aisle-bin
+  toLocation    String?
+  quantity      Int
+  carrier       String?          // UPS, FedEx, freight
+  trackingNum   String?
+  scheduledDate DateTime?
+  completedDate DateTime?
+  assignedTo    String?          // picker/receiver name
+  notes         String?
+  createdAt     DateTime @default(now())
+
+  @@index([companyId, type, status])
+  @@index([companyId, sku])
+}
+
+model PickWave {
+  id            String   @id @default(cuid())
+  companyId     String
+  waveNumber    String           // e.g. 'W-2026-0234'
+  status        String   @default("planning")  // planning | released | in_progress | packed | shipped
+  priority      String   @default("normal")    // urgent | high | normal | low
+  orderCount    Int      @default(0)
+  lineCount     Int      @default(0)
+  totalUnits    Int      @default(0)
+  assignedTo    String?
+  startedAt     DateTime?
+  completedAt   DateTime?
+  zone          String?          // Zone restriction
+  picks         Json?            // Array of { sku, qty, bin, status }
+  createdAt     DateTime @default(now())
+
+  @@index([companyId, status])
+}
+
+model CycleCountLog {
+  id            String   @id @default(cuid())
+  companyId     String
+  countDate     DateTime
+  zone          String
+  aisle         String?
+  sku           String
+  itemName      String
+  systemQty     Int              // What system says
+  countedQty    Int              // What was physically counted
+  variance      Int              // countedQty - systemQty
+  variancePct   Float            // abs(variance) / systemQty * 100
+  status        String   @default("pending")  // pending | counted | reconciled | investigated
+  countedBy     String?
+  reconciledBy  String?
+  notes         String?
+  createdAt     DateTime @default(now())
+
+  @@index([companyId, countDate])
+  @@index([companyId, sku])
+}

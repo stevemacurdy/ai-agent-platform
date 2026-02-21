@@ -1,0 +1,166 @@
+// ============================================================================
+// HR DATA SCHEMA — Full employee lifecycle
+// ============================================================================
+
+model Department {
+  id          String   @id @default(cuid())
+  companyId   String
+  name        String
+  managerId   String?
+  managerName String?
+  headcount   Int      @default(0)
+  budget      Float?
+  costCenter  String?
+  createdAt   DateTime @default(now())
+  @@index([companyId])
+}
+
+model Employee {
+  id              String   @id @default(cuid())
+  companyId       String
+  employeeNumber  String
+  firstName       String
+  lastName        String
+  email           String
+  phone           String?
+  title           String
+  department      String
+  managerId       String?
+  managerName     String?
+  location        String?
+  startDate       String
+  status          String   @default("active")  // active | onboarding | leave | terminated
+  type            String   @default("full_time") // full_time | part_time | contractor | intern
+  salary          Float?
+  payFrequency    String?  // biweekly | monthly | semimonthly
+  photoUrl        String?
+  // Emergency contact
+  emergencyName   String?
+  emergencyPhone  String?
+  emergencyRelation String?
+  // Bank / direct deposit
+  bankName        String?
+  routingNumber   String?  // encrypted in production
+  accountNumber   String?  // encrypted in production
+  accountType     String?  // checking | savings
+  // Compliance
+  i9Completed     Boolean  @default(false)
+  w4Completed     Boolean  @default(false)
+  handbookSigned  Boolean  @default(false)
+  bgCheckStatus   String?  // pending | clear | flagged
+  // Certifications
+  certifications  Json?    // [{ name, expiresAt, status }]
+  // Sentiment / risk
+  flightRisk      String   @default("low")  // low | medium | high
+  lastReviewScore Float?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  @@index([companyId, department])
+  @@index([companyId, status])
+}
+
+model TimeEntry {
+  id          String   @id @default(cuid())
+  companyId   String
+  employeeId  String
+  employeeName String
+  date        String
+  clockIn     String?   // HH:mm
+  clockOut    String?
+  hoursWorked Float     @default(0)
+  overtime    Float     @default(0)
+  status      String    @default("pending")  // pending | approved | rejected
+  approvedBy  String?
+  notes       String?
+  createdAt   DateTime  @default(now())
+  @@index([companyId, employeeId, date])
+}
+
+model PTOBalance {
+  id          String   @id @default(cuid())
+  companyId   String
+  employeeId  String
+  employeeName String
+  type        String   // vacation | sick | personal | floating
+  totalDays   Float
+  usedDays    Float    @default(0)
+  pendingDays Float    @default(0)
+  remaining   Float    // totalDays - usedDays - pendingDays
+  requests    Json?    // [{ startDate, endDate, days, status, reason }]
+  @@index([companyId, employeeId])
+}
+
+model JobPosting {
+  id            String   @id @default(cuid())
+  companyId     String
+  title         String
+  department    String
+  location      String
+  type          String   // full_time | part_time | contract
+  salaryMin     Float?
+  salaryMax     Float?
+  description   String?  @db.Text
+  requirements  String?  @db.Text
+  status        String   @default("draft")  // draft | open | closed | filled
+  postedTo      Json?    // ['indeed', 'linkedin', 'website']
+  applicantCount Int     @default(0)
+  createdAt     DateTime @default(now())
+  closedAt      DateTime?
+  @@index([companyId, status])
+}
+
+model Applicant {
+  id            String   @id @default(cuid())
+  companyId     String
+  jobPostingId  String
+  name          String
+  email         String
+  phone         String?
+  resumeUrl     String?
+  stage         String   @default("applied")  // applied | screening | interview | offer | hired | rejected
+  rating        Int?     // 1-5
+  notes         String?  @db.Text
+  interviewDate DateTime?
+  offerAmount   Float?
+  offerStatus   String?  // pending | accepted | declined
+  source        String?  // indeed | linkedin | referral | website
+  createdAt     DateTime @default(now())
+  @@index([companyId, jobPostingId, stage])
+}
+
+model ReviewCycle {
+  id            String   @id @default(cuid())
+  companyId     String
+  employeeId    String
+  employeeName  String
+  reviewerId    String?
+  reviewerName  String?
+  period        String   // "Q1 2026" | "Annual 2025"
+  type          String   // quarterly | annual | 360 | probation
+  status        String   @default("pending")  // pending | in_progress | completed
+  overallScore  Float?   // 1-5
+  goals         Json?    // [{ goal, weight, score, comment }]
+  strengths     String?  @db.Text
+  improvements  String?  @db.Text
+  completedAt   DateTime?
+  createdAt     DateTime @default(now())
+  @@index([companyId, employeeId])
+}
+
+model OnboardingSession {
+  id            String   @id @default(cuid())
+  companyId     String
+  employeeId    String
+  token         String   @unique
+  employeeName  String
+  employeeEmail String
+  status        String   @default("pending")  // pending | in_progress | completed
+  steps         Json     // [{ id, label, status, completedAt }]
+  progress      Int      @default(0)  // 0-100
+  expiresAt     DateTime
+  startedAt     DateTime?
+  completedAt   DateTime?
+  createdAt     DateTime @default(now())
+  @@index([token])
+  @@index([companyId, status])
+}

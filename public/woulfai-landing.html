@@ -1,0 +1,2640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WoulfAI — AI-Powered Business Agents</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===================== RESET & VARIABLES ===================== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--bg:#06080D;--bg2:#0C1017;--bg3:#111620;--bg4:#161D2A;--bg5:#1C2433;
+--bdr:#1E2738;--bdr2:#2A3548;--bdr3:#354360;
+--t1:#F0F2F5;--t2:#8B95A8;--t3:#5A6478;
+--blue:#3B82F6;--cyan:#06B6D4;--violet:#8B5CF6;--amber:#F59E0B;
+--emerald:#10B981;--rose:#F43F5E;--orange:#F97316;--pink:#EC4899;
+--r:8px;--r2:12px;--r3:16px;
+--shadow:0 4px 24px rgba(0,0,0,.4);
+--font:'DM Sans',sans-serif;--mono:'Space Mono',monospace;--display:'Playfair Display',serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--t1);line-height:1.6;overflow-x:hidden}
+a{color:var(--blue);text-decoration:none}
+img{max-width:100%}
+button{font-family:var(--font);cursor:pointer;border:none;outline:none}
+input,select,textarea{font-family:var(--font);outline:none}
+.hidden{display:none!important}
+.visible{display:block!important}
+
+/* ===================== ANIMATIONS ===================== */
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes demoIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes msgIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+@keyframes modalIn{from{opacity:0;transform:translateY(20px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pop{0%{transform:scale(0)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+@keyframes fbIn{from{opacity:0;transform:translateY(20px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes cardIn{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes gridMove{0%{transform:translate(0,0)}100%{transform:translate(40px,40px)}}
+.reveal{opacity:0;transform:translateY(30px);transition:all .7s ease}.reveal.show{opacity:1;transform:translateY(0)}
+
+/* ===================== NAVIGATION ===================== */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(20px);background:rgba(6,8,13,.8);border-bottom:1px solid var(--bdr);transition:all .3s}
+.nav-logo{font-family:var(--display);font-size:22px;font-weight:700;background:linear-gradient(135deg,var(--blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-links{display:flex;gap:32px;align-items:center}
+.nav-links a{color:var(--t2);font-size:14px;font-weight:500;transition:color .2s}.nav-links a:hover{color:var(--t1)}
+.nav-cta{display:flex;gap:12px;align-items:center}
+.btn{padding:10px 22px;border-radius:var(--r);font-size:14px;font-weight:600;transition:all .2s;display:inline-flex;align-items:center;gap:8px}
+.btn-ghost{background:transparent;color:var(--t2);border:1px solid var(--bdr2)}.btn-ghost:hover{color:var(--t1);border-color:var(--bdr3)}
+.btn-primary{background:linear-gradient(135deg,var(--blue),#2563EB);color:#fff;border:none}.btn-primary:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.btn-sm{padding:7px 16px;font-size:13px}
+.btn-lg{padding:14px 32px;font-size:16px}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
+.hamburger span{width:24px;height:2px;background:var(--t2);border-radius:2px;transition:all .3s}
+.mobile-menu{display:none;position:fixed;top:64px;left:0;right:0;background:var(--bg2);border-bottom:1px solid var(--bdr);padding:20px;z-index:999}
+.mobile-menu.open{display:flex;flex-direction:column;gap:16px}
+.mobile-menu a{color:var(--t2);font-size:16px;padding:8px 0}
+
+/* ===================== HERO ===================== */
+.hero{position:relative;padding:140px 40px 80px;text-align:center;overflow:hidden;min-height:90vh;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(59,130,246,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,246,.06) 1px,transparent 1px);background-size:60px 60px;animation:gridMove 20s linear infinite}
+.hero-glow{position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(59,130,246,.12) 0%,rgba(6,182,212,.06) 40%,transparent 70%);pointer-events:none}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 20px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);border-radius:50px;font-family:var(--mono);font-size:13px;color:var(--blue);margin-bottom:28px;animation:fadeUp .8s ease both}
+.hero-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--emerald);animation:pulse 2s infinite}
+.hero h1{font-family:var(--display);font-size:clamp(36px,5.5vw,72px);font-weight:700;line-height:1.1;margin-bottom:24px;animation:fadeUp .8s ease .15s both}
+.hero h1 .grad{background:linear-gradient(135deg,var(--blue),var(--cyan),var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{font-size:clamp(16px,1.8vw,20px);color:var(--t2);max-width:640px;margin:0 auto 36px;animation:fadeUp .8s ease .3s both}
+.hero-ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;animation:fadeUp .8s ease .45s both}
+.metrics-bar{display:flex;gap:40px;justify-content:center;flex-wrap:wrap;margin-top:56px;padding-top:40px;border-top:1px solid var(--bdr);animation:fadeUp .8s ease .6s both}
+.metric{text-align:center}.metric .val{font-family:var(--mono);font-size:28px;font-weight:700;color:var(--t1)}.metric .lbl{font-size:13px;color:var(--t3);margin-top:4px}
+
+/* ===================== MARQUEE ===================== */
+.marquee-wrap{padding:40px 0;overflow:hidden;border-bottom:1px solid var(--bdr);background:var(--bg2)}
+.marquee-track{display:flex;gap:24px;animation:marquee 40s linear infinite;width:fit-content}
+.marquee-item{flex-shrink:0;display:flex;align-items:center;gap:12px;padding:12px 22px;background:var(--bg3);border:1px solid var(--bdr);border-radius:12px;font-size:14px;font-weight:500;white-space:nowrap;cursor:pointer;transition:all .2s}
+.marquee-item:hover{border-color:var(--blue);background:rgba(59,130,246,.08);transform:scale(1.04)}
+.marquee-item .icon{font-size:20px}
+
+/* ===================== SECTIONS ===================== */
+.section{padding:100px 40px;max-width:1200px;margin:0 auto}
+.section-label{font-family:var(--mono);font-size:13px;text-transform:uppercase;letter-spacing:2px;color:var(--blue);margin-bottom:12px}
+.section-title{font-family:var(--display);font-size:clamp(28px,3.5vw,44px);font-weight:700;margin-bottom:16px}
+.section-sub{font-size:17px;color:var(--t2);max-width:600px;margin-bottom:48px}
+
+/* ===================== AGENT CARDS ===================== */
+.agent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px}
+.agent-card{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r3);padding:28px;transition:all .3s;cursor:pointer;position:relative;overflow:hidden}
+.agent-card:hover{transform:translateY(-4px);border-color:var(--bdr2);box-shadow:var(--shadow)}
+.agent-card .accent{position:absolute;top:0;left:0;right:0;height:3px}
+.agent-card .icon{font-size:36px;margin-bottom:16px}
+.agent-card .cat{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px}
+.agent-card h3{font-size:18px;font-weight:700;margin-bottom:8px}
+.agent-card p{font-size:14px;color:var(--t2);margin-bottom:16px;line-height:1.5}
+.agent-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.agent-tags span{padding:4px 10px;background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:50px;font-size:11px;font-family:var(--mono);color:var(--t2)}
+.agent-price{font-family:var(--mono);font-size:20px;font-weight:700}
+.agent-price small{font-size:13px;color:var(--t3);font-weight:400}
+
+/* ===================== DEMO SECTION ===================== */
+.demo-layout{display:flex;gap:0;border:1px solid var(--bdr);border-radius:var(--r3);overflow:hidden;min-height:460px;background:var(--bg2)}
+.demo-sidebar{width:220px;flex-shrink:0;background:var(--bg3);border-right:1px solid var(--bdr);padding:8px 0;display:flex;flex-direction:column}
+.demo-sidebar-item{display:flex;align-items:center;gap:10px;padding:12px 20px;font-size:14px;font-weight:600;color:var(--t2);cursor:pointer;transition:all .15s;border:none;background:none;text-align:left;border-left:3px solid transparent}
+.demo-sidebar-item:hover{background:var(--bg4);color:var(--t1)}
+.demo-sidebar-item.active{background:rgba(59,130,246,.08);color:var(--blue);border-left-color:var(--blue)}
+.demo-sidebar-item .ds-icon{font-size:18px;width:24px;text-align:center}
+.demo-sidebar-item .ds-sub{font-size:11px;color:var(--t3);font-weight:400;margin-top:2px}
+@media(max-width:768px){.demo-layout{flex-direction:column}.demo-sidebar{width:100%;flex-direction:row;overflow-x:auto;border-right:none;border-bottom:1px solid var(--bdr);padding:0}.demo-sidebar-item{padding:10px 16px;white-space:nowrap;border-left:none;border-bottom:3px solid transparent}.demo-sidebar-item.active{border-bottom-color:var(--blue);border-left-color:transparent}}
+.demo-screen{flex:1;padding:32px;min-height:400px;animation:demoIn .4s ease}
+.demo-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--bdr)}
+.demo-topbar h3{font-size:18px;font-weight:700}
+.demo-stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;margin-bottom:24px}
+.demo-stat{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r2);padding:16px;text-align:center}
+.demo-stat .val{font-family:var(--mono);font-size:22px;font-weight:700}.demo-stat .lbl{font-size:12px;color:var(--t3);margin-top:4px}
+.demo-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:20px}
+.demo-table th{text-align:left;padding:10px 12px;border-bottom:1px solid var(--bdr);color:var(--t3);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:1px}
+.demo-table td{padding:10px 12px;border-bottom:1px solid rgba(30,39,56,.5)}
+.demo-chat{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r2);padding:16px;max-height:200px;overflow-y:auto}
+.demo-msg{margin-bottom:12px;animation:msgIn .3s ease}.demo-msg .from{font-family:var(--mono);font-size:11px;margin-bottom:4px}
+.demo-msg .text{font-size:13px;color:var(--t2);background:var(--bg4);padding:8px 12px;border-radius:var(--r);display:inline-block;max-width:80%}
+.demo-bar{display:flex;gap:4px;align-items:flex-end;height:100px}
+.demo-bar .bar{flex:1;border-radius:4px 4px 0 0;transition:height .5s ease}
+
+/* ===================== HOW IT WORKS ===================== */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:32px;counter-reset:step}
+.step{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r3);padding:32px;position:relative;counter-increment:step}
+.step::before{content:counter(step);font-family:var(--mono);font-size:48px;font-weight:700;color:rgba(59,130,246,.15);position:absolute;top:16px;right:20px}
+.step .step-icon{font-size:32px;margin-bottom:16px}
+.step h3{font-size:18px;font-weight:700;margin-bottom:8px}
+.step p{font-size:14px;color:var(--t2)}
+
+/* ===================== PRICING ===================== */
+.pricing-toggle{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:40px}
+.pricing-toggle span{font-size:14px;color:var(--t2);font-weight:500}
+.pricing-toggle span.active{color:var(--t1)}
+.toggle{width:52px;height:28px;background:var(--bg5);border-radius:50px;position:relative;cursor:pointer;border:1px solid var(--bdr2);transition:all .2s}
+.toggle.on{background:rgba(59,130,246,.2);border-color:var(--blue)}
+.toggle::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--t1);transition:all .2s}
+.toggle.on::after{left:27px}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;max-width:1000px;margin:0 auto}
+.pricing-card{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r3);padding:36px;position:relative;transition:all .3s}
+.pricing-card.featured{border-color:var(--blue);box-shadow:0 0 40px rgba(59,130,246,.1)}
+.pricing-card .badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;font-family:var(--mono);font-size:11px;padding:4px 16px;border-radius:50px;white-space:nowrap}
+.pricing-card h3{font-size:22px;font-weight:700;margin-bottom:8px}
+.pricing-card .price{font-family:var(--mono);font-size:40px;font-weight:700;margin-bottom:4px}
+.pricing-card .price small{font-size:16px;color:var(--t3);font-weight:400}
+.pricing-card .period{font-size:13px;color:var(--t3);margin-bottom:24px}
+.pricing-card ul{list-style:none;margin-bottom:28px}
+.pricing-card li{padding:8px 0;font-size:14px;color:var(--t2);display:flex;align-items:center;gap:8px}
+.pricing-card li::before{content:'✓';color:var(--emerald);font-weight:700}
+
+/* ===================== INTEGRATIONS ===================== */
+.int-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px}
+.int-card{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r2);padding:16px;text-align:center;transition:all .2s}
+.int-card:hover{border-color:var(--bdr2);transform:translateY(-2px)}
+.int-card .int-icon{font-size:28px;margin-bottom:8px}
+.int-card .int-name{font-size:12px;font-weight:600}
+
+/* ===================== BETA PROGRAM SECTION ===================== */
+.beta-section{background:linear-gradient(135deg,rgba(139,92,246,.05),rgba(6,182,212,.05));border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr);padding:100px 40px}
+.beta-inner{max-width:1200px;margin:0 auto}
+.beta-rewards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;margin-bottom:48px}
+.beta-reward{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r3);padding:28px;text-align:center}
+.beta-reward .br-icon{font-size:40px;margin-bottom:12px}
+.beta-reward h3{font-size:16px;font-weight:700;margin-bottom:8px}
+.beta-reward p{font-size:14px;color:var(--t2)}
+.beta-form-wrap{max-width:600px;margin:0 auto;background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r3);padding:36px}
+.beta-form-wrap h3{font-size:20px;font-weight:700;margin-bottom:4px;text-align:center}
+.beta-form-wrap>p{font-size:14px;color:var(--t2);margin-bottom:24px;text-align:center}
+.form-group{margin-bottom:18px}
+.form-group label{display:block;font-size:13px;font-weight:600;color:var(--t2);margin-bottom:6px}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 14px;background:var(--bg4);border:1px solid var(--bdr2);border-radius:var(--r);color:var(--t1);font-size:14px;transition:border-color .2s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--blue)}
+.form-group textarea{resize:vertical;min-height:80px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.agent-picker{display:flex;flex-wrap:wrap;gap:8px}
+.agent-pick{padding:6px 14px;background:var(--bg4);border:1px solid var(--bdr);border-radius:50px;font-size:12px;cursor:pointer;transition:all .2s;user-select:none}
+.agent-pick.selected{background:rgba(59,130,246,.15);border-color:var(--blue);color:var(--blue)}
+.beta-success{text-align:center;padding:40px;display:none}
+.beta-success .check{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--emerald),var(--cyan));display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:28px;animation:pop .4s ease}
+
+/* ===================== TESTIMONIALS ===================== */
+.testimonials{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+.testimonial{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r3);padding:28px}
+.testimonial .stars{color:var(--amber);margin-bottom:12px;font-size:16px}
+.testimonial blockquote{font-size:15px;color:var(--t2);line-height:1.6;margin-bottom:16px;font-style:italic}
+.testimonial .author{display:flex;align-items:center;gap:12px}
+.testimonial .avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px}
+.testimonial .name{font-size:14px;font-weight:600}
+.testimonial .role{font-size:12px;color:var(--t3)}
+
+/* ===================== CTA SECTION ===================== */
+.cta-section{text-align:center;padding:100px 40px;background:linear-gradient(180deg,transparent,rgba(59,130,246,.03),transparent)}
+.cta-section h2{font-family:var(--display);font-size:clamp(28px,4vw,48px);font-weight:700;margin-bottom:16px}
+.cta-section p{font-size:18px;color:var(--t2);margin-bottom:36px}
+
+/* ===================== FOOTER ===================== */
+.footer{border-top:1px solid var(--bdr);padding:60px 40px 40px;background:var(--bg2)}
+.footer-grid{display:grid;grid-template-columns:2fr repeat(4,1fr);gap:40px;max-width:1200px;margin:0 auto 40px}
+.footer-brand .logo{font-family:var(--display);font-size:20px;font-weight:700;background:linear-gradient(135deg,var(--blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:12px}
+.footer-brand p{font-size:13px;color:var(--t3);max-width:260px}
+.footer-col h4{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;color:var(--t2)}
+.footer-col a{display:block;font-size:13px;color:var(--t3);padding:4px 0;transition:color .2s}.footer-col a:hover{color:var(--t1)}
+.footer-bottom{text-align:center;padding-top:24px;border-top:1px solid var(--bdr);font-size:12px;color:var(--t3);max-width:1200px;margin:0 auto}
+.footer-socials{display:flex;gap:16px;margin-top:16px;justify-content:center}
+.footer-socials a{width:36px;height:36px;border-radius:50%;background:var(--bg3);border:1px solid var(--bdr);display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s}
+.footer-socials a:hover{border-color:var(--blue);background:rgba(59,130,246,.1)}
+
+/* ===================== MODALS ===================== */
+.modal-overlay{position:fixed;inset:0;background:rgba(6,8,13,.85);backdrop-filter:blur(8px);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r3);width:100%;max-width:480px;max-height:90vh;overflow-y:auto;padding:36px;animation:modalIn .3s ease;position:relative}
+.modal-close{position:absolute;top:16px;right:16px;background:none;border:none;color:var(--t3);font-size:20px;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .2s}
+.modal-close:hover{background:var(--bg4);color:var(--t1)}
+.modal h2{font-family:var(--display);font-size:24px;font-weight:700;margin-bottom:8px}
+.modal .modal-sub{font-size:14px;color:var(--t2);margin-bottom:24px}
+.modal-form .form-group{margin-bottom:16px}
+.modal-footer{margin-top:24px;display:flex;flex-direction:column;gap:12px;align-items:center}
+.modal-footer .divider{display:flex;align-items:center;gap:12px;width:100%;color:var(--t3);font-size:12px}
+.modal-footer .divider::before,.modal-footer .divider::after{content:'';flex:1;height:1px;background:var(--bdr)}
+.btn-google{width:100%;padding:10px;background:var(--bg4);border:1px solid var(--bdr2);border-radius:var(--r);font-size:14px;color:var(--t1);font-weight:500;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-google:hover{border-color:var(--bdr3);background:var(--bg5)}
+.pw-meter{height:4px;border-radius:2px;background:var(--bg5);margin-top:6px;overflow:hidden}
+.pw-meter .fill{height:100%;border-radius:2px;transition:all .3s}
+.modal-success{text-align:center;padding:20px;display:none}
+.modal-success .check{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--emerald),var(--cyan));display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;animation:pop .4s ease}
+.toast{position:fixed;top:20px;right:20px;background:var(--bg3);border:1px solid var(--emerald);border-radius:var(--r2);padding:14px 20px;color:var(--t1);font-size:14px;z-index:3000;display:none;animation:fadeUp .3s ease;display:flex;align-items:center;gap:10px}
+.plan-selector{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.plan-opt{padding:12px;background:var(--bg4);border:2px solid var(--bdr);border-radius:var(--r);text-align:center;cursor:pointer;transition:all .2s}
+.plan-opt.selected{border-color:var(--blue);background:rgba(59,130,246,.08)}
+.plan-opt .plan-name{font-size:13px;font-weight:700}
+.plan-opt .plan-price{font-family:var(--mono);font-size:15px;font-weight:700;margin-top:4px}
+
+/* ===================== DASHBOARD ===================== */
+.app{display:none;height:100vh;overflow:hidden}
+.app.visible{display:flex!important}
+.sidebar{width:260px;background:var(--bg2);border-right:1px solid var(--bdr);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+.sb-header{padding:20px 20px 16px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:12px}
+.sb-header .logo{font-family:var(--display);font-size:18px;font-weight:700;background:linear-gradient(135deg,var(--blue),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sb-nav{padding:12px;flex:1}
+.sb-item{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:var(--r);font-size:14px;color:var(--t2);cursor:pointer;transition:all .15s;margin-bottom:2px;border:none;background:none;width:100%;text-align:left}
+.sb-item:hover{background:var(--bg3);color:var(--t1)}
+.sb-item.active{background:rgba(59,130,246,.1);color:var(--blue)}
+.sb-item .sb-icon{font-size:18px;width:24px;text-align:center}
+.sb-footer{padding:16px 20px;border-top:1px solid var(--bdr)}
+.sb-user{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.sb-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px}
+.sb-uname{font-size:13px;font-weight:600}
+.sb-urole{font-size:11px;color:var(--t3);font-family:var(--mono)}
+.sb-logout{width:100%;padding:8px;background:none;border:1px solid var(--bdr);border-radius:var(--r);color:var(--t2);font-size:13px;cursor:pointer;transition:all .2s}
+.sb-logout:hover{background:rgba(243,63,94,.08);border-color:var(--rose);color:var(--rose)}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{padding:16px 28px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;background:var(--bg);flex-shrink:0}
+.topbar h2{font-size:20px;font-weight:700}
+.topbar-right{display:flex;align-items:center;gap:16px}
+.content{flex:1;overflow-y:auto;padding:28px}
+
+/* ===================== DASHBOARD COMPONENTS ===================== */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:28px}
+.stat-card{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r2);padding:20px}
+.stat-card .sc-label{font-size:12px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;font-family:var(--mono);margin-bottom:8px}
+.stat-card .sc-val{font-family:var(--mono);font-size:26px;font-weight:700}
+.stat-card .sc-sub{font-size:12px;color:var(--t3);margin-top:4px}
+.d-table{width:100%;border-collapse:collapse;background:var(--bg3);border-radius:var(--r2);overflow:hidden;border:1px solid var(--bdr)}
+.d-table th{text-align:left;padding:12px 16px;background:var(--bg4);font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--t3);font-weight:600;font-family:var(--mono)}
+.d-table td{padding:12px 16px;border-top:1px solid var(--bdr);font-size:13px}
+.d-table tr:hover td{background:rgba(59,130,246,.02)}
+.chip{display:inline-flex;padding:3px 10px;border-radius:50px;font-size:11px;font-weight:600;font-family:var(--mono)}
+.chip-green{background:rgba(16,185,129,.1);color:var(--emerald)}
+.chip-blue{background:rgba(59,130,246,.1);color:var(--blue)}
+.chip-amber{background:rgba(245,158,11,.1);color:var(--amber)}
+.chip-rose{background:rgba(244,63,94,.1);color:var(--rose)}
+.chip-violet{background:rgba(139,92,246,.1);color:var(--violet)}
+.chip-cyan{background:rgba(6,182,212,.1);color:var(--cyan)}
+.chip-gray{background:rgba(90,100,120,.1);color:var(--t3)}
+.d-card{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r2);padding:24px;margin-bottom:20px}
+.d-card h3{font-size:16px;font-weight:700;margin-bottom:16px}
+.trial-banner{background:linear-gradient(135deg,rgba(245,158,11,.1),rgba(249,115,22,.1));border:1px solid rgba(245,158,11,.2);border-radius:var(--r2);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+.trial-banner .tb-text{font-size:14px;color:var(--amber)}
+.trial-banner .tb-text strong{color:var(--t1)}
+.progress-bar{height:8px;background:var(--bg5);border-radius:4px;overflow:hidden;margin:8px 0}
+.progress-bar .fill{height:100%;border-radius:4px;transition:width .5s ease}
+.reward-card{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r3);padding:32px;text-align:center;margin-bottom:24px}
+.reward-card .trophy{font-size:48px;margin-bottom:12px}
+.reward-card h3{font-size:20px;font-weight:700;margin-bottom:8px}
+.reward-card .progress-text{font-family:var(--mono);font-size:14px;color:var(--t2);margin-bottom:12px}
+.reward-earned{background:linear-gradient(135deg,rgba(16,185,129,.1),rgba(6,182,212,.1))!important;border-color:var(--emerald)!important}
+.agent-tile{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r2);padding:20px;display:flex;align-items:flex-start;gap:16px;transition:all .2s}
+.agent-tile:hover{border-color:var(--bdr2)}
+.agent-tile .at-icon{font-size:32px;flex-shrink:0}
+.agent-tile .at-info h4{font-size:15px;font-weight:700;margin-bottom:4px}
+.agent-tile .at-info p{font-size:13px;color:var(--t2)}
+.agent-tile.locked{opacity:.5;position:relative}
+.agent-tile.locked::after{content:'🔒';position:absolute;top:12px;right:12px;font-size:18px}
+.store-card{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r3);padding:24px;transition:all .2s}
+.store-card:hover{border-color:var(--bdr2)}
+
+/* Agent chip toggle for employee management */
+.agent-chip-toggle{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:50px;font-size:11px;font-family:var(--mono);cursor:pointer;transition:all .2s;border:1px solid var(--bdr);background:var(--bg4);color:var(--t3);user-select:none;margin:2px}
+.agent-chip-toggle.on{background:rgba(59,130,246,.15);border-color:var(--blue);color:var(--blue)}
+
+/* Feedback Widget */
+.fb-trigger{position:fixed;bottom:24px;right:24px;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--violet));color:#fff;font-size:22px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 20px rgba(59,130,246,.3);z-index:1500;transition:all .2s;border:none}
+.fb-trigger:hover{transform:scale(1.1)}
+.fb-panel{position:fixed;bottom:90px;right:24px;width:380px;max-height:520px;background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r3);z-index:1500;display:none;flex-direction:column;animation:fbIn .3s ease;overflow:hidden;box-shadow:var(--shadow)}
+.fb-panel.open{display:flex}
+.fb-panel-header{padding:16px 20px;border-bottom:1px solid var(--bdr);font-size:16px;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+.fb-tabs{display:flex;border-bottom:1px solid var(--bdr)}
+.fb-tab{flex:1;padding:10px;text-align:center;font-size:12px;font-weight:600;color:var(--t3);cursor:pointer;transition:all .2s;border-bottom:2px solid transparent}
+.fb-tab.active{color:var(--blue);border-bottom-color:var(--blue)}
+.fb-body{padding:16px;overflow-y:auto;flex:1;max-height:380px}
+.fb-type-sel{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.fb-type{padding:6px 14px;border-radius:50px;font-size:12px;cursor:pointer;border:1px solid var(--bdr);background:var(--bg4);color:var(--t2);transition:all .2s}
+.fb-type.selected{border-color:var(--blue);background:rgba(59,130,246,.1);color:var(--blue)}
+.fb-stars{display:flex;gap:4px;margin-bottom:12px}
+.fb-star{font-size:24px;cursor:pointer;color:var(--bg5);transition:color .15s}
+.fb-star.active{color:var(--amber)}
+.fb-item{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r);padding:12px;margin-bottom:8px}
+.fb-item .fb-item-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.fb-item .fb-item-type{font-family:var(--mono);font-size:10px;text-transform:uppercase}
+.fb-item .fb-item-text{font-size:13px;color:var(--t2)}
+.fb-item .fb-item-meta{display:flex;gap:12px;margin-top:8px;font-size:11px;color:var(--t3)}
+.upvote-btn{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:50px;border:1px solid var(--bdr);background:none;color:var(--t3);font-size:12px;cursor:pointer;transition:all .2s}
+.upvote-btn:hover,.upvote-btn.voted{border-color:var(--blue);color:var(--blue);background:rgba(59,130,246,.08)}
+
+/* Test suite */
+.test-card{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r2);padding:20px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
+.test-card h4{font-size:14px;font-weight:600;margin-bottom:4px}
+.test-card p{font-size:12px;color:var(--t3)}
+
+/* Toggle Switch */
+.toggle-sw{position:relative;width:40px;height:22px;background:var(--bg5);border-radius:11px;cursor:pointer;transition:all .2s;border:1px solid var(--bdr2);flex-shrink:0}
+.toggle-sw.on{background:rgba(59,130,246,.3);border-color:var(--blue)}
+.toggle-sw::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--t2);transition:all .2s}
+.toggle-sw.on::after{left:20px;background:var(--blue)}
+
+/* Valuable toggle (admin) */
+.val-toggle{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:50px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--bdr);background:var(--bg4);color:var(--t3);transition:all .2s}
+.val-toggle.on{background:rgba(245,158,11,.12);border-color:var(--amber);color:var(--amber)}
+
+/* Admin Analytics Chart */
+.chart-container{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r2);padding:24px;margin-bottom:20px}
+.bar-chart{display:flex;align-items:flex-end;gap:12px;height:160px;padding-top:12px}
+.bar-chart .bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.bar-chart .bar{width:100%;border-radius:4px 4px 0 0;transition:height .5s ease}
+.bar-chart .bar-label{font-size:10px;color:var(--t3);font-family:var(--mono)}
+.bar-chart .bar-val{font-size:10px;color:var(--t2);font-family:var(--mono)}
+
+/* Comp form */
+.comp-form{max-width:500px}
+.comp-form .form-group{margin-bottom:16px}
+
+/* Settings page */
+.settings-section{max-width:600px}
+.settings-section h3{font-size:16px;font-weight:700;margin-bottom:16px}
+.notif-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--bdr)}
+.notif-row label{font-size:14px;color:var(--t2)}
+
+/* ===================== RESPONSIVE ===================== */
+@media(max-width:768px){
+.nav-links,.nav-cta .btn-ghost{display:none}
+.hamburger{display:flex}
+.hero{padding:120px 20px 60px}
+.metrics-bar{gap:20px}
+.section{padding:60px 20px}
+.footer-grid{grid-template-columns:1fr 1fr}
+.form-row{grid-template-columns:1fr}
+.pricing-grid{grid-template-columns:1fr}
+.sidebar{width:200px}
+.fb-panel{width:calc(100% - 48px);right:24px}
+}
+
+/* =================== SALES APP =================== */
+.sales-app{position:relative}
+.sales-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;gap:16px;flex-wrap:wrap}
+.sales-tabs{display:flex;gap:4px;background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r);padding:4px}
+.sales-tab{padding:8px 16px;border-radius:6px;font-size:13px;font-weight:600;color:var(--t2);cursor:pointer;transition:all .15s;border:none;background:none}
+.sales-tab.active{background:var(--blue);color:#fff}
+.sales-tab:hover:not(.active){background:var(--bg4);color:var(--t1)}
+.sales-search{padding:8px 14px;border-radius:var(--r);border:1px solid var(--bdr);background:var(--bg3);color:var(--t1);font-size:13px;width:220px}
+.sales-search:focus{outline:none;border-color:var(--blue)}
+.pipeline-board{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;min-height:400px}
+@media(max-width:1100px){.pipeline-board{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:700px){.pipeline-board{grid-template-columns:1fr}}
+.pipe-col{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r2);padding:12px;min-height:300px}
+.pipe-col-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--bdr)}
+.pipe-col-hdr h4{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.pipe-col-hdr .count{font-family:var(--mono);font-size:11px;padding:2px 8px;border-radius:50px;background:var(--bg4);color:var(--t3)}
+.pipe-card{background:var(--bg4);border:1px solid var(--bdr);border-radius:var(--r);padding:12px;margin-bottom:8px;cursor:pointer;transition:all .15s}
+.pipe-card:hover{border-color:var(--blue);transform:translateY(-1px)}
+.pipe-card .deal-name{font-size:14px;font-weight:600;margin-bottom:4px}
+.pipe-card .deal-company{font-size:12px;color:var(--t3);margin-bottom:8px}
+.pipe-card .deal-val{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--emerald)}
+.pipe-card .deal-meta{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:11px;color:var(--t3)}
+.score-badge{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;font-size:11px;font-weight:700;font-family:var(--mono)}
+.lead-table{width:100%;border-collapse:collapse}
+.lead-table th{text-align:left;padding:10px 12px;border-bottom:2px solid var(--bdr);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3);cursor:pointer;user-select:none}
+.lead-table th:hover{color:var(--t1)}
+.lead-table td{padding:10px 12px;border-bottom:1px solid rgba(30,39,56,.4);font-size:13px}
+.lead-table tr:hover td{background:rgba(59,130,246,.03)}
+.activity-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--bdr)}
+.activity-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.activity-body{flex:1}
+.activity-body .act-title{font-size:14px;font-weight:500;margin-bottom:2px}
+.activity-body .act-meta{font-size:12px;color:var(--t3)}
+.forecast-bar{height:24px;border-radius:4px;overflow:hidden;display:flex}
+.forecast-bar div{height:100%;transition:width .5s ease}
+</style>
+</head>
+<body>
+
+<!-- ==================== LANDING PAGE ==================== -->
+<div class="landing" id="landing">
+
+<!-- Nav -->
+<nav class="nav" id="nav">
+<div class="nav-logo">WoulfAI</div>
+<div class="nav-links">
+<a href="#agents">Agents</a>
+<a href="#demo">Demo</a>
+<a href="#how-it-works">How It Works</a>
+<a href="#beta">Beta Program</a>
+<a href="#pricing">Pricing</a>
+<a href="#integrations">Integrations</a>
+</div>
+<div class="nav-cta">
+<button class="btn btn-ghost" onclick="window.location.href='/login'">Sign In</button>
+<button class="btn btn-primary" onclick="window.location.href='/login'">Start Free Trial</button>
+<button class="hamburger" onclick="toggleMobile()">
+<span></span><span></span><span></span>
+</button>
+</div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+<a href="#agents" onclick="toggleMobile()">Agents</a>
+<a href="#demo" onclick="toggleMobile()">Demo</a>
+<a href="#how-it-works" onclick="toggleMobile()">How It Works</a>
+<a href="#beta" onclick="toggleMobile()">Beta Program</a>
+<a href="#pricing" onclick="toggleMobile()">Pricing</a>
+<a href="#integrations" onclick="toggleMobile()">Integrations</a>
+<a href="#" onclick="window.location.href='/login'">Sign In</a>
+<a href="#" onclick="window.location.href='/login'">Start Free Trial</a>
+</div>
+
+<!-- Hero -->
+<section class="hero">
+<div class="hero-grid"></div>
+<div class="hero-glow"></div>
+<div class="hero-badge"><span class="dot"></span> Now in Beta · 14-Day Free Trial</div>
+<h1>AI Agents That <span class="grad">Actually Work</span> For Your Business</h1>
+<p>10 specialized AI agents. 4 powerful LLMs. One platform. Deploy intelligent automation for warehouses, sales, finance, marketing, and more — in under 5 minutes.</p>
+<div class="hero-ctas">
+<button class="btn btn-primary btn-lg" onclick="window.location.href='/login'">Start Free Trial</button>
+<button class="btn btn-ghost btn-lg" onclick="openModal('demo-request')">Schedule Demo</button>
+</div>
+<div class="metrics-bar">
+<div class="metric"><div class="val">10</div><div class="lbl">AI Agents</div></div>
+<div class="metric"><div class="val">4</div><div class="lbl">LLMs Powering</div></div>
+<div class="metric"><div class="val">&lt;5min</div><div class="lbl">Setup Time</div></div>
+<div class="metric"><div class="val">14</div><div class="lbl">Days Free</div></div>
+</div>
+</section>
+
+<!-- Marquee -->
+<div class="marquee-wrap"><div class="marquee-track" id="marquee"></div></div>
+
+<!-- Agent Marketplace -->
+<section class="section" id="agents">
+<div class="section-label reveal">Agent Marketplace</div>
+<div class="section-title reveal">Purpose-Built AI Agents</div>
+<div class="section-sub reveal">Each agent is a domain expert — trained, tested, and ready to transform a specific part of your business.</div>
+<div class="agent-grid" id="agentGrid"></div>
+</section>
+
+<!-- Interactive Demo -->
+<section class="section" id="demo">
+<div class="section-label reveal">See It In Action</div>
+<div class="section-title reveal">Interactive Demo</div>
+<div class="section-sub reveal">Explore what each agent looks like in production.</div>
+<div class="demo-layout">
+<div class="demo-sidebar" id="demoSidebar"></div>
+<div class="demo-screen" id="demoScreen"></div>
+</div>
+</section>
+
+<!-- How It Works -->
+<section class="section" id="how-it-works">
+<div class="section-label reveal">Get Started</div>
+<div class="section-title reveal">Up and Running in 4 Steps</div>
+<div class="section-sub reveal">No code. No consultants. No headaches.</div>
+<div class="steps">
+<div class="step reveal"><div class="step-icon">📝</div><h3>Sign Up</h3><p>Create your account and start your 14-day free trial. No credit card required.</p></div>
+<div class="step reveal"><div class="step-icon">🔌</div><h3>Connect</h3><p>Link your existing tools — NetSuite, HubSpot, Salesforce, Shopify, and 12 more.</p></div>
+<div class="step reveal"><div class="step-icon">🚀</div><h3>Deploy</h3><p>Choose your agents, configure them to your workflow, and go live in minutes.</p></div>
+<div class="step reveal"><div class="step-icon">📈</div><h3>Scale</h3><p>Add agents, seats, and integrations as you grow. Your AI workforce scales with you.</p></div>
+</div>
+</section>
+
+<!-- Beta Program (replaces Agent Creator) -->
+<section class="beta-section" id="beta">
+<div class="beta-inner">
+<div class="section-label reveal" style="text-align:center">Beta Program</div>
+<div class="section-title reveal" style="text-align:center">Shape the Future of WoulfAI</div>
+<div class="section-sub reveal" style="text-align:center;margin-left:auto;margin-right:auto">Join our beta program and get full access to every agent — for free. We're looking for experienced professionals who can help us build something extraordinary.</div>
+<div class="beta-rewards reveal">
+<div class="beta-reward"><div class="br-icon">🎯</div><h3>Full Free Access</h3><p>All 8 agents, all features, $0 while testing. No credit card, no catch.</p></div>
+<div class="beta-reward"><div class="br-icon">🏆</div><h3>20 Per Agent = 1 Year Free</h3><p>Submit 20 valuable suggestions for any agent and earn 1 full year of that agent — completely free.</p></div>
+<div class="beta-reward"><div class="br-icon">💬</div><h3>Direct Line to the Team</h3><p>Your feedback goes straight to our engineers. Help build the product you want to use.</p></div>
+</div>
+<div class="beta-form-wrap reveal" id="betaFormWrap">
+<h3>Apply for Beta Access</h3>
+<p>Applications reviewed within 48 hours</p>
+<div id="betaForm">
+<div class="form-row">
+<div class="form-group"><label>Full Name</label><input type="text" id="betaName" placeholder="Jane Smith"></div>
+<div class="form-group"><label>Email</label><input type="email" id="betaEmail" placeholder="jane@company.com"></div>
+</div>
+<div class="form-row">
+<div class="form-group"><label>Company</label><input type="text" id="betaCompany" placeholder="Acme Inc"></div>
+<div class="form-group"><label>Role / Title</label><input type="text" id="betaRole" placeholder="VP Operations"></div>
+</div>
+<div class="form-group"><label>Years of Experience</label>
+<select id="betaExp">
+<option value="">Select experience level</option>
+<option>1-3 years</option><option>3-5 years</option><option>5-10 years</option>
+<option>10-15 years</option><option>15+ years</option>
+</select>
+</div>
+<div class="form-group"><label>Which agents interest you most?</label>
+<div class="agent-picker" id="betaAgentPicker"></div>
+</div>
+<div class="form-group"><label>Why should we pick you?</label>
+<textarea id="betaWhy" placeholder="Tell us about your experience and how you'd help improve WoulfAI..."></textarea>
+</div>
+<button class="btn btn-primary" style="width:100%" onclick="submitBetaApp()">Submit Application</button>
+</div>
+<div class="beta-success" id="betaSuccess">
+<div class="check">✓</div>
+<h3>Application Submitted!</h3>
+<p style="color:var(--t2);margin-top:8px">We'll review your application within 48 hours. Check your email for updates.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Pricing -->
+<section class="section" id="pricing">
+<div class="section-label reveal" style="text-align:center">Pricing</div>
+<div class="section-title reveal" style="text-align:center">Simple, Transparent Pricing</div>
+<div class="section-sub reveal" style="text-align:center;margin-left:auto;margin-right:auto">14-day free trial on every plan. No credit card required.</div>
+<div class="pricing-toggle reveal">
+<span class="active" id="monthlyLabel">Monthly</span>
+<div class="toggle" id="pricingToggle" role="button" tabindex="0" aria-label="Toggle annual pricing" onclick="togglePricing()"></div>
+<span id="annualLabel">Annual <span style="color:var(--emerald);font-family:var(--mono);font-size:12px">Save 17%</span></span>
+</div>
+<div class="pricing-grid reveal" id="pricingGrid"></div>
+</section>
+
+<!-- Integrations -->
+<section class="section" id="integrations">
+<div class="section-label reveal" style="text-align:center">Integrations</div>
+<div class="section-title reveal" style="text-align:center">Connects to Your Stack</div>
+<div class="section-sub reveal" style="text-align:center;margin-left:auto;margin-right:auto">Plug into the tools you already use.</div>
+<div class="int-grid reveal" id="intGrid"></div>
+</section>
+
+<!-- Testimonials -->
+<section class="section">
+<div class="section-label reveal" style="text-align:center">Testimonials</div>
+<div class="section-title reveal" style="text-align:center">Trusted by Forward-Thinking Teams</div>
+<div class="testimonials reveal" id="testimonials" style="margin-top:40px"></div>
+</section>
+
+<!-- Final CTA -->
+<section class="cta-section">
+<h2 class="reveal">Ready to Put AI to Work?</h2>
+<p class="reveal">Join thousands of businesses automating with WoulfAI.</p>
+<div class="hero-ctas reveal">
+<button class="btn btn-primary btn-lg" onclick="window.location.href='/login'">Start Free Trial</button>
+<button class="btn btn-ghost btn-lg" onclick="openModal('contact')">Contact Sales</button>
+</div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+<div class="footer-grid">
+<div class="footer-brand">
+<div class="logo">WoulfAI</div>
+<p>AI-powered business agents for the modern enterprise. A Woulf Group company.</p>
+</div>
+<div class="footer-col"><h4>Product</h4><a href="#agents">Agents</a><a href="#demo">Demo</a><a href="#pricing">Pricing</a><a href="#integrations">Integrations</a></div>
+<div class="footer-col"><h4>Agents</h4><a href="#" onclick="event.preventDefault();openAgentDetail('marketing')">Marketing</a><a href="#" onclick="event.preventDefault();openAgentDetail('wms')">WMS</a><a href="#" onclick="event.preventDefault();openAgentDetail('financial')">Financial</a><a href="#" onclick="event.preventDefault();openAgentDetail('sales')">Sales</a></div>
+<div class="footer-col"><h4>Company</h4><a href="#" onclick="event.preventDefault();openModal('coming-soon','about')">About</a><a href="#" onclick="event.preventDefault();openModal('coming-soon','careers')">Careers</a><a href="#" onclick="event.preventDefault();openModal('coming-soon','blog')">Blog</a><a href="#" onclick="event.preventDefault();openModal('contact')">Contact</a></div>
+<div class="footer-col"><h4>Legal</h4><a href="#" onclick="event.preventDefault();openModal('legal','privacy')">Privacy</a><a href="#" onclick="event.preventDefault();openModal('legal','terms')">Terms</a><a href="#" onclick="event.preventDefault();openModal('legal','security')">Security</a><a href="#" onclick="event.preventDefault();openModal('legal','dpa')">DPA</a></div>
+</div>
+<div class="footer-bottom">
+<div class="footer-socials">
+<a href="https://x.com/woulfai" target="_blank" rel="noopener" title="Twitter / X">𝕏</a>
+<a href="https://linkedin.com/company/woulfai" target="_blank" rel="noopener" title="LinkedIn">in</a>
+<a href="https://github.com/woulfai" target="_blank" rel="noopener" title="GitHub">⌘</a>
+</div>
+<p style="margin-top:12px">© 2026 WoulfAI (Woulf Group). All rights reserved.</p>
+</div>
+</footer>
+</div><!-- /landing -->
+
+<!-- ==================== DASHBOARD ==================== -->
+<div class="app" id="app">
+<aside class="sidebar" id="sidebar"></aside>
+<div class="main">
+<div class="topbar" id="topbar"><h2 id="pageTitle">Dashboard</h2><div class="topbar-right" id="topbarRight"></div></div>
+<div class="content" id="content"></div>
+</div>
+</div>
+
+<!-- Feedback Widget (shows in dashboard) -->
+<button class="fb-trigger hidden" id="fbTrigger" aria-label="Open feedback widget" onclick="toggleFB()">💬</button>
+<div class="fb-panel" id="fbPanel">
+<div class="fb-panel-header">
+<span>Feedback</span>
+<button style="background:none;border:none;color:var(--t3);font-size:18px;cursor:pointer" onclick="toggleFB()">✕</button>
+</div>
+<div class="fb-tabs">
+<div class="fb-tab active" role="button" tabindex="0" onclick="fbTab('submit')">Submit</div>
+<div class="fb-tab" role="button" tabindex="0" onclick="fbTab('history')">My History</div>
+<div class="fb-tab" role="button" tabindex="0" onclick="fbTab('board')">Board</div>
+</div>
+<div class="fb-body" id="fbBody"></div>
+</div>
+
+<!-- ==================== MODALS ==================== -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+<div class="modal" id="modalContent"></div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ===================== DATA ===================== */
+const AGENTS = [
+{id:'marketing',name:'Marketing Agent',icon:'📣',color:'#F43F5E',cat:'Marketing & Growth',price:279,
+ desc:'AI-powered content creation, social media management, campaign optimization, and performance analytics.',
+ tags:['Content Gen','Social','Campaigns','Analytics'],
+ caps:['Generate blog posts, emails, and ad copy','Schedule and manage social media','A/B test campaigns automatically','Real-time marketing analytics']},
+{id:'wms',name:'WMS Agent',icon:'📦',color:'#3B82F6',cat:'Warehouse & Logistics',price:299,
+ desc:'Intelligent warehouse management with real-time inventory tracking, order optimization, and predictive forecasting.',
+ tags:['Inventory','Orders','Shipping','Forecasting'],
+ caps:['Real-time inventory tracking','Automated order routing','Shipping label generation','Demand forecasting']},
+{id:'financial',name:'Financial Agent',icon:'💰',color:'#10B981',cat:'Finance & Accounting',price:349,
+ desc:'Automated invoicing, expense tracking, financial reporting, and compliance monitoring.',
+ tags:['Invoices','Expenses','Reports','Compliance'],
+ caps:['Auto-generate invoices','Track and categorize expenses','Financial report generation','Compliance monitoring']},
+{id:'str',name:'STR Agent',icon:'🏡',color:'#F59E0B',cat:'Short-Term Rentals',price:299,
+ desc:'Dynamic pricing, booking management, property optimization, and guest communication for Airbnb and VRBO.',
+ tags:['Dynamic Pricing','Bookings','Properties','Guests'],
+ caps:['AI-powered dynamic pricing','Unified booking calendar','Property performance analytics','Automated guest messaging']},
+{id:'sales',name:'Sales Agent',icon:'🎯',color:'#8B5CF6',cat:'Sales & CRM',price:249,
+ desc:'Lead scoring, pipeline management, CRM synchronization, and sales forecasting powered by AI.',
+ tags:['Lead Scoring','Pipeline','CRM Sync','Forecasting'],
+ caps:['Intelligent lead scoring','Visual pipeline management','Auto-sync with CRM','Revenue forecasting']},
+{id:'customer-service',name:'Customer Service Agent',icon:'🎧',color:'#06B6D4',cat:'Support & Success',price:199,
+ desc:'AI chatbot, ticket management, knowledge base automation, and SLA tracking.',
+ tags:['AI Chatbot','Tickets','Knowledge Base','SLA'],
+ caps:['24/7 AI chatbot','Smart ticket routing','Auto-update knowledge base','SLA compliance tracking']},
+{id:'sellpronto',name:'SellPronto Agent',icon:'🛒',color:'#F97316',cat:'E-Commerce & Marketplaces',price:349,
+ desc:'Multi-marketplace sync, listing optimization, fulfillment automation, and competitive pricing.',
+ tags:['Marketplace Sync','Listings','Fulfillment','Pricing'],
+ caps:['Sync across Amazon, eBay, Shopify','AI-optimized listings','Automated fulfillment routing','Competitive price monitoring']},
+{id:'web-builder',name:'Web Builder Agent',icon:'🌐',color:'#EC4899',cat:'Web Development',price:199,
+ desc:'AI-powered site generation, template system, visual editor, and one-click deployment.',
+ tags:['Site Generator','Templates','Editor','Deploy'],
+ caps:['Generate sites from prompts','Professional template library','Visual drag-and-drop editor','One-click publish to Vercel']}
+];
+
+const PLATFORM_AGENTS = [
+{id:'agent-creator',name:'Agent Creator',icon:'🧬',color:'#8B5CF6',cat:'Platform — Admin + Enterprise',
+ desc:'Build custom AI agents with a multi-LLM pipeline. 4 LLMs collaborate: Claude (Architect), GPT-4o (Engineer), Gemini (Memory), Llama (Speed).'},
+{id:'knowledge-graph',name:'Knowledge Graph',icon:'🕸️',color:'#06B6D4',cat:'Platform — Infrastructure',
+ desc:'Shared intelligence layer. Entity relationships, cross-domain insights, connects all agents.'}
+];
+
+const DEMOS = [
+{id:'wms',name:'WMS',icon:'📦',color:'#3B82F6'},
+{id:'sales',name:'Sales',icon:'🎯',color:'#8B5CF6'},
+{id:'financial',name:'Financial',icon:'💰',color:'#10B981'},
+{id:'customer-service',name:'Support',icon:'🎧',color:'#06B6D4'},
+{id:'sellpronto',name:'SellPronto',icon:'🛒',color:'#F97316'},
+{id:'marketing',name:'Marketing',icon:'📣',color:'#F43F5E'}
+];
+
+const INTEGRATIONS = [
+{name:'NetSuite',icon:'🔷'},{name:'HubSpot',icon:'🟠'},{name:'Salesforce',icon:'☁️'},{name:'QuickBooks',icon:'🟢'},
+{name:'Shopify',icon:'🛍️'},{name:'Amazon',icon:'📦'},{name:'Stripe',icon:'💳'},{name:'Slack',icon:'💬'},
+{name:'Airbnb',icon:'🏠'},{name:'eBay',icon:'🏷️'},{name:'FedEx',icon:'📮'},{name:'Xero',icon:'💙'},
+{name:'Pipedrive',icon:'🔵'},{name:'Vercel',icon:'▲'},{name:'Google Ads',icon:'📊'},{name:'Zapier',icon:'⚡'}
+];
+
+const TESTIMONIALS = [
+{quote:'WoulfAI cut our warehouse processing time by 40%. The WMS Agent paid for itself in the first week.',name:'Rachel Torres',role:'VP Operations, Acme Logistics',avatar:'🧑‍💼',bg:'var(--blue)'},
+{quote:'The Financial Agent handles our entire invoicing flow. We used to spend 20 hours a week on this — now it\'s 20 minutes.',name:'David Kim',role:'CFO, TechScale Inc',avatar:'👨‍💻',bg:'var(--emerald)'},
+{quote:'Being a beta tester has been incredible. Our feedback actually gets implemented, and the reward program is generous.',name:'Casey Miller',role:'Beta Tester, BetaCrew',avatar:'🧪',bg:'var(--violet)'}
+];
+
+/* State */
+const S = {
+role:null, page:null, annual:false,
+employees:[
+{id:'e1',name:'Sarah Chen',email:'sarah@woulfai.com',agents:['marketing','sales','wms'],status:'active'},
+{id:'e2',name:'Marcus Johnson',email:'marcus@woulfai.com',agents:['financial','wms'],status:'active'},
+{id:'e3',name:'Priya Patel',email:'priya@woulfai.com',agents:['sellpronto','web-builder','customer-service'],status:'active'}
+],
+clients:[
+{id:'c1',name:'Acme Logistics',plan:'professional',status:'active',seats:12,agents:['wms','sales','financial','marketing','str','customer-service','sellpronto','web-builder'],billing:1499},
+{id:'c2',name:'TechScale Inc',plan:'starter',status:'active',seats:4,agents:['financial','sales','marketing'],billing:599},
+{id:'c3',name:'BlueOcean Labs',plan:'starter',status:'trial',seats:2,agents:['wms','sales'],billing:0,trialEnd:'Feb 28, 2026'},
+{id:'c4',name:'FreshStart Media',plan:'professional',status:'comped',seats:8,agents:['wms','sales','financial','marketing','str','customer-service','sellpronto','web-builder'],billing:0,compReason:'Strategic Partner'}
+],
+betaApps:[
+{id:'b1',name:'Jordan Wu',email:'jordan@qafirm.com',company:'QA Firm',role:'Lead QA',exp:'10-15 years',status:'approved',valuableByAgent:{wms:5,sales:8,financial:3},total:12,agents:['wms','sales','financial']},
+{id:'b2',name:'Casey Miller',email:'casey@betacrew.com',company:'BetaCrew',role:'Product Manager',exp:'5-10 years',status:'approved',valuableByAgent:{'web-builder':12,sellpronto:6,marketing:4},total:18,agents:['web-builder','sellpronto','marketing']},
+{id:'b3',name:'Dana Park',email:'dana@startup.io',company:'Startup.io',role:'COO',exp:'5-10 years',status:'pending',valuableByAgent:{},total:0,agents:['financial','str']},
+{id:'b4',name:'Sam Torres',email:'sam@freelance.dev',company:'Freelance',role:'Student',exp:'1-3 years',status:'denied',valuableByAgent:{},total:0,agents:['web-builder']}
+],
+feedback:[
+{id:'f1',from:'Sarah Chen',fromRole:'employee',type:'bug',text:'WMS shipping labels cut off barcode on thermal printers',status:'in-progress',votes:4,valuable:false},
+{id:'f2',from:'Jordan Wu',fromRole:'beta',type:'feature',text:'Bulk CSV import for Sales Agent contacts',status:'planned',votes:7,valuable:true,forAgent:'sales'},
+{id:'f3',from:'Acme Logistics',fromRole:'client',type:'improvement',text:'Warehouse heatmap view for inventory density',status:'under-review',votes:3,valuable:true},
+{id:'f4',from:'Casey Miller',fromRole:'beta',type:'bug',text:'Web Builder responsive preview breaks below 375px viewport',status:'fixed',votes:2,valuable:true,forAgent:'web-builder'},
+{id:'f5',from:'Admin',fromRole:'admin',type:'improvement',text:'Keyboard shortcuts for common admin actions',status:'planned',votes:6,valuable:false}
+],
+fbType:'bug',fbRating:0,
+salesTab:'dashboard',salesSearch:'',salesPipeFilter:'all',salesSort:'score-desc',
+};
+
+/* Beta helpers */
+function getTotalValuable(b){return Object.values(b.valuableByAgent||{}).reduce((s,v)=>s+v,0)}
+function getAgentsEarned(b){return Object.entries(b.valuableByAgent||{}).filter(([k,v])=>v>=20).map(([k])=>k)}
+function getAgentValuable(b,agentId){return (b.valuableByAgent||{})[agentId]||0}
+
+/* =================== SALES APP DATA =================== */
+const SALES_STAGES=['prospect','discovery','proposal','negotiation','closed-won'];
+const STAGE_LABELS={prospect:'Prospect',discovery:'Discovery',proposal:'Proposal',negotiation:'Negotiation','closed-won':'Closed Won'};
+const STAGE_COLORS={prospect:'var(--t2)',discovery:'var(--blue)',proposal:'var(--violet)',negotiation:'var(--amber)','closed-won':'var(--emerald)'};
+
+const SALES_DATA={
+leads:[
+ {id:'l1',name:'Acme Corp',contact:'Robert Chen',email:'rchen@acme.com',phone:'+1 (555) 234-5678',value:45000,stage:'proposal',score:87,source:'Referral',lastActivity:'2h ago',activities:4,nextStep:'Send revised proposal by EOD',created:'Jan 15, 2026',notes:'Enterprise prospect. 200+ employees. Interested in full platform.'},
+ {id:'l2',name:'GlobalTech',contact:'Maria Santos',email:'msantos@globaltech.io',phone:'+1 (555) 876-1234',value:120000,stage:'discovery',score:64,source:'Website',lastActivity:'1d ago',activities:3,nextStep:'Schedule technical demo',created:'Jan 22, 2026',notes:'Large deal. CTO is champion. Need to win over CFO.'},
+ {id:'l3',name:'StartupXYZ',contact:'Alex Kim',email:'alex@startupxyz.co',phone:'+1 (555) 111-2233',value:18000,stage:'closed-won',score:92,source:'Cold Outreach',lastActivity:'3d ago',activities:7,nextStep:'Onboarding kickoff scheduled',created:'Dec 10, 2025',notes:'Fast mover. Signed in 14 days. Starter plan.'},
+ {id:'l4',name:'NovaTech Solutions',contact:'Jessica Park',email:'jpark@novatech.com',phone:'+1 (555) 444-5566',value:78000,stage:'negotiation',score:91,source:'Conference',lastActivity:'4h ago',activities:6,nextStep:'Final pricing review with procurement',created:'Jan 8, 2026',notes:'Met at SaaStr. Strong fit. Negotiating multi-year.'},
+ {id:'l5',name:'Peak Systems',contact:'David Brown',email:'dbrown@peaksys.com',phone:'+1 (555) 777-8899',value:32000,stage:'proposal',score:73,source:'Partner',lastActivity:'2d ago',activities:3,nextStep:'Send case study + ROI analysis',created:'Feb 1, 2026',notes:'Mid-market. 50 employees. Needs WMS + Sales agents.'},
+ {id:'l6',name:'ClearPath Analytics',contact:'Sarah Liu',email:'sliu@clearpath.ai',phone:'+1 (555) 321-6540',value:55000,stage:'prospect',score:42,source:'LinkedIn',lastActivity:'5d ago',activities:1,nextStep:'Qualifying call scheduled Feb 18',created:'Feb 8, 2026',notes:'Inbound from LinkedIn ad. Analytics company, could be great fit.'},
+ {id:'l7',name:'Urban Logistics Co',contact:'Marcus Webb',email:'mwebb@urbanlog.com',phone:'+1 (555) 999-0011',value:89000,stage:'discovery',score:71,source:'Referral',lastActivity:'6h ago',activities:4,nextStep:'Product demo with ops team',created:'Jan 28, 2026',notes:'Referred by Acme Logistics. Warehouse-heavy. Big WMS opportunity.'},
+ {id:'l8',name:'Meridian Group',contact:'Lisa Tran',email:'ltran@meridian.co',phone:'+1 (555) 222-3344',value:15000,stage:'prospect',score:38,source:'Website',lastActivity:'1w ago',activities:1,nextStep:'Follow up on demo request',created:'Feb 10, 2026',notes:'Small team. Budget constrained. Starter plan likely.'},
+ {id:'l9',name:'BlueShore Capital',contact:'Tom Anderson',email:'tanderson@blueshore.vc',phone:'+1 (555) 654-7890',value:67000,stage:'negotiation',score:85,source:'Event',lastActivity:'1d ago',activities:5,nextStep:'Legal review of MSA',created:'Jan 12, 2026',notes:'Financial firm. Compliance requirements. Needs Financial + Sales agents.'},
+ {id:'l10',name:'Vertex Commerce',contact:'Nina Patel',email:'npatel@vertexcom.com',phone:'+1 (555) 888-1122',value:42000,stage:'discovery',score:58,source:'Cold Outreach',lastActivity:'3d ago',activities:2,nextStep:'Discovery call with decision maker',created:'Feb 3, 2026',notes:'E-commerce company. Interested in SellPronto + Marketing agents.'}
+],
+activities:[
+ {id:'a1',type:'call',leadId:'l1',lead:'Acme Corp',text:'Discovery call with Robert — reviewed pain points. 45min.',time:'2 hours ago',by:'You'},
+ {id:'a2',type:'email',leadId:'l4',lead:'NovaTech Solutions',text:'Sent updated pricing proposal with multi-year discount.',time:'4 hours ago',by:'AI Agent'},
+ {id:'a3',type:'meeting',leadId:'l7',lead:'Urban Logistics Co',text:'On-site visit to warehouse. Identified 3 workflow gaps.',time:'6 hours ago',by:'You'},
+ {id:'a4',type:'note',leadId:'l2',lead:'GlobalTech',text:'CTO confirmed budget approval. CFO meeting next week.',time:'1 day ago',by:'You'},
+ {id:'a5',type:'email',leadId:'l9',lead:'BlueShore Capital',text:'Followed up on MSA redlines. Legal reviewing by Friday.',time:'1 day ago',by:'AI Agent'},
+ {id:'a6',type:'call',leadId:'l5',lead:'Peak Systems',text:'Quick check-in. David wants ROI numbers before next steps.',time:'2 days ago',by:'You'},
+ {id:'a7',type:'email',leadId:'l3',lead:'StartupXYZ',text:'Sent onboarding welcome pack and kickoff calendar invite.',time:'3 days ago',by:'AI Agent'},
+ {id:'a8',type:'meeting',leadId:'l1',lead:'Acme Corp',text:'Demo session with stakeholder group. 6 attendees. Strong interest.',time:'3 days ago',by:'You'},
+ {id:'a9',type:'call',leadId:'l10',lead:'Vertex Commerce',text:'Initial outreach call. Nina interested, scheduling discovery.',time:'3 days ago',by:'You'},
+ {id:'a10',type:'note',leadId:'l6',lead:'ClearPath Analytics',text:'Added from LinkedIn campaign. Looks promising — AI/analytics fit.',time:'5 days ago',by:'AI Agent'}
+]
+};
+
+
+/* ===================== LANDING PAGE JS ===================== */
+function initLanding(){
+ renderMarquee();renderAgentGrid();renderDemoTabs();renderDemo(DEMOS[0].id);
+ renderPricing();renderIntegrations();renderTestimonials();renderBetaPicker();initScrollReveal();
+}
+
+function renderMarquee(){
+ const all=[...AGENTS,...PLATFORM_AGENTS];
+ const html=all.map(a=>`<div class="marquee-item" onclick="event.stopPropagation();openAgentDetail('${a.id}')"><span class="icon" style="width:36px;height:36px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;background:${a.color}22;font-size:18px">${a.icon}</span><div><div style="font-weight:600;font-size:14px">${a.name}</div><div style="font-size:11px;color:var(--t3)">${a.cat}</div></div></div>`).join('');
+ document.getElementById('marquee').innerHTML=html+html;
+}
+
+function renderAgentGrid(){
+ document.getElementById('agentGrid').innerHTML=AGENTS.map(a=>`
+  <div class="agent-card reveal" role="button" tabindex="0" onclick="openAgentDetail('${a.id}')">
+   <div class="accent" style="background:${a.color}"></div>
+   <div class="icon">${a.icon}</div>
+   <div class="cat" style="color:${a.color}">${a.cat}</div>
+   <h3>${a.name}</h3>
+   <p>${a.desc}</p>
+   <div class="agent-tags">${a.tags.map(t=>`<span>${t}</span>`).join('')}</div>
+   <div class="agent-price" style="color:${a.color}">$${a.price}<small>/mo</small></div>
+  </div>`).join('');
+}
+
+function renderDemoTabs(){
+ const catMap={wms:'Warehouse',sales:'Sales & CRM',financial:'Finance',
+  'customer-service':'Support',sellpronto:'E-Commerce',marketing:'Marketing'};
+ document.getElementById('demoSidebar').innerHTML=DEMOS.map((d,i)=>`
+  <button class="demo-sidebar-item${i===0?' active':''}" onclick="switchDemo('${d.id}')" data-demo="${d.id}">
+   <span class="ds-icon">${d.icon}</span>
+   <div><div>${d.name}</div><div class="ds-sub">${catMap[d.id]||d.name}</div></div>
+  </button>`).join('');
+}
+
+function switchDemo(id){
+ document.querySelectorAll('.demo-sidebar-item').forEach(t=>t.classList.toggle('active',t.dataset.demo===id));
+ renderDemo(id);
+}
+
+function renderDemo(id){
+ const screen=document.getElementById('demoScreen');
+ const demoData={
+  wms:{title:'📦 WMS Dashboard',stats:[{v:'2,847',l:'Items Tracked'},{v:'156',l:'Orders Today'},{v:'99.2%',l:'Accuracy'},{v:'12m',l:'Avg Process'}],
+   table:`<table class="demo-table"><tr><th>Order</th><th>Items</th><th>Status</th><th>ETA</th></tr>
+   <tr><td>#WMS-4521</td><td>24</td><td><span class="chip chip-green">Shipped</span></td><td>Feb 15</td></tr>
+   <tr><td>#WMS-4520</td><td>8</td><td><span class="chip chip-amber">Packing</span></td><td>Feb 16</td></tr>
+   <tr><td>#WMS-4519</td><td>156</td><td><span class="chip chip-blue">Processing</span></td><td>Feb 17</td></tr></table>`},
+  sales:{title:'🎯 Sales Pipeline',stats:[{v:'$2.4M',l:'Pipeline'},{v:'47',l:'Active Deals'},{v:'32%',l:'Win Rate'},{v:'18d',l:'Avg Cycle'}],
+   table:`<table class="demo-table"><tr><th>Lead</th><th>Value</th><th>Stage</th><th>Score</th></tr>
+   <tr><td>Acme Corp</td><td>$45,000</td><td><span class="chip chip-violet">Proposal</span></td><td>87</td></tr>
+   <tr><td>GlobalTech</td><td>$120,000</td><td><span class="chip chip-blue">Discovery</span></td><td>64</td></tr>
+   <tr><td>StartupXYZ</td><td>$18,000</td><td><span class="chip chip-green">Closing</span></td><td>92</td></tr></table>`},
+  financial:{title:'💰 Financial Overview',stats:[{v:'$847K',l:'Revenue MTD'},{v:'$312K',l:'Expenses'},{v:'63%',l:'Margin'},{v:'12',l:'Open Invoices'}],
+   table:`<table class="demo-table"><tr><th>Invoice</th><th>Client</th><th>Amount</th><th>Status</th></tr>
+   <tr><td>#INV-0892</td><td>Acme Logistics</td><td>$4,497</td><td><span class="chip chip-green">Paid</span></td></tr>
+   <tr><td>#INV-0891</td><td>TechScale</td><td>$1,797</td><td><span class="chip chip-amber">Pending</span></td></tr>
+   <tr><td>#INV-0890</td><td>BlueOcean</td><td>$599</td><td><span class="chip chip-rose">Overdue</span></td></tr></table>`},
+  'customer-service':{title:'🎧 Support Center',stats:[{v:'1,247',l:'Tickets MTD'},{v:'94%',l:'Resolution'},{v:'2.3m',l:'First Response'},{v:'4.8',l:'CSAT'}],
+   chat:[{from:'Customer',text:'My order #4521 hasn\'t arrived yet. It\'s been 5 days.'},{from:'AI Agent',text:'I found order #4521 — it shipped on Feb 10 via FedEx tracking #7829384. Current status: Out for delivery today.'},{from:'Customer',text:'Oh great, thanks!'},{from:'AI Agent',text:'You\'re welcome! I\'ve also added a $10 credit to your account for the delay. Anything else I can help with?'}]},
+  sellpronto:{title:'🛒 Marketplace Overview',stats:[{v:'3,421',l:'Listings'},{v:'$127K',l:'Revenue MTD'},{v:'847',l:'Orders'},{v:'4.9★',l:'Rating'}],
+   table:`<table class="demo-table"><tr><th>Channel</th><th>Listings</th><th>Revenue</th><th>Status</th></tr>
+   <tr><td>Amazon</td><td>1,247</td><td>$67,400</td><td><span class="chip chip-green">Synced</span></td></tr>
+   <tr><td>eBay</td><td>1,089</td><td>$38,200</td><td><span class="chip chip-green">Synced</span></td></tr>
+   <tr><td>Shopify</td><td>1,085</td><td>$21,400</td><td><span class="chip chip-amber">3 Errors</span></td></tr></table>`},
+  marketing:{title:'📣 Campaign Dashboard',stats:[{v:'24.7K',l:'Reach'},{v:'3.2%',l:'Click Rate'},{v:'$1.24',l:'CPC'},{v:'312%',l:'ROAS'}],
+   table:`<table class="demo-table"><tr><th>Campaign</th><th>Spend</th><th>Clicks</th><th>Conversions</th></tr>
+   <tr><td>Spring Sale</td><td>$2,400</td><td>1,847</td><td><span class="chip chip-green">127</span></td></tr>
+   <tr><td>Brand Awareness</td><td>$1,800</td><td>3,200</td><td><span class="chip chip-blue">64</span></td></tr>
+   <tr><td>Retargeting</td><td>$950</td><td>876</td><td><span class="chip chip-amber">41</span></td></tr></table>`}
+ };
+ const d=demoData[id];if(!d)return;
+ let html=`<div class="demo-topbar"><h3>${d.title}</h3><span class="chip chip-green" style="font-size:12px">● Live</span></div>`;
+ html+=`<div class="demo-stat-grid">${d.stats.map(s=>`<div class="demo-stat"><div class="val">${s.v}</div><div class="lbl">${s.l}</div></div>`).join('')}</div>`;
+ if(d.table) html+=d.table;
+ if(d.chat) html+=`<div class="demo-chat">${d.chat.map((m,i)=>`<div class="demo-msg" style="animation-delay:${i*0.15}s;opacity:0;animation-fill-mode:forwards"><div class="from" style="color:${m.from==='AI Agent'?'var(--cyan)':'var(--t3)'}">${m.from}</div><div class="text">${m.text}</div></div>`).join('')}</div>`;
+ screen.innerHTML=html;
+}
+
+function renderPricing(){
+ const plans=[
+  {name:'Starter',monthly:599,annual:416,agents:'Up to 3 agents',seats:'5 seats',features:['Email support','Basic analytics','Standard integrations','Community access']},
+  {name:'Professional',monthly:1499,annual:1249,agents:'All 8 agents',seats:'20 seats',features:['Priority support','Advanced analytics','All integrations','API access','Custom workflows'],featured:true},
+  {name:'Enterprise',monthly:null,annual:null,agents:'Unlimited agents',seats:'Unlimited seats',features:['Dedicated CSM','Agent Creator access','SSO/SAML','Custom SLA','On-premise option']}
+ ];
+ document.getElementById('pricingGrid').innerHTML=plans.map(p=>{
+  const price=p.monthly?`<div class="price">$${S.annual?p.annual:p.monthly}<small>/mo</small></div><div class="period">${S.annual?'billed annually':'billed monthly'}</div>`
+   :'<div class="price">Custom</div><div class="period">tailored to your needs</div>';
+  return`<div class="pricing-card${p.featured?' featured':''}">
+   ${p.featured?'<div class="badge">Most Popular</div>':''}
+   <h3>${p.name}</h3>${price}
+   <p style="font-size:13px;color:var(--t2);margin-bottom:16px">${p.agents} · ${p.seats}</p>
+   <ul>${p.features.map(f=>`<li>${f}</li>`).join('')}</ul>
+   <button class="btn ${p.featured?'btn-primary':'btn-ghost'}" style="width:100%" onclick="${p.monthly?`window.location.href='/login'`:`openModal('contact')`}">
+    ${p.monthly?'Start Free Trial':'Contact Sales'}
+   </button>
+  </div>`;
+ }).join('');
+}
+
+function togglePricing(){
+ S.annual=!S.annual;
+ document.getElementById('pricingToggle').classList.toggle('on',S.annual);
+ document.getElementById('monthlyLabel').classList.toggle('active',!S.annual);
+ document.getElementById('annualLabel').classList.toggle('active',S.annual);
+ renderPricing();
+}
+
+function renderIntegrations(){
+ document.getElementById('intGrid').innerHTML=INTEGRATIONS.map(i=>`
+  <div class="int-card"><div class="int-icon">${i.icon}</div><div class="int-name">${i.name}</div></div>`).join('');
+}
+
+function renderTestimonials(){
+ document.getElementById('testimonials').innerHTML=TESTIMONIALS.map(t=>`
+  <div class="testimonial">
+   <div class="stars">★★★★★</div>
+   <blockquote>"${t.quote}"</blockquote>
+   <div class="author">
+    <div class="avatar" style="background:${t.bg}">${t.avatar}</div>
+    <div><div class="name">${t.name}</div><div class="role">${t.role}</div></div>
+   </div>
+  </div>`).join('');
+}
+
+function renderBetaPicker(){
+ document.getElementById('betaAgentPicker').innerHTML=AGENTS.map(a=>
+  `<div class="agent-pick" data-id="${a.id}" onclick="this.classList.toggle('selected')">${a.icon} ${a.name}</div>`).join('');
+}
+
+function submitBetaApp(){
+ const n=document.getElementById('betaName').value.trim();
+ const e=document.getElementById('betaEmail').value.trim();
+ if(!n||!e){showToast('⚠️ Please fill in at least your name and email.');return;}
+ document.getElementById('betaForm').style.display='none';
+ document.getElementById('betaSuccess').style.display='block';
+ showToast('✅ Beta application submitted!');
+}
+
+function initScrollReveal(){
+ const obs=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');obs.unobserve(e.target)}});
+ },{threshold:0.1,rootMargin:'-30px'});
+ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+}
+
+/* ===================== MODAL SYSTEM ===================== */
+function openModal(type,data){
+ const o=document.getElementById('modalOverlay');
+ const c=document.getElementById('modalContent');
+ let html='';
+ switch(type){
+  case 'signup': html=modalSignup();break;
+  case 'signin': html=modalSignin();break;
+  case 'forgot': html=modalForgot();break;
+  case 'contact': html=modalContact();break;
+  case 'demo-request': html=modalDemoRequest();break;
+  case 'agent-detail': html=modalAgentDetail(data);break;
+  case 'agent-config': html=modalAgentConfig(data);break;
+  case 'add-employee': html=modalAddEmployee(data);break;
+  case 'client-detail': html=modalClientDetail(data);break;
+  case 'plan-upgrade': html=modalPlanUpgrade();break;
+  case 'add-subscription': html=modalAddSubscription(data);break;
+  case 'agent-workspace': html=modalAgentWorkspace(data);break;
+  case 'bug-report': html=modalBugReport(data);break;
+  case 'agent-create': html=modalAgentCreate();break;
+  case 'lead-detail': html=modalLeadDetail(data);break;
+  case 'add-lead': html=modalAddLead(data);break;
+  case 'add-activity': html=modalAddActivity();break;
+  case 'legal': html=modalLegal(data);break;
+  case 'coming-soon': html=modalComingSoon(data);break;
+  case 'platform-agent': html=modalPlatformAgent(data);break;
+  default: return;
+ }
+ c.innerHTML=html;o.classList.add('open');
+}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open')}
+
+function modalSignup(){
+ return`<button class="modal-close" onclick="closeModal()">✕</button>
+ <h2>Start Your Free Trial</h2><p class="modal-sub">14 days free. No credit card required.</p>
+ <div id="signupForm">
+  <div class="modal-form">
+   <div class="form-group"><label>Full Name</label><input type="text" id="suName" placeholder="Jane Smith"></div>
+   <div class="form-group"><label>Email</label><input type="email" id="suEmail" placeholder="jane@company.com"></div>
+   <div class="form-group"><label>Organization</label><input type="text" id="suOrg" placeholder="Acme Inc"></div>
+   <div class="form-group"><label>Password</label><input type="password" id="suPass" placeholder="Min 8 characters" oninput="updatePW(this.value)"><div class="pw-meter"><div class="fill" id="pwFill"></div></div></div>
+   <label style="font-size:13px;color:var(--t2)">Select a plan:</label>
+   <div class="plan-selector" id="planSelector">
+    <div class="plan-opt selected" role="button" tabindex="0" onclick="selectPlan(this,'starter')"><div class="plan-name">Starter</div><div class="plan-price">${S.annual?'$416/mo':'$599/mo'}</div></div>
+    <div class="plan-opt" role="button" tabindex="0" onclick="selectPlan(this,'professional')"><div class="plan-name">Professional</div><div class="plan-price">${S.annual?'$1,249/mo':'$1,499/mo'}</div></div>
+    <div class="plan-opt" role="button" tabindex="0" onclick="selectPlan(this,'enterprise')"><div class="plan-name">Enterprise</div><div class="plan-price">Custom</div></div>
+   </div>
+   <label style="display:flex;gap:8px;align-items:center;font-size:13px;color:var(--t2);margin-bottom:16px;cursor:pointer">
+    <input type="checkbox" id="suTerms"> I agree to the Terms of Service and Privacy Policy
+   </label>
+   <button class="btn btn-primary" style="width:100%" onclick="handleSignup()">Create Account</button>
+  </div>
+  <div class="modal-footer">
+   <div class="divider">or</div>
+   <button class="btn-google" onclick="handleSignup()">🔵 Continue with Google</button>
+   <p style="font-size:13px;color:var(--t3);margin-top:8px">Already have an account? <a href="#" onclick="window.location.href='/login'">Sign in</a></p>
+  </div>
+ </div>
+ <div class="modal-success" id="signupSuccess">
+  <div class="check">✓</div><h3>Account Created!</h3>
+  <p style="color:var(--t2);margin-top:8px">Your 14-day free trial has started.</p>
+  <button class="btn btn-primary" style="margin-top:16px" onclick="closeModal();enterDash('client')">Go to Dashboard</button>
+ </div>`;
+}
+
+function modalSignin(){
+ return`<button class="modal-close" onclick="closeModal()">✕</button>
+ <h2>Welcome Back</h2><p class="modal-sub">Sign in to your WoulfAI account.</p>
+ <div id="signinForm">
+  <div class="modal-form">
+   <div class="form-group"><label>Email</label><input type="email" id="siEmail" placeholder="jane@company.com"></div>
+   <div class="form-group"><label>Password</label><input type="password" id="siPass" placeholder="Enter password">
+   <p style="text-align:right;margin-top:6px"><a href="#" style="font-size:12px;color:var(--blue)" onclick="event.preventDefault();closeModal();openModal('forgot')">Forgot password?</a></p></div>
+   <button class="btn btn-primary" style="width:100%" onclick="handleSignin()">Sign In</button>
+  </div>
+  <div class="modal-footer">
+   <div class="divider">or</div>
+   <button class="btn-google" onclick="handleSignin()">🔵 Continue with Google</button>
+   <div class="divider" style="margin-top:8px">quick demo</div>
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%">
+    <button class="btn btn-ghost btn-sm" onclick="closeModal();enterDash('admin')">👑 Admin</button>
+    <button class="btn btn-ghost btn-sm" onclick="closeModal();enterDash('employee')">💼 Employee</button>
+    <button class="btn btn-ghost btn-sm" onclick="closeModal();enterDash('client')">🏢 Client</button>
+    <button class="btn btn-ghost btn-sm" onclick="closeModal();enterDash('beta')">🧪 Beta Tester</button>
+   </div>
+   <p style="font-size:13px;color:var(--t3);margin-top:12px">Don't have an account? <a href="#" onclick="window.location.href='/login'">Start free trial</a></p>
+  </div>
+ </div>`;
+}
+
+function modalForgot(){
+ return`<button class="modal-close" onclick="closeModal()">✕</button>
+ <h2>Reset Password</h2><p class="modal-sub">We'll send you a reset link.</p>
+ <div id="forgotForm">
+  <div class="form-group"><label>Email</label><input type="email" placeholder="jane@company.com"></div>
+  <button class="btn btn-primary" style="width:100%" onclick="document.getElementById('forgotForm').style.display='none';document.getElementById('forgotSuccess').style.display='block'">Send Reset Link</button>
+ </div>
+ <div class="modal-success" id="forgotSuccess">
+  <div class="check">📧</div><h3>Check Your Email</h3>
+  <p style="color:var(--t2);margin-top:8px">If an account exists, we've sent a password reset link.</p>
+  <button class="btn btn-ghost" style="margin-top:16px" onclick="closeModal()">Close</button>
+ </div>`;
+}
+
+function modalContact(){
+ return`<button class="modal-close" onclick="closeModal()">✕</button>
+ <h2>Contact Sales</h2><p class="modal-sub">Let's find the right plan for your team.</p>
+ <div id="contactForm">
+  <div class="modal-form">
+   <div class="form-row"><div class="form-group"><label>Name</label><input type="text" placeholder="Jane Smith"></div>
+   <div class="form-group"><label>Email</label><input type="email" placeholder="jane@co.com"></div></div>
+   <div class="form-group"><label>Company</label><input type="text" placeholder="Acme Inc"></div>
+   <div class="form-row">
+   <div class="form-group"><label>Company Size</label><select><option>1-10</option><option>11-50</option><option>51-200</option><option>200+</option></select></div>
+   <div class="form-group"><label>Interest</label><select><option>Enterprise Plan</option><option>Custom Agents</option><option>Partnership</option><option>Other</option></select></div></div>
+   <div class="form-group"><label>Message</label><textarea placeholder="Tell us about your needs..."></textarea></div>
+   <button class="btn btn-primary" style="width:100%" onclick="document.getElementById('contactForm').style.display='none';document.getElementById('contactSuccess').style.display='block';showToast('✅ Message sent!')">Send Message</button>
+  </div>
+ </div>
+ <div class="modal-success" id="contactSuccess">
+  <div class="check">✓</div><h3>Message Sent!</h3>
+  <p style="color:var(--t2);margin-top:8px">Our sales team will respond within 24 hours.</p>
+  <button class="btn btn-ghost" style="margin-top:16px" onclick="closeModal()">Close</button>
+ </div>`;
+}
+
+function modalDemoRequest(){
+ return`<button class="modal-close" onclick="closeModal()">✕</button>
+ <h2>Schedule a Demo</h2><p class="modal-sub">See WoulfAI in action with a personalized demo.</p>
+ <div id="demoReqForm">
+  <div class="modal-form">
+   <div class="form-row"><div class="form-group"><label>Name</label><input type="text" placeholder="Jane Smith"></div>
+   <div class="form-group"><label>Email</label><input type="email" placeholder="jane@co.com"></div></div>
+   <div class="form-group"><label>Company</label><input type="text" placeholder="Acme Inc"></div>
+   <div class="form-group"><label>Which agents interest you?</label>
+   <div class="agent-picker">${AGENTS.map(a=>`<div class="agent-pick" onclick="this.classList.toggle('selected')">${a.icon} ${a.name}</div>`).join('')}</div></div>
+   <div class="form-row"><div class="form-group"><label>Preferred Date</label><input type="date"></div>
+   <div class="form-group"><label>Preferred Time</label><select><option>9:00 AM</option><option>10:00 AM</option><option>11:00 AM</option><option>1:00 PM</option><option>2:00 PM</option><option>3:00 PM</option></select></div></div>
+   <div class="form-group"><label>Notes</label><textarea placeholder="Anything specific you'd like to see?"></textarea></div>
+   <button class="btn btn-primary" style="width:100%" onclick="document.getElementById('demoReqForm').style.display='none';document.getElementById('demoReqSuccess').style.display='block';showToast('✅ Demo scheduled!')">Schedule Demo</button>
+  </div>
+ </div>
+ <div class="modal-success" id="demoReqSuccess">
+  <div class="check">📅</div><h3>Demo Scheduled!</h3>
+  <p style="color:var(--t2);margin-top:8px">Check your email for a calendar invite with meeting details.</p>
+  <button class="btn btn-ghost" style="margin-top:16px" onclick="closeModal()">Close</button>
+ </div>`;
+}
+
+/* ===================== AGENT WORKSPACE MODAL ===================== */
+function launchAgent(agentId,mode){
+ const a=AGENTS.find(x=>x.id===agentId);if(!a)return;
+ if(agentId==='sales'&&mode!=='test'){
+  // Sales Agent is a full app — navigate to it
+  if(!SIDEBAR_NAV[S.role].find(i=>i.id==='sales-app')){
+   const settingsIdx=SIDEBAR_NAV[S.role].findIndex(i=>i.id==='settings');
+   SIDEBAR_NAV[S.role].splice(settingsIdx,0,{id:'sales-app',icon:'🎯',label:'Sales Agent'});
+   buildSidebar();
+  }
+  nav('sales-app');
+  return;
+ }
+ openModal('agent-workspace',{...a,mode:mode||'live'});
+}
+
+function modalAgentWorkspace(data){
+ const isTest=data.mode==='test';
+ const prompts={
+  marketing:'Create a social media campaign for our spring product launch targeting millennials',
+  wms:'Show me inventory levels for SKUs below reorder point in warehouse B',
+  financial:'Generate a P&L summary for January 2026 compared to last year',
+  str:'Optimize pricing for all properties for the Presidents Day weekend',
+  sales:'Score my top 10 leads and recommend next actions for each',
+  'customer-service':'Summarize open tickets by priority and suggest auto-responses',
+  sellpronto:'Sync inventory across all channels and flag pricing mismatches',
+  'web-builder':'Generate a landing page for our new SaaS product with hero, features, and pricing sections'
+ };
+ const responses={
+  marketing:'I\'ve drafted 3 campaign variants targeting millennials for your spring launch. Each includes copy for Instagram, TikTok, and email. The A/B test structure optimizes for click-through rate with 72hr evaluation windows.',
+  wms:'Found 23 SKUs below reorder point in Warehouse B. 8 are critical (stock <3 days). I\'ve drafted POs for the top suppliers — shall I auto-submit the urgent ones?',
+  financial:'January 2026 P&L: Revenue $847K (+12% YoY), COGS $298K, Gross Margin 64.8%. Operating expenses rose 8% driven by headcount. Net income $142K vs $118K last year.',
+  str:'Analyzed 847 comparable listings. Recommending 15-22% price increases for Presidents Day weekend across your 12 properties. Estimated additional revenue: $4,200.',
+  sales:'Top 10 leads scored. Three are closing-ready (scores 90+): Acme Corp ($45K, send contract), NovaTech ($78K, schedule exec meeting), Peak Systems ($32K, send case study).',
+  'customer-service':'142 open tickets: 8 critical (SLA breach risk), 34 high, 67 medium, 33 low. I\'ve drafted auto-responses for 89 common issues — review and approve to clear 63% of the queue.',
+  sellpronto:'Synced 3,421 listings across Amazon, eBay, and Shopify. Found 12 pricing mismatches (avg $4.20 difference) and 3 inventory conflicts. Shall I auto-correct?',
+  'web-builder':'Generated a responsive landing page with hero section, 4-feature grid, pricing table, and CTA. Preview is ready — using your brand colors and the copy you provided last week.'
+ };
+ const prompt=prompts[data.id]||'Show me today\'s summary and top priorities';
+ const response=responses[data.id]||'Here\'s your daily summary. All systems are operating normally. You have 3 items requiring attention.';
+ return`<button class="modal-close" onclick="closeModal()">✕</button>
+ ${isTest?'<div style="background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);border-radius:var(--r);padding:8px 16px;margin-bottom:16px;font-size:12px;font-family:var(--mono);color:var(--amber);text-align:center">⚠️ TEST MODE — Actions are sandboxed and won\'t affect live data</div>':''}
+ <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+  <div style="font-size:36px">${data.icon}</div>
+  <div><h2 style="font-size:20px">${data.name}</h2><div style="font-size:12px;font-family:var(--mono);color:${data.color}">${data.cat}</div></div>
+  <span class="chip chip-green" style="margin-left:auto;font-size:11px">● ${isTest?'Test':'Live'}</span>
+ </div>
+ <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px">
+  <div class="stat-card"><div class="sc-label">Tasks Today</div><div class="sc-val" style="font-size:20px;color:${data.color}">${Math.floor(Math.random()*15)+3}</div></div>
+  <div class="stat-card"><div class="sc-label">Accuracy</div><div class="sc-val" style="font-size:20px;color:var(--emerald)">${(95+Math.random()*4.9).toFixed(1)}%</div></div>
+  <div class="stat-card"><div class="sc-label">Uptime</div><div class="sc-val" style="font-size:20px;color:var(--cyan)">99.9%</div></div>
+ </div>
+ <div style="background:var(--bg4);border:1px solid var(--bdr);border-radius:var(--r2);padding:16px;margin-bottom:16px;max-height:240px;overflow-y:auto" id="agentChat">
+  <div class="demo-msg" style="animation-delay:0s;opacity:0;animation-fill-mode:forwards"><div class="from" style="color:var(--t3)">You</div><div class="text">${prompt}</div></div>
+  <div class="demo-msg" style="animation-delay:0.4s;opacity:0;animation-fill-mode:forwards"><div class="from" style="color:var(--cyan)">${data.name}</div><div class="text">${response}</div></div>
+ </div>
+ <div style="display:flex;gap:8px;margin-bottom:16px">
+  <input type="text" id="agentInput" placeholder="Ask ${data.name} something..." style="flex:1" onkeydown="if(event.key==='Enter')sendAgentMsg('${data.id}')">
+  <button class="btn btn-primary btn-sm" onclick="sendAgentMsg('${data.id}')">Send</button>
+ </div>
+ <div style="display:flex;gap:8px;flex-wrap:wrap">
+  <button class="btn btn-ghost btn-sm" onclick="showToast('📊 Running ${data.name} analytics...');setTimeout(()=>showToast('✅ Report ready'),1500)">Generate Report</button>
+  <button class="btn btn-ghost btn-sm" onclick="showToast('⚙️ ${data.name} settings opened')">Settings</button>
+  ${isTest?`<button class="btn btn-ghost btn-sm" style="color:var(--rose)" onclick="closeModal();openModal('bug-report',${JSON.stringify({id:data.id,name:data.name,icon:data.icon}).replace(/"/g,'&quot;')})">🐛 Report Bug</button>`:''}
+ </div>`;
+}
+
+function sendAgentMsg(agentId){
+ const input=document.getElementById('agentInput');
+ const chat=document.getElementById('agentChat');
+ const msg=input.value.trim();if(!msg)return;
+ const a=AGENTS.find(x=>x.id===agentId);
+ chat.innerHTML+=`<div class="demo-msg"><div class="from" style="color:var(--t3)">You</div><div class="text">${msg}</div></div>`;
+ input.value='';input.disabled=true;
+ const typing=document.createElement('div');typing.className='demo-msg';typing.innerHTML=`<div class="from" style="color:var(--cyan)">${a?a.name:'Agent'}</div><div class="text" style="color:var(--t3)">Thinking...</div>`;
+ chat.appendChild(typing);chat.scrollTop=chat.scrollHeight;
+ setTimeout(()=>{
+  const replies=['Done! I\'ve processed your request. Here\'s a summary of the results.','I\'ve analyzed the data. 3 action items identified — shall I execute them?','Completed. I\'ve updated the records and generated a confirmation report.','Processing complete. Found 5 insights that may interest you — want me to elaborate?','I\'ve run the analysis. Key finding: performance improved 18% over last period.'];
+  typing.querySelector('.text').textContent=replies[Math.floor(Math.random()*replies.length)];
+  typing.querySelector('.text').style.color='';
+  input.disabled=false;input.focus();chat.scrollTop=chat.scrollHeight;
+ },1200);
+}
+
+/* ===================== BUG REPORT MODAL ===================== */
+function modalBugReport(data){
+ return`<button class="modal-close" onclick="closeModal()">✕</button>
+ <h2 style="margin-bottom:4px">🐛 Report a Bug</h2>
+ <p style="color:var(--t2);font-size:14px;margin-bottom:20px">${data.icon} ${data.name}</p>
+ <div id="bugForm">
+  <div class="modal-form">
+   <div class="form-group"><label>Bug Title</label><input type="text" id="bugTitle" placeholder="Brief description of the issue"></div>
+   <div class="form-group"><label>Severity</label><select id="bugSev"><option>Low — Cosmetic issue</option><option selected>Medium — Feature impaired</option><option>High — Feature broken</option><option>Critical — System unusable</option></select></div>
+   <div class="form-group"><label>Steps to Reproduce</label><textarea id="bugSteps" placeholder="1. Go to...&#10;2. Click on...&#10;3. Expected: ...&#10;4. Actual: ..." rows="4"></textarea></div>
+   <div class="form-group"><label>Expected vs Actual Behavior</label><textarea id="bugExpected" placeholder="What should happen vs what actually happened" rows="2"></textarea></div>
+   <div class="form-group"><label>Browser / Environment</label><input type="text" id="bugEnv" placeholder="e.g. Chrome 121, macOS 14.3"></div>
+   <button class="btn btn-primary" style="width:100%" onclick="submitBugReport('${data.id}')">Submit Bug Report</button>
+  </div>
+ </div>
+ <div id="bugSuccess" style="display:none;text-align:center;padding:32px">
+  <div class="check" style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--emerald),var(--cyan));display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:28px">✓</div>
+  <h3>Bug Report Filed!</h3>
+  <p style="color:var(--t2);font-size:14px;margin-top:8px">Ticket <span style="font-family:var(--mono);color:var(--blue)">#BUG-${Math.floor(Math.random()*9000)+1000}</span> created. Our team will review it shortly.</p>
+  <button class="btn btn-ghost" style="margin-top:16px" onclick="closeModal()">Close</button>
+ </div>`;
+}
+
+function submitBugReport(agentId){
+ const title=document.getElementById('bugTitle').value.trim();
+ if(!title){showToast('⚠️ Please enter a bug title');return}
+ document.getElementById('bugForm').style.display='none';
+ document.getElementById('bugSuccess').style.display='block';
+ S.feedback.push({id:'f'+Date.now(),from:ROLE_META[S.role].name,fromRole:S.role,type:'bug',text:title+' ('+agentId+')',status:'under-review',votes:0,valuable:false,forAgent:agentId});
+ showToast('🐛 Bug report submitted!');
+}
+
+/* ===================== AGENT CREATE MODAL ===================== */
+function modalAgentCreate(){
+ return`<button class="modal-close" onclick="closeModal()">✕</button>
+ <h2 style="margin-bottom:4px">🧬 Create New Agent</h2>
+ <p style="color:var(--t2);font-size:14px;margin-bottom:20px">Build a custom AI agent with our multi-LLM pipeline</p>
+ <div id="createAgentForm">
+  <div class="modal-form">
+   <div class="form-group"><label>Agent Name</label><input type="text" id="newAgentName" placeholder="e.g. Compliance Agent"></div>
+   <div class="form-group"><label>Category</label><select id="newAgentCat"><option>Operations</option><option>Analytics</option><option>Communication</option><option>Integration</option><option>Custom Workflow</option></select></div>
+   <div class="form-group"><label>Description</label><textarea id="newAgentDesc" placeholder="Describe what this agent should do..." rows="3"></textarea></div>
+   <div class="form-group"><label>Primary LLM Architect</label>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px">
+     <div class="plan-opt selected" role="button" tabindex="0" onclick="selectPlan(this,'claude')"><div style="font-size:20px;margin-bottom:4px">🧠</div><div class="plan-name">Claude</div></div>
+     <div class="plan-opt" role="button" tabindex="0" onclick="selectPlan(this,'gpt4')"><div style="font-size:20px;margin-bottom:4px">⚙️</div><div class="plan-name">GPT-4o</div></div>
+     <div class="plan-opt" role="button" tabindex="0" onclick="selectPlan(this,'gemini')"><div style="font-size:20px;margin-bottom:4px">💾</div><div class="plan-name">Gemini</div></div>
+     <div class="plan-opt" role="button" tabindex="0" onclick="selectPlan(this,'llama')"><div style="font-size:20px;margin-bottom:4px">⚡</div><div class="plan-name">Llama</div></div>
+    </div>
+   </div>
+   <div class="form-group"><label>Data Sources</label>
+    <div class="agent-picker">${['📊 Analytics DB','📧 Email Integration','💬 Slack','📁 Google Drive','🔗 REST API','📋 Spreadsheets'].map(s=>`<div class="agent-pick" onclick="this.classList.toggle('selected')">${s}</div>`).join('')}</div>
+   </div>
+   <button class="btn btn-primary" style="width:100%" onclick="startAgentBuild()">🚀 Start Building</button>
+  </div>
+ </div>
+ <div id="createAgentProgress" style="display:none;text-align:center;padding:24px">
+  <div style="font-size:48px;margin-bottom:16px;animation:pulse 1.5s infinite" id="buildEmoji">🧠</div>
+  <h3 id="buildStatus">Initializing Pipeline...</h3>
+  <div class="progress-bar" style="max-width:400px;margin:16px auto"><div class="fill" id="buildFill" style="width:0%;background:linear-gradient(90deg,var(--blue),var(--violet));transition:width 1s ease"></div></div>
+  <p style="font-family:var(--mono);font-size:12px;color:var(--t3)" id="buildStep">Step 1/4</p>
+ </div>
+ <div id="createAgentSuccess" style="display:none;text-align:center;padding:32px">
+  <div style="font-size:48px;margin-bottom:12px">✨</div>
+  <h3>Agent Created!</h3>
+  <p style="color:var(--t2);font-size:14px;margin-top:8px" id="createdAgentName"></p>
+  <p style="font-family:var(--mono);font-size:12px;color:var(--t3);margin-top:4px">Ready for testing and deployment</p>
+  <button class="btn btn-primary" style="margin-top:16px" onclick="closeModal();showToast('🚀 New agent added to your workspace')">Go to Agent</button>
+ </div>`;
+}
+
+function startAgentBuild(){
+ const name=document.getElementById('newAgentName').value.trim();
+ if(!name){showToast('⚠️ Please enter an agent name');return}
+ document.getElementById('createAgentForm').style.display='none';
+ document.getElementById('createAgentProgress').style.display='block';
+ const steps=[{emoji:'🧠',text:'Claude is architecting the agent...',pct:25,step:'1/4'},
+  {emoji:'⚙️',text:'GPT-4o engineering the logic...',pct:50,step:'2/4'},
+  {emoji:'💾',text:'Gemini building memory systems...',pct:75,step:'3/4'},
+  {emoji:'⚡',text:'Llama optimizing for speed...',pct:95,step:'4/4'}];
+ let i=0;
+ const interval=setInterval(()=>{
+  if(i<steps.length){
+   document.getElementById('buildEmoji').textContent=steps[i].emoji;
+   document.getElementById('buildStatus').textContent=steps[i].text;
+   document.getElementById('buildFill').style.width=steps[i].pct+'%';
+   document.getElementById('buildStep').textContent='Step '+steps[i].step;
+   i++;
+  }else{
+   clearInterval(interval);
+   document.getElementById('createAgentProgress').style.display='none';
+   document.getElementById('createAgentSuccess').style.display='block';
+   document.getElementById('createdAgentName').textContent='"'+name+'" is ready';
+  }
+ },1200);
+}
+
+/* ===================== LEGAL MODALS ===================== */
+function modalLegal(data){
+ const docs={
+  privacy:{title:'Privacy Policy',icon:'🔒',updated:'January 15, 2026',
+   content:'WoulfAI (a Woulf Group company) is committed to protecting your privacy. This policy explains how we collect, use, and safeguard your information when you use our platform and AI agent services.<br><br><strong>Information We Collect</strong><br>We collect account information (name, email, company), usage data (agent interactions, feature usage), and technical data (browser type, IP address). We do not sell your personal data to third parties.<br><br><strong>How We Use Your Data</strong><br>Your data powers agent personalization, platform improvements, billing, and support. AI agents process your business data only within your tenant — it is never shared across accounts.<br><br><strong>Data Retention</strong><br>Account data is retained while your account is active. You may request data deletion at any time. Backups are purged within 30 days of deletion requests.<br><br><strong>Contact</strong><br>For privacy inquiries: privacy@woulfai.com'},
+  terms:{title:'Terms of Service',icon:'📜',updated:'January 15, 2026',
+   content:'By using WoulfAI, you agree to these terms. WoulfAI provides AI-powered business agents on a subscription basis.<br><br><strong>Acceptable Use</strong><br>You agree to use our agents for lawful business purposes only. Automated abuse, reverse engineering, or attempts to extract model weights are prohibited.<br><br><strong>Subscriptions & Billing</strong><br>Plans are billed monthly or annually. You may cancel at any time — access continues through the end of your billing period. Refunds are handled case-by-case.<br><br><strong>Service Level</strong><br>We target 99.9% uptime for all production agents. Scheduled maintenance windows are communicated 48 hours in advance.<br><br><strong>Limitation of Liability</strong><br>AI agents provide recommendations, not guarantees. WoulfAI is not liable for business decisions made based on agent outputs.'},
+  security:{title:'Security',icon:'🛡️',updated:'February 1, 2026',
+   content:'WoulfAI implements enterprise-grade security across all layers of our platform.<br><br><strong>Infrastructure</strong><br>All data is encrypted at rest (AES-256) and in transit (TLS 1.3). Our infrastructure runs on SOC 2 Type II certified cloud providers with geographic redundancy.<br><br><strong>Authentication</strong><br>We support SSO/SAML for Enterprise clients, multi-factor authentication, and role-based access control with four permission tiers (Admin, Employee, Client, Beta).<br><br><strong>Data Isolation</strong><br>Each tenant\'s data is logically isolated. AI agents process data within tenant boundaries. No cross-tenant data access is possible.<br><br><strong>Compliance</strong><br>WoulfAI is SOC 2 Type II compliant and GDPR ready. We conduct annual penetration testing and maintain a responsible disclosure program.'},
+  dpa:{title:'Data Processing Agreement',icon:'📋',updated:'January 15, 2026',
+   content:'This DPA governs how WoulfAI processes personal data on behalf of our customers (data controllers).<br><br><strong>Scope</strong><br>WoulfAI acts as a data processor for customer business data processed through our AI agents. We process data only as instructed by the controller.<br><br><strong>Sub-processors</strong><br>We use select sub-processors for infrastructure (AWS, GCP) and AI model hosting. A current list is available upon request. We notify customers 30 days before adding new sub-processors.<br><br><strong>Data Subject Rights</strong><br>We assist controllers in responding to data subject requests including access, rectification, erasure, and portability within required timeframes.<br><br><strong>Breach Notification</strong><br>In the event of a personal data breach, we will notify the controller within 72 hours and provide full incident details.'}
+ };
+ const d=docs[data]||docs.privacy;
+ return`<button class="modal-close" onclick="closeModal()">✕</button>
+ <div style="text-align:center;margin-bottom:20px">
+  <div style="font-size:36px;margin-bottom:8px">${d.icon}</div>
+  <h2>${d.title}</h2>
+  <p style="font-size:12px;font-family:var(--mono);color:var(--t3)">Last updated: ${d.updated}</p>
+ </div>
+ <div style="font-size:14px;color:var(--t2);line-height:1.7;max-height:400px;overflow-y:auto;padding:0 4px">${d.content}</div>
+ <div style="display:flex;gap:8px;margin-top:20px">
+  <button class="btn btn-ghost" style="flex:1" onclick="closeModal()">Close</button>
+  <button class="btn btn-primary" style="flex:1" onclick="showToast('📄 Downloaded ${d.title} PDF');closeModal()">Download PDF</button>
+ </div>`;
+}
+
+/* ===================== COMING SOON MODAL ===================== */
+function modalComingSoon(data){
+ const pages={about:{title:'About WoulfAI',icon:'🏢',text:'WoulfAI is a Woulf Group company building the next generation of AI-powered business agents. Founded in 2025, our mission is to make intelligent automation accessible to every business — from startups to enterprises.<br><br>Our platform brings together 10 specialized AI agents powered by 4 leading LLMs, serving teams across marketing, sales, finance, operations, e-commerce, and more.'},
+  careers:{title:'Careers at WoulfAI',icon:'🚀',text:'We\'re building something extraordinary and looking for people who want to shape the future of AI-powered business tools.<br><br><strong>Open Positions</strong><br>• Senior Full-Stack Engineer — Remote<br>• AI/ML Engineer — Remote<br>• Product Designer — Remote<br>• Head of Customer Success — Remote<br>• DevOps Engineer — Remote<br><br>Send your resume to <strong>careers@woulfai.com</strong>'},
+  blog:{title:'WoulfAI Blog',icon:'📝',text:'Our blog is launching soon! We\'ll share insights on AI automation, product updates, customer stories, and industry trends.<br><br><strong>Coming Soon:</strong><br>• How AI Agents Are Reshaping Warehouse Operations<br>• The ROI of AI-Powered Sales: A Case Study<br>• Building Custom Agents with the Agent Creator<br>• Our Beta Program: What We Learned From 100+ Testers<br><br>Subscribe at <strong>blog@woulfai.com</strong> to get notified.'}
+ };
+ const p=pages[data]||pages.about;
+ return`<button class="modal-close" onclick="closeModal()">✕</button>
+ <div style="text-align:center;margin-bottom:20px"><div style="font-size:36px;margin-bottom:8px">${p.icon}</div><h2>${p.title}</h2></div>
+ <div style="font-size:14px;color:var(--t2);line-height:1.7">${p.text}</div>
+ <button class="btn btn-ghost" style="width:100%;margin-top:20px" onclick="closeModal()">Close</button>`;
+}
+
+/* ===================== REQUEST ACCESS ===================== */
+function requestAccess(agentId){
+ const a=AGENTS.find(x=>x.id===agentId);if(!a)return;
+ showToast('📩 Access request for '+a.name+' sent to admin');
+ S.feedback.push({id:'f'+Date.now(),from:ROLE_META[S.role].name,fromRole:S.role,type:'feature',text:'Access request: '+a.name,status:'under-review',votes:0,valuable:false});
+}
+
+function openAgentDetail(id){
+ const a=AGENTS.find(x=>x.id===id)||PLATFORM_AGENTS.find(x=>x.id===id);
+ if(!a)return;
+ if(a.price!==undefined) openModal('agent-detail',a);
+ else openModal('platform-agent',a);
+}
+
+function modalAgentDetail(a){
+ return`<button class="modal-close" onclick="closeModal()">✕</button>
+ <div style="text-align:center;margin-bottom:20px">
+  <div style="font-size:48px;margin-bottom:8px">${a.icon}</div>
+  <div class="cat" style="color:${a.color};font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1.5px">${a.cat}</div>
+  <h2 style="margin-top:8px">${a.name}</h2>
+  <p class="modal-sub">${a.desc}</p>
+ </div>
+ <div style="margin-bottom:20px"><h4 style="font-size:14px;font-weight:700;margin-bottom:12px">Capabilities</h4>
+ <ul style="list-style:none">${a.caps.map(c=>`<li style="padding:6px 0;font-size:14px;color:var(--t2)">✓ ${c}</li>`).join('')}</ul></div>
+ <div style="display:flex;align-items:center;justify-content:space-between;padding:16px;background:var(--bg4);border-radius:var(--r);margin-bottom:20px">
+  <span style="font-size:14px;color:var(--t2)">Starting at</span>
+  <span style="font-family:var(--mono);font-size:24px;font-weight:700;color:${a.color}">$${a.price}<small style="font-size:13px;color:var(--t3);font-weight:400">/mo</small></span>
+ </div>
+ <button class="btn btn-primary" style="width:100%" onclick="window.location.href='/login'">Start Free Trial</button>`;
+}
+
+function modalPlatformAgent(a){
+ const features={'agent-creator':['Build custom AI agents from natural language descriptions','Multi-LLM pipeline: Claude (Architect), GPT-4o (Engineer), Gemini (Memory), Llama (Speed)','Auto-generates API routes, database schemas, and onboarding flows','Deploy directly to your WoulfAI ecosystem','Full Knowledge Graph integration'],
+  'knowledge-graph':['Shared intelligence layer connecting all agents','Entity relationship mapping across your business data','Cross-domain insights surfaced automatically','Real-time knowledge updates as agents learn','Visual exploration UI for Enterprise plans']};
+ const caps=features[a.id]||['Platform-level intelligence','Admin and Enterprise access','Integrated with all agents'];
+ return`<button class="modal-close" onclick="closeModal()">✕</button>
+ <div style="text-align:center;margin-bottom:20px">
+  <div style="font-size:48px;margin-bottom:8px">${a.icon}</div>
+  <div class="cat" style="color:${a.color};font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1.5px">${a.cat}</div>
+  <h2 style="margin-top:8px">${a.name}</h2>
+  <p class="modal-sub">${a.desc}</p>
+ </div>
+ <div style="margin-bottom:20px"><h4 style="font-size:14px;font-weight:700;margin-bottom:12px">Capabilities</h4>
+ <ul style="list-style:none">${caps.map(c=>`<li style="padding:6px 0;font-size:14px;color:var(--t2)">✓ ${c}</li>`).join('')}</ul></div>
+ <div style="display:flex;align-items:center;justify-content:space-between;padding:16px;background:var(--bg4);border-radius:var(--r);margin-bottom:20px">
+  <span style="font-size:14px;color:var(--t2)">Included with</span>
+  <span style="font-family:var(--mono);font-size:16px;font-weight:700;color:${a.color}">${a.id==='agent-creator'?'Enterprise Plan':'All Plans'}</span>
+ </div>
+ <button class="btn btn-primary" style="width:100%" onclick="closeModal();openModal('${a.id==='agent-creator'?'contact':'signup'}')">${a.id==='agent-creator'?'Contact Sales':'Start Free Trial'}</button>`;
+}
+
+function updatePW(v){
+ const f=document.getElementById('pwFill');
+ const s=v.length<4?0:v.length<8?33:v.length<12?66:100;
+ const c=s<34?'var(--rose)':s<67?'var(--amber)':'var(--emerald)';
+ f.style.width=s+'%';f.style.background=c;
+}
+function selectPlan(el,p){
+ document.querySelectorAll('.plan-opt').forEach(e=>e.classList.remove('selected'));
+ el.classList.add('selected');
+}
+function handleSignup(){
+ document.getElementById('signupForm').style.display='none';
+ document.getElementById('signupSuccess').style.display='block';
+}
+function handleSignin(){window.location.href='/login';}
+
+function showToast(msg){
+ const t=document.getElementById('toast');t.innerHTML=msg;t.style.display='flex';
+ setTimeout(()=>t.style.display='none',3000);
+}
+function toggleMobile(){document.getElementById('mobileMenu').classList.toggle('open')}
+
+/* ===================== DASHBOARD SYSTEM ===================== */
+function enterDash(role){
+ S.role=role;
+ document.getElementById('landing').classList.add('hidden');
+ document.getElementById('app').classList.add('visible');
+ document.getElementById('fbTrigger').classList.remove('hidden');
+ document.getElementById('nav').style.display='none';
+ buildSidebar();nav('dashboard');
+}
+
+function logout(){
+ S.role=null;S.page=null;
+ document.getElementById('app').classList.remove('visible');
+ document.getElementById('landing').classList.remove('hidden');
+ document.getElementById('fbTrigger').classList.add('hidden');
+ document.getElementById('fbPanel').classList.remove('open');
+ document.getElementById('nav').style.display='';
+ window.scrollTo(0,0);
+}
+
+const ROLE_META={
+ admin:{name:'Admin User',email:'admin@woulfai.com',icon:'👑',label:'Administrator',color:'var(--amber)'},
+ employee:{name:'Sarah Chen',email:'sarah@woulfai.com',icon:'💼',label:'Employee',color:'var(--blue)'},
+ client:{name:'WoulfAI Demo',email:'admin@demo.woulfai.com',icon:'🏢',label:'Client — Professional',color:'var(--emerald)'},
+ beta:{name:'Jordan Wu',email:'jordan@qafirm.com',icon:'🏢',label:'Professional — Beta',color:'var(--emerald)'}
+};
+
+const SIDEBAR_NAV={
+ admin:[
+  {id:'dashboard',icon:'📊',label:'Dashboard'},
+  {id:'agents',icon:'🤖',label:'Agent Management'},
+  {id:'employees',icon:'👥',label:'Employees'},
+  {id:'clients',icon:'🏢',label:'Clients & Billing'},
+  {id:'comp',icon:'🎁',label:'Comp Accounts'},
+  {id:'beta-apps',icon:'🧪',label:'Beta Applications'},
+  {id:'feedback-inbox',icon:'📬',label:'Feedback Inbox'},
+  {id:'analytics',icon:'📈',label:'Platform Analytics'},
+  {id:'agent-creator',icon:'🧬',label:'Agent Creator'},
+  {id:'settings',icon:'⚙️',label:'Settings'}
+ ],
+ employee:[
+  {id:'dashboard',icon:'📊',label:'Dashboard'},
+  {id:'my-agents',icon:'🤖',label:'My Agents'},
+  {id:'settings',icon:'⚙️',label:'Settings'}
+ ],
+ client:[
+  {id:'dashboard',icon:'📊',label:'Dashboard'},
+  {id:'my-agents',icon:'🤖',label:'My Agents'},
+  {id:'agent-store',icon:'🛍️',label:'Agent Store'},
+  {id:'billing',icon:'💳',label:'Billing & Plan'},
+  {id:'settings',icon:'⚙️',label:'Settings'}
+ ],
+ beta:[
+  {id:'dashboard',icon:'📊',label:'Dashboard'},
+  {id:'my-agents',icon:'🤖',label:'My Agents'},
+  {id:'agent-store',icon:'🛍️',label:'Agent Store'},
+  {id:'billing',icon:'💳',label:'Billing & Plan'},
+  {id:'reward-tracker',icon:'🏆',label:'Reward Tracker'},
+  {id:'settings',icon:'⚙️',label:'Settings'}
+ ]
+};
+
+function buildSidebar(){
+ const m=ROLE_META[S.role];const items=SIDEBAR_NAV[S.role];
+ document.getElementById('sidebar').innerHTML=`
+  <div class="sb-header"><div class="logo">WoulfAI</div></div>
+  <nav class="sb-nav">${items.map(i=>`<button class="sb-item" data-page="${i.id}" onclick="nav('${i.id}')"><span class="sb-icon">${i.icon}</span>${i.label}</button>`).join('')}</nav>
+  <div class="sb-footer">
+   <div class="sb-user"><div class="sb-avatar" style="background:${m.color}">${m.icon}</div><div><div class="sb-uname">${m.name}</div><div class="sb-urole">${m.label}</div></div></div>
+   <button class="sb-logout" onclick="logout()">← Sign Out</button>
+  </div>`;
+}
+
+function nav(page){
+ S.page=page;
+ document.querySelectorAll('.sb-item').forEach(i=>i.classList.toggle('active',i.dataset.page===page));
+ const titles={dashboard:'Dashboard','sales-app':'Sales Agent',agents:'Agent Management',employees:'Employees','my-agents':'My Agents',clients:'Clients & Billing',comp:'Comp Accounts','beta-apps':'Beta Applications','feedback-inbox':'Feedback Inbox',analytics:'Platform Analytics','agent-creator':'Agent Creator',settings:'Settings','agent-store':'Agent Store',billing:'Billing & Plan','test-agents':'Test Agents','test-suite':'Test Suite',critiques:'My Critiques','reward-tracker':'Reward Tracker'};
+ document.getElementById('pageTitle').textContent=titles[page]||page;
+ renderPage();
+}
+
+function renderPage(){
+ const c=document.getElementById('content');
+ const r=S.role;const p=S.page;
+ // Route to correct renderer
+ if(p==='settings'){c.innerHTML=renderSettings();return}
+ if(p==='sales-app'){c.innerHTML=renderSalesApp();return}
+ if(r==='admin'){
+  switch(p){
+   case 'dashboard':c.innerHTML=renderAdminDash();break;
+   case 'agents':c.innerHTML=renderAdminAgents();break;
+   case 'employees':c.innerHTML=renderAdminEmployees();break;
+   case 'clients':c.innerHTML=renderAdminClients();break;
+   case 'comp':c.innerHTML=renderAdminComp();break;
+   case 'beta-apps':c.innerHTML=renderAdminBeta();break;
+   case 'feedback-inbox':c.innerHTML=renderAdminFeedback();break;
+   case 'analytics':c.innerHTML=renderAdminAnalytics();break;
+   case 'agent-creator':c.innerHTML=renderAgentCreator();break;
+  }
+ }else if(r==='employee'){
+  switch(p){
+   case 'dashboard':c.innerHTML=renderEmployeeDash();break;
+   case 'my-agents':c.innerHTML=renderEmployeeAgents();break;
+  }
+ }else if(r==='client'){
+  switch(p){
+   case 'dashboard':c.innerHTML=renderClientDash();break;
+   case 'my-agents':c.innerHTML=renderClientAgents();break;
+   case 'agent-store':c.innerHTML=renderClientStore();break;
+   case 'billing':c.innerHTML=renderClientBilling();break;
+  }
+ }else if(r==='beta'){
+  switch(p){
+   case 'dashboard':c.innerHTML=renderClientDash();break;
+   case 'my-agents':c.innerHTML=renderClientAgents();break;
+   case 'agent-store':c.innerHTML=renderClientStore();break;
+   case 'billing':c.innerHTML=renderClientBilling();break;
+   case 'reward-tracker':c.innerHTML=renderBetaRewardTracker();break;
+  }
+ }
+}
+
+/* =================== ADMIN PAGES =================== */
+function renderAdminDash(){
+ const activeClients=S.clients.filter(c=>c.status==='active').length;
+ const trialClients=S.clients.filter(c=>c.status==='trial').length;
+ const mrr=S.clients.reduce((s,c)=>s+c.billing,0);
+ const openFb=S.feedback.filter(f=>f.status!=='fixed').length;
+ return`
+ <div class="stat-grid">
+  <div class="stat-card" style="cursor:pointer" onclick="nav('clients')"><div class="sc-label">Active Clients</div><div class="sc-val">${activeClients}</div><div class="sc-sub">+1 this month</div></div>
+  <div class="stat-card" style="cursor:pointer" onclick="nav('clients')"><div class="sc-label">On Trial</div><div class="sc-val" style="color:var(--amber)">${trialClients}</div><div class="sc-sub">Ends Feb 28</div></div>
+  <div class="stat-card" style="cursor:pointer" onclick="nav('employees')"><div class="sc-label">Employees</div><div class="sc-val">${S.employees.length}</div><div class="sc-sub">${S.employees.length} active</div></div>
+  <div class="stat-card" style="cursor:pointer" onclick="nav('beta-apps')"><div class="sc-label">Beta Testers</div><div class="sc-val" style="color:var(--violet)">${S.betaApps.filter(b=>b.status==='approved').length}</div><div class="sc-sub">${S.betaApps.filter(b=>b.status==='pending').length} pending</div></div>
+  <div class="stat-card" style="cursor:pointer" onclick="nav('clients')"><div class="sc-label">MRR</div><div class="sc-val" style="color:var(--emerald)">$${mrr.toLocaleString()}</div><div class="sc-sub">Monthly recurring</div></div>
+  <div class="stat-card" style="cursor:pointer" onclick="nav('feedback-inbox')"><div class="sc-label">Open Feedback</div><div class="sc-val" style="color:var(--cyan)">${openFb}</div><div class="sc-sub">${S.feedback.length} total items</div></div>
+ </div>
+ <div class="d-card"><h3>Recent Activity</h3>
+  <table class="d-table"><thead><tr><th>Event</th><th>User</th><th>Time</th></tr></thead><tbody>
+  <tr><td>Beta application received</td><td>Dana Park</td><td>2 hours ago</td></tr>
+  <tr><td>Feedback marked valuable</td><td>Jordan Wu</td><td>4 hours ago</td></tr>
+  <tr><td>New client signed up</td><td>BlueOcean Labs</td><td>1 day ago</td></tr>
+  <tr><td>Agent assigned to employee</td><td>Sarah Chen → WMS</td><td>2 days ago</td></tr>
+  <tr><td>Comp account created</td><td>FreshStart Media</td><td>3 days ago</td></tr>
+  </tbody></table>
+ </div>
+ <div class="d-card"><h3>Top-Voted Feedback</h3>
+  ${[...S.feedback].sort((a,b)=>b.votes-a.votes).slice(0,3).map(f=>`
+   <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--bdr)">
+    <div><span style="margin-right:8px">${f.type==='bug'?'🐛':f.type==='feature'?'✨':'🔧'}</span><span style="font-size:14px">${f.text.substring(0,60)}${f.text.length>60?'...':''}</span></div>
+    <div style="display:flex;align-items:center;gap:8px"><span class="chip chip-blue">${f.votes} votes</span><span class="chip chip-${f.status==='fixed'?'green':f.status==='in-progress'?'amber':'violet'}">${f.status}</span></div>
+   </div>`).join('')}
+ </div>`;
+}
+
+function renderAdminAgents(){
+ return`<div class="d-card"><h3>All Agents (8 Sellable + 2 Platform)</h3>
+ <table class="d-table"><thead><tr><th>Agent</th><th>Category</th><th>Price/mo</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+ ${AGENTS.map(a=>`<tr>
+  <td><span style="margin-right:8px">${a.icon}</span>${a.name}</td>
+  <td style="font-size:12px;color:var(--t3)">${a.cat}</td>
+  <td><span style="font-family:var(--mono);color:${a.color}">$${a.price}</span></td>
+  <td><span class="chip chip-green">Active</span></td>
+  <td><button class="btn btn-ghost btn-sm" onclick="openModal('agent-config',${JSON.stringify(a).replace(/"/g,'&quot;')})">Configure</button></td>
+ </tr>`).join('')}
+ <tr><td><span style="margin-right:8px">🧬</span>Agent Creator</td><td style="font-size:12px;color:var(--t3)">Platform — Admin + Enterprise</td><td><span style="font-family:var(--mono);color:var(--violet)">Included</span></td><td><span class="chip chip-violet">Admin Only</span></td><td><button class="btn btn-ghost btn-sm" onclick="nav('agent-creator')">Open</button></td></tr>
+ <tr><td><span style="margin-right:8px">🕸️</span>Knowledge Graph</td><td style="font-size:12px;color:var(--t3)">Platform — Infrastructure</td><td><span style="font-family:var(--mono);color:var(--cyan)">Internal</span></td><td><span class="chip chip-cyan">Active</span></td><td><button class="btn btn-ghost btn-sm" disabled>System</button></td></tr>
+ </tbody></table></div>`;
+}
+
+function modalAgentConfig(a){
+ return`<button class="modal-close" onclick="closeModal()">✕</button>
+ <h2>${a.icon} ${a.name}</h2><p class="modal-sub">Configure agent settings</p>
+ <div class="modal-form">
+  <div class="form-group"><label>Display Name</label><input type="text" value="${a.name}"></div>
+  <div class="form-row">
+   <div class="form-group"><label>Monthly Price</label><input type="number" value="${a.price}"></div>
+   <div class="form-group"><label>Annual Price</label><input type="number" value="${Math.round(a.price*0.83)}"></div>
+  </div>
+  <div class="form-group"><label>Status</label><select><option selected>Active</option><option>Maintenance</option><option>Disabled</option></select></div>
+  <div class="form-group"><label>Onboarding Schema (JSON)</label>
+   <textarea style="min-height:100px;font-family:var(--mono);font-size:12px">{"steps":["connect","configure","test","deploy"],"required_fields":["api_key","org_id"]}</textarea>
+  </div>
+  <button class="btn btn-primary" style="width:100%" onclick="showToast('✅ ${a.name} configuration saved');closeModal()">Save Configuration</button>
+ </div>`;
+}
+
+function renderAdminEmployees(){
+ return`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+  <p style="color:var(--t2);font-size:14px">${S.employees.length} employees</p>
+  <button class="btn btn-primary btn-sm" onclick="openModal('add-employee')">+ Add Employee</button>
+ </div>
+ <div class="d-card">
+ <table class="d-table"><thead><tr><th>Name</th><th>Email</th><th>Assigned Agents</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+ ${S.employees.map(e=>`<tr>
+  <td style="font-weight:600">${e.name}</td>
+  <td style="font-size:12px;color:var(--t3)">${e.email}</td>
+  <td>${AGENTS.map(a=>`<span class="agent-chip-toggle ${e.agents.includes(a.id)?'on':''}" role="button" tabindex="0" onclick="toggleEmpAgent('${e.id}','${a.id}')" title="${a.name}">${a.icon} ${a.name.split(' ')[0]}</span>`).join('')}</td>
+  <td><span class="chip chip-green">${e.status}</span></td>
+  <td><button class="btn btn-ghost btn-sm" onclick="openModal('add-employee',${JSON.stringify(e).replace(/"/g,'&quot;')})">Edit</button></td>
+ </tr>`).join('')}
+ </tbody></table></div>`;
+}
+
+function toggleEmpAgent(empId,agentId){
+ const emp=S.employees.find(e=>e.id===empId);
+ if(!emp)return;
+ const idx=emp.agents.indexOf(agentId);
+ if(idx>-1) emp.agents.splice(idx,1); else emp.agents.push(agentId);
+ renderPage();
+ const ag=AGENTS.find(a=>a.id===agentId);
+ showToast(idx>-1?`❌ ${ag.name} removed from ${emp.name}`:`✅ ${ag.name} assigned to ${emp.name}`);
+}
+
+function modalAddEmployee(existing){
+ const e=existing||{name:'',email:'',agents:[],status:'active'};
+ const isEdit=!!existing;
+ return`<button class="modal-close" onclick="closeModal()">✕</button>
+ <h2>${isEdit?'Edit':'Add'} Employee</h2><p class="modal-sub">${isEdit?'Update employee details':'Add a new team member'}</p>
+ <div class="modal-form">
+  <div class="form-group"><label>Full Name</label><input type="text" id="empName" value="${e.name}"></div>
+  <div class="form-group"><label>Email</label><input type="email" id="empEmail" value="${e.email}"></div>
+  <div class="form-group"><label>Assign Agents</label>
+   <div class="agent-picker">${AGENTS.map(a=>`<div class="agent-pick ${e.agents.includes(a.id)?'selected':''}" data-id="${a.id}" onclick="this.classList.toggle('selected')">${a.icon} ${a.name}</div>`).join('')}</div>
+  </div>
+  <button class="btn btn-primary" style="width:100%" onclick="saveEmployee('${isEdit?e.id:''}')">
+   ${isEdit?'Save Changes':'Add Employee'}
+  </button>
+ </div>`;
+}
+
+function saveEmployee(id){
+ const name=document.getElementById('empName').value.trim();
+ const email=document.getElementById('empEmail').value.trim();
+ if(!name||!email){showToast('⚠️ Name and email required');return}
+ const agents=Array.from(document.querySelectorAll('#modalContent .agent-pick.selected')).map(e=>e.dataset.id);
+ if(id){
+  const emp=S.employees.find(e=>e.id===id);
+  emp.name=name;emp.email=email;emp.agents=agents;
+ }else{
+  S.employees.push({id:'e'+(S.employees.length+1),name,email,agents,status:'active'});
+ }
+ closeModal();renderPage();showToast(`✅ Employee ${id?'updated':'added'}`);
+}
+
+function renderAdminClients(){
+ return`<div class="d-card"><h3>All Clients</h3>
+ <table class="d-table"><thead><tr><th>Organization</th><th>Plan</th><th>Status</th><th>Seats</th><th>Agents</th><th>Billing</th><th>Actions</th></tr></thead><tbody>
+ ${S.clients.map(c=>`<tr>
+  <td style="font-weight:600">${c.name}</td>
+  <td><span class="chip chip-${c.plan==='professional'?'violet':'blue'}">${c.plan}</span></td>
+  <td><span class="chip chip-${c.status==='active'?'green':c.status==='trial'?'amber':c.status==='comped'?'cyan':'gray'}">${c.status}</span></td>
+  <td>${c.seats}</td>
+  <td>${c.agents.length}</td>
+  <td style="font-family:var(--mono)">$${c.billing.toLocaleString()}/mo</td>
+  <td><button class="btn btn-ghost btn-sm" onclick="openModal('client-detail',${JSON.stringify(c).replace(/"/g,'&quot;')})">View</button>
+  ${c.status!=='comped'?`<button class="btn btn-ghost btn-sm" style="margin-left:4px;color:var(--cyan)" onclick="compClient('${c.id}')">Comp</button>`:''}</td>
+ </tr>`).join('')}
+ </tbody></table></div>`;
+}
+
+function modalClientDetail(c){
+ return`<button class="modal-close" onclick="closeModal()">✕</button>
+ <h2>${c.name}</h2><p class="modal-sub">${c.plan} plan · ${c.status}</p>
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
+  <div class="stat-card"><div class="sc-label">Seats</div><div class="sc-val">${c.seats}</div></div>
+  <div class="stat-card"><div class="sc-label">Billing</div><div class="sc-val">$${c.billing}/mo</div></div>
+ </div>
+ <h4 style="font-size:14px;font-weight:700;margin-bottom:12px">Active Agents</h4>
+ <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px">
+  ${c.agents.map(id=>{const a=AGENTS.find(x=>x.id===id);return a?`<span class="chip" style="background:${a.color}20;color:${a.color}">${a.icon} ${a.name}</span>`:'';}).join('')}
+ </div>
+ ${c.status==='trial'?`<div class="trial-banner"><div class="tb-text">⏰ Trial ends <strong>${c.trialEnd}</strong></div></div>`:''}
+ ${c.compReason?`<div style="padding:12px;background:rgba(6,182,212,.08);border:1px solid rgba(6,182,212,.2);border-radius:var(--r);font-size:13px;color:var(--cyan)">🎁 Comped — ${c.compReason}</div>`:''}
+ <button class="btn btn-ghost" style="width:100%;margin-top:16px" onclick="closeModal()">Close</button>`;
+}
+
+function compClient(id){
+ const c=S.clients.find(x=>x.id===id);
+ if(!c)return;
+ c.status='comped';c.billing=0;c.compReason='Admin comp';
+ renderPage();showToast(`✅ ${c.name} is now comped ($0 billing)`);
+}
+
+function renderAdminComp(){
+ const comped=S.clients.filter(c=>c.status==='comped');
+ const planPrice={starter:599,professional:1499,enterprise:2999};
+ const revenueOffset=comped.reduce((s,c)=>s+(planPrice[c.plan]||0),0);
+ return`
+ <div class="stat-grid" style="margin-bottom:24px">
+  <div class="stat-card"><div class="sc-label">Comp Accounts</div><div class="sc-val" style="color:var(--cyan)">${comped.length}</div><div class="sc-sub">active comps</div></div>
+  <div class="stat-card"><div class="sc-label">Revenue Offset</div><div class="sc-val" style="color:${revenueOffset>0?'var(--amber)':'var(--t3)'}">$${revenueOffset.toLocaleString()}<small>/mo</small></div><div class="sc-sub">${revenueOffset>0?'forgone revenue':'no active comps'}</div></div>
+ </div>
+ <div class="d-card"><h3>Grant Comp Account</h3>
+  <div class="comp-form">
+   <div class="form-group"><label>Client</label>
+    <select id="compClient">${S.clients.filter(c=>c.status!=='comped').map(c=>`<option value="${c.id}">${c.name}</option>`).join('')}</select></div>
+   <div class="form-group"><label>Reason</label><input type="text" id="compReason" placeholder="e.g. Strategic partner, VIP"></div>
+   <div class="form-row">
+    <div class="form-group"><label>Duration</label><select id="compDur"><option>1 month</option><option>3 months</option><option>6 months</option><option>12 months</option><option>Indefinite</option></select></div>
+    <div class="form-group"><label>Plan Level</label><select><option>Starter</option><option selected>Professional</option><option>Enterprise</option></select></div>
+   </div>
+   <div class="form-group"><label>Internal Notes</label><textarea placeholder="Notes visible only to admins..."></textarea></div>
+   <button class="btn btn-primary" onclick="grantComp()">Grant Comp</button>
+  </div>
+ </div>
+ <div class="d-card"><h3>Active Comp Accounts (${comped.length})</h3>
+  ${comped.length?`<table class="d-table"><thead><tr><th>Client</th><th>Reason</th><th>Plan</th><th>Actions</th></tr></thead><tbody>
+  ${comped.map(c=>`<tr><td style="font-weight:600">${c.name}</td><td style="font-size:13px;color:var(--t2)">${c.compReason||'—'}</td><td><span class="chip chip-violet">${c.plan}</span></td>
+  <td><button class="btn btn-ghost btn-sm" style="color:var(--rose)" onclick="removeComp('${c.id}')">Remove Comp</button></td></tr>`).join('')}
+  </tbody></table>`:'<p style="color:var(--t3);font-size:14px">No comp accounts active.</p>'}
+ </div>`;
+}
+
+function grantComp(){
+ const id=document.getElementById('compClient').value;
+ const reason=document.getElementById('compReason').value||'Admin comp';
+ const c=S.clients.find(x=>x.id===id);
+ if(!c){showToast('⚠️ Select a client');return}
+ c.status='comped';c.billing=0;c.compReason=reason;
+ renderPage();showToast(`✅ ${c.name} comped — $0 billing`);
+}
+
+function removeComp(id){
+ const c=S.clients.find(x=>x.id===id);
+ c.status='active';c.billing=c.plan==='professional'?1499:599;c.compReason=null;
+ renderPage();showToast(`✅ Comp removed for ${c.name} — standard billing resumed`);
+}
+
+function renderAdminBeta(){
+ return`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+  <p style="color:var(--t2);font-size:14px">${S.betaApps.length} applications</p>
+ </div>
+ <div class="d-card">
+ <table class="d-table"><thead><tr><th>Applicant</th><th>Company</th><th>Role</th><th>Experience</th><th>Valuable / Total</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+ ${S.betaApps.map(b=>`<tr>
+  <td><div style="font-weight:600">${b.name}</div><div style="font-size:11px;color:var(--t3)">${b.email}</div></td>
+  <td>${b.company}</td>
+  <td>${b.role}</td>
+  <td style="font-family:var(--mono);font-size:12px">${b.exp}</td>
+  <td><span style="font-family:var(--mono);font-weight:700;color:${getAgentsEarned(b).length>0?'var(--emerald)':'var(--t1)'}">${getTotalValuable(b)}</span> / ${b.total} ${getAgentsEarned(b).length>0?'🏆×'+getAgentsEarned(b).length:''}</td>
+  <td><span class="chip chip-${b.status==='approved'?'green':b.status==='pending'?'amber':'rose'}">${b.status}</span></td>
+  <td>${b.status==='pending'?`
+   <button class="btn btn-ghost btn-sm" style="color:var(--emerald)" onclick="betaAction('${b.id}','approved')">Approve</button>
+   <button class="btn btn-ghost btn-sm" style="color:var(--rose);margin-left:4px" onclick="betaAction('${b.id}','denied')">Deny</button>
+  `:`<span style="font-size:12px;color:var(--t3)">${b.status}</span>`}</td>
+ </tr>`).join('')}
+ </tbody></table></div>`;
+}
+
+function betaAction(id,status){
+ const b=S.betaApps.find(x=>x.id===id);
+ if(!b)return;b.status=status;
+ renderPage();showToast(status==='approved'?`✅ ${b.name} approved for beta!`:`❌ ${b.name} denied`);
+}
+
+function renderAdminFeedback(){
+ const types=['all','bug','feature','improvement','praise'];
+ return`<div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">
+  ${types.map(t=>`<button class="btn btn-ghost btn-sm" style="${t==='all'?'border-color:var(--blue);color:var(--blue)':''}" onclick="filterFeedback('${t}',this)">${t==='all'?'All':t==='bug'?'🐛 Bugs':t==='feature'?'✨ Features':t==='improvement'?'🔧 Improvements':'❤️ Praise'}</button>`).join('')}
+ </div>
+ <div id="feedbackList">
+ ${S.feedback.map(f=>`
+  <div class="d-card" style="margin-bottom:12px">
+   <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+    <div>
+     <span style="margin-right:6px">${f.type==='bug'?'🐛':f.type==='feature'?'✨':f.type==='improvement'?'🔧':'❤️'}</span>
+     <span style="font-weight:600;font-size:14px">${f.text}</span>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;flex-shrink:0">
+     ${f.fromRole==='beta'?`<div class="val-toggle ${f.valuable?'on':''}" role="button" tabindex="0" onclick="toggleValuable('${f.id}')">⭐ ${f.valuable?'Valuable':'Mark Valuable'}</div>`:''}
+     <select style="padding:4px 8px;background:var(--bg4);border:1px solid var(--bdr);border-radius:var(--r);color:var(--t1);font-size:12px" onchange="updateFbStatus('${f.id}',this.value)">
+      <option ${f.status==='new'?'selected':''}>new</option>
+      <option ${f.status==='under-review'?'selected':''}>under-review</option>
+      <option ${f.status==='planned'?'selected':''}>planned</option>
+      <option ${f.status==='in-progress'?'selected':''}>in-progress</option>
+      <option ${f.status==='fixed'?'selected':''}>fixed</option>
+     </select>
+    </div>
+   </div>
+   <div style="font-size:12px;color:var(--t3);display:flex;gap:16px;flex-wrap:wrap">
+    <span>From: <strong style="color:var(--t2)">${f.from}</strong> (${f.fromRole})</span>
+    ${f.forAgent&&f.forAgent!=='general'?`<span class="chip" style="font-size:10px;background:rgba(59,130,246,.1);color:var(--blue)">${(AGENTS.find(a=>a.id===f.forAgent)||{icon:'📋',name:f.forAgent}).icon} ${(AGENTS.find(a=>a.id===f.forAgent)||{name:f.forAgent}).name}</span>`:''}
+    <span>Votes: ${f.votes}</span>
+    <span class="chip chip-${f.status==='fixed'?'green':f.status==='in-progress'?'amber':f.status==='planned'?'violet':'blue'}" style="font-size:10px">${f.status}</span>
+   </div>
+  </div>
+ `).join('')}</div>`;
+}
+
+function filterFeedback(type,btn){
+ document.querySelectorAll('#content .btn-ghost.btn-sm').forEach(b=>{b.style.borderColor='';b.style.color=''});
+ btn.style.borderColor='var(--blue)';btn.style.color='var(--blue)';
+ const items=document.querySelectorAll('#feedbackList .d-card');
+ items.forEach(item=>{item.style.display=(type==='all'||item.querySelector('span').textContent.includes(type==='bug'?'🐛':type==='feature'?'✨':type==='improvement'?'🔧':'❤️'))?'':'none'});
+}
+
+function toggleValuable(id){
+ const f=S.feedback.find(x=>x.id===id);if(!f)return;
+ f.valuable=!f.valuable;
+ // Update beta tester per-agent counts
+ if(f.fromRole==='beta'){
+  const tester=S.betaApps.find(b=>b.name===f.from);
+  if(tester){
+   if(!tester.valuableByAgent) tester.valuableByAgent={};
+   const agent=f.forAgent||'general';
+   if(!tester.valuableByAgent[agent]) tester.valuableByAgent[agent]=0;
+   tester.valuableByAgent[agent]+= f.valuable?1:-1;
+   if(tester.valuableByAgent[agent]<0) tester.valuableByAgent[agent]=0;
+  }
+ }
+ renderPage();showToast(f.valuable?`⭐ Marked as valuable`:`Unmarked as valuable`);
+}
+
+function updateFbStatus(id,status){
+ const f=S.feedback.find(x=>x.id===id);if(f)f.status=status;
+ showToast(`✅ Status updated to ${status}`);
+}
+
+function renderAdminAnalytics(){
+ const agentData=AGENTS.map(a=>({name:a.name.split(' ')[0],icon:a.icon,usage:Math.floor(Math.random()*80)+20,color:a.color}));
+ return`
+ <div class="stat-grid">
+  <div class="stat-card"><div class="sc-label">Total Users</div><div class="sc-val">247</div></div>
+  <div class="stat-card"><div class="sc-label">Active Sessions</div><div class="sc-val" style="color:var(--emerald)">34</div></div>
+  <div class="stat-card"><div class="sc-label">API Calls (24h)</div><div class="sc-val">12,847</div></div>
+  <div class="stat-card"><div class="sc-label">Avg Response</div><div class="sc-val" style="color:var(--cyan)">142ms</div></div>
+  <div class="stat-card"><div class="sc-label">Uptime</div><div class="sc-val" style="color:var(--emerald)">99.97%</div></div>
+  <div class="stat-card"><div class="sc-label">Satisfaction</div><div class="sc-val" style="color:var(--amber)">4.8/5</div></div>
+ </div>
+ <div class="chart-container"><h3 style="margin-bottom:16px">Agent Adoption</h3>
+  <div class="bar-chart">
+   ${agentData.map(a=>`<div class="bar-col"><div class="bar-val">${a.usage}%</div><div class="bar" style="height:${a.usage}%;background:${a.color}"></div><div class="bar-label">${a.icon}</div></div>`).join('')}
+  </div>
+ </div>`;
+}
+
+function renderAgentCreator(){
+ return`
+ <div class="d-card" style="text-align:center;padding:48px">
+  <div style="font-size:64px;margin-bottom:16px">🧬</div>
+  <h3 style="font-size:24px;margin-bottom:8px">Agent Creator</h3>
+  <p style="color:var(--t2);max-width:500px;margin:0 auto 24px">Build custom AI agents with a multi-LLM pipeline. 4 LLMs collaborate to architect, engineer, remember, and optimize your custom agent.</p>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:600px;margin:0 auto 32px">
+   <div class="stat-card"><div style="font-size:24px;margin-bottom:4px">🧠</div><div class="sc-label">Claude</div><div style="font-size:12px;color:var(--t2)">Architect</div></div>
+   <div class="stat-card"><div style="font-size:24px;margin-bottom:4px">⚙️</div><div class="sc-label">GPT-4o</div><div style="font-size:12px;color:var(--t2)">Engineer</div></div>
+   <div class="stat-card"><div style="font-size:24px;margin-bottom:4px">💾</div><div class="sc-label">Gemini</div><div style="font-size:12px;color:var(--t2)">Memory</div></div>
+   <div class="stat-card"><div style="font-size:24px;margin-bottom:4px">⚡</div><div class="sc-label">Llama</div><div style="font-size:12px;color:var(--t2)">Speed</div></div>
+  </div>
+  <button class="btn btn-primary btn-lg" onclick="openModal('agent-create')">+ Create New Agent</button>
+  <p style="font-size:12px;color:var(--t3);margin-top:12px">Available to Admin and Enterprise clients only</p>
+ </div>`;
+}
+
+/* =================== EMPLOYEE PAGES =================== */
+function renderEmployeeDash(){
+ const emp=S.employees[0]; // Sarah Chen
+ return`
+ <div class="stat-grid">
+  <div class="stat-card"><div class="sc-label">My Agents</div><div class="sc-val">${emp.agents.length}</div><div class="sc-sub">of 8 available</div></div>
+  <div class="stat-card"><div class="sc-label">Tasks Today</div><div class="sc-val" style="color:var(--blue)">7</div><div class="sc-sub">3 completed</div></div>
+  <div class="stat-card"><div class="sc-label">Feedback Sent</div><div class="sc-val" style="color:var(--cyan)">4</div><div class="sc-sub">1 in progress</div></div>
+ </div>
+ <div class="d-card"><h3>Quick Access — My Agents</h3>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:12px">
+  ${emp.agents.map(id=>{const a=AGENTS.find(x=>x.id===id);return a?`
+   <div class="agent-tile" style="cursor:pointer" onclick="launchAgent('${a.id}')"><div class="at-icon">${a.icon}</div><div class="at-info"><h4>${a.name}</h4><p>Active · ${a.cat}</p></div></div>`:''}).join('')}
+  </div>
+ </div>`;
+}
+
+function renderEmployeeAgents(){
+ const emp=S.employees[0];
+ return`<p style="color:var(--t2);font-size:14px;margin-bottom:20px">You have access to ${emp.agents.length} agents. Contact your admin to request access to locked agents.</p>
+ <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">
+ ${AGENTS.map(a=>{
+  const has=emp.agents.includes(a.id);
+  return`<div class="agent-tile${has?'':' locked'}">
+   <div class="at-icon">${a.icon}</div>
+   <div class="at-info">
+    <h4>${a.name}</h4>
+    <p>${a.cat}</p>
+    ${has?`<span class="chip chip-green" style="margin-top:8px">Active</span>
+     <button class="btn btn-primary btn-sm" style="margin-top:8px" onclick="launchAgent('${a.id}')">Launch</button>`
+     :`<span class="chip chip-gray" style="margin-top:8px">Locked</span>
+     <button class="btn btn-ghost btn-sm" style="margin-top:8px" onclick="requestAccess('${a.id}')">Request Access</button>`}
+   </div>
+  </div>`;}).join('')}
+ </div>`;
+}
+
+/* =================== CLIENT PAGES =================== */
+function getClientContext(){
+ if(S.role==='beta'){
+  const tester=S.betaApps.find(b=>b.name==='Jordan Wu')||S.betaApps[0];
+  return{plan:'professional',status:'active',seats:1,maxSeats:1,agents:AGENTS.map(a=>a.id),billing:0,isBeta:true,tester:tester};
+ }
+ const c=S.clients[0];
+ return{plan:c.plan,status:c.status,seats:c.seats,maxSeats:c.plan==='professional'?20:5,agents:c.agents,billing:c.billing,isBeta:false,tester:null};
+}
+function renderClientDash(){
+ const cx=getClientContext();
+ const isTrial=cx.status==='trial';
+ const totalVal=cx.isBeta?getTotalValuable(cx.tester):0;
+ const earnedAgents=cx.isBeta?getAgentsEarned(cx.tester):[];
+ return`
+ ${cx.isBeta&&earnedAgents.length>0?`<div style="background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(59,130,246,.08));border:1px solid rgba(16,185,129,.25);border-radius:var(--r);padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;gap:12px"><span style="font-size:24px">🏆</span><div><strong style="color:var(--emerald)">Beta Reward: ${earnedAgents.length} agent${earnedAgents.length>1?'s':''} earned free for 1 year!</strong><div style="font-size:12px;color:var(--t2);margin-top:2px">${totalVal} valuable suggestions across all agents</div></div></div>`:''}
+ ${cx.isBeta&&earnedAgents.length===0?`<div style="background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);border-radius:var(--r);padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;gap:12px"><span style="font-size:24px">🎯</span><div><strong style="color:var(--violet)">Beta Program Active</strong><div style="font-size:12px;color:var(--t2);margin-top:2px">${totalVal} valuable suggestions so far · 20 per agent earns it free for a year · <a href="#" onclick="nav('reward-tracker');return false" style="color:var(--blue)">View progress →</a></div></div></div>`:''}
+ ${isTrial&&!cx.isBeta?`<div class="trial-banner"><div class="tb-text">⏰ Your trial ends on <strong>Feb 28, 2026</strong> — 14 days remaining</div><button class="btn btn-primary btn-sm" onclick="nav('billing')">Add Payment Method</button></div>`:''}
+ <div class="stat-grid">
+  <div class="stat-card"><div class="sc-label">Plan</div><div class="sc-val" style="font-size:18px;text-transform:capitalize">${cx.plan}</div>${cx.isBeta?'<div class="sc-sub" style="color:var(--violet)">Beta access</div>':''}</div>
+  <div class="stat-card"><div class="sc-label">Active Agents</div><div class="sc-val" style="color:var(--blue)">${cx.agents.length}</div></div>
+  <div class="stat-card"><div class="sc-label">Seats</div><div class="sc-val">${cx.seats}</div><div class="sc-sub">of ${cx.maxSeats}</div></div>
+  <div class="stat-card"><div class="sc-label">Monthly Bill</div><div class="sc-val" style="color:var(--emerald)">$${cx.billing.toLocaleString()}<small style="font-size:12px;color:var(--t3)">/mo</small></div>${cx.isBeta?'<div class="sc-sub" style="color:var(--violet)">$0 during beta</div>':''}</div>
+ </div>
+ <div class="d-card"><h3>Active Agents</h3>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:12px">
+  ${cx.agents.map(id=>{const a=AGENTS.find(x=>x.id===id);return a?`
+   <div class="agent-tile"><div class="at-icon">${a.icon}</div><div class="at-info"><h4>${a.name}</h4><p>${a.cat}</p>
+   <button class="btn btn-primary btn-sm" style="margin-top:8px" onclick="launchAgent('${a.id}')">Launch</button></div></div>`:''}).join('')}
+  </div>
+ </div>`;
+}
+
+function renderClientAgents(){
+ const cx=getClientContext();
+ return`<p style="color:var(--t2);font-size:14px;margin-bottom:20px">${cx.agents.length} active agents on your ${cx.plan} plan.${cx.isBeta?' <span style="color:var(--violet)">(Beta access)</span>':''}</p>
+ <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">
+ ${AGENTS.map(a=>{
+  const has=cx.agents.includes(a.id);
+  return`<div class="agent-tile${has?'':' locked'}">
+   <div class="at-icon">${a.icon}</div>
+   <div class="at-info">
+    <h4>${a.name}</h4><p>${a.cat}</p>
+    ${has?`<span class="chip chip-green" style="margin-top:8px">Active</span>
+     <button class="btn btn-primary btn-sm" style="margin-top:8px" onclick="launchAgent('${a.id}')">Launch</button>`
+    :cx.isBeta?`<span class="chip chip-violet" style="margin-top:8px;background:rgba(139,92,246,.15);color:var(--violet)">Beta Access</span>`
+    :`<div style="margin-top:8px"><span class="chip chip-gray">Not Subscribed</span>
+     <button class="btn btn-ghost btn-sm" style="margin-top:8px" onclick="openModal('add-subscription',${JSON.stringify(a).replace(/"/g,'&quot;')})">+ Add to Plan</button></div>`}
+   </div></div>`}).join('')}
+ </div>`;
+}
+
+function renderClientStore(){
+ const cx=getClientContext();
+ return`<p style="color:var(--t2);font-size:14px;margin-bottom:20px">${cx.isBeta?'All agents are included with your beta access.':'Browse and add agents to your subscription.'}</p>
+ <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px">
+ ${AGENTS.map(a=>{
+  const owned=cx.agents.includes(a.id);
+  return`<div class="store-card">
+   <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+    <span style="font-size:32px">${a.icon}</span>
+    <div><h4 style="font-size:15px;font-weight:700">${a.name}</h4>
+    <span style="font-family:var(--mono);font-size:11px;color:${a.color}">${a.cat}</span></div>
+   </div>
+   <p style="font-size:13px;color:var(--t2);margin-bottom:12px">${a.desc}</p>
+   <div class="agent-tags" style="margin-bottom:12px">${a.tags.map(t=>`<span>${t}</span>`).join('')}</div>
+   <div style="display:flex;align-items:center;justify-content:space-between">
+    ${cx.isBeta?`<span style="font-family:var(--mono);font-size:14px;color:var(--violet)">Included in Beta</span><span class="chip chip-green">Active</span>`
+    :`<span style="font-family:var(--mono);font-size:18px;font-weight:700;color:${a.color}">$${a.price}<small style="font-size:12px;color:var(--t3)">/mo</small></span>
+    ${owned?`<span class="chip chip-green">Subscribed</span>`:
+    `<button class="btn btn-primary btn-sm" onclick="openModal('add-subscription',${JSON.stringify(a).replace(/"/g,'&quot;')})">Add to Plan</button>`}`}
+   </div>
+  </div>`}).join('')}
+ </div>`;
+}
+
+function modalAddSubscription(a){
+ return`<button class="modal-close" onclick="closeModal()">✕</button>
+ <h2>Add ${a.name}</h2><p class="modal-sub">Add this agent to your subscription.</p>
+ <div style="background:var(--bg4);border-radius:var(--r);padding:20px;margin-bottom:20px">
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+   <span style="font-size:32px">${a.icon}</span><h3>${a.name}</h3>
+  </div>
+  <div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid var(--bdr);font-size:14px">
+   <span style="color:var(--t2)">Monthly cost</span><span style="font-family:var(--mono);font-weight:700">$${a.price}/mo</span>
+  </div>
+  <div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid var(--bdr);font-size:14px">
+   <span style="color:var(--t2)">Billed</span><span>Added to current cycle</span>
+  </div>
+ </div>
+ <button class="btn btn-primary" style="width:100%" onclick="addAgentToSub('${a.id}')">Confirm — Add $${a.price}/mo</button>`;
+}
+
+function addAgentToSub(agentId){
+ if(S.role==='beta'){showToast('All agents are included with beta access');closeModal();return}
+ const c=S.clients[0];
+ if(!c.agents.includes(agentId)){
+  c.agents.push(agentId);
+  const a=AGENTS.find(x=>x.id===agentId);
+  c.billing+=a.price;
+ }
+ closeModal();renderPage();showToast('✅ Agent added to your subscription!');
+}
+
+function renderClientBilling(){
+ const cx=getClientContext();
+ if(cx.isBeta){
+  return`
+  <div class="d-card"><h3>Current Plan</h3>
+   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+    <div>
+     <div style="font-size:20px;font-weight:700">Professional <span style="font-size:12px;padding:3px 8px;background:rgba(139,92,246,.15);color:var(--violet);border-radius:99px;margin-left:8px">Beta Access</span></div>
+     <div style="font-size:13px;color:var(--t2)">All 8 agents · 1 seat · Full access during beta period</div>
+    </div>
+   </div>
+   <div style="font-family:var(--mono);font-size:28px;font-weight:700;color:var(--emerald)">$0<small style="font-size:14px;color:var(--t3);font-weight:400">/month</small></div>
+   <div style="font-size:13px;color:var(--t2);margin-top:8px">No payment required during your beta testing period.</div>
+  </div>
+  <div class="d-card"><h3>Beta Reward Program</h3>
+   <p style="font-size:14px;color:var(--t2);margin-bottom:16px">Submit valuable feedback to earn free access after beta ends.</p>
+   <div style="display:flex;gap:16px;flex-wrap:wrap">
+    <div style="flex:1;min-width:200px;background:var(--bg4);border-radius:var(--r);padding:20px;text-align:center">
+     <div style="font-size:32px;margin-bottom:8px">🎯</div>
+     <div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--blue)">20 per agent</div>
+     <div style="font-size:12px;color:var(--t3);margin-top:4px">Valuable suggestions needed</div>
+    </div>
+    <div style="flex:1;min-width:200px;background:var(--bg4);border-radius:var(--r);padding:20px;text-align:center">
+     <div style="font-size:32px;margin-bottom:8px">🏆</div>
+     <div style="font-family:var(--mono);font-size:20px;font-weight:700;color:var(--emerald)">1 year free</div>
+     <div style="font-size:12px;color:var(--t3);margin-top:4px">Per agent that hits 20</div>
+    </div>
+   </div>
+   <button class="btn btn-primary" style="margin-top:16px" onclick="nav('reward-tracker')">View Reward Progress →</button>
+  </div>`;
+ }
+ const c=S.clients[0];
+ return`
+ <div class="d-card"><h3>Current Plan</h3>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+   <div>
+    <div style="font-size:20px;font-weight:700;text-transform:capitalize">${c.plan}</div>
+    <div style="font-size:13px;color:var(--t2)">${c.plan==='professional'?'All 8 agents · 20 seats':'Up to 3 agents · 5 seats'}</div>
+   </div>
+   <button class="btn btn-ghost btn-sm" onclick="openModal('plan-upgrade')">Change Plan</button>
+  </div>
+  <div style="font-family:var(--mono);font-size:28px;font-weight:700;color:var(--emerald)">$${c.billing.toLocaleString()}<small style="font-size:14px;color:var(--t3);font-weight:400">/month</small></div>
+ </div>
+ <div class="d-card"><h3>Payment Method</h3>
+  <div class="modal-form">
+   <div class="form-group"><label>Card Number</label><input type="text" placeholder="4242 4242 4242 4242" maxlength="19"></div>
+   <div class="form-row">
+    <div class="form-group"><label>Expiry</label><input type="text" placeholder="MM/YY" maxlength="5"></div>
+    <div class="form-group"><label>CVC</label><input type="text" placeholder="123" maxlength="4"></div>
+   </div>
+   <button class="btn btn-primary" onclick="showToast('✅ Payment method saved')">Save Payment Method</button>
+  </div>
+ </div>
+ <div class="d-card"><h3>Billing History</h3>
+  <table class="d-table"><thead><tr><th>Date</th><th>Description</th><th>Amount</th><th>Status</th></tr></thead><tbody>
+  <tr><td>Feb 1, 2026</td><td>Professional Plan</td><td>$1,499.00</td><td><span class="chip chip-green">Paid</span></td></tr>
+  <tr><td>Jan 1, 2026</td><td>Professional Plan</td><td>$1,499.00</td><td><span class="chip chip-green">Paid</span></td></tr>
+  <tr><td>Dec 1, 2025</td><td>Professional Plan</td><td>$1,499.00</td><td><span class="chip chip-green">Paid</span></td></tr>
+  </tbody></table>
+ </div>`;
+}
+
+function modalPlanUpgrade(){
+ return`<button class="modal-close" onclick="closeModal()">✕</button>
+ <h2>Change Plan</h2><p class="modal-sub">Select your new plan level.</p>
+ <div style="display:grid;gap:12px">
+  <div class="plan-opt" onclick="selectPlan(this,'starter')" style="padding:20px;text-align:left">
+   <div class="plan-name" style="font-size:16px">Starter — $599/mo</div>
+   <div style="font-size:13px;color:var(--t2);margin-top:4px">Up to 3 agents · 5 seats · Email support</div></div>
+  <div class="plan-opt selected" onclick="selectPlan(this,'professional')" style="padding:20px;text-align:left;border-color:var(--blue)">
+   <div class="plan-name" style="font-size:16px">Professional — $1,499/mo <span style="color:var(--emerald);font-size:11px">CURRENT</span></div>
+   <div style="font-size:13px;color:var(--t2);margin-top:4px">All 8 agents · 20 seats · Priority support</div></div>
+  <div class="plan-opt" onclick="selectPlan(this,'enterprise')" style="padding:20px;text-align:left">
+   <div class="plan-name" style="font-size:16px">Enterprise — Custom</div>
+   <div style="font-size:13px;color:var(--t2);margin-top:4px">Unlimited · Agent Creator · SSO · Dedicated CSM</div></div>
+ </div>
+ <button class="btn btn-primary" style="width:100%;margin-top:16px" onclick="showToast('✅ Plan change request submitted');closeModal()">Update Plan</button>`;
+}
+
+/* =================== BETA PAGES =================== */
+function renderBetaRewardTracker(){
+ const tester=S.betaApps.find(b=>b.name==='Jordan Wu')||S.betaApps[0];
+ const totalVal=getTotalValuable(tester);
+ const earnedAgents=getAgentsEarned(tester);
+ const earned=earnedAgents.length>0;
+ return`
+ <div class="reward-card ${earned?'reward-earned':''}">
+  <div class="trophy">${earned?'🏆':'🎯'}</div>
+  <h3>${earned?earnedAgents.length+' Agent'+(earnedAgents.length>1?'s':'')+' Earned Free!':'Reward Progress'}</h3>
+  <div class="progress-text">${totalVal} total valuable suggestions across ${Object.keys(tester.valuableByAgent||{}).length} agents</div>
+ </div>
+ <div class="d-card" style="margin-top:20px"><h3>Per-Agent Progress</h3>
+  <p style="font-size:13px;color:var(--t2);margin-bottom:16px">Submit 20 valuable suggestions per agent to earn it free for 1 year.</p>
+  <div style="display:grid;gap:12px;margin-top:12px">
+  ${tester.agents.map(id=>{const a=AGENTS.find(x=>x.id===id);const v=getAgentValuable(tester,id);const pct=Math.min(100,(v/20)*100);return a?'<div style="display:flex;align-items:center;gap:12px"><div style="width:32px;text-align:center;font-size:20px">'+a.icon+'</div><div style="flex:1"><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>'+a.name+'</span><span style="font-family:var(--mono);color:'+(v>=20?'var(--emerald)':'var(--t2)')+'">'+v+'/20'+(v>=20?' 🏆':'')+'</span></div><div class="progress-bar"><div class="fill" style="width:'+pct+'%;background:'+(v>=20?'var(--emerald)':'linear-gradient(90deg,var(--blue),var(--violet))')+'"></div></div></div></div>':''}).join('')}
+  </div>
+ </div>
+ <div class="stat-grid" style="margin-top:20px">
+  <div class="stat-card"><div class="sc-label">Total Feedback</div><div class="sc-val">${tester.total}</div></div>
+  <div class="stat-card"><div class="sc-label">Valuable</div><div class="sc-val" style="color:var(--amber)">${totalVal}</div></div>
+  <div class="stat-card"><div class="sc-label">Agents Earned</div><div class="sc-val" style="color:${earned?'var(--emerald)':'var(--blue)'}">${earnedAgents.length}/8</div></div>
+  <div class="stat-card"><div class="sc-label">Status</div><div class="sc-val" style="font-size:16px;color:var(--emerald)">Active Tester</div></div>
+ </div>
+ <div class="d-card" style="margin-top:20px"><h3>My Feedback Items</h3>
+  ${S.feedback.filter(f=>f.from==='Jordan Wu').map(f=>`
+   <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--bdr)">
+    <div>
+     <span style="margin-right:6px">${f.type==='bug'?'🐛':f.type==='feature'?'✨':f.type==='improvement'?'🔧':'❤️'}</span>
+     <span style="font-size:14px">${f.text}</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+     ${f.valuable?'<span class="chip chip-amber">⭐ Valuable</span>':''}
+     <span class="chip chip-${f.status==='fixed'?'green':f.status==='planned'||f.status==='in-progress'?'amber':'gray'}">${f.status}</span>
+    </div>
+   </div>`).join('')||'<p style="color:var(--t3);font-size:14px;padding:16px 0">No feedback submitted yet. Use the 💬 widget to submit feedback!</p>'}
+ </div>`;
+}
+
+/* renderBetaAgents removed — beta users now use renderClientAgents via getClientContext() */
+
+function renderBetaTestSuite(){
+ if(!S.tests) S.tests=[
+  {name:'Agent Onboarding Flow',desc:'Test setup wizard for each agent',status:'pass'},
+  {name:'Data Import/Export',desc:'CSV, JSON, API data handling',status:'in-progress'},
+  {name:'Integration Connections',desc:'Connect and sync with external tools',status:'pass'},
+  {name:'Error Handling & Edge Cases',desc:'Invalid inputs, timeouts, rate limits',status:'in-progress'},
+  {name:'Mobile Responsive Layout',desc:'Test all views on mobile breakpoints',status:'not-started'},
+  {name:'Performance Under Load',desc:'Stress test with large datasets',status:'not-started'}
+ ];
+ const done=S.tests.filter(t=>t.status==='pass').length;
+ return`<p style="color:var(--t2);font-size:14px;margin-bottom:8px">Structured test scenarios to guide your testing.</p>
+ <div class="progress-bar" style="margin-bottom:20px"><div class="fill" style="width:${(done/S.tests.length)*100}%;background:linear-gradient(90deg,var(--emerald),var(--cyan))"></div></div>
+ <p style="font-family:var(--mono);font-size:12px;color:var(--t3);margin-bottom:16px">${done}/${S.tests.length} scenarios completed</p>
+ ${S.tests.map((t,i)=>`
+  <div class="test-card">
+   <div>
+    <h4>${t.name}</h4><p>${t.desc}</p>
+   </div>
+   <div style="display:flex;align-items:center;gap:8px">
+    <span class="chip chip-${t.status==='pass'?'green':t.status==='in-progress'?'amber':'gray'}">
+     ${t.status==='pass'?'✓ Pass':t.status==='in-progress'?'● In Progress':'○ Not Started'}
+    </span>
+    ${t.status==='not-started'?`<button class="btn btn-primary btn-sm" onclick="advanceTest(${i})">Start</button>`
+     :t.status==='in-progress'?`<button class="btn btn-primary btn-sm" onclick="advanceTest(${i})">Complete</button>`
+     :`<button class="btn btn-ghost btn-sm" onclick="resetTest(${i})">Reset</button>`}
+   </div>
+  </div>`).join('')}`;
+}
+
+function advanceTest(i){
+ const t=S.tests[i];
+ if(t.status==='not-started'){t.status='in-progress';showToast('🧪 Test started: '+t.name)}
+ else if(t.status==='in-progress'){t.status='pass';showToast('✅ Test completed: '+t.name)}
+ renderPage();
+}
+function resetTest(i){S.tests[i].status='not-started';renderPage();showToast('↩️ Test reset')}
+
+function renderBetaCritiques(){
+ const tester=S.betaApps[0]; // Jordan Wu
+ const myFeedback=S.feedback.filter(f=>f.from==='Jordan Wu');
+ return`<p style="color:var(--t2);font-size:14px;margin-bottom:20px">Your submitted feedback and its status.</p>
+ <div class="stat-grid" style="margin-bottom:20px">
+  <div class="stat-card"><div class="sc-label">Total Submitted</div><div class="sc-val">${tester.total}</div></div>
+  <div class="stat-card"><div class="sc-label">Marked Valuable</div><div class="sc-val" style="color:var(--amber)">${getTotalValuable(tester)}</div></div>
+  <div class="stat-card"><div class="sc-label">Agents Earned</div><div class="sc-val" style="color:${getAgentsEarned(tester).length>0?'var(--emerald)':'var(--blue)'}">${getAgentsEarned(tester).length}/8</div></div>
+ </div>
+ <div class="d-card"><h3>My Feedback Items</h3>
+  ${myFeedback.length?myFeedback.map(f=>`
+   <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--bdr)">
+    <div>
+     <span style="margin-right:6px">${f.type==='bug'?'🐛':f.type==='feature'?'✨':f.type==='improvement'?'🔧':'❤️'}</span>
+     <span style="font-size:14px">${f.text}</span>
+     ${f.valuable?'<span style="margin-left:8px;color:var(--amber)">⭐ Valuable</span>':''}
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+     <span class="chip chip-blue">${f.votes} votes</span>
+     <span class="chip chip-${f.status==='fixed'?'green':f.status==='in-progress'?'amber':'violet'}">${f.status}</span>
+    </div>
+   </div>`).join('')
+  :`<p style="color:var(--t3);font-size:14px">No feedback submitted yet matching this tester. Use the 💬 widget to submit your first critique!</p>`}
+  <p style="color:var(--t3);font-size:12px;margin-top:16px">Note: This demo shows feedback from the sample data. In production, all ${tester.total} items would appear here.</p>
+ </div>
+ <div class="reward-card" style="margin-top:20px;${getAgentsEarned(tester).length>0?'background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(6,182,212,.08));border-color:var(--emerald)':''}">
+  <div style="font-size:32px;margin-bottom:8px">${getAgentsEarned(tester).length>0?'🏆':'🎯'}</div>
+  <h3>${getAgentsEarned(tester).length>0?getAgentsEarned(tester).length+' Agent'+(getAgentsEarned(tester).length>1?'s':'')+' Earned!':'Keep Going!'}</h3>
+  <p style="font-family:var(--mono);font-size:13px;color:var(--t2)">${getTotalValuable(tester)} valuable across ${Object.keys(tester.valuableByAgent||{}).length} agents · 20 per agent to earn free year</p>
+ </div>`;
+}
+
+
+/* =================== SALES AGENT — FULL APP =================== */
+function renderSalesApp(){
+ const tab=S.salesTab||'dashboard';
+ return`<div class="sales-app">
+  <div class="sales-topbar">
+   <div class="sales-tabs">
+    <button class="sales-tab ${tab==='dashboard'?'active':''}" onclick="S.salesTab='dashboard';renderPage()">Dashboard</button>
+    <button class="sales-tab ${tab==='pipeline'?'active':''}" onclick="S.salesTab='pipeline';renderPage()">Pipeline</button>
+    <button class="sales-tab ${tab==='leads'?'active':''}" onclick="S.salesTab='leads';renderPage()">Leads</button>
+    <button class="sales-tab ${tab==='activities'?'active':''}" onclick="S.salesTab='activities';renderPage()">Activities</button>
+    <button class="sales-tab ${tab==='ai'?'active':''}" onclick="S.salesTab='ai';renderPage()">AI Assistant</button>
+   </div>
+   ${tab==='leads'||tab==='pipeline'?`<input class="sales-search" placeholder="Search leads..." value="${S.salesSearch||''}" oninput="S.salesSearch=this.value;renderPage()">`:
+    tab==='activities'?`<button class="btn btn-primary btn-sm" onclick="openModal('add-activity')">+ Log Activity</button>`:''}
+  </div>
+  ${tab==='dashboard'?renderSalesDash():
+    tab==='pipeline'?renderSalesPipeline():
+    tab==='leads'?renderSalesLeads():
+    tab==='activities'?renderSalesActivities():
+    renderSalesAI()}
+ </div>`;
+}
+
+function salesFiltered(){
+ const q=(S.salesSearch||'').toLowerCase();
+ return SALES_DATA.leads.filter(l=>!q||l.name.toLowerCase().includes(q)||l.contact.toLowerCase().includes(q)||l.email.toLowerCase().includes(q));
+}
+
+function renderSalesDash(){
+ const leads=SALES_DATA.leads;
+ const pipeline=leads.filter(l=>l.stage!=='closed-won').reduce((s,l)=>s+l.value,0);
+ const won=leads.filter(l=>l.stage==='closed-won').reduce((s,l)=>s+l.value,0);
+ const avgScore=Math.round(leads.reduce((s,l)=>s+l.score,0)/leads.length);
+ const winRate=leads.length?Math.round((leads.filter(l=>l.stage==='closed-won').length/leads.length)*100):0;
+ const avgCycle=18;
+ const stageData=SALES_STAGES.map(st=>({stage:STAGE_LABELS[st],count:leads.filter(l=>l.stage===st).length,value:leads.filter(l=>l.stage===st).reduce((s,l)=>s+l.value,0),color:STAGE_COLORS[st]}));
+ const totalPipe=stageData.reduce((s,d)=>s+d.value,0)||1;
+ return`
+ <div class="stat-grid">
+  <div class="stat-card" style="cursor:pointer" onclick="S.salesTab='pipeline';renderPage()"><div class="sc-label">Pipeline Value</div><div class="sc-val" style="color:var(--blue)">$${(pipeline/1000).toFixed(0)}K</div><div class="sc-sub">${leads.filter(l=>l.stage!=='closed-won').length} active deals</div></div>
+  <div class="stat-card"><div class="sc-label">Closed Won</div><div class="sc-val" style="color:var(--emerald)">$${(won/1000).toFixed(0)}K</div><div class="sc-sub">This quarter</div></div>
+  <div class="stat-card"><div class="sc-label">Win Rate</div><div class="sc-val" style="color:var(--violet)">${winRate}%</div><div class="sc-sub">All time</div></div>
+  <div class="stat-card"><div class="sc-label">Avg Score</div><div class="sc-val" style="color:var(--amber)">${avgScore}</div><div class="sc-sub">Lead quality</div></div>
+  <div class="stat-card"><div class="sc-label">Avg Cycle</div><div class="sc-val">${avgCycle}d</div><div class="sc-sub">Days to close</div></div>
+  <div class="stat-card"><div class="sc-label">Active Leads</div><div class="sc-val" style="color:var(--cyan)">${leads.length}</div><div class="sc-sub">${leads.filter(l=>l.score>=80).length} hot</div></div>
+ </div>
+ <div class="d-card"><h3>Pipeline Funnel</h3>
+  <div style="margin-top:16px">
+  ${stageData.map(d=>`
+   <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+    <div style="width:100px;font-size:13px;font-weight:600;color:${d.color}">${d.stage}</div>
+    <div style="flex:1;height:28px;background:var(--bg4);border-radius:4px;overflow:hidden;position:relative">
+     <div style="height:100%;width:${(d.value/totalPipe)*100}%;background:${d.color};opacity:.7;border-radius:4px;transition:width .5s"></div>
+     <span style="position:absolute;right:8px;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:11px;color:var(--t2)">$${(d.value/1000).toFixed(0)}K · ${d.count}</span>
+    </div>
+   </div>`).join('')}
+  </div>
+ </div>
+ <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+  <div class="d-card"><h3>Hot Leads (Score 80+)</h3>
+   ${leads.filter(l=>l.score>=80).sort((a,b)=>b.score-a.score).map(l=>`
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--bdr);cursor:pointer" onclick="openModal('lead-detail',SALES_DATA.leads.find(x=>x.id==='${l.id}'))">
+     <div><div style="font-size:14px;font-weight:600">${l.name}</div><div style="font-size:12px;color:var(--t3)">${l.contact} · ${STAGE_LABELS[l.stage]}</div></div>
+     <div style="display:flex;align-items:center;gap:8px"><span style="font-family:var(--mono);font-weight:700;color:var(--emerald)">$${(l.value/1000).toFixed(0)}K</span>
+     <span class="score-badge" style="background:rgba(16,185,129,.15);color:var(--emerald)">${l.score}</span></div>
+    </div>`).join('')}
+  </div>
+  <div class="d-card"><h3>Recent Activity</h3>
+   ${SALES_DATA.activities.slice(0,5).map(a=>`
+    <div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--bdr)">
+     <div style="font-size:16px">${a.type==='call'?'📞':a.type==='email'?'📧':a.type==='meeting'?'🤝':'📝'}</div>
+     <div><div style="font-size:13px">${a.text.substring(0,65)}${a.text.length>65?'...':''}</div><div style="font-size:11px;color:var(--t3)">${a.lead} · ${a.time}</div></div>
+    </div>`).join('')}
+  </div>
+ </div>`;
+}
+
+function renderSalesPipeline(){
+ const filtered=salesFiltered();
+ return`<div class="pipeline-board">
+  ${SALES_STAGES.map(stage=>{
+   const deals=filtered.filter(l=>l.stage===stage);
+   const total=deals.reduce((s,l)=>s+l.value,0);
+   return`<div class="pipe-col">
+    <div class="pipe-col-hdr"><h4 style="color:${STAGE_COLORS[stage]}">${STAGE_LABELS[stage]}</h4><span class="count">${deals.length} · $${(total/1000).toFixed(0)}K</span></div>
+    ${deals.map(l=>`
+     <div class="pipe-card" onclick="openModal('lead-detail',SALES_DATA.leads.find(x=>x.id==='${l.id}'))">
+      <div class="deal-name">${l.name}</div>
+      <div class="deal-company">${l.contact}</div>
+      <div class="deal-val">$${l.value.toLocaleString()}</div>
+      <div class="deal-meta">
+       <span class="score-badge" style="background:${l.score>=80?'rgba(16,185,129,.15)':l.score>=60?'rgba(245,158,11,.15)':'rgba(244,63,94,.15)'};color:${l.score>=80?'var(--emerald)':l.score>=60?'var(--amber)':'var(--rose)'}">${l.score}</span>
+       <span>${l.lastActivity}</span>
+      </div>
+      <div style="display:flex;gap:4px;margin-top:8px">
+       ${stage!=='closed-won'?SALES_STAGES.filter(s=>s!==stage).map(s=>`<button class="btn btn-ghost" style="padding:2px 8px;font-size:10px" onclick="event.stopPropagation();moveDeal('${l.id}','${s}')">${STAGE_LABELS[s].substring(0,4)}</button>`).join(''):'<span class="chip chip-green" style="font-size:10px">Won!</span>'}
+      </div>
+     </div>`).join('')}
+    ${stage!=='closed-won'?`<button class="btn btn-ghost" style="width:100%;margin-top:8px;font-size:12px;border-style:dashed" onclick="openModal('add-lead','${stage}')">+ Add Deal</button>`:''}
+   </div>`}).join('')}
+ </div>`;
+}
+
+function moveDeal(id,newStage){
+ const l=SALES_DATA.leads.find(x=>x.id===id);if(!l)return;
+ const oldStage=l.stage;l.stage=newStage;
+ SALES_DATA.activities.unshift({id:'a'+Date.now(),type:'note',leadId:id,lead:l.name,text:'Moved from '+STAGE_LABELS[oldStage]+' to '+STAGE_LABELS[newStage],time:'Just now',by:'You'});
+ if(newStage==='closed-won'){l.score=100;showToast('🎉 Deal won: '+l.name+' — $'+l.value.toLocaleString()+'!')}
+ else showToast('✅ '+l.name+' moved to '+STAGE_LABELS[newStage]);
+ renderPage();
+}
+
+function renderSalesLeads(){
+ let leads=salesFiltered();
+ const sort=S.salesSort||'score-desc';
+ if(sort==='score-desc') leads.sort((a,b)=>b.score-a.score);
+ else if(sort==='score-asc') leads.sort((a,b)=>a.score-b.score);
+ else if(sort==='value-desc') leads.sort((a,b)=>b.value-a.value);
+ else if(sort==='value-asc') leads.sort((a,b)=>a.value-b.value);
+ else if(sort==='name-asc') leads.sort((a,b)=>a.name.localeCompare(b.name));
+ return`
+ <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+  <button class="btn btn-primary btn-sm" onclick="openModal('add-lead','prospect')">+ Add Lead</button>
+  ${['all','prospect','discovery','proposal','negotiation','closed-won'].map(st=>`<button class="btn btn-ghost btn-sm" style="${(S.salesPipeFilter||'all')===st?'border-color:var(--blue);color:var(--blue)':''}" onclick="S.salesPipeFilter='${st}';renderPage()">${st==='all'?'All':STAGE_LABELS[st]}</button>`).join('')}
+ </div>
+ <div class="d-card" style="overflow-x:auto">
+  <table class="lead-table"><thead><tr>
+   <th onclick="S.salesSort=S.salesSort==='name-asc'?'name-desc':'name-asc';renderPage()">Lead ↕</th>
+   <th>Contact</th>
+   <th onclick="S.salesSort=S.salesSort==='value-desc'?'value-asc':'value-desc';renderPage()">Value ↕</th>
+   <th>Stage</th>
+   <th onclick="S.salesSort=S.salesSort==='score-desc'?'score-asc':'score-desc';renderPage()">Score ↕</th>
+   <th>Source</th>
+   <th>Next Step</th>
+   <th>Actions</th>
+  </tr></thead><tbody>
+  ${leads.filter(l=>(S.salesPipeFilter||'all')==='all'||l.stage===S.salesPipeFilter).map(l=>`<tr>
+   <td style="font-weight:600;cursor:pointer;color:var(--blue)" onclick="openModal('lead-detail',SALES_DATA.leads.find(x=>x.id==='${l.id}'))">${l.name}</td>
+   <td><div style="font-size:13px">${l.contact}</div><div style="font-size:11px;color:var(--t3)">${l.email}</div></td>
+   <td style="font-family:var(--mono);font-weight:700;color:var(--emerald)">$${l.value.toLocaleString()}</td>
+   <td><select style="background:var(--bg4);border:1px solid var(--bdr);color:var(--t1);padding:4px 8px;border-radius:4px;font-size:12px" onchange="moveDeal('${l.id}',this.value)">
+    ${SALES_STAGES.map(s=>`<option value="${s}" ${l.stage===s?'selected':''}>${STAGE_LABELS[s]}</option>`).join('')}</select></td>
+   <td><span class="score-badge" style="background:${l.score>=80?'rgba(16,185,129,.15)':l.score>=60?'rgba(245,158,11,.15)':'rgba(244,63,94,.15)'};color:${l.score>=80?'var(--emerald)':l.score>=60?'var(--amber)':'var(--rose)'}">${l.score}</span></td>
+   <td style="font-size:12px;color:var(--t2)">${l.source}</td>
+   <td style="font-size:12px;color:var(--t2);max-width:180px">${l.nextStep}</td>
+   <td><button class="btn btn-ghost btn-sm" onclick="openModal('lead-detail',SALES_DATA.leads.find(x=>x.id==='${l.id}'))">View</button>
+    <button class="btn btn-ghost btn-sm" style="color:var(--rose)" onclick="deleteLead('${l.id}')">×</button></td>
+  </tr>`).join('')}
+  </tbody></table>
+ </div>`;
+}
+
+function deleteLead(id){
+ const idx=SALES_DATA.leads.findIndex(x=>x.id===id);
+ if(idx>-1){const name=SALES_DATA.leads[idx].name;SALES_DATA.leads.splice(idx,1);renderPage();showToast('❌ '+name+' removed')}
+}
+
+function renderSalesActivities(){
+ const acts=SALES_DATA.activities;
+ const typeIcons={call:'📞',email:'📧',meeting:'🤝',note:'📝'};
+ const typeColors={call:'rgba(59,130,246,.1)',email:'rgba(16,185,129,.1)',meeting:'rgba(139,92,246,.1)',note:'rgba(245,158,11,.1)'};
+ return`
+ <div style="display:flex;gap:8px;margin-bottom:16px">
+  ${['all','call','email','meeting','note'].map(t=>`<button class="btn btn-ghost btn-sm" style="${(S.actFilter||'all')===t?'border-color:var(--blue);color:var(--blue)':''}" onclick="S.actFilter='${t}';renderPage()">${t==='all'?'All':typeIcons[t]+' '+t.charAt(0).toUpperCase()+t.slice(1)+'s'}</button>`).join('')}
+ </div>
+ <div class="d-card">
+  ${acts.filter(a=>(S.actFilter||'all')==='all'||a.type===S.actFilter).map(a=>`
+   <div class="activity-item">
+    <div class="activity-icon" style="background:${typeColors[a.type]}">${typeIcons[a.type]}</div>
+    <div class="activity-body">
+     <div class="act-title">${a.text}</div>
+     <div class="act-meta"><strong>${a.lead}</strong> · ${a.by} · ${a.time}</div>
+    </div>
+    <button class="btn btn-ghost btn-sm" onclick="openModal('lead-detail',SALES_DATA.leads.find(x=>x.id==='${a.leadId}'))">View Lead</button>
+   </div>`).join('')}
+ </div>`;
+}
+
+function renderSalesAI(){
+ return`
+ <div class="d-card" style="margin-bottom:20px">
+  <h3 style="margin-bottom:12px">🎯 AI Sales Insights</h3>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px">
+   <div style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.2);border-radius:var(--r);padding:16px">
+    <h4 style="font-size:14px;color:var(--emerald);margin-bottom:8px">🔥 Deals to Close This Week</h4>
+    <p style="font-size:13px;color:var(--t2)"><strong>NovaTech ($78K)</strong> — Procurement review expected Friday. Score: 91. Recommend: Follow up Wed morning.</p>
+    <p style="font-size:13px;color:var(--t2);margin-top:8px"><strong>BlueShore ($67K)</strong> — MSA in legal review. Score: 85. Recommend: Send check-in Thu.</p>
+   </div>
+   <div style="background:rgba(244,63,94,.06);border:1px solid rgba(244,63,94,.2);border-radius:var(--r);padding:16px">
+    <h4 style="font-size:14px;color:var(--rose);margin-bottom:8px">⚠️ At Risk</h4>
+    <p style="font-size:13px;color:var(--t2)"><strong>ClearPath ($55K)</strong> — No activity in 5 days. Score dropping. Recommend: Immediate re-engagement call.</p>
+    <p style="font-size:13px;color:var(--t2);margin-top:8px"><strong>Meridian ($15K)</strong> — Low engagement, budget concerns. Recommend: Send ROI calculator.</p>
+   </div>
+   <div style="background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.2);border-radius:var(--r);padding:16px">
+    <h4 style="font-size:14px;color:var(--blue);margin-bottom:8px">💡 Recommended Actions</h4>
+    <p style="font-size:13px;color:var(--t2)">1. Schedule demo for Urban Logistics ops team</p>
+    <p style="font-size:13px;color:var(--t2)">2. Send Acme Corp revised proposal</p>
+    <p style="font-size:13px;color:var(--t2)">3. Re-score Vertex Commerce after next discovery call</p>
+   </div>
+  </div>
+ </div>
+ <div class="d-card">
+  <h3 style="margin-bottom:12px">Chat with Sales AI</h3>
+  <div style="background:var(--bg4);border:1px solid var(--bdr);border-radius:var(--r2);padding:16px;max-height:300px;overflow-y:auto;margin-bottom:12px" id="salesAIChat">
+   <div class="demo-msg" style="animation-delay:0s;opacity:0;animation-fill-mode:forwards"><div class="from" style="color:var(--cyan)">Sales AI</div><div class="text">I've analyzed your pipeline. You have $561K in active deals with a 10% win rate. NovaTech and BlueShore are your highest-probability closes this week. Want me to draft follow-up emails for either?</div></div>
+  </div>
+  <div style="display:flex;gap:8px">
+   <input type="text" id="salesAIInput" placeholder="Ask about your pipeline, leads, or strategy..." style="flex:1" onkeydown="if(event.key==='Enter')sendSalesAI()">
+   <button class="btn btn-primary btn-sm" onclick="sendSalesAI()">Send</button>
+  </div>
+  <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
+   ${['Draft follow-up for NovaTech','Score all leads','Forecast Q1 revenue','Suggest outreach for cold leads','Analyze win/loss patterns'].map(q=>`<button class="btn btn-ghost" style="padding:4px 10px;font-size:11px" onclick="document.getElementById('salesAIInput').value='${q}';sendSalesAI()">${q}</button>`).join('')}
+  </div>
+ </div>`;
+}
+
+function sendSalesAI(){
+ const input=document.getElementById('salesAIInput');
+ const chat=document.getElementById('salesAIChat');
+ const msg=input.value.trim();if(!msg)return;
+ chat.innerHTML+=`<div class="demo-msg"><div class="from" style="color:var(--t3)">You</div><div class="text">${msg}</div></div>`;
+ input.value='';input.disabled=true;
+ const typing=document.createElement('div');typing.className='demo-msg';
+ typing.innerHTML='<div class="from" style="color:var(--cyan)">Sales AI</div><div class="text" style="color:var(--t3)">Analyzing...</div>';
+ chat.appendChild(typing);chat.scrollTop=chat.scrollHeight;
+ const responses={
+  'draft':'I\'ve drafted a follow-up email for NovaTech: "Hi Jessica, Following up on our pricing discussion — I\'ve attached the updated multi-year proposal with the 15% discount we discussed. Happy to hop on a quick call to walk through the numbers. Best, [You]" Shall I send it?',
+  'score':'Re-scored all 10 leads. Changes: ClearPath dropped from 42→38 (inactivity penalty). Urban Logistics rose from 71→76 (positive demo signals). NovaTech steady at 91. All other scores unchanged.',
+  'forecast':'Q1 Revenue Forecast: Optimistic: $380K (all negotiation + 50% proposals close). Realistic: $227K (NovaTech $78K + BlueShore $67K + Acme $45K + Peak $32K at 80% probability). Conservative: $163K (only negotiation-stage deals).',
+  'outreach':'For cold leads, I recommend: 1) ClearPath — personalize around their analytics focus, reference our AI capabilities. 2) Meridian — offer a free 30-day trial of Starter plan to reduce risk. 3) Send a case study from StartupXYZ showing fast ROI.',
+  'win':'Win/Loss Analysis: Average winning deal: $45K value, 18-day cycle, score 85+. Losses tend to stall in Discovery (no champion identified) or Proposal (price objection). Recommendation: Identify champions earlier and lead with ROI data.'
+ };
+ const key=msg.toLowerCase().includes('draft')?'draft':msg.toLowerCase().includes('score')?'score':msg.toLowerCase().includes('forecast')?'forecast':msg.toLowerCase().includes('outreach')||msg.toLowerCase().includes('cold')?'outreach':msg.toLowerCase().includes('win')||msg.toLowerCase().includes('loss')||msg.toLowerCase().includes('pattern')?'win':null;
+ setTimeout(()=>{
+  typing.querySelector('.text').textContent=key?responses[key]:'Based on your current pipeline data, I see '+SALES_DATA.leads.length+' active leads worth $'+(SALES_DATA.leads.reduce((s,l)=>s+l.value,0)/1000).toFixed(0)+'K total. Your top priorities are closing NovaTech and BlueShore this week, and re-engaging ClearPath before they go cold. Want me to dig deeper into any specific area?';
+  typing.querySelector('.text').style.color='';
+  input.disabled=false;input.focus();chat.scrollTop=chat.scrollHeight;
+ },1500);
+}
+
+/* Lead Detail Modal */
+function modalLeadDetail(l){
+ const acts=SALES_DATA.activities.filter(a=>a.leadId===l.id);
+ const typeIcons={call:'📞',email:'📧',meeting:'🤝',note:'📝'};
+ return`<button class="modal-close" onclick="closeModal()">✕</button>
+ <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+  <div>
+   <h2 style="font-size:22px">${l.name}</h2>
+   <p style="font-size:14px;color:var(--t2)">${l.contact} · ${l.email}</p>
+   <p style="font-size:13px;color:var(--t3)">${l.phone} · Source: ${l.source} · Since ${l.created}</p>
+  </div>
+  <span class="score-badge" style="width:48px;height:48px;font-size:18px;background:${l.score>=80?'rgba(16,185,129,.15)':l.score>=60?'rgba(245,158,11,.15)':'rgba(244,63,94,.15)'};color:${l.score>=80?'var(--emerald)':l.score>=60?'var(--amber)':'var(--rose)'}">${l.score}</span>
+ </div>
+ <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">
+  <div class="stat-card"><div class="sc-label">Deal Value</div><div class="sc-val" style="font-size:18px;color:var(--emerald)">$${l.value.toLocaleString()}</div></div>
+  <div class="stat-card"><div class="sc-label">Stage</div><div class="sc-val" style="font-size:14px;color:${STAGE_COLORS[l.stage]}">${STAGE_LABELS[l.stage]}</div></div>
+  <div class="stat-card"><div class="sc-label">Activities</div><div class="sc-val" style="font-size:18px">${acts.length}</div></div>
+  <div class="stat-card"><div class="sc-label">Last Touch</div><div class="sc-val" style="font-size:14px">${l.lastActivity}</div></div>
+ </div>
+ <div class="d-card" style="margin-bottom:16px"><h4 style="margin-bottom:8px">Next Step</h4><p style="font-size:14px;color:var(--blue)">${l.nextStep}</p></div>
+ <div class="d-card" style="margin-bottom:16px"><h4 style="margin-bottom:8px">Notes</h4><p style="font-size:14px;color:var(--t2)">${l.notes}</p>
+  <textarea placeholder="Add a note..." style="width:100%;margin-top:8px" rows="2" id="leadNote"></textarea>
+  <button class="btn btn-ghost btn-sm" style="margin-top:8px" onclick="addLeadNote('${l.id}')">Save Note</button>
+ </div>
+ <div class="d-card" style="margin-bottom:16px"><h4 style="margin-bottom:8px">Move Stage</h4>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+   ${SALES_STAGES.map(s=>`<button class="btn ${l.stage===s?'btn-primary':'btn-ghost'} btn-sm" onclick="moveDeal('${l.id}','${s}');closeModal()">${STAGE_LABELS[s]}</button>`).join('')}
+  </div>
+ </div>
+ <div class="d-card"><h4 style="margin-bottom:12px">Activity Timeline (${acts.length})</h4>
+  ${acts.length?acts.map(a=>`
+   <div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--bdr)">
+    <span>${typeIcons[a.type]||'📝'}</span>
+    <div><div style="font-size:13px">${a.text}</div><div style="font-size:11px;color:var(--t3)">${a.by} · ${a.time}</div></div>
+   </div>`).join(''):'<p style="color:var(--t3);font-size:13px">No activities logged yet.</p>'}
+  <div style="display:flex;gap:8px;margin-top:12px">
+   <button class="btn btn-ghost btn-sm" onclick="quickActivity('${l.id}','call')">📞 Log Call</button>
+   <button class="btn btn-ghost btn-sm" onclick="quickActivity('${l.id}','email')">📧 Log Email</button>
+   <button class="btn btn-ghost btn-sm" onclick="quickActivity('${l.id}','meeting')">🤝 Log Meeting</button>
+  </div>
+ </div>`;
+}
+
+function addLeadNote(id){
+ const note=document.getElementById('leadNote').value.trim();if(!note)return;
+ const l=SALES_DATA.leads.find(x=>x.id===id);if(!l)return;
+ l.notes+='. '+note;
+ SALES_DATA.activities.unshift({id:'a'+Date.now(),type:'note',leadId:id,lead:l.name,text:note,time:'Just now',by:'You'});
+ showToast('📝 Note added');closeModal();renderPage();
+}
+
+function quickActivity(leadId,type){
+ const l=SALES_DATA.leads.find(x=>x.id===leadId);if(!l)return;
+ const labels={call:'Call logged',email:'Email logged',meeting:'Meeting logged'};
+ SALES_DATA.activities.unshift({id:'a'+Date.now(),type:type,leadId:leadId,lead:l.name,text:labels[type]+' with '+l.contact,time:'Just now',by:'You'});
+ l.lastActivity='Just now';l.activities++;
+ showToast('✅ '+labels[type]+' for '+l.name);closeModal();renderPage();
+}
+
+/* Add Lead Modal */
+function modalAddLead(stage){
+ return`<button class="modal-close" onclick="closeModal()">✕</button>
+ <h2 style="margin-bottom:16px">+ Add New Lead</h2>
+ <div class="modal-form">
+  <div class="form-row">
+   <div class="form-group"><label>Company Name</label><input type="text" id="newLeadName" placeholder="Acme Inc"></div>
+   <div class="form-group"><label>Contact Person</label><input type="text" id="newLeadContact" placeholder="John Smith"></div>
+  </div>
+  <div class="form-row">
+   <div class="form-group"><label>Email</label><input type="email" id="newLeadEmail" placeholder="john@acme.com"></div>
+   <div class="form-group"><label>Phone</label><input type="text" id="newLeadPhone" placeholder="+1 (555) 000-0000"></div>
+  </div>
+  <div class="form-row">
+   <div class="form-group"><label>Deal Value ($)</label><input type="number" id="newLeadValue" placeholder="50000"></div>
+   <div class="form-group"><label>Source</label><select id="newLeadSource"><option>Website</option><option>Referral</option><option>Cold Outreach</option><option>LinkedIn</option><option>Conference</option><option>Partner</option><option>Event</option></select></div>
+  </div>
+  <div class="form-group"><label>Stage</label><select id="newLeadStage">
+   ${SALES_STAGES.map(s=>`<option value="${s}" ${s===(stage||'prospect')?'selected':''}>${STAGE_LABELS[s]}</option>`).join('')}</select></div>
+  <div class="form-group"><label>Notes</label><textarea id="newLeadNotes" placeholder="Initial notes about this lead..." rows="2"></textarea></div>
+  <button class="btn btn-primary" style="width:100%" onclick="saveLead()">Add Lead</button>
+ </div>`;
+}
+
+function saveLead(){
+ const name=document.getElementById('newLeadName').value.trim();
+ const contact=document.getElementById('newLeadContact').value.trim();
+ if(!name||!contact){showToast('⚠️ Company name and contact required');return}
+ const lead={
+  id:'l'+Date.now(),name:name,contact:contact,
+  email:document.getElementById('newLeadEmail').value.trim()||contact.toLowerCase().replace(/\s/g,'.')+'@'+name.toLowerCase().replace(/\s/g,'')+'.com',
+  phone:document.getElementById('newLeadPhone').value.trim()||'—',
+  value:parseInt(document.getElementById('newLeadValue').value)||0,
+  stage:document.getElementById('newLeadStage').value,
+  score:Math.floor(Math.random()*40)+30,
+  source:document.getElementById('newLeadSource').value,
+  lastActivity:'Just now',activities:0,
+  nextStep:'Initial qualification',
+  created:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),
+  notes:document.getElementById('newLeadNotes').value.trim()||''
+ };
+ SALES_DATA.leads.push(lead);
+ SALES_DATA.activities.unshift({id:'a'+Date.now(),type:'note',leadId:lead.id,lead:lead.name,text:'Lead created. Source: '+lead.source,time:'Just now',by:'You'});
+ closeModal();renderPage();showToast('✅ '+name+' added to pipeline');
+}
+
+/* Add Activity Modal */
+function modalAddActivity(){
+ return`<button class="modal-close" onclick="closeModal()">✕</button>
+ <h2 style="margin-bottom:16px">+ Log Activity</h2>
+ <div class="modal-form">
+  <div class="form-row">
+   <div class="form-group"><label>Type</label><select id="actType"><option value="call">📞 Call</option><option value="email">📧 Email</option><option value="meeting">🤝 Meeting</option><option value="note">📝 Note</option></select></div>
+   <div class="form-group"><label>Lead</label><select id="actLead">${SALES_DATA.leads.map(l=>`<option value="${l.id}">${l.name}</option>`).join('')}</select></div>
+  </div>
+  <div class="form-group"><label>Description</label><textarea id="actDesc" placeholder="What happened?" rows="3"></textarea></div>
+  <button class="btn btn-primary" style="width:100%" onclick="saveActivity()">Log Activity</button>
+ </div>`;
+}
+
+function saveActivity(){
+ const desc=document.getElementById('actDesc').value.trim();
+ if(!desc){showToast('⚠️ Please add a description');return}
+ const leadId=document.getElementById('actLead').value;
+ const l=SALES_DATA.leads.find(x=>x.id===leadId);
+ SALES_DATA.activities.unshift({id:'a'+Date.now(),type:document.getElementById('actType').value,leadId:leadId,lead:l?l.name:'Unknown',text:desc,time:'Just now',by:'You'});
+ if(l){l.lastActivity='Just now';l.activities++}
+ closeModal();renderPage();showToast('✅ Activity logged');
+}
+
+/* =================== SETTINGS (all roles) =================== */
+function renderSettings(){
+ const m=ROLE_META[S.role];
+ return`<div class="settings-section">
+  <div class="d-card"><h3>Profile</h3>
+   <div class="modal-form">
+    <div class="form-group"><label>Name</label><input type="text" value="${m.name}"></div>
+    <div class="form-group"><label>Email</label><input type="email" value="${m.email}"></div>
+    <div class="form-group"><label>Role</label><input type="text" value="${m.label}" disabled style="opacity:.6"></div>
+    <button class="btn btn-primary" onclick="showToast('✅ Profile saved')">Save Changes</button>
+   </div>
+  </div>
+  <div class="d-card"><h3>Notifications</h3>
+   <div class="notif-row"><label>Email notifications</label><div class="toggle-sw on" onclick="this.classList.toggle('on')"></div></div>
+   <div class="notif-row"><label>Agent alerts</label><div class="toggle-sw on" onclick="this.classList.toggle('on')"></div></div>
+   <div class="notif-row"><label>Feedback updates</label><div class="toggle-sw on" onclick="this.classList.toggle('on')"></div></div>
+   <div class="notif-row"><label>Marketing emails</label><div class="toggle-sw" onclick="this.classList.toggle('on')"></div></div>
+  </div>
+  <div class="d-card"><h3>Security</h3>
+   <div class="modal-form">
+    <div class="form-group"><label>Current Password</label><input type="password" placeholder="Enter current password"></div>
+    <div class="form-group"><label>New Password</label><input type="password" placeholder="Enter new password"></div>
+    <button class="btn btn-ghost" onclick="showToast('✅ Password updated')">Update Password</button>
+   </div>
+  </div>
+ </div>`;
+}
+
+/* =================== FEEDBACK WIDGET =================== */
+function toggleFB(){
+ const p=document.getElementById('fbPanel');
+ p.classList.toggle('open');
+ if(p.classList.contains('open'))fbTab('submit');
+}
+
+function fbTab(tab){
+ document.querySelectorAll('.fb-tab').forEach((t,i)=>t.classList.toggle('active',['submit','history','board'][i]===tab));
+ const body=document.getElementById('fbBody');
+ if(tab==='submit') body.innerHTML=renderFbSubmit();
+ else if(tab==='history') body.innerHTML=renderFbHistory();
+ else body.innerHTML=renderFbBoard();
+}
+
+function renderFbSubmit(){
+ const types=[{id:'bug',label:'🐛 Bug'},{id:'feature',label:'✨ Feature'},{id:'improvement',label:'🔧 Improve'},{id:'praise',label:'❤️ Praise'}];
+ return`
+ <p style="font-size:12px;color:var(--t3);margin-bottom:12px">Culture of constant and never ending improvement</p>
+ <div class="fb-type-sel">
+  ${types.map(t=>`<div class="fb-type ${S.fbType===t.id?'selected':''}" role="button" tabindex="0" onclick="S.fbType='${t.id}';fbTab('submit')">${t.label}</div>`).join('')}
+ </div>
+ <div class="form-group"><label style="font-size:12px">Description</label>
+  <textarea id="fbText" style="min-height:80px;width:100%;padding:10px;background:var(--bg4);border:1px solid var(--bdr2);border-radius:var(--r);color:var(--t1);font-size:13px;resize:vertical" placeholder="Describe your ${S.fbType}..."></textarea>
+ </div>
+ <div style="margin-bottom:12px"><label style="font-size:12px;color:var(--t2);display:block;margin-bottom:4px">Rating (optional)</label>
+  <div class="fb-stars">${[1,2,3,4,5].map(i=>`<span class="fb-star ${S.fbRating>=i?'active':''}" role="button" tabindex="0" aria-label="${i} star${i>1?'s':''}" onclick="S.fbRating=${i};fbTab('submit')">★</span>`).join('')}</div>
+ </div>
+ ${S.role==='beta'?'<div class="form-group" style="margin-bottom:12px"><label style="font-size:12px;color:var(--t3)">Related Agent</label><select id="fbAgent" style="padding:6px;font-size:12px;border-radius:4px;border:1px solid var(--bdr);background:var(--bg4);color:var(--t1);width:100%"><option value="general">General Platform</option>'+AGENTS.map(a=>'<option value="'+a.id+'">'+a.icon+' '+a.name+'</option>').join('')+'</select></div>':''}
+ <button class="btn btn-primary btn-sm" style="width:100%" onclick="submitFeedback()">Submit Feedback</button>`;
+}
+
+function submitFeedback(){
+ const text=document.getElementById('fbText')?.value?.trim();
+ if(!text){showToast('⚠️ Please describe your feedback');return}
+ const m=ROLE_META[S.role];
+ const agentSel=document.getElementById('fbAgent');
+ const forAgent=agentSel?agentSel.value:'general';
+ S.feedback.push({
+  id:'f'+(S.feedback.length+1),from:m.name,fromRole:S.role,
+  type:S.fbType,text:text,status:'new',votes:0,valuable:false,forAgent:forAgent
+ });
+ S.fbType='bug';S.fbRating=0;
+ showToast('✅ Feedback submitted! Thank you.');
+ fbTab('history');
+}
+
+function renderFbHistory(){
+ const m=ROLE_META[S.role];
+ const mine=S.feedback.filter(f=>f.from===m.name);
+ if(!mine.length) return`<p style="color:var(--t3);font-size:13px;text-align:center;padding:20px">No feedback submitted yet. Use the Submit tab to share your thoughts!</p>`;
+ return mine.map(f=>`
+  <div class="fb-item">
+   <div class="fb-item-head">
+    <span class="fb-item-type" style="color:${f.type==='bug'?'var(--rose)':f.type==='feature'?'var(--violet)':f.type==='improvement'?'var(--cyan)':'var(--emerald)'}">${f.type==='bug'?'🐛':f.type==='feature'?'✨':f.type==='improvement'?'🔧':'❤️'} ${f.type}</span>
+    <span class="chip chip-${f.status==='fixed'?'green':f.status==='in-progress'?'amber':'blue'}" style="font-size:10px">${f.status}</span>
+   </div>
+   <div class="fb-item-text">${f.text}</div>
+   <div class="fb-item-meta"><span>${f.votes} votes</span>${f.valuable?'<span style="color:var(--amber)">⭐ Valuable</span>':''}</div>
+  </div>`).join('');
+}
+
+function renderFbBoard(){
+ const sorted=[...S.feedback].sort((a,b)=>b.votes-a.votes);
+ return`<p style="font-size:11px;color:var(--t3);margin-bottom:12px">Community improvement board — sorted by votes</p>
+ ${sorted.map(f=>`
+  <div class="fb-item">
+   <div class="fb-item-head">
+    <span style="font-size:13px;font-weight:600">${f.type==='bug'?'🐛':f.type==='feature'?'✨':f.type==='improvement'?'🔧':'❤️'} ${f.text.substring(0,50)}${f.text.length>50?'...':''}</span>
+   </div>
+   <div class="fb-item-meta">
+    <span style="color:var(--t3)">${f.from} (${f.fromRole})</span>
+    <span class="chip chip-${f.status==='fixed'?'green':f.status==='in-progress'?'amber':'violet'}" style="font-size:10px">${f.status}</span>
+    <button class="upvote-btn" onclick="upvoteFb('${f.id}',this)">▲ ${f.votes}</button>
+   </div>
+  </div>`).join('')}`;
+}
+
+function upvoteFb(id,btn){
+ const f=S.feedback.find(x=>x.id===id);if(!f)return;
+ f.votes++;btn.classList.add('voted');btn.innerHTML=`▲ ${f.votes}`;
+ showToast('👍 Upvoted!');
+}
+
+/* =================== INIT =================== */
+/* A11y: global keyboard support for role="button" elements */
+document.addEventListener('keydown',function(e){
+ if((e.key==='Enter'||e.key===' ')&&e.target.getAttribute('role')==='button'){
+  e.preventDefault();e.target.click();
+ }
+});
+document.addEventListener('DOMContentLoaded',initLanding);
+</script>
+</body>
+</html>

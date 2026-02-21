@@ -1,0 +1,179 @@
+// ============================================================================
+// OPERATIONS DATA SCHEMA — Full project lifecycle
+// ============================================================================
+
+model Project {
+  id              String   @id @default(cuid())
+  companyId       String
+  projectNumber   String            // WG-2026-042
+  name            String
+  client          String
+  clientContact   String?
+  siteAddress     String
+  type            String            // conveyor_install | racking | dock_equip | mezzanine | full_build
+  status          String   @default("planning")  // planning | mobilizing | in_progress | testing | commissioned | closed | on_hold
+  priority        String   @default("normal")     // critical | high | normal | low
+  // Timeline
+  startDate       String
+  targetEnd       String
+  projectedEnd    String?
+  actualEnd       String?
+  milestones      Json?             // [{ id, name, targetDate, actualDate, status, pct }]
+  criticalPath    Json?             // [milestoneId, milestoneId, ...]
+  // Budget
+  quotedValue     Float
+  contractValue   Float
+  costToDate      Float    @default(0)
+  laborCost       Float    @default(0)
+  materialCost    Float    @default(0)
+  subcontractCost Float    @default(0)
+  budgetVariance  Float    @default(0)     // (contractValue - costToDate) / contractValue * 100
+  changeOrders    Int      @default(0)
+  changeOrderValue Float   @default(0)
+  // Resources
+  projectManager  String
+  superintendent  String?
+  crews           Json?             // [{ crewId, name, role, assignedDates }]
+  equipment       Json?             // [{ equipmentId, name, assignedDates }]
+  // Sales link
+  salesQuoteId    String?
+  salesRep        String?
+  // Completion
+  completionPct   Int      @default(0)
+  punchListItems  Int      @default(0)
+  // Flags
+  delayRisk       String   @default("none")  // none | low | medium | high
+  safetyScore     Int      @default(100)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  @@index([companyId, status])
+  @@index([companyId, projectNumber])
+}
+
+model WorkOrder {
+  id              String   @id @default(cuid())
+  companyId       String
+  projectId       String
+  projectNumber   String
+  woNumber        String            // WO-2026-0182
+  title           String
+  description     String?
+  type            String            // fabrication | installation | electrical | testing | commissioning
+  status          String   @default("backlog")  // backlog | bom_staging | in_progress | testing | complete | blocked
+  priority        String   @default("normal")
+  // BOM
+  bomItems        Json?             // [{ sku, name, qtyRequired, qtyStaged, qtyInstalled }]
+  bomValue        Float    @default(0)
+  // Assignment
+  assignedCrew    String?
+  assignedLead    String?
+  estimatedHours  Float    @default(0)
+  actualHours     Float    @default(0)
+  // Dates
+  scheduledStart  String?
+  scheduledEnd    String?
+  actualStart     String?
+  actualEnd       String?
+  // Dependencies
+  dependsOn       Json?             // [woId, ...]
+  blockedBy       String?
+  notes           String?
+  createdAt       DateTime @default(now())
+  @@index([companyId, projectId, status])
+}
+
+model ResourceAllocation {
+  id              String   @id @default(cuid())
+  companyId       String
+  resourceType    String            // crew | equipment | subcontractor
+  resourceId      String
+  resourceName    String
+  projectId       String
+  projectNumber   String
+  projectName     String
+  role            String?           // lead_installer | electrician | welder | operator
+  startDate       String
+  endDate         String
+  hoursPerDay     Float    @default(8)
+  status          String   @default("scheduled")  // scheduled | active | completed | cancelled
+  dailyRate       Float?
+  notes           String?
+  @@index([companyId, resourceId])
+  @@index([companyId, projectId])
+}
+
+model DailyFieldReport {
+  id              String   @id @default(cuid())
+  companyId       String
+  projectId       String
+  projectNumber   String
+  reportDate      String
+  submittedBy     String
+  // Conditions
+  weather         String?           // clear | rain | snow | wind | extreme_heat
+  temperature     Int?
+  // Work performed
+  crewsOnSite     Int      @default(0)
+  hoursWorked     Float    @default(0)
+  workPerformed   String?  @db.Text
+  materialsUsed   Json?             // [{ sku, name, qty }]
+  // Issues
+  delaysEncountered String? @db.Text
+  delayCause       String?          // weather | material | labor | permit | client | design
+  delayHours       Float   @default(0)
+  // Safety
+  safetyObservations String? @db.Text
+  incidentReported   Boolean @default(false)
+  // Photos
+  photos          Json?             // [{ url, caption, timestamp }]
+  // Progress
+  completionPctUpdate Int?
+  notes           String?  @db.Text
+  status          String   @default("draft")  // draft | submitted | reviewed
+  reviewedBy      String?
+  createdAt       DateTime @default(now())
+  @@index([companyId, projectId, reportDate])
+}
+
+model SafetyIncident {
+  id              String   @id @default(cuid())
+  companyId       String
+  projectId       String
+  projectNumber   String
+  incidentDate    String
+  reportedBy      String
+  severity        String            // near_miss | first_aid | recordable | lost_time | fatality
+  type            String            // fall | struck_by | caught_in | electrical | ergonomic | vehicle | other
+  description     String   @db.Text
+  rootCause       String?  @db.Text
+  correctiveAction String? @db.Text
+  employeesInvolved Json?           // [{ name, role, injury }]
+  oshaRecordable  Boolean  @default(false)
+  lostDays        Int      @default(0)
+  status          String   @default("open")  // open | investigating | corrective | closed
+  photos          Json?
+  createdAt       DateTime @default(now())
+  @@index([companyId, projectId])
+}
+
+model MaintenanceLog {
+  id              String   @id @default(cuid())
+  companyId       String
+  equipmentId     String
+  equipmentName   String
+  type            String            // preventive | corrective | inspection
+  status          String   @default("scheduled")  // scheduled | in_progress | completed | overdue
+  scheduledDate   String
+  completedDate   String?
+  performedBy     String?
+  description     String?
+  cost            Float    @default(0)
+  partsUsed       Json?             // [{ part, qty, cost }]
+  meterReading    Float?            // hours or miles
+  nextDueDate     String?
+  nextDueMeter    Float?
+  notes           String?
+  createdAt       DateTime @default(now())
+  @@index([companyId, equipmentId])
+  @@index([companyId, status])
+}

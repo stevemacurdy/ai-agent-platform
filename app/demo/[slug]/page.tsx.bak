@@ -1,0 +1,155 @@
+'use client'
+import { useParams, useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { AGENTS, getAgent } from '@/lib/agents'
+import { trackClick } from '@/lib/track'
+import LeadCaptureModal from '@/components/LeadCaptureModal'
+import Link from 'next/link'
+
+// Mock KPI data for demo dashboards
+const MOCK_KPIS: Record<string, { label: string; value: string; trend?: string }[]> = {
+  cfo: [
+    { label: 'Total AR', value: '$124,600', trend: '+12%' },
+    { label: 'Overdue', value: '$77,700', trend: '-5%' },
+    { label: 'Health Score', value: '65/100', trend: '+3' },
+    { label: 'Cash Runway', value: '0.4 months', trend: '-0.1' },
+  ],
+  sales: [
+    { label: 'Pipeline Value', value: '$485,000', trend: '+18%' },
+    { label: 'Won Deals', value: '8', trend: '+2' },
+    { label: 'Win Rate', value: '67%', trend: '+5%' },
+    { label: 'Avg Deal Size', value: '$39,000', trend: '+$4K' },
+  ],
+  finops: [
+    { label: 'Monthly Expenses', value: '$105,240', trend: '-3%' },
+    { label: 'Total Debt', value: '$729,000', trend: '-$12K' },
+    { label: 'Equipment Value', value: '$214,000', trend: '' },
+    { label: 'Burn Rate', value: '$109,630/mo', trend: '' },
+  ],
+  payables: [
+    { label: 'Pending Review', value: '2 invoices', trend: '' },
+    { label: 'Unreconciled', value: '10 txns', trend: '' },
+    { label: 'Monthly Outflow', value: '$105,240', trend: '' },
+    { label: 'Payment Methods', value: '4 active', trend: '' },
+  ],
+  collections: [
+    { label: 'Overdue Total', value: '$77,700', trend: '' },
+    { label: 'Debtors', value: '3 accounts', trend: '' },
+    { label: 'Gentle', value: '1', trend: '' },
+    { label: 'Firm', value: '2', trend: '' },
+  ],
+}
+
+const DEFAULT_KPIS = [
+  { label: 'Features Built', value: '—' },
+  { label: 'Completion', value: '—' },
+  { label: 'Status', value: '—' },
+  { label: 'Category', value: '—' },
+]
+
+export default function DemoAgentPage() {
+  const { slug } = useParams<{ slug: string }>()
+  const router = useRouter()
+  const agent = getAgent(slug)
+  const [showLead, setShowLead] = useState(false)
+
+  if (!agent) return (
+    <div className="max-w-lg mx-auto py-20 text-center space-y-4">
+      <div className="text-4xl">🤖</div>
+      <div className="text-lg font-semibold">Agent not found</div>
+      <Link href="/demo" className="text-blue-400 text-sm">← Back to all agents</Link>
+    </div>
+  )
+
+  const kpis = MOCK_KPIS[slug] || DEFAULT_KPIS
+  const doneFeat = agent.features.filter(f => f.status === 'done')
+  const backlog = agent.features.filter(f => f.status !== 'done')
+
+  const handleGetStarted = () => {
+    trackClick(slug, 'demo-cta')
+    if (agent.status === 'live' && agent.liveRoute) {
+      router.push('/login')
+    } else {
+      setShowLead(true)
+    }
+  }
+
+  return (
+    <div className="max-w-5xl mx-auto p-6 space-y-6">
+      {showLead && <LeadCaptureModal agentSlug={slug} agentName={agent.name} onClose={() => setShowLead(false)} />}
+
+      {/* Header */}
+      <div className="flex justify-between items-start">
+        <div className="flex items-center gap-4">
+          <div className="text-4xl">{agent.icon}</div>
+          <div>
+            <h1 className="text-2xl font-bold">{agent.name}</h1>
+            <p className="text-sm text-gray-400 mt-1">{agent.description}</p>
+            <div className="flex items-center gap-3 mt-2">
+              <span className={"text-[10px] px-2 py-0.5 rounded font-semibold " + (agent.status === 'live' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400')}>
+                {agent.status === 'live' ? 'LIVE' : 'IN DEVELOPMENT'}
+              </span>
+              <div className="flex items-center gap-2 w-32">
+                <div className="flex-1 bg-white/5 rounded-full h-1.5"><div className="bg-blue-500 h-1.5 rounded-full" style={{ width: agent.completionPct + '%' }} /></div>
+                <span className="text-[10px] text-gray-500">{agent.completionPct}%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button onClick={handleGetStarted}
+          className="px-5 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-500 transition-colors">
+          {agent.status === 'live' ? 'Get Started →' : 'Order This Agent'}
+        </button>
+      </div>
+
+      {/* KPI Cards — Layer 1 */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        {kpis.map((kpi, i) => (
+          <div key={i} className="bg-[#0A0E15] border border-white/5 rounded-xl p-4">
+            <div className="text-[9px] text-gray-500 uppercase">{kpi.label}</div>
+            <div className="text-xl font-mono font-bold mt-1">{kpi.value}</div>
+            {kpi.trend && <div className="text-[10px] text-emerald-400 mt-1">{kpi.trend}</div>}
+            <div className="text-[9px] text-amber-400/50 mt-1 italic">sample data</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Features Built */}
+      <div className="grid grid-cols-2 gap-5">
+        <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
+          <h3 className="text-sm font-semibold text-emerald-400 mb-3">Completed Features ({doneFeat.length})</h3>
+          {doneFeat.map((f, i) => (
+            <div key={i} className="flex items-center gap-2 py-1.5 text-xs border-b border-white/[0.03] last:border-0">
+              <span className="text-emerald-400">✓</span><span className="text-gray-300">{f.name}</span>
+            </div>
+          ))}
+        </div>
+        <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
+          <h3 className="text-sm font-semibold text-amber-400 mb-3">Backlog ({backlog.length})</h3>
+          {backlog.map((f, i) => (
+            <div key={i} className="flex items-center gap-2 py-1.5 text-xs border-b border-white/[0.03] last:border-0">
+              <span className="text-amber-400/50">{f.status === 'debt' ? '⚠' : '○'}</span>
+              <span className="text-gray-500">{f.name}</span>
+              {f.status === 'debt' && <span className="text-[9px] text-rose-400/50 ml-auto">tech debt</span>}
+            </div>
+          ))}
+          {backlog.length === 0 && <div className="text-xs text-gray-600">All features complete!</div>}
+        </div>
+      </div>
+
+      {/* CTA Bottom */}
+      <div className="bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/20 rounded-xl p-6 text-center">
+        <h3 className="text-lg font-bold mb-2">{agent.status === 'live' ? 'Ready to go live?' : 'Interested in this agent?'}</h3>
+        <p className="text-sm text-gray-400 mb-4">
+          {agent.status === 'live'
+            ? 'Sign up to connect your real business data and start using ' + agent.name + ' today.'
+            : 'Leave your details and we'll notify you the moment ' + agent.name + ' is ready.'}
+        </p>
+        <button onClick={handleGetStarted}
+          className="px-6 py-3 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-500 transition-colors">
+          {agent.status === 'live' ? 'Sign Up Now' : 'Join the Waitlist'}
+        </button>
+      </div>
+    </div>
+  )
+}

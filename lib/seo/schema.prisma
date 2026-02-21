@@ -1,0 +1,86 @@
+// ============================================================================
+// SEO HEALTH LOG — Prisma schema for weekly SEO snapshots
+// ============================================================================
+// Add to your main schema.prisma or run as separate migration
+
+model SeoHealthLog {
+  id              String   @id @default(cuid())
+  companyId       String
+  domain          String
+  weekOf          DateTime // Start of the week this snapshot covers
+  
+  // Search Console Metrics
+  totalClicks     Int      @default(0)
+  totalImpressions Int     @default(0)
+  avgCtr          Float    @default(0)
+  avgPosition     Float    @default(0)
+  
+  // Technical SEO Score (0-100)
+  techScore       Int      @default(0)
+  pageSpeedMobile Int      @default(0)   // 0-100
+  pageSpeedDesktop Int     @default(0)   // 0-100
+  metaTagScore    Int      @default(0)   // % of pages with proper meta
+  sslValid        Boolean  @default(true)
+  mobileResponsive Boolean @default(true)
+  brokenLinks     Int      @default(0)
+  missingAltTags  Int      @default(0)
+  
+  // Local SEO
+  mapPackKeywords  Int     @default(0)   // Keywords appearing in Map Pack
+  totalTracked     Int     @default(0)   // Total keywords tracked
+  avgMapPosition   Float   @default(0)   // Average Map Pack position
+  gbpPostsPublished Int    @default(0)   // GBP posts published this week
+  gbpViews         Int     @default(0)   // GBP listing views
+  gbpActions       Int     @default(0)   // Calls + directions + website clicks
+  
+  // Competitor Data
+  competitorData  Json?    // Array of { name, domain, avgPosition, mapPackPresence }
+  
+  // Agent Actions
+  actionsGenerated Int     @default(0)   // Actions the agent suggested
+  actionsApproved  Int     @default(0)   // Actions the user approved
+  actionsDeployed  Int     @default(0)   // Actions successfully deployed
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([companyId, weekOf])
+  @@index([domain])
+}
+
+model SeoKeywordRanking {
+  id          String   @id @default(cuid())
+  companyId   String
+  keyword     String
+  position    Float    // Current average position
+  prevPosition Float?  // Previous week position
+  change      Float?   // Position change (negative = improved)
+  clicks      Int      @default(0)
+  impressions Int      @default(0)
+  ctr         Float    @default(0)
+  inMapPack   Boolean  @default(false)
+  mapPosition Int?     // 1-3 if in Map Pack
+  url         String?  // Best ranking URL
+  trackedAt   DateTime @default(now())
+
+  @@index([companyId, trackedAt])
+  @@index([keyword])
+}
+
+model SeoAction {
+  id          String   @id @default(cuid())
+  companyId   String
+  type        String   // 'blog_post' | 'gbp_update' | 'meta_fix' | 'speed_fix' | 'backlink'
+  title       String
+  description String
+  content     String?  @db.Text  // Generated content (blog post, GBP update text)
+  keyword     String?  // Target keyword
+  priority    String   @default("medium") // high | medium | low
+  status      String   @default("pending") // pending | approved | deployed | rejected
+  impact      String?  // Expected impact description
+  createdAt   DateTime @default(now())
+  approvedAt  DateTime?
+  deployedAt  DateTime?
+
+  @@index([companyId, status])
+}
