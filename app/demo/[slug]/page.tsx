@@ -114,7 +114,7 @@ export default function DemoAgentPage() {
         <div className="grid grid-cols-2 gap-2">
           {agent.features.map((f, i) => (
             <div key={i} className="flex items-center gap-2 py-1.5 text-sm text-gray-300">
-              <span className="text-emerald-400">✓</span> {f}
+              <span className="text-emerald-400">✓</span> {typeof f === 'string' ? f : f.name}
             </div>
           ))}
         </div>
