@@ -19,9 +19,19 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="dark">
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: `
+          (function(){
+            var h = window.location.hash;
+            if (h && h.indexOf('type=recovery') !== -1 && window.location.pathname !== '/reset-password') {
+              window.location.replace('/reset-password' + h);
+            }
+          })();
+        `}} />
+      </head>
       <body suppressHydrationWarning className="bg-[#0a0a0f] text-white antialiased">
         <TenantProvider><CompanyProvider>{children}</CompanyProvider></TenantProvider>
-              <CartDrawer />
+        <CartDrawer />
         <ChatWidget />
       </body>
     </html>
