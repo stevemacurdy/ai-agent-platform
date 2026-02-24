@@ -1,13 +1,18 @@
 'use client'
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react'
+import { createClient, SupabaseClient } from '@supabase/supabase-js'
 
-const HAS_SUPABASE = !!(process.env.NEXT_PUBLIC_SUPABASE_URL && !process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder'))
-
-function getSupabase() {
-  if (!HAS_SUPABASE) return null
-  const { createClient } = require('@supabase/supabase-js')
-  return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
+// Supabase client (singleton)
+let _supabase: SupabaseClient | null = null
+function getSupabase(): SupabaseClient {
+  if (!_supabase) {
+    _supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
+  }
+  return _supabase
 }
 
 interface Profile {
@@ -15,12 +20,13 @@ interface Profile {
   email: string
   display_name: string
   role: string
+  company_id: string | null
   org_id: string | null
   permissions: Record<string, boolean>
   avatar_url: string | null
   phone: string | null
   status: string
-  organizations?: any
+  must_reset_password?: boolean
 }
 
 interface AuthContextType {
@@ -33,16 +39,16 @@ interface AuthContextType {
   signOut: () => Promise<void>
   refreshProfile: () => Promise<void>
   isSuperAdmin: boolean
-  isOrgAdmin: boolean
+  isAdmin: boolean
+  isCompanyAdmin: boolean
   hasPermission: (perm: string) => boolean
-  devMode: boolean
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null, session: null, profile: null, loading: true,
   signIn: async () => ({}), signUp: async () => ({}), signOut: async () => {},
   refreshProfile: async () => {},
-  isSuperAdmin: false, isOrgAdmin: false, hasPermission: () => false, devMode: true,
+  isSuperAdmin: false, isAdmin: false, isCompanyAdmin: false, hasPermission: () => false,
 })
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -51,117 +57,77 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null)
   const [loading, setLoading] = useState(true)
 
-  const devMode = !HAS_SUPABASE
+  const supabase = getSupabase()
+
+  const fetchProfile = useCallback(async (userId: string) => {
+    const { data } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', userId)
+      .single()
+    if (data) setProfile(data)
+    return data
+  }, [supabase])
 
   useEffect(() => {
-    if (devMode) {
-      // Dev mode: check localStorage
-      try {
-        const stored = localStorage.getItem('woulfai_session')
-        if (stored) {
-          const parsed = JSON.parse(stored)
-          if (parsed.loggedIn || parsed.user) {
-            setProfile({
-              id: 'dev-user',
-              email: parsed.user?.email || 'admin',
-              display_name: 'Steve Macurdy',
-              role: 'super_admin',
-              org_id: null,
-              permissions: { sales_agent: true, cfo_agent: true, admin_analytics: true, agent_creator: true, wms_agent: true },
-              avatar_url: null,
-              phone: null,
-              status: 'active',
-            })
-          }
-        }
-      } catch {}
-      setLoading(false)
-      return
-    }
-
-    // Real Supabase auth
-    const supabase = getSupabase()
-    if (!supabase) { setLoading(false); return }
-
-    supabase.auth.getSession().then(({ data: { session: s } }: any) => {
+    supabase.auth.getSession().then(({ data: { session: s } }) => {
       setSession(s)
       setUser(s?.user || null)
       if (s?.user) {
-        supabase.from('profiles').select('*, organizations(*)').eq('id', s.user.id).single()
-          .then(({ data }: any) => { if (data) setProfile(data) })
+        fetchProfile(s.user.id).finally(() => setLoading(false))
+      } else {
+        setLoading(false)
       }
-      setLoading(false)
     })
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event: any, s: any) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, s) => {
       setSession(s)
       setUser(s?.user || null)
       if (s?.user) {
-        supabase.from('profiles').select('*, organizations(*)').eq('id', s.user.id).single()
-          .then(({ data }: any) => { if (data) setProfile(data) })
+        fetchProfile(s.user.id)
       } else {
         setProfile(null)
       }
     })
 
     return () => subscription.unsubscribe()
-  }, [])
+  }, [supabase, fetchProfile])
 
   const signIn = async (email: string, password: string) => {
-    if (devMode) {
-      if ((email === 'admin' && password === 'REMOVED') || email === 'steve@woulfgroup.com') {
-        const devSession = { user: { email }, loggedIn: true }
-        localStorage.setItem('woulfai_session', JSON.stringify(devSession))
-        setProfile({
-          id: 'dev-user', email, display_name: 'Steve Macurdy', role: 'super_admin',
-          org_id: null, permissions: { sales_agent: true, cfo_agent: true, admin_analytics: true, agent_creator: true, wms_agent: true },
-          avatar_url: null, phone: null, status: 'active',
-        })
-        return {}
-      }
-      return { error: 'Invalid credentials' }
-    }
-
-    const supabase = getSupabase()
-    if (!supabase) return { error: 'Auth not configured' }
     const { data, error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) return { error: error.message }
-    if (data.user) {
-      const { data: p } = await supabase.from('profiles').select('*, organizations(*)').eq('id', data.user.id).single()
-      if (p) setProfile(p)
-    }
+    if (data.user) await fetchProfile(data.user.id)
     return {}
   }
 
   const signUp = async (email: string, password: string, displayName: string) => {
-    if (devMode) return { error: 'Sign up not available in dev mode' }
-    const supabase = getSupabase()
-    if (!supabase) return { error: 'Auth not configured' }
-    const { data, error } = await supabase.auth.signUp({ email, password, options: { data: { display_name: displayName } } })
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { display_name: displayName } },
+    })
     if (error) return { error: error.message }
     return {}
   }
 
   const signOutFn = async () => {
-    if (devMode) {
-      localStorage.removeItem('woulfai_session')
-      setProfile(null)
-      return
-    }
-    const supabase = getSupabase()
-    if (supabase) await supabase.auth.signOut()
+    await supabase.auth.signOut()
     setProfile(null)
+    setUser(null)
+    setSession(null)
   }
 
   const isSuperAdmin = profile?.role === 'super_admin'
-  const isOrgAdmin = profile?.role === 'org_admin' || isSuperAdmin
+  const isAdmin = isSuperAdmin || profile?.role === 'admin'
+  const isCompanyAdmin = profile?.role === 'company_admin' || isAdmin
   const hasPermission = (perm: string) => isSuperAdmin || profile?.permissions?.[perm] === true
 
   return (
     <AuthContext.Provider value={{
       user, session, profile, loading,
-      signIn, signUp, signOut: signOutFn, refreshProfile: async () => {},
-      isSuperAdmin, isOrgAdmin, hasPermission, devMode,
+      signIn, signUp, signOut: signOutFn,
+      refreshProfile: async () => { if (user?.id) await fetchProfile(user.id) },
+      isSuperAdmin, isAdmin, isCompanyAdmin, hasPermission,
     }}>
       {children}
     </AuthContext.Provider>

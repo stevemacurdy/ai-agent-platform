@@ -42,8 +42,10 @@ export default function AdminUsersPage() {
   // Status messages
   const [statusMsg, setStatusMsg] = useState<{ userId: string; msg: string; type: 'success' | 'error' } | null>(null);
 
-  const loadUsers = () => {
-    fetch('/api/admin/users?t=' + Date.now()).then(r => r.json()).then(d => setUsers(d.users || [])).catch(() => {});
+  const loadUsers = async () => {
+    const token = await getAuthToken();
+    if (!token) return;
+    fetch('/api/admin/users?t=' + Date.now(), { headers: { 'Authorization': 'Bearer ' + token } }).then(r => r.json()).then(d => setUsers(d.users || [])).catch(() => {});
   };
 
   useEffect(() => { loadUsers(); }, []);
