@@ -1,7 +1,7 @@
 'use client'
-
 import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react'
 import { createClient, SupabaseClient } from '@supabase/supabase-js'
+import { useRouter, usePathname } from 'next/navigation'
 
 // Supabase client (singleton)
 let _supabase: SupabaseClient | null = null
@@ -56,8 +56,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<any>(null)
   const [profile, setProfile] = useState<Profile | null>(null)
   const [loading, setLoading] = useState(true)
-
   const supabase = getSupabase()
+  const router = useRouter()
+  const pathname = usePathname()
+
+  // Detect Supabase recovery tokens and redirect to /reset-password
+  // Supabase strips the path from redirect_to, so recovery links land on homepage
+  useEffect(() => {
+    if (pathname === '/reset-password') return
+    const hash = window.location.hash
+    if (hash && hash.includes('type=recovery')) {
+      router.replace('/reset-password' + hash)
+    }
+  }, [pathname, router])
 
   const fetchProfile = useCallback(async (userId: string) => {
     const { data } = await supabase
@@ -79,7 +90,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setLoading(false)
       }
     })
-
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, s) => {
       setSession(s)
       setUser(s?.user || null)
@@ -89,7 +99,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setProfile(null)
       }
     })
-
     return () => subscription.unsubscribe()
   }, [supabase, fetchProfile])
 
