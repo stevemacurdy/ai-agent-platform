@@ -1,4 +1,5 @@
 'use client';
+import { getSupabaseBrowser } from '@/lib/supabase-browser';
 import { useState, useEffect } from 'react';
 import { AGENTS } from '@/lib/agents/agent-registry';
 import Link from 'next/link';
@@ -25,12 +26,20 @@ export default function AdminCompaniesPage() {
   const [editAgents, setEditAgents] = useState<string[]>([]);
   const [msg, setMsg] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
 
+  const getAuthToken = async (): Promise<string | null> => {
+    const sb = getSupabaseBrowser();
+    const { data: { session } } = await sb.auth.getSession();
+    return session?.access_token || null;
+  };
+
   // Create form
   const [form, setForm] = useState({ name: '', slug: '', domain: '' });
 
   const loadCompanies = async () => {
     try {
-      const res = await fetch('/api/admin/companies?t=' + Date.now());
+      const token = await getAuthToken();
+      if (!token) { setLoading(false); return; }
+      const res = await fetch('/api/admin/companies?t=' + Date.now(), { headers: { 'Authorization': 'Bearer ' + token } });
       const data = await res.json();
       setCompanies(data.companies || []);
     } catch {}
@@ -43,9 +52,10 @@ export default function AdminCompaniesPage() {
     if (!form.name.trim()) return;
     const slug = form.slug.trim() || form.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-+$/, '');
     try {
+      const cToken = await getAuthToken();
       const res = await fetch('/api/admin/companies', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (cToken || '') },
         body: JSON.stringify({ name: form.name.trim(), slug, domain: form.domain.trim() || null }),
       });
       const data = await res.json();
@@ -71,9 +81,10 @@ export default function AdminCompaniesPage() {
   const saveAgents = async () => {
     if (!editingId) return;
     try {
+      const pToken = await getAuthToken();
       const res = await fetch('/api/admin/companies', {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (pToken || '') },
         body: JSON.stringify({ company_id: editingId, agents: editAgents }),
       });
       const data = await res.json();

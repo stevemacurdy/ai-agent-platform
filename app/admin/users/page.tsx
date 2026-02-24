@@ -99,7 +99,7 @@ export default function AdminUsersPage() {
     // Update agents
     await fetch('/api/admin/manage-agents', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
       body: JSON.stringify({ user_id: userId, agent_slugs: editAgents }),
     });
 

@@ -1,4 +1,5 @@
 'use client';
+import { getSupabaseBrowser } from '@/lib/supabase-browser';
 import Link from 'next/link';
 import { AGENTS } from '@/lib/agents/agent-registry';
 import { useState, useEffect } from 'react';
@@ -11,7 +12,13 @@ export default function AdminDashboard() {
   const [selectedCat, setSelectedCat] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch('/api/admin/users').then(r => r.json()).then(d => setUserCount(d.users?.length || 0)).catch(() => {});
+    (async () => {
+      const sb = getSupabaseBrowser();
+      const { data: { session } } = await sb.auth.getSession();
+      const t = session?.access_token;
+      if (!t) return;
+      fetch('/api/admin/users', { headers: { 'Authorization': 'Bearer ' + t } }).then(r => r.json()).then(d => setUserCount(d.users?.length || 0)).catch(() => {});
+    })();
   }, []);
 
   const filtered = selectedCat ? LIVE.filter(a => a.category === selectedCat) : LIVE;
