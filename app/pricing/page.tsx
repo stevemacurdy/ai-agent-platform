@@ -1,7 +1,11 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { getSupabaseBrowser } from '@/lib/supabase-browser';
+import { AGENTS } from '@/lib/agents/agent-registry';
+import Link from 'next/link';
+
+const LIVE_AGENTS = AGENTS.filter(a => a.status === 'live');
 
 const PLANS = [
   {
@@ -14,6 +18,7 @@ const PLANS = [
     features: ['3 AI Agents of your choice', '1 Company workspace', '2 Team members', 'Email support', 'Basic analytics dashboard'],
     cta: 'Start with Starter',
     popular: false,
+    isEnterprise: false,
   },
   {
     key: 'professional',
@@ -25,17 +30,29 @@ const PLANS = [
     features: ['8 AI Agents of your choice', '3 Company workspaces', '10 Team members', 'Priority support', 'Advanced analytics', 'API access', 'Custom onboarding session'],
     cta: 'Go Professional',
     popular: true,
+    isEnterprise: false,
   },
   {
     key: 'enterprise',
     name: 'Enterprise',
-    price: 2499,
-    agents: 14,
+    price: 0,
+    agents: LIVE_AGENTS.length,
     companies: -1,
     users: -1,
-    features: ['All 14 AI Agents', 'Unlimited workspaces', 'Unlimited team members', 'Dedicated account manager', 'Full analytics suite', 'API + Webhooks', 'Custom integrations', 'SLA guarantee', 'On-site training available'],
-    cta: 'Go Enterprise',
+    features: [
+      'All ' + LIVE_AGENTS.length + ' AI Agents',
+      'Unlimited workspaces',
+      'Unlimited team members',
+      'Dedicated account manager',
+      'Full analytics suite',
+      'API + Webhooks',
+      'Custom integrations',
+      'SLA guarantee',
+      'On-site training available',
+    ],
+    cta: 'Contact Sales',
     popular: false,
+    isEnterprise: true,
   },
 ];
 
@@ -45,6 +62,13 @@ export default function PricingPage() {
   const canceled = params.get('canceled');
 
   const handleSubscribe = async (planKey: string) => {
+    // Enterprise → redirect to contact/support
+    const plan = PLANS.find(p => p.key === planKey);
+    if (plan?.isEnterprise) {
+      window.location.href = '/contact?interest=enterprise';
+      return;
+    }
+
     setLoading(planKey);
     try {
       const sb = getSupabaseBrowser();
@@ -86,11 +110,20 @@ export default function PricingPage() {
               {plan.popular && <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 bg-blue-600 text-white text-[10px] font-bold uppercase rounded-full">Most Popular</div>}
               <div className="mb-6">
                 <h2 className="text-xl font-bold mb-1">{plan.name}</h2>
-                <div className="flex items-baseline gap-1">
-                  <span className="text-4xl font-bold">{'$' + plan.price.toLocaleString()}</span>
-                  <span className="text-sm text-gray-500">/month</span>
-                </div>
-                <p className="text-xs text-gray-500 mt-1">{plan.agents} agents | {plan.companies === -1 ? 'Unlimited' : plan.companies} {plan.companies === 1 ? 'workspace' : 'workspaces'} | {plan.users === -1 ? 'Unlimited' : plan.users} users</p>
+                {plan.isEnterprise ? (
+                  <div>
+                    <div className="text-2xl font-bold text-gray-300 mt-1">Custom Pricing</div>
+                    <p className="text-xs text-gray-500 mt-1">Tailored to your organization</p>
+                  </div>
+                ) : (
+                  <div>
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-4xl font-bold">{'$' + plan.price.toLocaleString()}</span>
+                      <span className="text-sm text-gray-500">/month</span>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1">{plan.agents} agents | {plan.companies === -1 ? 'Unlimited' : plan.companies} {plan.companies === 1 ? 'workspace' : 'workspaces'} | {plan.users === -1 ? 'Unlimited' : plan.users} users</p>
+                  </div>
+                )}
               </div>
 
               <ul className="space-y-2 flex-1 mb-6">
@@ -101,8 +134,14 @@ export default function PricingPage() {
                 ))}
               </ul>
 
-              <button onClick={() => handleSubscribe(plan.key)} disabled={loading !== null}
-                className={'w-full py-3 rounded-xl font-semibold text-sm transition ' + (plan.popular ? 'bg-blue-600 text-white hover:bg-blue-500' : 'bg-white/5 text-white hover:bg-white/10') + (loading === plan.key ? ' opacity-50 cursor-wait' : '')}>
+              <button onClick={() => handleSubscribe(plan.key)} disabled={loading !== null && !plan.isEnterprise}
+                className={'w-full py-3 rounded-xl font-semibold text-sm transition ' +
+                  (plan.isEnterprise
+                    ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:opacity-90'
+                    : plan.popular
+                      ? 'bg-blue-600 text-white hover:bg-blue-500'
+                      : 'bg-white/5 text-white hover:bg-white/10') +
+                  (loading === plan.key ? ' opacity-50 cursor-wait' : '')}>
                 {loading === plan.key ? 'Redirecting to Stripe...' : plan.cta}
               </button>
             </div>
@@ -110,7 +149,7 @@ export default function PricingPage() {
         </div>
 
         <div className="text-center mt-10 text-xs text-gray-600">
-          <p>All plans include a 14-day free trial. No credit card required to start.</p>
+          <p>Starter and Professional plans include a 14-day free trial. No credit card required.</p>
           <p className="mt-1">Powered by Stripe. PCI compliant. Cancel anytime.</p>
         </div>
       </div>

@@ -109,7 +109,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signIn = async (email: string, password: string) => {
     if (devMode) {
-      if ((email === 'admin' && password === 'admin123') || email === 'steve@woulfgroup.com') {
+      if ((email === 'admin' && password === 'REMOVED') || email === 'steve@woulfgroup.com') {
         const devSession = { user: { email }, loggedIn: true }
         localStorage.setItem('woulfai_session', JSON.stringify(devSession))
         setProfile({

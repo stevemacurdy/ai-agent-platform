@@ -97,7 +97,7 @@ export const userStore: AuthUser[] = [
   {
     id: 'u2', email: 'marcus@woulfgroup.com', name: 'Marcus Williams',
     role: 'employee', eligibleRoles: [], agents: ['sales', 'cfo'], status: 'active',
-    password: 'bravo-delta-42', companyId: 'woulf', companyName: 'Woulf Group',
+    password: 'REMOVED', companyId: 'woulf', companyName: 'Woulf Group',
     createdAt: '2026-01-15', lastLogin: '2026-02-16'
   },
   {
@@ -121,7 +121,7 @@ export const userStore: AuthUser[] = [
   {
     id: 'u6', email: 'demo@client1.com', name: 'Sarah Chen',
     role: 'beta_tester', eligibleRoles: [], agents: ['cfo', 'sales', 'finops'], status: 'active',
-    password: 'nova-peak-55', companyId: 'client1', companyName: 'Chen Logistics',
+    password: 'REMOVED', companyId: 'client1', companyName: 'Chen Logistics',
     createdAt: '2026-02-05', lastLogin: '2026-02-17'
   },
   {
@@ -133,7 +133,7 @@ export const userStore: AuthUser[] = [
   {
     id: 'u8', email: 'paid@enterprise.com', name: 'Rachel Kim',
     role: 'org_lead', eligibleRoles: [], agents: ['cfo', 'finops', 'payables', 'collections'], status: 'active',
-    password: 'ridge-slate-19', companyId: 'kimenterprises', companyName: 'Kim Enterprises',
+    password: 'REMOVED', companyId: 'kimenterprises', companyName: 'Kim Enterprises',
     createdAt: '2026-02-01', lastLogin: '2026-02-17'
   },
 ]

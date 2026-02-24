@@ -1,9 +1,17 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { AGENTS } from '@/lib/agents/agent-registry';
-import Link from 'next/link';
+import { getSupabaseBrowser } from '@/lib/supabase-browser';
 
 const LIVE_AGENTS = AGENTS.filter(a => a.status === 'live');
+
+const ROLES = [
+  { value: 'super_admin', label: 'Super Admin', color: 'bg-rose-500/10 text-rose-400' },
+  { value: 'admin', label: 'Admin', color: 'bg-purple-500/10 text-purple-400' },
+  { value: 'employee', label: 'Employee', color: 'bg-blue-500/10 text-blue-400' },
+  { value: 'org_lead', label: 'Org Lead', color: 'bg-amber-500/10 text-amber-400' },
+  { value: 'beta_tester', label: 'Beta Tester', color: 'bg-emerald-500/10 text-emerald-400' },
+];
 
 interface UserRecord {
   id: string;
@@ -11,6 +19,7 @@ interface UserRecord {
   full_name: string;
   role: string;
   approved_agents: string[];
+  must_reset_password?: boolean;
 }
 
 export default function AdminUsersPage() {
@@ -20,12 +29,26 @@ export default function AdminUsersPage() {
   const [form, setForm] = useState({ email: '', full_name: '', role: 'employee', agent_slugs: [] as string[] });
   const [result, setResult] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+
+  // Editing state
   const [editingUser, setEditingUser] = useState<string | null>(null);
   const [editAgents, setEditAgents] = useState<string[]>([]);
+  const [editRole, setEditRole] = useState('');
 
-  useEffect(() => {
-    fetch('/api/admin/users').then(r => r.json()).then(d => setUsers(d.users || [])).catch(() => {});
-  }, [result]);
+  // Reset password state
+  const [resetResult, setResetResult] = useState<{ userId: string; password?: string; error?: string } | null>(null);
+  const [resettingUser, setResettingUser] = useState<string | null>(null);
+
+  // Status messages
+  const [statusMsg, setStatusMsg] = useState<{ userId: string; msg: string; type: 'success' | 'error' } | null>(null);
+
+  const loadUsers = () => {
+    fetch('/api/admin/users?t=' + Date.now()).then(r => r.json()).then(d => setUsers(d.users || [])).catch(() => {});
+  };
+
+  useEffect(() => { loadUsers(); }, []);
+
+  const reload = () => { setTimeout(loadUsers, 500); };
 
   const toggleAgent = (slug: string) => {
     setForm(f => ({
@@ -53,6 +76,7 @@ export default function AdminUsersPage() {
       setResult(data);
       if (data.success) {
         setForm({ email: '', full_name: '', role: 'employee', agent_slugs: [] });
+        reload();
       }
     } catch (err: any) {
       setResult({ error: err.message });
@@ -60,14 +84,90 @@ export default function AdminUsersPage() {
     setLoading(false);
   };
 
-  const handleUpdateAgents = async (userId: string) => {
+  const getAuthToken = async (): Promise<string | null> => {
+    const sb = getSupabaseBrowser();
+    const { data: { session } } = await sb.auth.getSession();
+    return session?.access_token || null;
+  };
+
+  const handleSaveEdits = async (userId: string) => {
+    const token = await getAuthToken();
+    if (!token) return;
+
+    // Update agents
     await fetch('/api/admin/manage-agents', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_id: userId, agent_slugs: editAgents }),
     });
+
+    // Update role if changed
+    const user = users.find(u => u.id === userId);
+    if (user && editRole !== user.role) {
+      const res = await fetch('/api/admin/update-role', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token,
+        },
+        body: JSON.stringify({ userId, role: editRole }),
+      });
+      const data = await res.json();
+      if (!data.success) {
+        setStatusMsg({ userId, msg: data.error || 'Failed to update role', type: 'error' });
+        return;
+      }
+    }
+
     setEditingUser(null);
-    setResult({ success: true, message: 'Agent access updated' });
+    setStatusMsg({ userId, msg: 'Updated successfully', type: 'success' });
+    reload();
+    setTimeout(() => setStatusMsg(null), 3000);
+  };
+
+  const handleResetPassword = async (userId: string) => {
+    setResettingUser(userId);
+    setResetResult(null);
+    try {
+      const token = await getAuthToken();
+      if (!token) {
+        setResetResult({ userId, error: 'Not authenticated' });
+        setResettingUser(null);
+        return;
+      }
+
+      const res = await fetch('/api/admin/reset-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token,
+        },
+        body: JSON.stringify({ userId }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setResetResult({ userId, password: data.temp_password });
+        reload();
+      } else {
+        setResetResult({ userId, error: data.error });
+      }
+    } catch (err: any) {
+      setResetResult({ userId, error: err.message });
+    }
+    setResettingUser(null);
+  };
+
+  const startEditing = (u: UserRecord) => {
+    setEditingUser(u.id);
+    setEditAgents(u.approved_agents || []);
+    setEditRole(u.role);
+    setResetResult(null);
+    setStatusMsg(null);
+  };
+
+  const getRoleStyle = (role: string) => {
+    const r = ROLES.find(x => x.value === role);
+    return r ? r.color : 'bg-gray-500/10 text-gray-400';
   };
 
   return (
@@ -75,7 +175,7 @@ export default function AdminUsersPage() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold">User Management</h1>
-          <p className="text-sm text-gray-400 mt-1">Create users, assign agents, manage access</p>
+          <p className="text-sm text-gray-400 mt-1">{users.length} users — assign roles, agents, and manage access</p>
         </div>
         <button
           onClick={() => setShowCreate(!showCreate)}
@@ -106,33 +206,21 @@ export default function AdminUsersPage() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-xs text-gray-400 mb-1">Email</label>
-              <input
-                type="email"
-                value={form.email}
-                onChange={(e) => setForm(f => ({ ...f, email: e.target.value }))}
-                className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white focus:border-blue-500 focus:outline-none"
-                placeholder="employee@company.com"
-              />
+              <input type="email" value={form.email} onChange={(e) => setForm(f => ({ ...f, email: e.target.value }))}
+                className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white focus:border-blue-500 focus:outline-none" placeholder="employee@company.com" />
             </div>
             <div>
               <label className="block text-xs text-gray-400 mb-1">Full Name</label>
-              <input
-                type="text"
-                value={form.full_name}
-                onChange={(e) => setForm(f => ({ ...f, full_name: e.target.value }))}
-                className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white focus:border-blue-500 focus:outline-none"
-                placeholder="Jane Smith"
-              />
+              <input type="text" value={form.full_name} onChange={(e) => setForm(f => ({ ...f, full_name: e.target.value }))}
+                className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white focus:border-blue-500 focus:outline-none" placeholder="Jane Smith" />
             </div>
           </div>
 
           <div>
             <label className="block text-xs text-gray-400 mb-1">Role</label>
-            <select
-              value={form.role}
-              onChange={(e) => setForm(f => ({ ...f, role: e.target.value }))}
-              className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white focus:border-blue-500 focus:outline-none"
-            >
+            <select value={form.role} onChange={(e) => setForm(f => ({ ...f, role: e.target.value }))}
+              className="w-full px-3 py-2 bg-[#0A0E15] border border-white/10 rounded-lg text-sm text-white focus:border-blue-500 focus:outline-none"
+              style={{ colorScheme: 'dark' }}>
               <option value="employee">Employee</option>
               <option value="admin">Admin</option>
               <option value="org_lead">Organization Lead</option>
@@ -150,14 +238,11 @@ export default function AdminUsersPage() {
             </div>
             <div className="grid grid-cols-3 gap-2">
               {LIVE_AGENTS.map(agent => (
-                <button
-                  key={agent.slug}
-                  onClick={() => toggleAgent(agent.slug)}
+                <button key={agent.slug} onClick={() => toggleAgent(agent.slug)}
                   className={"flex items-center gap-2 px-3 py-2 rounded-lg text-xs transition border " +
                     (form.agent_slugs.includes(agent.slug)
                       ? 'bg-blue-600/20 border-blue-500/30 text-blue-400'
-                      : 'bg-white/5 border-white/5 text-gray-500 hover:border-white/10')}
-                >
+                      : 'bg-white/5 border-white/5 text-gray-500 hover:border-white/10')}>
                   <span>{agent.icon}</span>
                   <span className="truncate">{agent.name}</span>
                 </button>
@@ -165,11 +250,8 @@ export default function AdminUsersPage() {
             </div>
           </div>
 
-          <button
-            onClick={handleCreate}
-            disabled={loading || !form.email}
-            className="px-6 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-500 disabled:opacity-50 transition"
-          >
+          <button onClick={handleCreate} disabled={loading || !form.email}
+            className="px-6 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-500 disabled:opacity-50 transition">
             {loading ? 'Creating...' : createMode === 'password' ? 'Create with Temp Password' : 'Send Invite Email'}
           </button>
 
@@ -181,7 +263,7 @@ export default function AdminUsersPage() {
                   {result.temp_password && (
                     <div className="mt-2 bg-black/30 rounded px-3 py-2 font-mono">
                       Temp Password: <span className="text-white font-bold">{result.temp_password}</span>
-                      <p className="text-[10px] text-gray-500 mt-1">Share this with the employee. They will be prompted to change it on first login.</p>
+                      <p className="text-[10px] text-gray-500 mt-1">Share this with the user.</p>
                     </div>
                   )}
                 </div>
@@ -194,77 +276,164 @@ export default function AdminUsersPage() {
       )}
 
       {/* User List */}
-      <div className="bg-[#0A0E15] border border-white/5 rounded-xl overflow-hidden">
-        <table className="w-full">
-          <thead>
-            <tr className="border-b border-white/5">
-              <th className="text-left px-4 py-3 text-xs text-gray-500 font-medium">User</th>
-              <th className="text-left px-4 py-3 text-xs text-gray-500 font-medium">Role</th>
-              <th className="text-left px-4 py-3 text-xs text-gray-500 font-medium">Agents</th>
-              <th className="text-right px-4 py-3 text-xs text-gray-500 font-medium">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((u) => (
-              <tr key={u.id} className="border-b border-white/[0.03] hover:bg-white/[0.02]">
-                <td className="px-4 py-3">
-                  <div className="text-sm text-white">{u.full_name || 'No Name'}</div>
-                  <div className="text-[10px] text-gray-500">{u.email}</div>
-                </td>
-                <td className="px-4 py-3">
-                  <span className={"text-[10px] px-2 py-0.5 rounded font-medium " +
-                    (u.role === 'super_admin' || u.role === 'admin' ? 'bg-purple-500/10 text-purple-400' : 'bg-gray-500/10 text-gray-400')
-                  }>{u.role?.replace('_', ' ')}</span>
-                </td>
-                <td className="px-4 py-3">
-                  {editingUser === u.id ? (
-                    <div className="flex flex-wrap gap-1">
-                      {LIVE_AGENTS.map(a => (
-                        <button
-                          key={a.slug}
-                          onClick={() => setEditAgents(prev =>
-                            prev.includes(a.slug) ? prev.filter(s => s !== a.slug) : [...prev, a.slug]
-                          )}
-                          className={"text-[10px] px-1.5 py-0.5 rounded " +
-                            (editAgents.includes(a.slug) ? 'bg-blue-600/20 text-blue-400' : 'bg-white/5 text-gray-600')}
-                        >{a.icon}</button>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="flex gap-1">
-                      {(u.approved_agents || []).slice(0, 5).map(slug => {
-                        const a = LIVE_AGENTS.find(a => a.slug === slug);
-                        return a ? <span key={slug} title={a.name} className="text-sm">{a.icon}</span> : null;
-                      })}
-                      {(u.approved_agents || []).length > 5 && (
-                        <span className="text-[10px] text-gray-500">+{u.approved_agents.length - 5}</span>
-                      )}
-                      {(u.role === 'super_admin' || u.role === 'admin') && (
-                        <span className="text-[10px] text-purple-400 italic">all access</span>
-                      )}
-                    </div>
-                  )}
-                </td>
-                <td className="px-4 py-3 text-right">
-                  {editingUser === u.id ? (
-                    <div className="flex gap-2 justify-end">
-                      <button onClick={() => handleUpdateAgents(u.id)} className="text-xs text-blue-400 hover:underline">Save</button>
-                      <button onClick={() => setEditingUser(null)} className="text-xs text-gray-500 hover:underline">Cancel</button>
-                    </div>
-                  ) : (
+      <div className="space-y-3">
+        {users.map((u) => (
+          <div key={u.id} className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
+            {/* User header row */}
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center text-sm font-bold text-gray-400">
+                  {(u.full_name || u.email || '?')[0].toUpperCase()}
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-semibold text-white">{u.full_name || 'No Name'}</span>
+                    {u.must_reset_password && (
+                      <span className="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 font-medium">TEMP PW</span>
+                    )}
+                  </div>
+                  <div className="text-[11px] text-gray-500">{u.email}</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                {editingUser !== u.id && (
+                  <span className={"text-[10px] px-2 py-0.5 rounded font-medium " + getRoleStyle(u.role)}>
+                    {u.role?.replace(/_/g, ' ')}
+                  </span>
+                )}
+                {editingUser === u.id ? (
+                  <div className="flex gap-2">
+                    <button onClick={() => handleSaveEdits(u.id)} className="text-xs px-4 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition font-medium">Save</button>
+                    <button onClick={() => setEditingUser(null)} className="text-xs px-3 py-1.5 text-gray-500 hover:text-gray-300 transition">Cancel</button>
+                  </div>
+                ) : (
+                  <div className="flex gap-2">
+                    <button onClick={() => startEditing(u)} className="text-xs px-3 py-1.5 bg-white/5 text-blue-400 rounded-lg hover:bg-white/10 transition">Edit</button>
                     <button
-                      onClick={() => { setEditingUser(u.id); setEditAgents(u.approved_agents || []); }}
-                      className="text-xs text-gray-500 hover:text-blue-400 transition"
-                    >Edit Access</button>
-                  )}
-                </td>
-              </tr>
-            ))}
-            {users.length === 0 && (
-              <tr><td colSpan={4} className="px-4 py-8 text-center text-sm text-gray-600">No users found</td></tr>
+                      onClick={() => handleResetPassword(u.id)}
+                      disabled={resettingUser === u.id}
+                      className="text-xs px-3 py-1.5 bg-white/5 text-gray-500 rounded-lg hover:bg-white/10 hover:text-amber-400 transition disabled:opacity-50"
+                    >
+                      {resettingUser === u.id ? '...' : 'Reset PW'}
+                    </button>
+                    <button
+                      onClick={async () => {
+                        if (!confirm("Permanently delete " + u.email + "?")) return;
+                        const res = await fetch("/api/admin/delete-user", {
+                          method: "POST",
+                          headers: {"Content-Type":"application/json"},
+                          body: JSON.stringify({userId: u.id})
+                        });
+                        const d = await res.json();
+                        if (d.success) reload(); else alert(d.error || "Delete failed");
+                      }}
+                      className="text-xs px-3 py-1.5 bg-white/5 text-gray-500 rounded-lg hover:bg-red-500/10 hover:text-red-400 transition"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Edit panel */}
+            {editingUser === u.id && (
+              <div className="border-t border-white/5 pt-4 mt-3 space-y-4">
+                {/* Role selector - button group */}
+                <div>
+                  <label className="text-[10px] text-gray-500 uppercase tracking-wider block mb-2">Role</label>
+                  <div className="flex flex-wrap gap-2">
+                    {ROLES.map(r => (
+                      <button
+                        key={r.value}
+                        onClick={() => setEditRole(r.value)}
+                        className={"px-3 py-1.5 rounded-lg text-xs font-medium transition border " +
+                          (editRole === r.value
+                            ? r.color + ' border-current'
+                            : 'bg-white/5 border-white/5 text-gray-500 hover:border-white/10 hover:text-gray-300')}
+                      >
+                        {r.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Agent selector */}
+                <div>
+                  <div className="flex justify-between items-center mb-2">
+                    <label className="text-[10px] text-gray-500 uppercase tracking-wider">Agent Access</label>
+                    <div className="flex gap-2">
+                      <button onClick={() => setEditAgents(LIVE_AGENTS.map(a => a.slug))} className="text-[10px] text-blue-400 hover:underline">Select All</button>
+                      <button onClick={() => setEditAgents([])} className="text-[10px] text-gray-500 hover:underline">Clear</button>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                    {LIVE_AGENTS.map(a => (
+                      <button key={a.slug}
+                        onClick={() => setEditAgents(prev =>
+                          prev.includes(a.slug) ? prev.filter(s => s !== a.slug) : [...prev, a.slug]
+                        )}
+                        className={"flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[11px] transition border " +
+                          (editAgents.includes(a.slug)
+                            ? 'bg-blue-600/20 border-blue-500/30 text-blue-400'
+                            : 'bg-white/5 border-white/5 text-gray-600 hover:border-white/10 hover:text-gray-400')}
+                        title={a.name}
+                      >
+                        <span>{a.icon}</span>
+                        <span className="truncate">{a.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
             )}
-          </tbody>
-        </table>
+
+            {/* Non-edit: show agents */}
+            {editingUser !== u.id && (
+              <div className="flex gap-1 items-center">
+                {(u.approved_agents || []).slice(0, 8).map(slug => {
+                  const a = LIVE_AGENTS.find(a => a.slug === slug);
+                  return a ? <span key={slug} title={a.name} className="text-sm">{a.icon}</span> : null;
+                })}
+                {(u.approved_agents || []).length > 8 && (
+                  <span className="text-[10px] text-gray-500 ml-1">+{u.approved_agents.length - 8}</span>
+                )}
+                {(u.approved_agents || []).length === 0 && (u.role === 'super_admin' || u.role === 'admin') && (
+                  <span className="text-[10px] text-purple-400 italic">all access</span>
+                )}
+                {(u.approved_agents || []).length === 0 && u.role !== 'super_admin' && u.role !== 'admin' && (
+                  <span className="text-[10px] text-gray-600 italic">no agents assigned</span>
+                )}
+              </div>
+            )}
+
+            {/* Status message */}
+            {statusMsg && statusMsg.userId === u.id && (
+              <div className={"mt-3 text-xs px-3 py-2 rounded-lg " + (statusMsg.type === 'success' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400')}>
+                {statusMsg.msg}
+              </div>
+            )}
+
+            {/* Reset password result */}
+            {resetResult && resetResult.userId === u.id && (
+              <div className={"mt-3 px-4 py-3 rounded-lg text-xs " +
+                (resetResult.password ? 'bg-emerald-500/10 border border-emerald-500/20' : 'bg-red-500/10 border border-red-500/20')}>
+                {resetResult.password ? (
+                  <div>
+                    <div className="text-emerald-400 font-medium">New temp password:</div>
+                    <div className="font-mono text-white text-sm mt-1 select-all">{resetResult.password}</div>
+                    <div className="text-gray-500 mt-1">Share this with the user.</div>
+                  </div>
+                ) : (
+                  <div className="text-red-400">{resetResult.error}</div>
+                )}
+              </div>
+            )}
+          </div>
+        ))}
+        {users.length === 0 && (
+          <div className="bg-[#0A0E15] border border-white/5 rounded-xl px-4 py-8 text-center text-sm text-gray-600">No users found</div>
+        )}
       </div>
     </div>
   );

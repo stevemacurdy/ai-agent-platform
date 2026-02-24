@@ -1,99 +1,195 @@
-'use client';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+'use client'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { getSupabaseBrowser } from '@/lib/supabase-browser'
 
 export default function ResetPasswordPage() {
-  const router = useRouter();
-  const [password, setPassword] = useState('');
-  const [confirm, setConfirm] = useState('');
-  const [error, setError] = useState('');
-  const [saving, setSaving] = useState(false);
+  const router = useRouter()
+  const sb = getSupabaseBrowser()
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [userEmail, setUserEmail] = useState('')
+  const [mustReset, setMustReset] = useState(false)
+  const [accessToken, setAccessToken] = useState('')
 
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data: { session } } = await sb.auth.getSession()
+      if (session?.user?.email) {
+        setUserEmail(session.user.email)
+        setAccessToken(session.access_token)
+        const res = await fetch('/api/auth/me', {
+          headers: { 'Authorization': 'Bearer ' + session.access_token }
+        })
+        if (res.ok) {
+          const data = await res.json()
+          if (data.user?.must_reset_password) {
+            setMustReset(true)
+          }
+        }
+      }
+    }
+    checkSession()
+  }, [])
+
+  const handleReset = async () => {
+    setError('')
     if (password.length < 8) {
-      setError('Password must be at least 8 characters');
-      return;
+      setError('Password must be at least 8 characters')
+      return
     }
-    if (password !== confirm) {
-      setError('Passwords do not match');
-      return;
+    if (password !== confirmPassword) {
+      setError('Passwords do not match')
+      return
     }
 
-    setSaving(true);
+    setLoading(true)
     try {
+      // Use the server-side API which updates password AND clears the flag atomically
       const res = await fetch('/api/auth/reset-password', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + accessToken,
+        },
         body: JSON.stringify({ password }),
-      });
+      })
 
-      const data = await res.json();
+      const data = await res.json()
       if (!res.ok) {
-        setError(data.error || 'Failed to update password');
-        setSaving(false);
-        return;
+        setError(data.error || 'Failed to update password')
+        setLoading(false)
+        return
       }
 
-      // Redirect to portal
-      router.push('/agents/org-lead');
-    } catch {
-      setError('Network error');
-      setSaving(false);
+      setSuccess(true)
+      setTimeout(() => router.push('/portal'), 2000)
+    } catch (err: any) {
+      setError(err.message || 'Failed to update password')
     }
-  };
+    setLoading(false)
+  }
+
+  const inputCls = "w-full px-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder-gray-600 focus:border-blue-500/30 focus:outline-none focus:ring-1 focus:ring-blue-500/20 transition-all"
 
   return (
-    <div className="min-h-screen bg-[#060910] flex items-center justify-center px-4">
-      <div className="max-w-md w-full">
+    <div className="min-h-screen bg-[#060910] flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-white">Set Your Password</h1>
-          <p className="text-gray-400 mt-2 text-sm">
-            Welcome to WoulfAI! Please create a secure password to continue.
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-amber-500/20 to-orange-500/20 rounded-2xl border border-white/10 mb-4">
+            <span className="text-3xl">🔐</span>
+          </div>
+          <h1 className="text-2xl font-bold text-white">
+            {mustReset ? 'Set Your New Password' : 'Reset Password'}
+          </h1>
+          <p className="text-sm text-gray-500 mt-2">
+            {mustReset
+              ? 'Your administrator has set a temporary password. Please choose a new one.'
+              : 'Choose a new password for your account.'}
           </p>
+          {userEmail && (
+            <p className="text-xs text-gray-600 mt-1">{userEmail}</p>
+          )}
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-[#0A0E15] border border-white/5 rounded-xl p-6 space-y-5">
-          <div>
-            <label className="block text-xs text-gray-400 mb-1.5">New Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm text-white focus:border-blue-500 focus:outline-none"
-              placeholder="At least 8 characters"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-xs text-gray-400 mb-1.5">Confirm Password</label>
-            <input
-              type="password"
-              value={confirm}
-              onChange={(e) => setConfirm(e.target.value)}
-              className="w-full px-3 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm text-white focus:border-blue-500 focus:outline-none"
-              placeholder="Type it again"
-              required
-            />
-          </div>
+        <div className="bg-[#0A0E15] border border-white/5 rounded-2xl p-8">
+          {success ? (
+            <div className="text-center py-4">
+              <div className="w-12 h-12 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-400">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </div>
+              <h2 className="text-lg font-semibold text-white mb-1">Password Updated</h2>
+              <p className="text-sm text-gray-500">Redirecting to your portal...</p>
+            </div>
+          ) : (
+            <div className="space-y-5">
+              {mustReset && (
+                <div className="px-4 py-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-sm text-amber-400">
+                  You must set a new password before continuing.
+                </div>
+              )}
 
-          {error && (
-            <div className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">
-              {error}
+              <div>
+                <label className="text-[10px] text-gray-500 uppercase tracking-wider block mb-2">New Password</label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    placeholder="Min 8 characters"
+                    className={inputCls + ' pr-12'}
+                    autoFocus
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(p => !p)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors p-1"
+                    tabIndex={-1}
+                  >
+                    {showPassword ? (
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
+                        <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
+                        <line x1="1" y1="1" x2="23" y2="23" />
+                      </svg>
+                    ) : (
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                        <circle cx="12" cy="12" r="3" />
+                      </svg>
+                    )}
+                  </button>
+                </div>
+                {password.length > 0 && password.length < 8 && (
+                  <p className="text-[10px] text-amber-400 mt-1">{8 - password.length} more characters needed</p>
+                )}
+              </div>
+
+              <div>
+                <label className="text-[10px] text-gray-500 uppercase tracking-wider block mb-2">Confirm New Password</label>
+                <input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={e => setConfirmPassword(e.target.value)}
+                  placeholder="Re-enter your new password"
+                  className={inputCls}
+                />
+                {confirmPassword.length > 0 && password !== confirmPassword && (
+                  <p className="text-[10px] text-rose-400 mt-1">Passwords do not match</p>
+                )}
+              </div>
+
+              {error && (
+                <div className="bg-rose-500/10 border border-rose-500/20 text-rose-400 text-sm px-4 py-3 rounded-xl">{error}</div>
+              )}
+
+              <button
+                onClick={handleReset}
+                disabled={loading}
+                className="w-full py-3.5 bg-blue-600 hover:bg-blue-500 disabled:bg-blue-600/50 text-white rounded-xl text-sm font-semibold transition-all"
+              >
+                {loading ? 'Updating...' : 'Set New Password'}
+              </button>
             </div>
           )}
 
-          <button
-            type="submit"
-            disabled={saving}
-            className="w-full py-2.5 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-500 disabled:opacity-50 transition-colors"
-          >
-            {saving ? 'Saving...' : 'Set Password & Continue'}
-          </button>
-        </form>
+          {!mustReset && !success && (
+            <div className="mt-5 text-center">
+              <Link href="/login" className="text-xs text-gray-500 hover:text-gray-300 transition-colors">
+                &larr; Back to Sign In
+              </Link>
+            </div>
+          )}
+        </div>
       </div>
     </div>
-  );
+  )
 }

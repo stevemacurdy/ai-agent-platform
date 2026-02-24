@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 // ============================================================================
 // CRM CONNECT - Start OAuth flow or validate manual credentials
 // ============================================================================

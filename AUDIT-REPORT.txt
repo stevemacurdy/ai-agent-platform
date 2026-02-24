@@ -1,0 +1,1099 @@
+
+╔══════════════════════════════════════════════════════════════╗
+║                  WOULFAI PLATFORM AUDIT REPORT              ║
+║                  2026-02-24                           ║
+╚══════════════════════════════════════════════════════════════╝
+
+📊 CODEBASE STATS
+─────────────────
+  Total files scanned:  265
+  Page routes:          80
+  API routes:           81
+
+📋 FINDINGS SUMMARY
+─────────────────
+  🔴 CRITICAL:  97  (fix before launch)
+  🟠 HIGH:      29  (fix this week)
+  🟡 MEDIUM:    111  (fix soon)
+  🔵 LOW:       17  (nice to have)
+  ────────────
+  TOTAL:        254
+
+
+════════════════════════════════════════════════════════════════
+🔴 CRITICAL ISSUES (97)
+════════════════════════════════════════════════════════════════
+
+  📁 Security (97)
+  ────────────────────────────────────────
+  📄 app/admin/users/page.tsx:28
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/admin/users/page.tsx:28
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/admin/users/page.tsx:68
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/admin/users/page.tsx:139
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/admin/users/page.tsx:193
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/admin/users/page.tsx:194
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/admin/users/page.tsx:255
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/admin/users/page.tsx:255
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/agents/cfo/tools/page.tsx:79
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/api/admin/reset-password/route.ts:63
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/api/admin/users/route.ts:35
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/api/auth/forgot-password/route.ts:20
+     Dev-only section in production code
+     💡 Remove before production launch
+
+  📄 app/api/auth/me/route.ts:34
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/forgot-password/page.tsx:18
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/forgot-password/page.tsx:33
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/forgot-password/page.tsx:49
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/forgot-password/page.tsx:66
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/forgot-password/page.tsx:116
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/forgot-password/page.tsx:120
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/forgot-password/page.tsx:124
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/invite/[token]/page.tsx:15
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/invite/[token]/page.tsx:115
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/invite/[token]/page.tsx:115
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/invite/[token]/page.tsx:119
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/invite/[token]/page.tsx:119
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/login/page.tsx:36
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/login/page.tsx:78
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/login/page.tsx:81
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/login/page.tsx:118
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/register/page.tsx:47
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/register/page.tsx:193
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/register/page.tsx:208
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/register/page.tsx:324
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/register/page.tsx:325
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/register/page.tsx:356
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/register/page.tsx:356
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/register/page.tsx:356
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/reset-password/page.tsx:55
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/reset-password/page.tsx:66
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/reset-password/page.tsx:74
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/reset-password/page.tsx:89
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/reset-password/page.tsx:124
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/reset-password/page.tsx:159
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/reset-password/page.tsx:162
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/reset-password/page.tsx:179
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/sales/settings/page.tsx:46
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/sales/settings/page.tsx:59
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/sales/settings/page.tsx:61
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/sales/settings/page.tsx:329
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/sales/settings/page.tsx:329
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 app/sales/settings/page.tsx:336
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 lib/auth-store.ts:94
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 lib/auth-store.ts:100
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 lib/auth-store.ts:106
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 lib/auth-store.ts:112
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 lib/auth-store.ts:118
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 lib/auth-store.ts:124
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 lib/auth-store.ts:130
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 lib/auth-store.ts:136
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 lib/crm/types.ts:119
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 lib/crm/types.ts:138
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 lib/crm/types.ts:140
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 lib/crm/types.ts:152
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 lib/crm/types.ts:173
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 woulfai-audit.js:82
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 woulfai-audit.js:93
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 woulfai-audit.js:197
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 woulfai-audit.js:449
+     Hardcoded password
+     💡 Remove and use environment variables
+
+  📄 woulfai-audit.js:91
+     Dev-only section in production code
+     💡 Remove before production launch
+
+  📄 woulfai-audit.js:91
+     Dev-only section in production code
+     💡 Remove before production launch
+
+  📄 woulfai-audit.js:91
+     Dev-only section in production code
+     💡 Remove before production launch
+
+  📄 woulfai-audit.js:92
+     Dev quick-login UI
+     💡 Remove before production launch
+
+  📄 woulfai-audit.js:92
+     Dev quick-login UI
+     💡 Remove before production launch
+
+  📄 woulfai-audit.js:92
+     Dev quick-login UI
+     💡 Remove before production launch
+
+  📄 woulfai-audit.js:93
+     Hardcoded dev password
+     💡 Remove before production launch
+
+  📄 woulfai-audit.js:93
+     Hardcoded dev password
+     💡 Remove before production launch
+
+  📄 woulfai-audit.js:93
+     Hardcoded dev password
+     💡 Remove before production launch
+
+  📄 woulfai-audit.js:93
+     Hardcoded dev password
+     💡 Remove before production launch
+
+  📄 woulfai-fix.js:102
+     Dev-only section in production code
+     💡 Remove before production launch
+
+  📄 woulfai-fix.js:118
+     Dev-only section in production code
+     💡 Remove before production launch
+
+  📄 woulfai-fix.js:118
+     Dev quick-login UI
+     💡 Remove before production launch
+
+  📄 woulfai-fix.js:411
+     Hardcoded dev password
+     💡 Remove before production launch
+
+  📄 woulfai-fix.js:411
+     Hardcoded dev password
+     💡 Remove before production launch
+
+  📄 woulfai-fix.js:412
+     Hardcoded dev password
+     💡 Remove before production launch
+
+  📄 woulfai-fix.js:412
+     Hardcoded dev password
+     💡 Remove before production launch
+
+  📄 woulfai-fix.js:422
+     Hardcoded dev password
+     💡 Remove before production launch
+
+  📄 woulfai-fix.js:423
+     Hardcoded dev password
+     💡 Remove before production launch
+
+  📄 woulfai-fix.js:424
+     Hardcoded dev password
+     💡 Remove before production launch
+
+  📄 woulfai-fix.js:425
+     Hardcoded dev password
+     💡 Remove before production launch
+
+  📄 woulfai-fix.js:446
+     Hardcoded dev password
+     💡 Remove before production launch
+
+  📄 woulfai-fix.js:446
+     Hardcoded dev password
+     💡 Remove before production launch
+
+  📄 woulfai-fix.js:447
+     Hardcoded dev password
+     💡 Remove before production launch
+
+  📄 woulfai-fix.js:447
+     Hardcoded dev password
+     💡 Remove before production launch
+
+  📄 woulfai-fix.js:452
+     Hardcoded dev password
+     💡 Remove before production launch
+
+  📄 woulfai-fix.js:453
+     Hardcoded dev password
+     💡 Remove before production launch
+
+  📄 woulfai-fix.js:454
+     Hardcoded dev password
+     💡 Remove before production launch
+
+  📄 woulfai-fix.js:455
+     Hardcoded dev password
+     💡 Remove before production launch
+
+
+════════════════════════════════════════════════════════════════
+🟠 HIGH ISSUES (29)
+════════════════════════════════════════════════════════════════
+
+  📁 Syntax (23)
+  ────────────────────────────────────────
+  📄 app/admin/agent-creator/page.tsx
+     Mismatched parentheses: 2 extra )
+     💡 Review file for missing or extra parentheses
+
+  📄 app/agents/sales/intel/page.tsx
+     Mismatched curly braces: 2 unclosed {
+     💡 Review file for missing or extra braces
+
+  📄 app/agents/sales/intel/page.tsx
+     Mismatched parentheses: 2 unclosed (
+     💡 Review file for missing or extra parentheses
+
+  📄 app/api/chat/route.ts
+     Mismatched curly braces: 3 unclosed {
+     💡 Review file for missing or extra braces
+
+  📄 app/api/chat/route.ts
+     Mismatched parentheses: 2 unclosed (
+     💡 Review file for missing or extra parentheses
+
+  📄 app/forgot-password/page.tsx
+     Mismatched curly braces: 2 unclosed {
+     💡 Review file for missing or extra braces
+
+  📄 app/forgot-password/page.tsx
+     Mismatched parentheses: 2 unclosed (
+     💡 Review file for missing or extra parentheses
+
+  📄 app/invite/[token]/page.tsx
+     Mismatched curly braces: 1 unclosed {
+     💡 Review file for missing or extra braces
+
+  📄 app/invite/[token]/page.tsx
+     Mismatched parentheses: 1 unclosed (
+     💡 Review file for missing or extra parentheses
+
+  📄 app/portal/agent/hr/page.tsx
+     Mismatched curly braces: 2 unclosed {
+     💡 Review file for missing or extra braces
+
+  📄 app/portal/agent/hr/page.tsx
+     Mismatched parentheses: 2 unclosed (
+     💡 Review file for missing or extra parentheses
+
+  📄 app/s/[slug]/page.tsx
+     Mismatched curly braces: 1 unclosed {
+     💡 Review file for missing or extra braces
+
+  📄 app/s/[slug]/page.tsx
+     Mismatched parentheses: 1 unclosed (
+     💡 Review file for missing or extra parentheses
+
+  📄 app/sales/settings/page.tsx
+     Mismatched curly braces: 1 unclosed {
+     💡 Review file for missing or extra braces
+
+  📄 app/sales/settings/page.tsx
+     Mismatched parentheses: 1 unclosed (
+     💡 Review file for missing or extra parentheses
+
+  📄 components/AdminLeaderboard.tsx
+     Mismatched curly braces: 4 unclosed {
+     💡 Review file for missing or extra braces
+
+  📄 components/AdminLeaderboard.tsx
+     Mismatched parentheses: 5 unclosed (
+     💡 Review file for missing or extra parentheses
+
+  📄 components/LeadCaptureModal.tsx
+     Mismatched curly braces: 2 unclosed {
+     💡 Review file for missing or extra braces
+
+  📄 components/LeadCaptureModal.tsx
+     Mismatched parentheses: 2 unclosed (
+     💡 Review file for missing or extra parentheses
+
+  📄 components/onboarding/MagicMapper.tsx
+     Mismatched curly braces: 2 unclosed {
+     💡 Review file for missing or extra braces
+
+  📄 woulfai-audit.js
+     Mismatched parentheses: 4 unclosed (
+     💡 Review file for missing or extra parentheses
+
+  📄 woulfai-fix.js
+     Mismatched curly braces: 2 unclosed {
+     💡 Review file for missing or extra braces
+
+  📄 woulfai-fix.js
+     Mismatched parentheses: 2 unclosed (
+     💡 Review file for missing or extra parentheses
+
+  📁 Tenant Isolation (1)
+  ────────────────────────────────────────
+  📄 app/api/auth/register/route.ts
+     Queries "profiles" table without apparent user/company filter
+     💡 Add .eq("user_id", ...) or .eq("company_id", ...) filter
+
+  📁 Security (5)
+  ────────────────────────────────────────
+  📄 app/invite/[token]/page.tsx:58
+     Storing potentially sensitive data in localStorage
+     💡 Use httpOnly cookies or sessionStorage instead
+
+  📄 components/AuthProvider.tsx:114
+     Storing potentially sensitive data in localStorage
+     💡 Use httpOnly cookies or sessionStorage instead
+
+  📄 lib/auth-context.tsx:56
+     Storing potentially sensitive data in localStorage
+     💡 Use httpOnly cookies or sessionStorage instead
+
+  📄 lib/supabase.ts:61
+     Storing potentially sensitive data in localStorage
+     💡 Use httpOnly cookies or sessionStorage instead
+
+  📄 woulfai-audit.js:448
+     Storing potentially sensitive data in localStorage
+     💡 Use httpOnly cookies or sessionStorage instead
+
+
+════════════════════════════════════════════════════════════════
+🟡 MEDIUM ISSUES (111)
+════════════════════════════════════════════════════════════════
+
+  📁 Orphan Route (36)
+  ────────────────────────────────────────
+  📄 app/admin/agent-creator/page.tsx
+     Page route "/admin/agent-creator" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/admin/analytics/page.tsx
+     Page route "/admin/analytics" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/admin/bug-bash/page.tsx
+     Page route "/admin/bug-bash" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/admin/companies/page.tsx
+     Page route "/admin/companies" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/admin/integrations/page.tsx
+     Page route "/admin/integrations" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/admin/sales-reps/page.tsx
+     Page route "/admin/sales-reps" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/agents/cfo/console/page.tsx
+     Page route "/agents/cfo/console" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/agents/cfo/finops/page.tsx
+     Page route "/agents/cfo/finops" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/agents/cfo/manage/page.tsx
+     Page route "/agents/cfo/manage" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/agents/cfo/tools/page.tsx
+     Page route "/agents/cfo/tools" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/agents/compliance/page.tsx
+     Page route "/agents/compliance" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/agents/hr/page.tsx
+     Page route "/agents/hr" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/agents/legal/page.tsx
+     Page route "/agents/legal" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/agents/marketing/page.tsx
+     Page route "/agents/marketing" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/agents/operations/page.tsx
+     Page route "/agents/operations" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/agents/org-lead/page.tsx
+     Page route "/agents/org-lead" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/agents/research/page.tsx
+     Page route "/agents/research" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/agents/sales/coach/page.tsx
+     Page route "/agents/sales/coach" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/agents/seo/page.tsx
+     Page route "/agents/seo" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/agents/str/page.tsx
+     Page route "/agents/str" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/agents/supply-chain/page.tsx
+     Page route "/agents/supply-chain" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/agents/support/page.tsx
+     Page route "/agents/support" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/agents/training/page.tsx
+     Page route "/agents/training" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/agents/wms/page.tsx
+     Page route "/agents/wms" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/beta/page.tsx
+     Page route "/beta" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/dashboard/bug-bash/page.tsx
+     Page route "/dashboard/bug-bash" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/demo/customer-support/page.tsx
+     Page route "/demo/customer-support" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/demo/finance-ops/page.tsx
+     Page route "/demo/finance-ops" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/demo/research-intel/page.tsx
+     Page route "/demo/research-intel" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/demo/sales-field/page.tsx
+     Page route "/demo/sales-field" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/demo/training/page.tsx
+     Page route "/demo/training" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/demo/wms-proof-billing/page.tsx
+     Page route "/demo/wms-proof-billing" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/how-it-works/page.tsx
+     Page route "/how-it-works" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/integrations/page.tsx
+     Page route "/integrations" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/portal/agent/hr/page.tsx
+     Page route "/portal/agent/hr" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📄 app/portal/agent/seo/page.tsx
+     Page route "/portal/agent/seo" exists but is not linked from anywhere
+     💡 Add navigation link or remove if unused
+
+  📁 Error Handling (23)
+  ────────────────────────────────────────
+  📄 app/api/admin/invites/route.ts
+     API route handler missing try/catch — unhandled errors will return 500 with no useful message
+     💡 Wrap handler body in try/catch
+
+  📄 app/api/admin/sales-reps/route.ts
+     API route handler missing try/catch — unhandled errors will return 500 with no useful message
+     💡 Wrap handler body in try/catch
+
+  📄 app/api/agents/route.ts
+     API route handler missing try/catch — unhandled errors will return 500 with no useful message
+     💡 Wrap handler body in try/catch
+
+  📄 app/api/agents/[slug]/export/route.ts
+     API route handler missing try/catch — unhandled errors will return 500 with no useful message
+     💡 Wrap handler body in try/catch
+
+  📄 app/api/anomaly/route.ts
+     API route handler missing try/catch — unhandled errors will return 500 with no useful message
+     💡 Wrap handler body in try/catch
+
+  📄 app/api/ap/route.ts
+     API route handler missing try/catch — unhandled errors will return 500 with no useful message
+     💡 Wrap handler body in try/catch
+
+  📄 app/api/auth/forgot-password/route.ts
+     API route handler missing try/catch — unhandled errors will return 500 with no useful message
+     💡 Wrap handler body in try/catch
+
+  📄 app/api/branding/route.ts
+     API route handler missing try/catch — unhandled errors will return 500 with no useful message
+     💡 Wrap handler body in try/catch
+
+  📄 app/api/cfo-cashflow/route.ts
+     API route handler missing try/catch — unhandled errors will return 500 with no useful message
+     💡 Wrap handler body in try/catch
+
+  📄 app/api/cfo-collections/route.ts
+     API route handler missing try/catch — unhandled errors will return 500 with no useful message
+     💡 Wrap handler body in try/catch
+
+  📄 app/api/cfo-health/route.ts
+     API route handler missing try/catch — unhandled errors will return 500 with no useful message
+     💡 Wrap handler body in try/catch
+
+  📄 app/api/cfo-invoices/route.ts
+     API route handler missing try/catch — unhandled errors will return 500 with no useful message
+     💡 Wrap handler body in try/catch
+
+  📄 app/api/crm/route.ts
+     API route handler missing try/catch — unhandled errors will return 500 with no useful message
+     💡 Wrap handler body in try/catch
+
+  📄 app/api/debt/route.ts
+     API route handler missing try/catch — unhandled errors will return 500 with no useful message
+     💡 Wrap handler body in try/catch
+
+  📄 app/api/duplicate-detection/route.ts
+     API route handler missing try/catch — unhandled errors will return 500 with no useful message
+     💡 Wrap handler body in try/catch
+
+  📄 app/api/finance-capture/route.ts
+     API route handler missing try/catch — unhandled errors will return 500 with no useful message
+     💡 Wrap handler body in try/catch
+
+  📄 app/api/finance-reconcile/route.ts
+     API route handler missing try/catch — unhandled errors will return 500 with no useful message
+     💡 Wrap handler body in try/catch
+
+  📄 app/api/lending-packet/route.ts
+     API route handler missing try/catch — unhandled errors will return 500 with no useful message
+     💡 Wrap handler body in try/catch
+
+  📄 app/api/onboarding/[token]/route.ts
+     API route handler missing try/catch — unhandled errors will return 500 with no useful message
+     💡 Wrap handler body in try/catch
+
+  📄 app/api/refinance-alert/route.ts
+     API route handler missing try/catch — unhandled errors will return 500 with no useful message
+     💡 Wrap handler body in try/catch
+
+  📄 app/api/sales-intel/route.ts
+     API route handler missing try/catch — unhandled errors will return 500 with no useful message
+     💡 Wrap handler body in try/catch
+
+  📄 app/api/tax-reserve/route.ts
+     API route handler missing try/catch — unhandled errors will return 500 with no useful message
+     💡 Wrap handler body in try/catch
+
+  📄 app/api/vendor-scoring/route.ts
+     API route handler missing try/catch — unhandled errors will return 500 with no useful message
+     💡 Wrap handler body in try/catch
+
+  📁 Syntax (2)
+  ────────────────────────────────────────
+  📄 woulfai-audit.js
+     Mismatched brackets: 1 unclosed [
+     💡 Review file for missing or extra brackets
+
+  📄 woulfai-fix.js
+     Mismatched brackets: 1 unclosed [
+     💡 Review file for missing or extra brackets
+
+  📁 Security (3)
+  ────────────────────────────────────────
+  📄 app/portal/agent/hr/page.tsx:86
+     Using dangerouslySetInnerHTML — potential XSS vector
+     💡 Sanitize content before rendering or use safe alternatives
+
+  📄 app/portal/agent/seo/page.tsx:137
+     Using dangerouslySetInnerHTML — potential XSS vector
+     💡 Sanitize content before rendering or use safe alternatives
+
+  📄 woulfai-audit.js:456
+     Using dangerouslySetInnerHTML — potential XSS vector
+     💡 Sanitize content before rendering or use safe alternatives
+
+  📁 Performance (4)
+  ────────────────────────────────────────
+  📄 app/contact/page.tsx
+     Uses useSearchParams() without Suspense boundary — causes full page client-side rendering
+     💡 Wrap component using useSearchParams in <Suspense>
+
+  📄 app/portal/page.tsx
+     Uses useSearchParams() without Suspense boundary — causes full page client-side rendering
+     💡 Wrap component using useSearchParams in <Suspense>
+
+  📄 app/pricing/page.tsx
+     Uses useSearchParams() without Suspense boundary — causes full page client-side rendering
+     💡 Wrap component using useSearchParams in <Suspense>
+
+  📄 app/sales/settings/page.tsx
+     Uses useSearchParams() without Suspense boundary — causes full page client-side rendering
+     💡 Wrap component using useSearchParams in <Suspense>
+
+  📁 Config (43)
+  ────────────────────────────────────────
+  📄 .env.local
+     Environment variable STRIPE_PRICE_STARTER is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable STRIPE_PRICE_PROFESSIONAL is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable STRIPE_PRICE_ENTERPRISE is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable ODOO_PASSWORD is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable HUBSPOT_API_KEY is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable HUBSPOT_CLIENT_ID is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable HUBSPOT_CLIENT_SECRET is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable NETSUITE_CLIENT_ID is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable NETSUITE_AUTH_BASE_URL is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable NETSUITE_SCOPE is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable NETSUITE_CLIENT_SECRET is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable NETSUITE_TOKEN_URL is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable GOOGLE_VISION_API_KEY is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable ANTHROPIC_API_KEY is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable ADP_CLIENT_ID is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable ADP_CLIENT_SECRET is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable GUSTO_ACCESS_TOKEN is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable CHECKR_API_KEY is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable INDEED_EMPLOYER_ID is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable INDEED_API_KEY is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable DOCUSIGN_ACCESS_TOKEN is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable DOCUSIGN_ACCOUNT_ID is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable GOOGLE_ADS_TOKEN is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable GOOGLE_ADS_CUSTOMER_ID is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable GOOGLE_ADS_DEVELOPER_TOKEN is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable META_AD_ACCOUNT_ID is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable META_ACCESS_TOKEN is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable SENDGRID_API_KEY is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable GOOGLE_SERVICE_ACCOUNT_KEY is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable GA is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable GEMINI_API_KEY is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable NANO_BANANA_API_KEY is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable GBP_ACCESS_TOKEN is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable GBP_ACCOUNT_ID is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable GBP_LOCATION_ID is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable SERPAPI_KEY is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable FEDEX_ACCOUNT is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable UPS_CLIENT_ID is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable UPS_CLIENT_SECRET is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable FEDEX_API_KEY is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable FEDEX_SECRET_KEY is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable TPL_PORTAL_URL is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+  📄 .env.local
+     Environment variable TPL_API_KEY is used in code but not defined in .env.local
+     💡 Add to .env.local and Vercel environment variables
+
+
+════════════════════════════════════════════════════════════════
+🔵 LOW ISSUES (17)
+════════════════════════════════════════════════════════════════
+
+  📁 Cleanup (4)
+  ────────────────────────────────────────
+  📄 app/api/tenant/companies/route.ts:22
+     TODO/FIXME marker: // TODO: Filter by user membership once auth is wired
+     💡 Review and resolve
+
+  📄 woulfai-audit.js:124
+     TODO/FIXME marker: // Skip comments for TODOs (they're informational)
+     💡 Review and resolve
+
+  📄 woulfai-audit.js
+     21 console.log() statements — remove for production
+     💡 Remove or replace with proper logging
+
+  📄 woulfai-fix.js
+     27 console.log() statements — remove for production
+     💡 Remove or replace with proper logging
+
+  📁 TypeSafety (13)
+  ────────────────────────────────────────
+  📄 app/admin/agent-creator/page.tsx
+     12 uses of "any" type — reduces type safety
+     💡 Replace with proper types where possible
+
+  📄 app/admin/sales-crm/page.tsx
+     13 uses of "any" type — reduces type safety
+     💡 Replace with proper types where possible
+
+  📄 app/admin/sales-crm/[contactId]/page.tsx
+     13 uses of "any" type — reduces type safety
+     💡 Replace with proper types where possible
+
+  📄 app/agents/cfo/console/page.tsx
+     14 uses of "any" type — reduces type safety
+     💡 Replace with proper types where possible
+
+  📄 app/agents/cfo/finops-pro/page.tsx
+     7 uses of "any" type — reduces type safety
+     💡 Replace with proper types where possible
+
+  📄 app/api/chat/enterprise/route.ts
+     7 uses of "any" type — reduces type safety
+     💡 Replace with proper types where possible
+
+  📄 app/api/chat/route.ts
+     6 uses of "any" type — reduces type safety
+     💡 Replace with proper types where possible
+
+  📄 app/api/crm-sync/route.ts
+     11 uses of "any" type — reduces type safety
+     💡 Replace with proper types where possible
+
+  📄 app/portal/agent/hr/page.tsx
+     22 uses of "any" type — reduces type safety
+     💡 Replace with proper types where possible
+
+  📄 components/AuthProvider.tsx
+     8 uses of "any" type — reduces type safety
+     💡 Replace with proper types where possible
+
+  📄 lib/odoo.ts
+     11 uses of "any" type — reduces type safety
+     💡 Replace with proper types where possible
+
+  📄 lib/openai.ts
+     10 uses of "any" type — reduces type safety
+     💡 Replace with proper types where possible
+
+  📄 lib/useHubSpot.ts
+     8 uses of "any" type — reduces type safety
+     💡 Replace with proper types where possible
+
+
+════════════════════════════════════════════════════════════════
+LAUNCH READINESS SCORE: 0/100
+════════════════════════════════════════════════════════════════
+
+🛑 Not launch-ready. Significant issues need attention.
+
+📋 RECOMMENDED FIX ORDER:
+   1. Remove hardcoded dev credentials from login page
+   2. Add auth checks to unprotected admin API routes
+   3. Fix broken imports and missing files
+   4. Add tenant isolation filters to API routes
+   5. Fix mismatched braces/syntax issues
+   6. Configure Supabase SMTP for Resend
+   7. Add Sentry for error tracking
+   8. Set up Vercel preview deploy workflow
+   9. Clean up console.logs and TODO markers
+  10. Add critical-path tests

@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 
 const ADMIN_EMAILS = ['steve@woulfgroup.com', 'stevemacurdy@gmail.com', 'admin'];

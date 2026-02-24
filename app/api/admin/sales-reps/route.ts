@@ -1,3 +1,5 @@
+import { createClient } from '@supabase/supabase-js';
+export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 
 const ADMINS = ['steve@woulfgroup.com', 'stevemacurdy@gmail.com', 'admin'];
@@ -40,9 +42,28 @@ const salesReps = [
   },
 ];
 
-export async function GET(request: NextRequest) {
-  if (!isAuth(request)) return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
-  const id = new URL(request.url).searchParams.get('id');
+
+// Auth guard - verify admin access
+async function verifyAdmin(req: NextRequest) {
+  const token = req.headers.get('authorization')?.replace('Bearer ', '') || '';
+  if (!token) return null;
+  const sb = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { autoRefreshToken: false, persistSession: false } }
+  );
+  const { data: { user }, error } = await sb.auth.getUser(token);
+  if (error || !user) return null;
+  const { data: profile } = await sb.from('profiles').select('role').eq('id', user.id).single();
+  if (!profile || !['super_admin', 'admin'].includes(profile.role)) return null;
+  return user;
+}
+
+export async function GET(req: NextRequest) {
+  const adminUser = await verifyAdmin(req);
+  if (!adminUser) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  if (!isAuth(req)) return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+  const id = new URL(req.url).searchParams.get('id');
 
   if (id) {
     const rep = salesReps.find(r => r.id === id);

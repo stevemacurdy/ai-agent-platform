@@ -8,12 +8,14 @@ interface NavItem { id: string; label: string; href: string; icon: string; child
 
 const NAV_ITEMS: NavItem[] = [
   { id: 'hub', label: 'Command Center', href: '/admin', icon: '🎯' },
+  { id: 'company-portals', label: 'Company Portals', href: '/admin/companies', icon: '🏢' },
   { id: 'dashboard', label: 'Agent Dashboard', href: '/admin/agents', icon: '🤖' },
   { id: 'users', label: 'Users & Roles', href: '/admin/users', icon: '👥' },
   { id: 'sales', label: 'Sales Reps', href: '/admin/sales-reps', icon: '💼', children: [
     { id: 'sales-crm', label: 'Sales CRM', href: '/admin/sales-crm', icon: '📊' },
     { id: 'sales-intel', label: 'Sales Intel', href: '/agents/sales/intel', icon: '🧠' },
     { id: 'sales-solo', label: 'Solo Rep Agent', href: '/agents/sales/solo', icon: '🎯' },
+    { id: 'sales-coach', label: 'Sales Coach', href: '/agents/sales/coach', icon: '🏆' },
   ]},
   { id: 'cfo-console', label: 'CFO Console', href: '/agents/cfo/console', icon: '📈', children: [
     { id: 'cfo-tools', label: 'CFO Tools', href: '/agents/cfo/tools', icon: '🔧' },
@@ -26,6 +28,9 @@ const NAV_ITEMS: NavItem[] = [
   { id: 'analytics', label: 'Analytics', href: '/admin/analytics', icon: '📊' },
   { id: 'agents-creator', label: 'Agent Creator', href: '/admin/agent-creator', icon: '🧬' },
   { id: 'bug-bash', label: 'Bug Bash', href: '/admin/bug-bash', icon: '🐛' },
+  { id: 'leads', label: 'Leads', href: '/admin/leads', icon: '📬' },
+  { id: 'pricing', label: 'Pricing', href: '/admin/pricing', icon: '💲' },
+  { id: 'chats', label: 'Chat Sessions', href: '/admin/chats', icon: '💬' },
 ]
 
 interface SidebarProps {
