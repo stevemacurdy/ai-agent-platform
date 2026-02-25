@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import CompanySwitcher from './CompanySwitcher'
 
 interface NavChild { id: string; label: string; href: string; icon: string }
 interface NavItem { id: string; label: string; href: string; icon: string; children?: NavChild[] }
@@ -72,6 +73,9 @@ export default function AdminSidebar({ user, onSignOut }: SidebarProps) {
           {open ? '◁' : '▷'}
         </button>
       </div>
+
+      {/* Company Switcher */}
+      <CompanySwitcher open={open} />
 
       {/* Navigation */}
       <nav className="flex-1 p-3 space-y-0.5 overflow-y-auto">
