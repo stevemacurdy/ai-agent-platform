@@ -42,7 +42,7 @@ async function fetchFlags(): Promise<Record<string, FeatureFlag>> {
   }
   const { data, error } = await getSupabase()
     .from('feature_flags')
-    .select('key, enabled, description, company_ids')
+    .select('key, enabled, description, company_ids') as { data: FeatureFlag[] | null, error: any }
 
   if (error || !data) return flagCache
 
