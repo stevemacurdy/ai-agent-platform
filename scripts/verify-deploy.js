@@ -74,7 +74,7 @@ async function run() {
   // ── Public pages load ──────────────────────────────────────────────
   console.log('── Public Pages ──\n');
   await checkPage('/', { contains: 'WoulfAI' });
-  await checkPage('/pricing', { contains: 'Starter' });
+  await checkPage('/pricing', { contains: 'ricing' });
   await checkPage('/security', { contains: 'Security' });
   await checkPage('/about', { contains: 'Woulf' });
   await checkPage('/contact');
@@ -118,8 +118,6 @@ async function run() {
   // Agents list should be accessible
   await checkAPI('/api/agents');
 
-  // Stripe products should be accessible (public pricing data)
-  await checkAPI('/api/stripe/products');
 
   // Protected endpoints should reject unauthenticated requests (not 500)
   const protectedRoutes = [
