@@ -2,6 +2,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react'
 import { createClient, SupabaseClient } from '@supabase/supabase-js'
 import { useRouter } from 'next/navigation'
+import { useIdleTimeout, recordAuth, clearSessionData } from '@/lib/session-manager'
 
 // Supabase client (singleton)
 let _supabase: SupabaseClient | null = null
