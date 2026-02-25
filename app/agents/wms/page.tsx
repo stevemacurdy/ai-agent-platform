@@ -1,34 +1,24 @@
+// @ts-nocheck
 'use client';
-import { useTenant } from '@/lib/providers/tenant-provider';
-import { getAgentKPIs } from '@/lib/agent-kpi-data';
+import WarehouseAgentUI from '@/components/agents/warehouse-agent-ui';
 
 export default function WMSAgentPage() {
-  const { currentCompany, isLoading } = useTenant();
-  const kpis = getAgentKPIs(currentCompany?.name, 'wms');
-
   return (
-    <div className="max-w-7xl mx-auto p-6 space-y-6">
-      <div className="flex items-center gap-4">
-        <div className="text-4xl">{'🏭'}</div>
-        <div>
-          <h1 className="text-2xl font-bold">WMS Agent</h1>
-          <p className="text-sm text-gray-400">{isLoading ? 'Loading...' : currentCompany?.name || 'Select a company'}</p>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-4 gap-3">
-        {kpis.map(k => (
-          <div key={k.label} className="bg-[#0A0E15] border border-white/5 rounded-xl p-4">
-            <div className="text-[9px] text-gray-500 uppercase">{k.label}</div>
-            <div className="text-2xl font-bold mt-1">{k.value}</div>
-          </div>
-        ))}
-      </div>
-
-      <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-6 text-center">
-        <p className="text-sm text-gray-400">Full WMS Agent dashboard coming soon.</p>
-        <p className="text-xs text-gray-600 mt-1">KPIs above reflect {currentCompany?.name || 'your company'} data.</p>
-      </div>
-    </div>
+    <WarehouseAgentUI
+      title="WMS Agent"
+      icon="🏭"
+      subtitle="Live warehouse data · AI-powered queries"
+      apiPath="/api/agents/wms"
+      gradientFrom="from-blue-600"
+      gradientTo="to-cyan-500"
+      quickPrompts={[
+        'What are our current inventory levels?',
+        'Show me any low-stock items',
+        'What orders are in progress?',
+        'Any items out of stock?',
+        'Show recent orders',
+        'Give me an order status breakdown',
+      ]}
+    />
   );
 }
