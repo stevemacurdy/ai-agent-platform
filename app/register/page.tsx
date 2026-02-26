@@ -57,7 +57,6 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen flex" style={{ background: '#F4F5F7', fontFamily: "'DM Sans', -apple-system, sans-serif" }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap');
         h1, h2, h3, h4 { font-family: 'Outfit', 'DM Sans', sans-serif; }
         @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }

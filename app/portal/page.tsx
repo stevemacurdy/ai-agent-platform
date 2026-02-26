@@ -37,7 +37,6 @@ export default function PortalPage() {
 
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center" style={{ background: '#F4F5F7' }}>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap'); @keyframes spin { to { transform: rotate(360deg); } }`}</style>
       <div className="text-center">
         <div className="w-10 h-10 rounded-full border-[3px] mx-auto mb-4" style={{ borderColor: '#E5E7EB', borderTopColor: '#2A9D8F', animation: 'spin 0.8s linear infinite' }} />
         <p className="text-sm text-gray-500" style={{ fontFamily: "'DM Sans', sans-serif" }}>Loading your workspace...</p>
@@ -48,7 +47,6 @@ export default function PortalPage() {
   return (
     <div className="min-h-screen" style={{ background: '#F4F5F7', color: '#1A1A2E', fontFamily: "'DM Sans', -apple-system, sans-serif" }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap');
         h1, h2, h3, h4 { font-family: 'Outfit', 'DM Sans', sans-serif; }
         @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
