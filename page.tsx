@@ -1,441 +1,357 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 
-/* ═══════════════════════════════════════════════════════════
-   WoulfAI Landing Page — AI Employees Branding
+/* ═══════════════════════════════════════════════════════════════
+   WoulfAI Login — Branded Design System
    Navy #1B2A4A · Teal #2A9D8F · Orange #F5920B
    BG #F4F5F7 · Surface #FFFFFF · Text #1A1A2E
-   ═══════════════════════════════════════════════════════════ */
+   ═══════════════════════════════════════════════════════════════ */
 
-const EMPLOYEES = [
-  { name: 'AI Financial Employee', icon: '💰', cat: 'Finance', desc: 'Handles cash flow management, automated reporting, and financial intelligence across all your accounts — around the clock.' },
-  { name: 'AI WMS Employee', icon: '🏭', cat: 'Operations', desc: 'Manages warehouse operations, inventory tracking, and real-time operational intelligence using your live data.' },
-  { name: 'AI Sales Employee', icon: '🎯', cat: 'Revenue', desc: 'Owns your pipeline intelligence, deal coaching, and competitive insights so you close more business faster.' },
-  { name: 'AI Marketing Employee', icon: '📢', cat: 'Revenue', desc: 'Runs campaign strategy, content generation, SEO optimization, and performance analytics — no supervision needed.' },
-  { name: 'AI Operations Employee', icon: '⚙️', cat: 'Operations', desc: 'Handles order fulfillment, logistics optimization, and daily operations management at any scale.' },
-  { name: 'AI HR Employee', icon: '👥', cat: 'People', desc: 'Manages employee records, compliance tracking, policy assistance, and workforce analytics for your team.' },
-];
+export default function LoginPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
-const STATS = [
-  { value: '21+', label: 'AI Employees', sub: 'Ready to hire', featured: true },
-  { value: '1,200+', label: 'Projects Delivered', sub: '4M+ sq ft integrated', featured: false },
-  { value: '6', label: 'Countries', sub: 'Global operations', featured: false },
-  { value: '24/7', label: 'Always Working', sub: 'Never calls in sick', featured: false },
-];
+  const registered = searchParams.get('registered');
+  const reset = searchParams.get('reset');
 
-const FEATURES = [
-  { icon: '🛡️', title: 'Enterprise Security', desc: 'SOC 2 ready infrastructure with row-level tenant isolation, encrypted data, and role-based access controls for every employee.' },
-  { icon: '⚡', title: 'Hire in Minutes', desc: 'Go from signup to a working AI Employee in minutes. No lengthy onboarding, no consultants, no training period required.' },
-  { icon: '📊', title: 'Performance Tracking', desc: 'Monitor employee performance, ROI, and productivity from a unified team dashboard with live data feeds.' },
-  { icon: '🔗', title: 'Deep Integrations', desc: 'Your AI Employees connect with QuickBooks, HubSpot, NetSuite, and your existing ERP — they use your tools.' },
-  { icon: '🏢', title: 'Multi-Company Ready', desc: 'Built for organizations managing multiple brands, locations, or client accounts with total data isolation between teams.' },
-  { icon: '🧠', title: 'Gets Smarter Over Time', desc: 'Your AI Employees improve continuously, adapting to your business patterns, preferences, and industry specifics.' },
-];
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
 
-const STEPS = [
-  { num: 1, title: 'Sign Up', desc: 'Create your company workspace in under 60 seconds.', active: false },
-  { num: 2, title: 'Hire Employees', desc: 'Pick the AI Employees your business needs from 21+ roles.', active: false },
-  { num: 3, title: 'Connect Tools', desc: 'Give them access to your systems — ERP, CRM, accounting, email.', active: false },
-  { num: 4, title: 'They Get to Work', desc: 'Your AI Employees start delivering results immediately, improving every day.', active: true },
-];
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
 
-const TIERS = [
-  { name: 'Starter', price: '$499', desc: 'A small but mighty team', features: ['5 AI Employees', 'Basic performance tracking', 'Email support', '2 human team members'], featured: false },
-  { name: 'Professional', price: '$1,200', desc: 'A full department at your disposal', features: ['15 AI Employees', 'Advanced performance tracking', 'Priority support', '10 human team members', 'Custom integrations'], featured: true },
-  { name: 'Enterprise', price: '$2,499', desc: 'Your complete AI workforce', features: ['All 21 AI Employees', 'Dedicated success manager', 'Custom domain', 'Unlimited human members', 'SLA guarantee', 'SOC 2 compliance docs'], featured: false },
-];
+      if (!res.ok) {
+        setError(data.error || 'Invalid email or password');
+        setLoading(false);
+        return;
+      }
 
-const NAV_LINKS = [
-  { href: '/solutions', label: 'Solutions' },
-  { href: '/pricing', label: 'Pricing' },
-  { href: '/case-studies', label: 'Case Studies' },
-  { href: '/about', label: 'About' },
-  { href: '/contact', label: 'Contact' },
-];
+      if (data.must_reset_password) {
+        router.push('/reset-password');
+        return;
+      }
 
-const Check = ({ color = '#2A9D8F' }: { color?: string }) => (
-  <svg width="12" height="12" viewBox="0 0 16 16" fill={color}><path d="M6.5 11.5L3 8l1-1 2.5 2.5L12 4l1 1z" /></svg>
-);
-
-const Star = () => (
-  <svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 1L10 5.5L15 6.5L11.5 10L12.5 15L8 12.5L3.5 15L4.5 10L1 6.5L6 5.5L8 1Z" fill="#2A9D8F" /></svg>
-);
-
-export default function LandingPage() {
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileMenu, setMobileMenu] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+      router.push(data.redirect || '/portal');
+    } catch {
+      setError('Something went wrong. Please try again.');
+      setLoading(false);
+    }
+  }
 
   return (
-    <div className="min-h-screen" style={{ background: '#F4F5F7', color: '#1A1A2E' }}>
-
-      {/* eslint-disable-next-line @next/next/no-css-tags */}
+    <div
+      className="min-h-screen flex"
+      style={{ background: '#F4F5F7', fontFamily: "'DM Sans', -apple-system, sans-serif" }}
+    >
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap');
         h1, h2, h3, h4 { font-family: 'Outfit', 'DM Sans', sans-serif; }
-        body { font-family: 'DM Sans', -apple-system, sans-serif; }
         @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-up { animation: fadeUp 0.5s ease-out both; }
       `}</style>
 
-      {/* NAVBAR */}
-      <nav
-        className="fixed top-0 w-full z-50 transition-all duration-300"
-        style={{
-          background: scrolled ? 'rgba(27,42,74,0.97)' : 'rgba(27,42,74,0.92)',
-          backdropFilter: 'blur(16px) saturate(1.6)',
-          borderBottom: '1px solid rgba(255,255,255,0.06)',
-          boxShadow: scrolled ? '0 4px 24px rgba(0,0,0,0.2)' : 'none',
-        }}
+      {/* ── LEFT PANEL (desktop branding) ────────────────── */}
+      <div
+        className="hidden lg:flex lg:w-[46%] relative overflow-hidden flex-col justify-between p-12"
+        style={{ background: 'linear-gradient(165deg, #132038 0%, #1B2A4A 40%, #233756 100%)' }}
       >
-        <div className={`max-w-7xl mx-auto px-6 sm:px-8 flex items-center justify-between transition-all ${scrolled ? 'h-[60px]' : 'h-[72px]'}`}>
+        {/* Pattern overlay */}
+        <div
+          className="absolute inset-0 opacity-[0.025]"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 0L46.2 13.8L60 20L46.2 26.2L40 40L33.8 26.2L20 20L33.8 13.8L40 0z' fill='%23ffffff' fill-opacity='1'/%3E%3C/svg%3E")`,
+          }}
+        />
+        {/* Glows */}
+        <div
+          className="absolute -top-32 -right-32 w-[400px] h-[400px] rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(42,157,143,0.1) 0%, transparent 70%)' }}
+        />
+        <div
+          className="absolute -bottom-24 -left-24 w-[300px] h-[300px] rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(245,146,11,0.08) 0%, transparent 70%)' }}
+        />
+
+        {/* Logo */}
+        <div className="relative z-10">
           <Link href="/" className="flex items-center gap-3 group">
-            <Image src="/woulf-badge.png" alt="Woulf Group" width={42} height={42} className="drop-shadow-lg group-hover:scale-105 transition-transform" />
+            <Image
+              src="/woulf-badge.png"
+              alt="Woulf Group"
+              width={48}
+              height={48}
+              className="drop-shadow-lg group-hover:scale-105 transition-transform"
+            />
             <div className="flex flex-col">
-              <span className="text-[22px] font-extrabold text-white tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
+              <span
+                className="text-2xl font-extrabold text-white tracking-tight"
+                style={{ fontFamily: "'Outfit', sans-serif" }}
+              >
                 Woulf<span style={{ color: '#F5920B' }}>AI</span>
               </span>
-              <span className="hidden sm:block text-[9px] text-white/35 uppercase tracking-[2.5px] -mt-0.5">by Woulf Group</span>
+              <span className="text-[9px] text-white/35 uppercase tracking-[2.5px] -mt-0.5">
+                by Woulf Group
+              </span>
             </div>
           </Link>
-
-          <div className="hidden lg:flex items-center gap-8">
-            {NAV_LINKS.map(l => (
-              <Link key={l.href} href={l.href} className="text-sm font-medium text-white/65 hover:text-white transition-colors">
-                {l.label}
-              </Link>
-            ))}
-          </div>
-
-          <div className="hidden lg:flex items-center gap-3">
-            <Link href="/login" className="text-sm font-medium text-white/65 hover:text-white px-4 py-2 rounded-xl hover:bg-white/[0.08] transition-all">
-              Sign In
-            </Link>
-            <Link
-              href="/register"
-              className="text-sm font-bold text-white px-6 py-2.5 rounded-xl transition-all hover:-translate-y-px"
-              style={{ background: '#F5920B', boxShadow: '0 4px 16px rgba(245,146,11,0.3)' }}
-            >
-              Hire Your AI Team
-            </Link>
-          </div>
-
-          <button onClick={() => setMobileMenu(!mobileMenu)} className="lg:hidden text-white p-2">
-            <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2">
-              {mobileMenu ? <path d="M6 6l12 12M6 18L18 6" /> : <path d="M4 6h16M4 12h16M4 18h16" />}
-            </svg>
-          </button>
         </div>
 
-        {mobileMenu && (
-          <div className="lg:hidden px-6 pb-4 space-y-2" style={{ background: 'rgba(27,42,74,0.98)' }}>
-            {NAV_LINKS.map(l => (
-              <Link key={l.href} href={l.href} className="block text-white/70 hover:text-white text-sm py-2" onClick={() => setMobileMenu(false)}>
-                {l.label}
-              </Link>
-            ))}
-            <div className="flex gap-3 pt-3">
-              <Link href="/login" className="text-sm text-white/60 px-4 py-2">Sign In</Link>
-              <Link href="/register" className="text-sm font-bold text-white px-5 py-2 rounded-xl" style={{ background: '#F5920B' }}>Hire Your AI Team</Link>
-            </div>
-          </div>
-        )}
-      </nav>
-
-      {/* HERO */}
-      <section className="relative pt-36 pb-20 overflow-hidden" style={{ background: 'linear-gradient(165deg, #132038 0%, #1B2A4A 40%, #233756 100%)' }}>
-        <div className="absolute inset-0 opacity-[0.025]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 0L46.2 13.8L60 20L46.2 26.2L40 40L33.8 26.2L20 20L33.8 13.8L40 0z' fill='%23ffffff' fill-opacity='1'/%3E%3C/svg%3E")` }} />
-        <div className="absolute -top-48 -right-48 w-[600px] h-[600px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(42,157,143,0.08) 0%, transparent 70%)' }} />
-        <div className="absolute -bottom-24 -left-24 w-[400px] h-[400px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(245,146,11,0.06) 0%, transparent 70%)' }} />
-        <div className="absolute -bottom-px left-0 right-0 h-24" style={{ background: '#F4F5F7', clipPath: 'polygon(0 40%, 100% 0%, 100% 100%, 0% 100%)' }} />
-
-        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 grid lg:grid-cols-2 gap-16 items-center">
-          <div>
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6" style={{ background: 'rgba(42,157,143,0.12)', color: '#3BB5A6', border: '1px solid rgba(42,157,143,0.25)' }}>
-              <span className="w-2 h-2 rounded-full" style={{ background: '#2A9D8F', animation: 'pulse-dot 2s infinite' }} />
-              21 AI Employees Ready to Hire
-            </div>
-
-            <h1 className="text-4xl sm:text-5xl lg:text-[56px] font-black text-white leading-[1.08] tracking-tight">
-              Hire AI Employees<br />
-              <span style={{ color: '#F5920B' }}>Who Work 24/7</span>
-            </h1>
-
-            <p className="mt-6 text-lg text-white/55 max-w-lg leading-relaxed">
-              Stop searching for people you can&apos;t find. Hire AI Employees for warehouse operations, finance, sales,
-              and more — each one costs a fraction of a full-time hire and never calls in sick. Built by the warehouse
-              experts at Woulf Group.
-            </p>
-
-            <div className="mt-9 flex flex-wrap gap-4">
-              <Link
-                href="/register"
-                className="px-9 py-4 rounded-2xl text-[15px] font-bold text-white transition-all hover:-translate-y-0.5"
-                style={{ background: '#F5920B', boxShadow: '0 8px 32px rgba(245,146,11,0.35)' }}
-              >
-                Hire Your First AI Employee
-              </Link>
-              <Link
-                href="/demo/marketing"
-                className="px-9 py-4 rounded-2xl text-[15px] font-semibold text-white border border-white/15 hover:bg-white/[0.08] transition-all"
-              >
-                ▶ See Them in Action
-              </Link>
-            </div>
-
-            <div className="mt-10 flex flex-wrap gap-6">
-              {['SOC 2 Ready', 'Tenant Isolated', 'Enterprise Grade'].map(b => (
-                <div key={b} className="flex items-center gap-2">
-                  <Star />
-                  <span className="text-xs text-white/45 font-medium">{b}</span>
-                </div>
-              ))}
-            </div>
+        {/* Center content */}
+        <div className="relative z-10 max-w-md">
+          <div
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6"
+            style={{
+              background: 'rgba(42,157,143,0.12)',
+              color: '#3BB5A6',
+              border: '1px solid rgba(42,157,143,0.25)',
+            }}
+          >
+            <span
+              className="w-2 h-2 rounded-full"
+              style={{ background: '#2A9D8F', animation: 'pulse-dot 2s infinite' }}
+            />
+            21 AI Employees Ready
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            {STATS.map((s, i) => (
+          <h1 className="text-[40px] font-black text-white leading-[1.1] tracking-tight">
+            Your AI Team is
+            <br />
+            <span style={{ color: '#F5920B' }}>Waiting for You</span>
+          </h1>
+          <p className="mt-5 text-white/45 leading-relaxed text-[15px]">
+            Sign in to manage your AI Employees, track their performance, and scale your operations
+            — all from one unified dashboard.
+          </p>
+
+          {/* Trust badges */}
+          <div className="mt-10 flex flex-wrap gap-5">
+            {[
+              { icon: '🛡️', label: 'SOC 2 Ready' },
+              { icon: '🔒', label: 'Encrypted' },
+              { icon: '⚡', label: 'Always On' },
+            ].map((b) => (
               <div
-                key={i}
-                className="p-7 rounded-[20px] backdrop-blur-sm border transition-all hover:-translate-y-0.5"
-                style={{
-                  background: s.featured ? 'rgba(245,146,11,0.06)' : 'rgba(255,255,255,0.05)',
-                  borderColor: s.featured ? 'rgba(245,146,11,0.18)' : 'rgba(255,255,255,0.08)',
-                }}
+                key={b.label}
+                className="flex items-center gap-2 px-3 py-2 rounded-xl"
+                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}
               >
-                <p className="text-4xl font-extrabold text-white tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>{s.value}</p>
-                <p className="text-sm font-semibold text-white/75 mt-1">{s.label}</p>
-                <p className="text-[11px] text-white/35 mt-0.5">{s.sub}</p>
+                <span className="text-sm">{b.icon}</span>
+                <span className="text-[11px] text-white/50 font-medium">{b.label}</span>
               </div>
             ))}
           </div>
         </div>
-      </section>
 
-      {/* TEAM ROSTER */}
-      <section className="py-24 px-6 sm:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <p className="text-xs font-bold uppercase tracking-[3px] mb-3" style={{ color: '#2A9D8F' }}>Your AI Workforce</p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold" style={{ color: '#1B2A4A' }}>An Employee for Every Role</h2>
-            <p className="mt-4 text-gray-500 max-w-2xl mx-auto">Each AI Employee is a specialist — trained on industry best practices, integrated with your tools, and ready to start producing results on day one.</p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {EMPLOYEES.map((e, i) => (
-              <div
-                key={i}
-                className="group p-7 rounded-[20px] bg-white border border-gray-200/60 hover:border-[#2A9D8F] hover:shadow-xl transition-all duration-300 hover:-translate-y-[3px] relative overflow-hidden"
-              >
-                <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#2A9D8F] to-[#3BB5A6] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" />
-                <div className="flex items-start gap-4">
-                  <span className="text-[32px]">{e.icon}</span>
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between gap-2">
-                      <h3 className="font-bold" style={{ color: '#1B2A4A' }}>{e.name}</h3>
-                      <span className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full uppercase tracking-wider" style={{ background: 'rgba(42,157,143,0.08)', color: '#2A9D8F' }}>{e.cat}</span>
-                    </div>
-                    <p className="text-[13px] text-gray-500 mt-2 leading-relaxed">{e.desc}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center mt-10">
-            <Link href="/agents" className="inline-flex items-center gap-1.5 text-sm font-bold hover:gap-2.5 transition-all" style={{ color: '#F5920B' }}>
-              Meet all 21 AI Employees →
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* FEATURES (dark) */}
-      <section className="py-24 px-6 sm:px-8" style={{ background: '#1B2A4A' }}>
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <p className="text-xs font-bold uppercase tracking-[3px] mb-3" style={{ color: '#F5920B' }}>Built Different</p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white">30+ Years of Warehouse Expertise, Now in Every Employee</h2>
-            <p className="mt-4 text-white/50 max-w-2xl mx-auto">We don&apos;t just build software — we&apos;ve integrated over 1,200 warehouse systems across six countries. Every AI Employee carries that expertise built in.</p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {FEATURES.map((f, i) => (
-              <div key={i} className="p-8 rounded-[20px] border border-white/[0.08] hover:border-white/15 hover:bg-white/[0.04] hover:-translate-y-0.5 transition-all" style={{ background: 'rgba(255,255,255,0.03)' }}>
-                <span className="text-[28px]">{f.icon}</span>
-                <h3 className="mt-4 text-[17px] font-bold text-white">{f.title}</h3>
-                <p className="mt-2 text-[13px] text-white/45 leading-relaxed">{f.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* HOW IT WORKS */}
-      <section className="py-24 px-6 sm:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <p className="text-xs font-bold uppercase tracking-[3px] mb-3" style={{ color: '#2A9D8F' }}>Simple Hiring Process</p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold" style={{ color: '#1B2A4A' }}>Your New Team, Working in Minutes</h2>
-            <p className="mt-4 text-gray-500 max-w-xl mx-auto">No recruiters, no months of training. Hire AI Employees who are productive from day one.</p>
-          </div>
-
-          <div className="relative grid grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="hidden lg:block absolute top-9 left-[12.5%] right-[12.5%] h-0.5 opacity-25" style={{ background: 'linear-gradient(90deg, #2A9D8F, #F5920B)' }} />
-
-            {STEPS.map((s) => (
-              <div key={s.num} className="text-center relative z-10">
-                <div
-                  className="w-[72px] h-[72px] rounded-full mx-auto mb-5 flex items-center justify-center text-[28px] font-extrabold text-white border-[3px]"
-                  style={{
-                    fontFamily: "'Outfit', sans-serif",
-                    background: s.active ? 'linear-gradient(135deg, #F5920B 0%, #FFa72e 100%)' : 'linear-gradient(135deg, #1B2A4A 0%, #233756 100%)',
-                    borderColor: s.active ? 'rgba(245,146,11,0.3)' : '#E5E7EB',
-                    boxShadow: '0 4px 12px rgba(27,42,74,0.08)',
-                  }}
-                >
-                  {s.num}
-                </div>
-                <h3 className="text-base font-bold mb-1.5" style={{ color: '#1B2A4A' }}>{s.title}</h3>
-                <p className="text-[13px] text-gray-500 max-w-[220px] mx-auto leading-relaxed">{s.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* PRICING */}
-      <section className="py-24 px-6 sm:px-8" style={{ background: '#FAFBFC' }}>
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <p className="text-xs font-bold uppercase tracking-[3px] mb-3" style={{ color: '#2A9D8F' }}>Build Your Team</p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold" style={{ color: '#1B2A4A' }}>Choose Your Team Size</h2>
-            <p className="mt-4 text-gray-500 max-w-xl mx-auto">Every AI Employee costs a fraction of a full-time hire and works 24/7. Pick the team that fits your business.</p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6 max-w-[1100px] mx-auto">
-            {TIERS.map((t, i) => (
-              <div
-                key={i}
-                className={`p-10 rounded-3xl border-2 transition-all hover:shadow-xl ${t.featured ? 'lg:scale-[1.03] shadow-xl' : ''}`}
-                style={{
-                  background: t.featured ? '#1B2A4A' : '#FFFFFF',
-                  borderColor: t.featured ? '#F5920B' : '#E5E7EB',
-                  color: t.featured ? '#fff' : '#1A1A2E',
-                }}
-              >
-                {t.featured && (
-                  <span className="inline-block text-[10px] font-bold uppercase tracking-[1.5px] px-3.5 py-1 rounded-full mb-4" style={{ background: 'rgba(245,146,11,0.15)', color: '#F5920B' }}>
-                    Most Popular
-                  </span>
-                )}
-                <h3 className="text-[22px] font-extrabold" style={{ fontFamily: "'Outfit', sans-serif" }}>{t.name}</h3>
-                <p className={`text-[13px] mt-1 ${t.featured ? 'text-white/50' : 'text-gray-500'}`}>{t.desc}</p>
-                <p className="text-5xl font-black mt-5 tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
-                  {t.price}<span className={`text-sm font-normal ${t.featured ? 'text-white/40' : 'text-gray-400'}`}>/mo</span>
-                </p>
-
-                <ul className="mt-7 flex flex-col gap-3.5">
-                  {t.features.map((f, j) => (
-                    <li key={j} className="flex items-center gap-2.5 text-sm">
-                      <span className="w-[18px] h-[18px] rounded-full flex items-center justify-center flex-shrink-0" style={{ background: t.featured ? 'rgba(245,146,11,0.2)' : 'rgba(42,157,143,0.1)' }}>
-                        <Check color={t.featured ? '#F5920B' : '#2A9D8F'} />
-                      </span>
-                      <span className={t.featured ? 'text-white/75' : 'text-gray-600'}>{f}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <Link
-                  href={t.featured ? '/register' : '/pricing'}
-                  className="block text-center mt-8 py-3.5 rounded-2xl text-[15px] font-bold transition-all hover:-translate-y-px"
-                  style={{
-                    background: t.featured ? '#F5920B' : 'transparent',
-                    color: t.featured ? '#fff' : '#1B2A4A',
-                    border: t.featured ? 'none' : '2px solid #1B2A4A',
-                    boxShadow: t.featured ? '0 4px 16px rgba(245,146,11,0.3)' : 'none',
-                  }}
-                >
-                  {t.featured ? 'Start Hiring Today' : 'View Details'}
-                </Link>
-              </div>
-            ))}
-          </div>
-
-          <p className="text-center text-sm text-gray-400 mt-8">
-            Need a custom workforce? <Link href="/contact" className="font-semibold" style={{ color: '#F5920B' }}>Talk to our team</Link>
+        {/* Bottom badge */}
+        <div className="relative z-10 flex items-center gap-3">
+          <Image
+            src="/woulf-badge.png"
+            alt="Woulf Group"
+            width={28}
+            height={28}
+            className="opacity-40"
+            style={{ animation: 'float 4s ease-in-out infinite' }}
+          />
+          <p className="text-[11px] text-white/20">
+            1,200+ projects · 4M+ sq ft · 6 countries
           </p>
         </div>
-      </section>
+      </div>
 
-      {/* CTA */}
-      <section className="py-24 px-6 sm:px-8">
-        <div className="max-w-[1100px] mx-auto p-12 sm:p-[72px] rounded-3xl text-center relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #132038 0%, #1B2A4A 60%, #233756 100%)' }}>
-          <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L35 10L45 15L35 20L30 30L25 20L15 15L25 10L30 0z' fill='%23F5920B' fill-opacity='1'/%3E%3C/svg%3E")` }} />
-          <div className="relative z-10">
-            <Image src="/woulf-badge.png" alt="Woulf Group" width={64} height={64} className="mx-auto mb-7 drop-shadow-xl" style={{ animation: 'float 4s ease-in-out infinite' }} />
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
-              Stop Searching for People<br />You Can&apos;t Find
-            </h2>
-            <p className="mt-4 text-white/50 max-w-lg mx-auto leading-relaxed">
-              Hire AI Employees who are trained, reliable, and ready to work today. They cost a fraction of a full-time hire, work around the clock, and never quit.
-            </p>
-            <div className="mt-9 flex flex-wrap gap-4 justify-center">
-              <Link href="/register" className="px-9 py-4 rounded-2xl text-[15px] font-bold text-white transition-all hover:-translate-y-0.5" style={{ background: '#F5920B', boxShadow: '0 8px 32px rgba(245,146,11,0.35)' }}>
-                Hire Your First AI Employee
-              </Link>
-              <Link href="/contact" className="px-9 py-4 rounded-2xl text-[15px] font-semibold text-white border border-white/15 hover:bg-white/[0.08] transition-all">
-                Talk to Sales
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FOOTER */}
-      <footer className="py-16 px-6 sm:px-8" style={{ background: '#132038', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-        <div className="max-w-7xl mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-12">
-          <div>
-            <div className="flex items-center gap-3 mb-3">
-              <Image src="/woulf-badge.png" alt="Woulf Group" width={36} height={36} className="drop-shadow-lg" />
-              <span className="text-xl font-extrabold text-white" style={{ fontFamily: "'Outfit', sans-serif" }}>Woulf<span style={{ color: '#F5920B' }}>AI</span></span>
-            </div>
-            <p className="text-[13px] text-white/35 leading-relaxed">
-              AI Employees built by Woulf Group. 30+ years of warehouse systems integration expertise, now working for your business 24/7.
-            </p>
-            <p className="text-[11px] text-white/20 mt-2">Grantsville, UT · woulfgroup.com</p>
+      {/* ── RIGHT PANEL (login form) ────────────────── */}
+      <div className="flex-1 flex items-center justify-center px-6 sm:px-12 py-12">
+        <div className="w-full max-w-[420px] animate-fade-up">
+          {/* Mobile logo */}
+          <div className="lg:hidden mb-10 flex items-center gap-3">
+            <Link href="/" className="flex items-center gap-3">
+              <Image src="/woulf-badge.png" alt="Woulf Group" width={40} height={40} className="drop-shadow-lg" />
+              <span
+                className="text-xl font-extrabold tracking-tight"
+                style={{ color: '#1B2A4A', fontFamily: "'Outfit', sans-serif" }}
+              >
+                Woulf<span style={{ color: '#F5920B' }}>AI</span>
+              </span>
+            </Link>
           </div>
 
-          {[
-            { title: 'Your Team', links: [{ href: '/agents', label: 'All AI Employees' }, { href: '/pricing', label: 'Pricing' }, { href: '/solutions', label: 'Solutions' }, { href: '/demo/marketing', label: 'See Them Work' }, { href: '/warehouse', label: 'Warehouse Portal' }] },
-            { title: 'Company', links: [{ href: '/about', label: 'About' }, { href: '/case-studies', label: 'Case Studies' }, { href: '/contact', label: 'Contact' }, { href: 'https://woulfgroup.com', label: 'Woulf Group' }] },
-            { title: 'Legal', links: [{ href: '/terms', label: 'Terms of Service' }, { href: '/privacy', label: 'Privacy Policy' }, { href: '/security', label: 'Security' }] },
-          ].map(col => (
-            <div key={col.title}>
-              <h4 className="text-[13px] font-bold text-white/70 mb-4 uppercase tracking-wider">{col.title}</h4>
-              <ul className="flex flex-col gap-2.5">
-                {col.links.map(l => (
-                  <li key={l.href}>
-                    <Link href={l.href} className="text-[13px] text-white/40 hover:text-white/80 transition-colors">{l.label}</Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
+          <h2
+            className="text-[28px] font-extrabold tracking-tight"
+            style={{ color: '#1B2A4A', fontFamily: "'Outfit', sans-serif" }}
+          >
+            Welcome back
+          </h2>
+          <p className="mt-1.5 text-[15px] text-gray-500">
+            Sign in to your WoulfAI workspace
+          </p>
 
-        <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-[11px] text-white/20">© 2026 WoulfAI by Woulf Group. All rights reserved.</p>
-          <p className="text-[11px] text-white/15">21 AI Employees working for businesses worldwide</p>
+          {/* Success banners */}
+          {registered && (
+            <div
+              className="mt-5 px-4 py-3 rounded-xl text-sm font-medium"
+              style={{ background: 'rgba(42,157,143,0.08)', color: '#2A9D8F', border: '1px solid rgba(42,157,143,0.15)' }}
+            >
+              Account created — sign in to get started.
+            </div>
+          )}
+          {reset && (
+            <div
+              className="mt-5 px-4 py-3 rounded-xl text-sm font-medium"
+              style={{ background: 'rgba(42,157,143,0.08)', color: '#2A9D8F', border: '1px solid rgba(42,157,143,0.15)' }}
+            >
+              Password reset — you can now sign in.
+            </div>
+          )}
+
+          {/* Error */}
+          {error && (
+            <div
+              className="mt-5 px-4 py-3 rounded-xl text-sm font-medium"
+              style={{ background: 'rgba(220,79,79,0.08)', color: '#DC4F4F', border: '1px solid rgba(220,79,79,0.15)' }}
+            >
+              {error}
+            </div>
+          )}
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+            <div>
+              <label className="block text-[13px] font-semibold mb-1.5" style={{ color: '#1B2A4A' }}>
+                Email
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@company.com"
+                required
+                autoFocus
+                className="w-full px-4 py-3 rounded-xl text-[15px] outline-none transition-all"
+                style={{
+                  background: '#FFFFFF',
+                  border: '1.5px solid #E5E7EB',
+                  color: '#1A1A2E',
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#2A9D8F';
+                  e.target.style.boxShadow = '0 0 0 3px rgba(42,157,143,0.1)';
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#E5E7EB';
+                  e.target.style.boxShadow = 'none';
+                }}
+              />
+            </div>
+
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="block text-[13px] font-semibold" style={{ color: '#1B2A4A' }}>
+                  Password
+                </label>
+                <Link
+                  href="/forgot-password"
+                  className="text-[12px] font-medium hover:underline"
+                  style={{ color: '#2A9D8F' }}
+                >
+                  Forgot password?
+                </Link>
+              </div>
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  required
+                  className="w-full px-4 py-3 pr-12 rounded-xl text-[15px] outline-none transition-all"
+                  style={{
+                    background: '#FFFFFF',
+                    border: '1.5px solid #E5E7EB',
+                    color: '#1A1A2E',
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#2A9D8F';
+                    e.target.style.boxShadow = '0 0 0 3px rgba(42,157,143,0.1)';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#E5E7EB';
+                    e.target.style.boxShadow = 'none';
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
+                >
+                  {showPassword ? (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="2">
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                      <line x1="1" y1="1" x2="23" y2="23" />
+                    </svg>
+                  ) : (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="2">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  )}
+                </button>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3.5 rounded-xl text-[15px] font-bold text-white transition-all hover:-translate-y-px disabled:opacity-60 disabled:cursor-not-allowed"
+              style={{
+                background: '#F5920B',
+                boxShadow: '0 4px 16px rgba(245,146,11,0.3)',
+              }}
+            >
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" fill="none" strokeDasharray="32" strokeLinecap="round" />
+                  </svg>
+                  Signing in...
+                </span>
+              ) : (
+                'Sign In'
+              )}
+            </button>
+          </form>
+
+          {/* Divider + register link */}
+          <div className="mt-8 text-center">
+            <p className="text-[14px] text-gray-500">
+              Don&apos;t have an account?{' '}
+              <Link href="/register" className="font-bold hover:underline" style={{ color: '#F5920B' }}>
+                Hire your AI Team
+              </Link>
+            </p>
+          </div>
+
+          {/* Footer */}
+          <p className="mt-12 text-center text-[11px] text-gray-400">
+            © 2026 WoulfAI by Woulf Group · Grantsville, UT
+          </p>
         </div>
-      </footer>
+      </div>
     </div>
   );
 }
