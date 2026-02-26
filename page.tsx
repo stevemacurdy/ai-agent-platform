@@ -4,47 +4,47 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 /* ═══════════════════════════════════════════════════════════
-   WoulfAI Landing Page — Branded Design System
+   WoulfAI Landing Page — AI Employees Branding
    Navy #1B2A4A · Teal #2A9D8F · Orange #F5920B
    BG #F4F5F7 · Surface #FFFFFF · Text #1A1A2E
    ═══════════════════════════════════════════════════════════ */
 
-const AGENTS = [
-  { name: 'CFO Agent', icon: '💰', cat: 'Finance', desc: 'Financial intelligence, cash flow management, and automated reporting across all your accounts.' },
-  { name: 'WMS Agent', icon: '🏭', cat: 'Operations', desc: 'Warehouse management, inventory tracking, and real-time operational intelligence with live data.' },
-  { name: 'Sales Agent', icon: '🎯', cat: 'Revenue', desc: 'Pipeline intelligence, deal coaching, and competitive insights to close more business faster.' },
-  { name: 'Marketing Agent', icon: '📢', cat: 'Revenue', desc: 'Campaign strategy, content generation, SEO optimization, and performance analytics.' },
-  { name: 'Operations Agent', icon: '⚙️', cat: 'Operations', desc: 'Order fulfillment, logistics optimization, and daily operations management at scale.' },
-  { name: 'HR Agent', icon: '👥', cat: 'People', desc: 'Employee management, compliance tracking, policy assistance, and workforce analytics.' },
+const EMPLOYEES = [
+  { name: 'AI Financial Employee', icon: '💰', cat: 'Finance', desc: 'Handles cash flow management, automated reporting, and financial intelligence across all your accounts — around the clock.' },
+  { name: 'AI WMS Employee', icon: '🏭', cat: 'Operations', desc: 'Manages warehouse operations, inventory tracking, and real-time operational intelligence using your live data.' },
+  { name: 'AI Sales Employee', icon: '🎯', cat: 'Revenue', desc: 'Owns your pipeline intelligence, deal coaching, and competitive insights so you close more business faster.' },
+  { name: 'AI Marketing Employee', icon: '📢', cat: 'Revenue', desc: 'Runs campaign strategy, content generation, SEO optimization, and performance analytics — no supervision needed.' },
+  { name: 'AI Operations Employee', icon: '⚙️', cat: 'Operations', desc: 'Handles order fulfillment, logistics optimization, and daily operations management at any scale.' },
+  { name: 'AI HR Employee', icon: '👥', cat: 'People', desc: 'Manages employee records, compliance tracking, policy assistance, and workforce analytics for your team.' },
 ];
 
 const STATS = [
-  { value: '21+', label: 'AI Agents', sub: 'Purpose-built', featured: true },
-  { value: '1,200+', label: 'Projects', sub: '4M+ sq ft integrated', featured: false },
+  { value: '21+', label: 'AI Employees', sub: 'Ready to hire', featured: true },
+  { value: '1,200+', label: 'Projects Delivered', sub: '4M+ sq ft integrated', featured: false },
   { value: '6', label: 'Countries', sub: 'Global operations', featured: false },
-  { value: '24/7', label: 'Always On', sub: 'Zero downtime', featured: false },
+  { value: '24/7', label: 'Always Working', sub: 'Never calls in sick', featured: false },
 ];
 
 const FEATURES = [
-  { icon: '🛡️', title: 'Enterprise Security', desc: 'SOC 2 ready infrastructure with row-level tenant isolation, encrypted data, and role-based access controls.' },
-  { icon: '⚡', title: 'Instant Deployment', desc: 'Go from signup to production in minutes. No complex setup, lengthy onboarding, or consultants required.' },
-  { icon: '📊', title: 'Real-Time Analytics', desc: 'Track agent performance, ROI, and operational metrics from a unified dashboard with live data feeds.' },
-  { icon: '🔗', title: 'Deep Integrations', desc: 'Connect with QuickBooks, HubSpot, NetSuite, and your existing ERP — agents work with your tools.' },
-  { icon: '🏢', title: 'Multi-Tenant Ready', desc: 'Built for organizations managing multiple brands, locations, or client accounts with total data isolation.' },
-  { icon: '🧠', title: 'Continuous Learning', desc: 'Agents improve over time, adapting to your business patterns, preferences, and industry specifics.' },
+  { icon: '🛡️', title: 'Enterprise Security', desc: 'SOC 2 ready infrastructure with row-level tenant isolation, encrypted data, and role-based access controls for every employee.' },
+  { icon: '⚡', title: 'Hire in Minutes', desc: 'Go from signup to a working AI Employee in minutes. No lengthy onboarding, no consultants, no training period required.' },
+  { icon: '📊', title: 'Performance Tracking', desc: 'Monitor employee performance, ROI, and productivity from a unified team dashboard with live data feeds.' },
+  { icon: '🔗', title: 'Deep Integrations', desc: 'Your AI Employees connect with QuickBooks, HubSpot, NetSuite, and your existing ERP — they use your tools.' },
+  { icon: '🏢', title: 'Multi-Company Ready', desc: 'Built for organizations managing multiple brands, locations, or client accounts with total data isolation between teams.' },
+  { icon: '🧠', title: 'Gets Smarter Over Time', desc: 'Your AI Employees improve continuously, adapting to your business patterns, preferences, and industry specifics.' },
 ];
 
 const STEPS = [
-  { num: 1, title: 'Sign Up', desc: 'Create your secure workspace in under 60 seconds.', active: false },
-  { num: 2, title: 'Choose Agents', desc: 'Select the AI agents your business needs from 21+ options.', active: false },
-  { num: 3, title: 'Connect Tools', desc: 'Link your existing systems — ERP, CRM, accounting, email.', active: false },
-  { num: 4, title: 'Go Live', desc: 'Your agents start working immediately, learning and improving daily.', active: true },
+  { num: 1, title: 'Sign Up', desc: 'Create your company workspace in under 60 seconds.', active: false },
+  { num: 2, title: 'Hire Employees', desc: 'Pick the AI Employees your business needs from 21+ roles.', active: false },
+  { num: 3, title: 'Connect Tools', desc: 'Give them access to your systems — ERP, CRM, accounting, email.', active: false },
+  { num: 4, title: 'They Get to Work', desc: 'Your AI Employees start delivering results immediately, improving every day.', active: true },
 ];
 
 const TIERS = [
-  { name: 'Starter', price: '$499', desc: 'For small teams getting started', features: ['5 AI Agents', 'Basic analytics', 'Email support', '2 team members'], featured: false },
-  { name: 'Professional', price: '$1,200', desc: 'Full coverage for growing companies', features: ['15 AI Agents', 'Advanced analytics', 'Priority support', '10 team members', 'Custom integrations'], featured: true },
-  { name: 'Enterprise', price: '$2,499', desc: 'Unlimited power with white-glove service', features: ['All 21 Agents', 'Dedicated success manager', 'Custom domain', 'Unlimited members', 'SLA guarantee', 'SOC 2 compliance docs'], featured: false },
+  { name: 'Starter', price: '$499', desc: 'A small but mighty team', features: ['5 AI Employees', 'Basic performance tracking', 'Email support', '2 human team members'], featured: false },
+  { name: 'Professional', price: '$1,200', desc: 'A full department at your disposal', features: ['15 AI Employees', 'Advanced performance tracking', 'Priority support', '10 human team members', 'Custom integrations'], featured: true },
+  { name: 'Enterprise', price: '$2,499', desc: 'Your complete AI workforce', features: ['All 21 AI Employees', 'Dedicated success manager', 'Custom domain', 'Unlimited human members', 'SLA guarantee', 'SOC 2 compliance docs'], featured: false },
 ];
 
 const NAV_LINKS = [
@@ -85,7 +85,7 @@ export default function LandingPage() {
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
       `}</style>
 
-      {/* ── NAVBAR ──────────────────────────────────────── */}
+      {/* NAVBAR */}
       <nav
         className="fixed top-0 w-full z-50 transition-all duration-300"
         style={{
@@ -123,7 +123,7 @@ export default function LandingPage() {
               className="text-sm font-bold text-white px-6 py-2.5 rounded-xl transition-all hover:-translate-y-px"
               style={{ background: '#F5920B', boxShadow: '0 4px 16px rgba(245,146,11,0.3)' }}
             >
-              Get Started
+              Hire Your AI Team
             </Link>
           </div>
 
@@ -143,13 +143,13 @@ export default function LandingPage() {
             ))}
             <div className="flex gap-3 pt-3">
               <Link href="/login" className="text-sm text-white/60 px-4 py-2">Sign In</Link>
-              <Link href="/register" className="text-sm font-bold text-white px-5 py-2 rounded-xl" style={{ background: '#F5920B' }}>Get Started</Link>
+              <Link href="/register" className="text-sm font-bold text-white px-5 py-2 rounded-xl" style={{ background: '#F5920B' }}>Hire Your AI Team</Link>
             </div>
           </div>
         )}
       </nav>
 
-      {/* ── HERO ────────────────────────────────────────── */}
+      {/* HERO */}
       <section className="relative pt-36 pb-20 overflow-hidden" style={{ background: 'linear-gradient(165deg, #132038 0%, #1B2A4A 40%, #233756 100%)' }}>
         <div className="absolute inset-0 opacity-[0.025]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 0L46.2 13.8L60 20L46.2 26.2L40 40L33.8 26.2L20 20L33.8 13.8L40 0z' fill='%23ffffff' fill-opacity='1'/%3E%3C/svg%3E")` }} />
         <div className="absolute -top-48 -right-48 w-[600px] h-[600px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(42,157,143,0.08) 0%, transparent 70%)' }} />
@@ -160,17 +160,18 @@ export default function LandingPage() {
           <div>
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6" style={{ background: 'rgba(42,157,143,0.12)', color: '#3BB5A6', border: '1px solid rgba(42,157,143,0.25)' }}>
               <span className="w-2 h-2 rounded-full" style={{ background: '#2A9D8F', animation: 'pulse-dot 2s infinite' }} />
-              21 AI Agents Live
+              21 AI Employees Ready to Hire
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-[56px] font-black text-white leading-[1.08] tracking-tight">
-              AI Agents That<br />
-              <span style={{ color: '#F5920B' }}>Run Your Business</span>
+              Hire AI Employees<br />
+              <span style={{ color: '#F5920B' }}>Who Work 24/7</span>
             </h1>
 
             <p className="mt-6 text-lg text-white/55 max-w-lg leading-relaxed">
-              Deploy purpose-built AI agents for warehouse operations, finance, sales, and more.
-              Each agent integrates with your tools and works 24/7 — built by the warehouse experts at Woulf Group.
+              Stop searching for people you can&apos;t find. Hire AI Employees for warehouse operations, finance, sales,
+              and more — each one costs a fraction of a full-time hire and never calls in sick. Built by the warehouse
+              experts at Woulf Group.
             </p>
 
             <div className="mt-9 flex flex-wrap gap-4">
@@ -179,13 +180,13 @@ export default function LandingPage() {
                 className="px-9 py-4 rounded-2xl text-[15px] font-bold text-white transition-all hover:-translate-y-0.5"
                 style={{ background: '#F5920B', boxShadow: '0 8px 32px rgba(245,146,11,0.35)' }}
               >
-                Start Free Trial
+                Hire Your First AI Employee
               </Link>
               <Link
                 href="/demo/marketing"
                 className="px-9 py-4 rounded-2xl text-[15px] font-semibold text-white border border-white/15 hover:bg-white/[0.08] transition-all"
               >
-                ▶ Watch Demo
+                ▶ See Them in Action
               </Link>
             </div>
 
@@ -218,30 +219,30 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── AGENTS ──────────────────────────────────────── */}
+      {/* TEAM ROSTER */}
       <section className="py-24 px-6 sm:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <p className="text-xs font-bold uppercase tracking-[3px] mb-3" style={{ color: '#2A9D8F' }}>Specialized AI Workforce</p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold" style={{ color: '#1B2A4A' }}>Agents for Every Department</h2>
-            <p className="mt-4 text-gray-500 max-w-2xl mx-auto">Each agent is purpose-built for its domain — trained on industry best practices and integrated with your existing tools.</p>
+            <p className="text-xs font-bold uppercase tracking-[3px] mb-3" style={{ color: '#2A9D8F' }}>Your AI Workforce</p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold" style={{ color: '#1B2A4A' }}>An Employee for Every Role</h2>
+            <p className="mt-4 text-gray-500 max-w-2xl mx-auto">Each AI Employee is a specialist — trained on industry best practices, integrated with your tools, and ready to start producing results on day one.</p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {AGENTS.map((a, i) => (
+            {EMPLOYEES.map((e, i) => (
               <div
                 key={i}
                 className="group p-7 rounded-[20px] bg-white border border-gray-200/60 hover:border-[#2A9D8F] hover:shadow-xl transition-all duration-300 hover:-translate-y-[3px] relative overflow-hidden"
               >
                 <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#2A9D8F] to-[#3BB5A6] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" />
                 <div className="flex items-start gap-4">
-                  <span className="text-[32px]">{a.icon}</span>
+                  <span className="text-[32px]">{e.icon}</span>
                   <div className="flex-1">
                     <div className="flex items-center justify-between gap-2">
-                      <h3 className="font-bold" style={{ color: '#1B2A4A' }}>{a.name}</h3>
-                      <span className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full uppercase tracking-wider" style={{ background: 'rgba(42,157,143,0.08)', color: '#2A9D8F' }}>{a.cat}</span>
+                      <h3 className="font-bold" style={{ color: '#1B2A4A' }}>{e.name}</h3>
+                      <span className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full uppercase tracking-wider" style={{ background: 'rgba(42,157,143,0.08)', color: '#2A9D8F' }}>{e.cat}</span>
                     </div>
-                    <p className="text-[13px] text-gray-500 mt-2 leading-relaxed">{a.desc}</p>
+                    <p className="text-[13px] text-gray-500 mt-2 leading-relaxed">{e.desc}</p>
                   </div>
                 </div>
               </div>
@@ -250,19 +251,19 @@ export default function LandingPage() {
 
           <div className="text-center mt-10">
             <Link href="/agents" className="inline-flex items-center gap-1.5 text-sm font-bold hover:gap-2.5 transition-all" style={{ color: '#F5920B' }}>
-              View all 21 agents →
+              Meet all 21 AI Employees →
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ── FEATURES (dark) ────────────────────────────── */}
+      {/* FEATURES (dark) */}
       <section className="py-24 px-6 sm:px-8" style={{ background: '#1B2A4A' }}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <p className="text-xs font-bold uppercase tracking-[3px] mb-3" style={{ color: '#F5920B' }}>Built Different</p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white">30+ Years of Warehouse Expertise, Now AI-Powered</h2>
-            <p className="mt-4 text-white/50 max-w-2xl mx-auto">We don&apos;t just build software — we&apos;ve integrated over 1,200 warehouse systems across six countries.</p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-white">30+ Years of Warehouse Expertise, Now in Every Employee</h2>
+            <p className="mt-4 text-white/50 max-w-2xl mx-auto">We don&apos;t just build software — we&apos;ve integrated over 1,200 warehouse systems across six countries. Every AI Employee carries that expertise built in.</p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -277,13 +278,13 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── HOW IT WORKS ───────────────────────────────── */}
+      {/* HOW IT WORKS */}
       <section className="py-24 px-6 sm:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <p className="text-xs font-bold uppercase tracking-[3px] mb-3" style={{ color: '#2A9D8F' }}>Simple Setup</p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold" style={{ color: '#1B2A4A' }}>Up and Running in Minutes</h2>
-            <p className="mt-4 text-gray-500 max-w-xl mx-auto">No consultants, no months of implementation. Get enterprise AI agents working for your business today.</p>
+            <p className="text-xs font-bold uppercase tracking-[3px] mb-3" style={{ color: '#2A9D8F' }}>Simple Hiring Process</p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold" style={{ color: '#1B2A4A' }}>Your New Team, Working in Minutes</h2>
+            <p className="mt-4 text-gray-500 max-w-xl mx-auto">No recruiters, no months of training. Hire AI Employees who are productive from day one.</p>
           </div>
 
           <div className="relative grid grid-cols-2 lg:grid-cols-4 gap-6">
@@ -310,12 +311,13 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── PRICING ─────────────────────────────────────── */}
+      {/* PRICING */}
       <section className="py-24 px-6 sm:px-8" style={{ background: '#FAFBFC' }}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <p className="text-xs font-bold uppercase tracking-[3px] mb-3" style={{ color: '#2A9D8F' }}>Simple Pricing</p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold" style={{ color: '#1B2A4A' }}>Transparent Plans, No Surprises</h2>
+            <p className="text-xs font-bold uppercase tracking-[3px] mb-3" style={{ color: '#2A9D8F' }}>Build Your Team</p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold" style={{ color: '#1B2A4A' }}>Choose Your Team Size</h2>
+            <p className="mt-4 text-gray-500 max-w-xl mx-auto">Every AI Employee costs a fraction of a full-time hire and works 24/7. Pick the team that fits your business.</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6 max-w-[1100px] mx-auto">
@@ -361,33 +363,33 @@ export default function LandingPage() {
                     boxShadow: t.featured ? '0 4px 16px rgba(245,146,11,0.3)' : 'none',
                   }}
                 >
-                  {t.featured ? 'Start Free Trial' : 'View Details'}
+                  {t.featured ? 'Start Hiring Today' : 'View Details'}
                 </Link>
               </div>
             ))}
           </div>
 
           <p className="text-center text-sm text-gray-400 mt-8">
-            Need something custom? <Link href="/contact" className="font-semibold" style={{ color: '#F5920B' }}>Contact our team</Link>
+            Need a custom workforce? <Link href="/contact" className="font-semibold" style={{ color: '#F5920B' }}>Talk to our team</Link>
           </p>
         </div>
       </section>
 
-      {/* ── CTA ──────────────────────────────────────── */}
+      {/* CTA */}
       <section className="py-24 px-6 sm:px-8">
         <div className="max-w-[1100px] mx-auto p-12 sm:p-[72px] rounded-3xl text-center relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #132038 0%, #1B2A4A 60%, #233756 100%)' }}>
           <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L35 10L45 15L35 20L30 30L25 20L15 15L25 10L30 0z' fill='%23F5920B' fill-opacity='1'/%3E%3C/svg%3E")` }} />
           <div className="relative z-10">
             <Image src="/woulf-badge.png" alt="Woulf Group" width={64} height={64} className="mx-auto mb-7 drop-shadow-xl" style={{ animation: 'float 4s ease-in-out infinite' }} />
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
-              Ready to Transform<br />Your Operations?
+              Stop Searching for People<br />You Can&apos;t Find
             </h2>
             <p className="mt-4 text-white/50 max-w-lg mx-auto leading-relaxed">
-              Join forward-thinking companies using WoulfAI to automate, optimize, and scale their warehouse and business operations.
+              Hire AI Employees who are trained, reliable, and ready to work today. They cost a fraction of a full-time hire, work around the clock, and never quit.
             </p>
             <div className="mt-9 flex flex-wrap gap-4 justify-center">
               <Link href="/register" className="px-9 py-4 rounded-2xl text-[15px] font-bold text-white transition-all hover:-translate-y-0.5" style={{ background: '#F5920B', boxShadow: '0 8px 32px rgba(245,146,11,0.35)' }}>
-                Start Free Trial
+                Hire Your First AI Employee
               </Link>
               <Link href="/contact" className="px-9 py-4 rounded-2xl text-[15px] font-semibold text-white border border-white/15 hover:bg-white/[0.08] transition-all">
                 Talk to Sales
@@ -397,7 +399,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── FOOTER ──────────────────────────────────────── */}
+      {/* FOOTER */}
       <footer className="py-16 px-6 sm:px-8" style={{ background: '#132038', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
         <div className="max-w-7xl mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-12">
           <div>
@@ -406,13 +408,13 @@ export default function LandingPage() {
               <span className="text-xl font-extrabold text-white" style={{ fontFamily: "'Outfit', sans-serif" }}>Woulf<span style={{ color: '#F5920B' }}>AI</span></span>
             </div>
             <p className="text-[13px] text-white/35 leading-relaxed">
-              AI-powered business agents built by Woulf Group. Warehouse systems integration meets artificial intelligence.
+              AI Employees built by Woulf Group. 30+ years of warehouse systems integration expertise, now working for your business 24/7.
             </p>
             <p className="text-[11px] text-white/20 mt-2">Grantsville, UT · woulfgroup.com</p>
           </div>
 
           {[
-            { title: 'Product', links: [{ href: '/agents', label: 'All Agents' }, { href: '/pricing', label: 'Pricing' }, { href: '/solutions', label: 'Solutions' }, { href: '/demo/marketing', label: 'Demos' }, { href: '/warehouse', label: 'Warehouse Portal' }] },
+            { title: 'Your Team', links: [{ href: '/agents', label: 'All AI Employees' }, { href: '/pricing', label: 'Pricing' }, { href: '/solutions', label: 'Solutions' }, { href: '/demo/marketing', label: 'See Them Work' }, { href: '/warehouse', label: 'Warehouse Portal' }] },
             { title: 'Company', links: [{ href: '/about', label: 'About' }, { href: '/case-studies', label: 'Case Studies' }, { href: '/contact', label: 'Contact' }, { href: 'https://woulfgroup.com', label: 'Woulf Group' }] },
             { title: 'Legal', links: [{ href: '/terms', label: 'Terms of Service' }, { href: '/privacy', label: 'Privacy Policy' }, { href: '/security', label: 'Security' }] },
           ].map(col => (
@@ -431,7 +433,7 @@ export default function LandingPage() {
 
         <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-[11px] text-white/20">© 2026 WoulfAI by Woulf Group. All rights reserved.</p>
-          <p className="text-[11px] text-white/15">21 agents deployed · Built in Grantsville, UT</p>
+          <p className="text-[11px] text-white/15">21 AI Employees working for businesses worldwide</p>
         </div>
       </footer>
     </div>
