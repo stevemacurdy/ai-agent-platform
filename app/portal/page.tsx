@@ -22,7 +22,7 @@ export default function PortalPage() {
   useEffect(() => {
     async function load() {
       try {
-        const [userRes, agentsRes] = await Promise.all([fetch('/api/auth/me'), fetch('/api/agents')]);
+        const [userRes, agentsRes] = await Promise.all([fetch('/api/auth/me', { headers: { Authorization: 'Bearer ' + localStorage.getItem('woulfai_token') } }), fetch('/api/agents')]);
         if (!userRes.ok) { router.push('/login'); return; }
         const userData = await userRes.json();
         setUser(userData.user || userData);
