@@ -2,11 +2,10 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { getSupabaseBrowser } from '@/lib/supabase-browser'
+import { login as authLogin } from '@/lib/auth'
 
 export default function LoginPage() {
   const router = useRouter()
-  const sb = getSupabaseBrowser()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
