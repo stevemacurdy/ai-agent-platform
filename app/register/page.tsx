@@ -1,389 +1,229 @@
-'use client'
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { getSupabaseBrowser } from '@/lib/supabase-browser'
-
-const USER_TYPES = [
-  {
-    id: 'business_owner',
-    label: 'Business Owner',
-    icon: '🏢',
-    description: 'I run a business and want AI-powered solutions',
-    color: 'border-blue-500/30 bg-blue-500/10 text-blue-400',
-  },
-  {
-    id: 'individual',
-    label: 'Individual',
-    icon: '👤',
-    description: 'I want AI tools for personal or freelance use',
-    color: 'border-purple-500/30 bg-purple-500/10 text-purple-400',
-  },
-  {
-    id: 'beta_tester',
-    label: 'Beta Tester',
-    icon: '🧪',
-    description: 'I have a beta access code',
-    color: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-400',
-  },
-]
+'use client';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import Image from 'next/image';
 
 export default function RegisterPage() {
-  const router = useRouter()
-  const sb = getSupabaseBrowser()
+  const router = useRouter();
+  const [form, setForm] = useState({ name: '', email: '', company: '', password: '', confirm: '' });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
-  const [step, setStep] = useState(1)
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
+  const set = (key: string) => (e: React.ChangeEvent<HTMLInputElement>) =>
+    setForm((f) => ({ ...f, [key]: e.target.value }));
 
-  const [form, setForm] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
-    company: '',
-    userType: '',
-    betaCode: '',
-    password: '',
-    confirmPassword: '',
-    agreeTerms: false,
-  })
+  const passwordStrength = (pw: string) => {
+    let score = 0;
+    if (pw.length >= 8) score++;
+    if (/[A-Z]/.test(pw)) score++;
+    if (/[0-9]/.test(pw)) score++;
+    if (/[^A-Za-z0-9]/.test(pw)) score++;
+    return score;
+  };
 
-  const up = (field: string, value: any) => setForm(prev => ({ ...prev, [field]: value }))
+  const strength = passwordStrength(form.password);
+  const strengthLabel = ['', 'Weak', 'Fair', 'Good', 'Strong'][strength] || '';
+  const strengthColor = ['#E5E7EB', '#DC4F4F', '#F5920B', '#2A9D8F', '#2A9D8F'][strength];
 
-  const validateStep1 = () => {
-    if (!form.fullName || !form.email) {
-      setError('Please fill in your name and email')
-      return false
-    }
-    if (!/\S+@\S+\.\S+/.test(form.email)) {
-      setError('Please enter a valid email')
-      return false
-    }
-    setError('')
-    return true
-  }
-
-  const validateStep2 = () => {
-    if (!form.userType) {
-      setError('Please select how you will use WoulfAI')
-      return false
-    }
-    if (form.userType === 'beta_tester' && form.betaCode.toLowerCase().trim() !== 'fixit') {
-      setError('Invalid beta verification word')
-      return false
-    }
-    setError('')
-    return true
-  }
-
-  const validateStep3 = () => {
-    if (form.password.length < 8) {
-      setError('Password must be at least 8 characters')
-      return false
-    }
-    if (form.password !== form.confirmPassword) {
-      setError('Passwords do not match')
-      return false
-    }
-    if (!form.agreeTerms) {
-      setError('Please accept the terms of service')
-      return false
-    }
-    setError('')
-    return true
-  }
-
-  const handleSubmit = async () => {
-    if (!validateStep3()) return
-    setLoading(true)
-    setError('')
-
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError('');
+    if (form.password !== form.confirm) { setError('Passwords do not match'); return; }
+    if (form.password.length < 8) { setError('Password must be at least 8 characters'); return; }
+    setLoading(true);
     try {
-      // Map user type to role
-      const roleMap: Record<string, string> = {
-        business_owner: 'org_lead',
-        individual: 'org_lead',
-        beta_tester: 'beta_tester',
-      }
-      const role = roleMap[form.userType] || 'org_lead'
-
-      // Create user in Supabase Auth
-      const { data: authData, error: authErr } = await sb.auth.signUp({
-        email: form.email,
-        password: form.password,
-        options: {
-          data: {
-            full_name: form.fullName,
-            phone: form.phone,
-            company: form.company,
-            user_type: form.userType,
-          }
-        }
-      })
-
-      if (authErr) {
-        setError(authErr.message)
-        setLoading(false)
-        return
-      }
-
-      if (!authData.user) {
-        setError('Account creation failed. Please try again.')
-        setLoading(false)
-        return
-      }
-
-      // Create profile via API (uses service role to bypass RLS)
-      const profileRes = await fetch('/api/auth/register', {
+      const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId: authData.user.id,
-          fullName: form.fullName,
-          email: form.email,
-          phone: form.phone,
-          company: form.company,
-          userType: form.userType,
-          role,
-        }),
-      })
-
-      if (!profileRes.ok) {
-        const d = await profileRes.json()
-        setError(d.error || 'Failed to create profile')
-        setLoading(false)
-        return
-      }
-
-      // Sign in immediately
-      await sb.auth.signInWithPassword({ email: form.email, password: form.password })
-
-      // Redirect based on user type
-      switch (form.userType) {
-        case 'business_owner':
-          router.push('/onboarding/business')
-          break
-        case 'individual':
-          router.push('/onboarding/individual')
-          break
-        case 'beta_tester':
-          router.push('/portal')
-          break
-        default:
-          router.push('/portal')
-      }
-    } catch (err: any) {
-      setError(err.message || 'Something went wrong')
+        body: JSON.stringify({ name: form.name, email: form.email, company_name: form.company, password: form.password }),
+      });
+      const data = await res.json();
+      if (!res.ok) { setError(data.error || 'Registration failed'); setLoading(false); return; }
+      router.push('/login?registered=1');
+    } catch {
+      setError('Something went wrong. Please try again.');
+      setLoading(false);
     }
-    setLoading(false)
   }
 
-  const inputCls = "w-full px-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder-gray-600 focus:border-blue-500/30 focus:outline-none focus:ring-1 focus:ring-blue-500/20 transition-all"
+  const inputStyle = { background: '#FFFFFF', border: '1.5px solid #E5E7EB', color: '#1A1A2E' };
+  const focusHandlers = {
+    onFocus: (e: React.FocusEvent<HTMLInputElement>) => { e.target.style.borderColor = '#2A9D8F'; e.target.style.boxShadow = '0 0 0 3px rgba(42,157,143,0.1)'; },
+    onBlur: (e: React.FocusEvent<HTMLInputElement>) => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none'; },
+  };
 
   return (
-    <div className="min-h-screen bg-[#06080D] flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-lg">
-        <div className="text-center mb-8">
-          <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">WoulfAI</Link>
-          <h2 className="text-xl font-bold mt-4">Set Up Your Account</h2>
-          <p className="text-sm text-gray-500 mt-1">
-            {step === 1 && 'Tell us about yourself'}
-            {step === 2 && 'How will you use WoulfAI?'}
-            {step === 3 && 'Create your password'}
-          </p>
-        </div>
+    <div className="min-h-screen flex" style={{ background: '#F4F5F7', fontFamily: "'DM Sans', -apple-system, sans-serif" }}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap');
+        h1, h2, h3, h4 { font-family: 'Outfit', 'DM Sans', sans-serif; }
+        @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-up { animation: fadeUp 0.5s ease-out both; }
+      `}</style>
 
-        {/* Progress */}
-        <div className="flex items-center justify-center gap-3 mb-8">
-          {[1, 2, 3].map(s => (
-            <div key={s} className="flex items-center gap-2">
-              <div className={"w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all " +
-                (step >= s ? 'bg-blue-600 text-white' : 'bg-white/5 text-gray-500')}>
-                {step > s ? (
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                ) : s}
-              </div>
-              <span className={"text-xs hidden sm:inline " + (step >= s ? 'text-white' : 'text-gray-600')}>
-                {s === 1 ? 'Your Info' : s === 2 ? 'User Type' : 'Password'}
+      {/* LEFT PANEL */}
+      <div className="hidden lg:flex lg:w-[46%] relative overflow-hidden flex-col justify-between p-12"
+        style={{ background: 'linear-gradient(165deg, #132038 0%, #1B2A4A 40%, #233756 100%)' }}>
+        <div className="absolute inset-0 opacity-[0.025]"
+          style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 0L46.2 13.8L60 20L46.2 26.2L40 40L33.8 26.2L20 20L33.8 13.8L40 0z' fill='%23ffffff' fill-opacity='1'/%3E%3C/svg%3E")` }} />
+        <div className="absolute -top-32 -right-32 w-[400px] h-[400px] rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(245,146,11,0.08) 0%, transparent 70%)' }} />
+        <div className="absolute -bottom-24 -left-24 w-[300px] h-[300px] rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(42,157,143,0.1) 0%, transparent 70%)' }} />
+
+        <div className="relative z-10">
+          <Link href="/" className="flex items-center gap-3 group">
+            <Image src="/woulf-badge.png" alt="Woulf Group" width={48} height={48}
+              className="drop-shadow-lg group-hover:scale-105 transition-transform" />
+            <div className="flex flex-col">
+              <span className="text-2xl font-extrabold text-white tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                Woulf<span style={{ color: '#F5920B' }}>AI</span>
               </span>
-              {s < 3 && <div className={"w-8 h-0.5 " + (step > s ? 'bg-blue-600' : 'bg-white/5')} />}
+              <span className="text-[9px] text-white/35 uppercase tracking-[2.5px] -mt-0.5">by Woulf Group</span>
             </div>
-          ))}
+          </Link>
         </div>
 
-        <div className="bg-[#0A0E15] border border-white/5 rounded-2xl p-6">
-          {error && <div className="mb-4 px-4 py-2 bg-rose-500/10 border border-rose-500/20 rounded-lg text-sm text-rose-400">{error}</div>}
+        <div className="relative z-10 max-w-md">
+          <h1 className="text-[40px] font-black text-white leading-[1.1] tracking-tight">
+            Build Your<br /><span style={{ color: '#F5920B' }}>AI Workforce</span>
+          </h1>
+          <p className="mt-5 text-white/45 leading-relaxed text-[15px]">
+            Create your workspace and start hiring AI Employees in minutes. No consultants, no complex setup — just choose the roles you need and let them get to work.
+          </p>
+          <div className="mt-10 space-y-4">
+            {[
+              { icon: '🏢', text: 'Your own company workspace with team management' },
+              { icon: '🤖', text: 'Access to 21+ AI Employees across every department' },
+              { icon: '🔗', text: 'Integrations with QuickBooks, HubSpot, NetSuite & more' },
+              { icon: '📊', text: 'Real-time performance tracking dashboard' },
+            ].map((item) => (
+              <div key={item.text} className="flex items-start gap-3">
+                <span className="text-lg mt-0.5">{item.icon}</span>
+                <span className="text-[13px] text-white/50 leading-relaxed">{item.text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
 
-          {/* Step 1: Personal Info */}
-          {step === 1 && (
-            <div className="space-y-4">
-              <div>
-                <label className="text-[10px] text-gray-500 uppercase tracking-wider">Full Name *</label>
-                <input value={form.fullName} onChange={e => up('fullName', e.target.value)} placeholder="Your full name" className={inputCls} autoFocus />
-              </div>
-              <div>
-                <label className="text-[10px] text-gray-500 uppercase tracking-wider">Email *</label>
-                <input value={form.email} onChange={e => up('email', e.target.value)} type="email" placeholder="you@company.com" className={inputCls} />
-              </div>
-              <div>
-                <label className="text-[10px] text-gray-500 uppercase tracking-wider">Phone</label>
-                <input value={form.phone} onChange={e => up('phone', e.target.value)} type="tel" placeholder="(555) 123-4567" className={inputCls} />
-              </div>
-              <div>
-                <label className="text-[10px] text-gray-500 uppercase tracking-wider">Company</label>
-                <input value={form.company} onChange={e => up('company', e.target.value)} placeholder="Your company name (optional)" className={inputCls} />
-              </div>
-              <button onClick={() => { if (validateStep1()) setStep(2) }}
-                className="w-full py-3.5 bg-blue-600 text-white rounded-xl text-sm font-semibold hover:bg-blue-500 transition-colors">
-                Continue &rarr;
-              </button>
+        <div className="relative z-10 flex items-center gap-3">
+          <Image src="/woulf-badge.png" alt="Woulf Group" width={28} height={28} className="opacity-40"
+            style={{ animation: 'float 4s ease-in-out infinite' }} />
+          <p className="text-[11px] text-white/20">Enterprise security · SOC 2 ready · Tenant isolated</p>
+        </div>
+      </div>
+
+      {/* RIGHT PANEL */}
+      <div className="flex-1 flex items-center justify-center px-6 sm:px-12 py-12">
+        <div className="w-full max-w-[420px] animate-fade-up">
+          <div className="lg:hidden mb-8 flex items-center gap-3">
+            <Link href="/" className="flex items-center gap-3">
+              <Image src="/woulf-badge.png" alt="Woulf Group" width={40} height={40} className="drop-shadow-lg" />
+              <span className="text-xl font-extrabold tracking-tight" style={{ color: '#1B2A4A', fontFamily: "'Outfit', sans-serif" }}>
+                Woulf<span style={{ color: '#F5920B' }}>AI</span>
+              </span>
+            </Link>
+          </div>
+
+          <h2 className="text-[28px] font-extrabold tracking-tight" style={{ color: '#1B2A4A', fontFamily: "'Outfit', sans-serif" }}>
+            Start hiring AI Employees
+          </h2>
+          <p className="mt-1.5 text-[15px] text-gray-500">Create your workspace — it takes under 60 seconds</p>
+
+          {error && (
+            <div className="mt-5 px-4 py-3 rounded-xl text-sm font-medium"
+              style={{ background: 'rgba(220,79,79,0.08)', color: '#DC4F4F', border: '1px solid rgba(220,79,79,0.15)' }}>
+              {error}
             </div>
           )}
 
-          {/* Step 2: User Type Selection */}
-          {step === 2 && (
-            <div className="space-y-4">
-              <div className="space-y-3">
-                {USER_TYPES.map(type => (
-                  <button
-                    key={type.id}
-                    onClick={() => { up('userType', type.id); setError('') }}
-                    className={"w-full flex items-center gap-4 p-4 rounded-xl border transition-all text-left " +
-                      (form.userType === type.id
-                        ? type.color + ' scale-[1.02]'
-                        : 'border-white/5 bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/10')}
-                  >
-                    <span className="text-2xl">{type.icon}</span>
-                    <div className="flex-1">
-                      <div className={"text-sm font-semibold " + (form.userType === type.id ? '' : 'text-white')}>
-                        {type.label}
-                      </div>
-                      <div className="text-[11px] text-gray-500 mt-0.5">{type.description}</div>
-                    </div>
-                    <div className={"w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all " +
-                      (form.userType === type.id ? 'border-current' : 'border-gray-600')}>
-                      {form.userType === type.id && (
-                        <div className="w-2.5 h-2.5 rounded-full bg-current" />
-                      )}
-                    </div>
-                  </button>
-                ))}
+          <form onSubmit={handleSubmit} className="mt-7 space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-[13px] font-semibold mb-1.5" style={{ color: '#1B2A4A' }}>Your Name</label>
+                <input type="text" value={form.name} onChange={set('name')} placeholder="Steve" required autoFocus
+                  className="w-full px-4 py-3 rounded-xl text-[15px] outline-none transition-all" style={inputStyle} {...focusHandlers} />
               </div>
-
-              {/* Beta verification field */}
-              {form.userType === 'beta_tester' && (
-                <div className="mt-2 p-4 bg-emerald-500/5 border border-emerald-500/10 rounded-xl">
-                  <label className="text-[10px] text-emerald-400 uppercase tracking-wider block mb-2">Beta Verification Word *</label>
-                  <input
-                    value={form.betaCode}
-                    onChange={e => up('betaCode', e.target.value)}
-                    placeholder="Enter your beta verification word"
-                    className={inputCls}
-                    autoFocus
-                  />
-                  <p className="text-[10px] text-gray-600 mt-2">Contact your administrator if you need a beta access code.</p>
+              <div>
+                <label className="block text-[13px] font-semibold mb-1.5" style={{ color: '#1B2A4A' }}>Company</label>
+                <input type="text" value={form.company} onChange={set('company')} placeholder="Acme Inc"
+                  className="w-full px-4 py-3 rounded-xl text-[15px] outline-none transition-all" style={inputStyle} {...focusHandlers} />
+              </div>
+            </div>
+            <div>
+              <label className="block text-[13px] font-semibold mb-1.5" style={{ color: '#1B2A4A' }}>Work Email</label>
+              <input type="email" value={form.email} onChange={set('email')} placeholder="you@company.com" required
+                className="w-full px-4 py-3 rounded-xl text-[15px] outline-none transition-all" style={inputStyle} {...focusHandlers} />
+            </div>
+            <div>
+              <label className="block text-[13px] font-semibold mb-1.5" style={{ color: '#1B2A4A' }}>Password</label>
+              <div className="relative">
+                <input type={showPassword ? 'text' : 'password'} value={form.password} onChange={set('password')}
+                  placeholder="Min. 8 characters" required
+                  className="w-full px-4 py-3 pr-12 rounded-xl text-[15px] outline-none transition-all" style={inputStyle} {...focusHandlers} />
+                <button type="button" onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg hover:bg-gray-100 transition-colors">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="2">
+                    {showPassword
+                      ? <><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" /><line x1="1" y1="1" x2="23" y2="23" /></>
+                      : <><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></>}
+                  </svg>
+                </button>
+              </div>
+              {form.password && (
+                <div className="mt-2 flex items-center gap-2">
+                  <div className="flex-1 flex gap-1">
+                    {[1, 2, 3, 4].map((i) => (
+                      <div key={i} className="h-1 flex-1 rounded-full transition-colors"
+                        style={{ background: i <= strength ? strengthColor : '#E5E7EB' }} />
+                    ))}
+                  </div>
+                  <span className="text-[11px] font-medium" style={{ color: strengthColor }}>{strengthLabel}</span>
                 </div>
               )}
-
-              <p className="text-[10px] text-gray-600 text-center">
-                Employees and admins are pre-provisioned by your administrator.
-                <br />
-                If you were invited, check your email for an invite link.
-              </p>
-
-              <div className="flex gap-3">
-                <button onClick={() => setStep(1)}
-                  className="px-6 py-3.5 bg-white/5 text-gray-300 border border-white/10 rounded-xl text-sm hover:bg-white/10 transition-colors">
-                  &larr; Back
-                </button>
-                <button onClick={() => { if (validateStep2()) setStep(3) }}
-                  className="flex-1 py-3.5 bg-blue-600 text-white rounded-xl text-sm font-semibold hover:bg-blue-500 transition-colors">
-                  Continue &rarr;
-                </button>
-              </div>
             </div>
-          )}
-
-          {/* Step 3: Password */}
-          {step === 3 && (
-            <div className="space-y-4">
-              <div className="p-3 bg-white/[0.02] border border-white/5 rounded-lg mb-2">
-                <div className="text-[10px] text-gray-500 uppercase">Account Type</div>
-                <div className="text-sm text-white font-medium mt-0.5">
-                  {USER_TYPES.find(t => t.id === form.userType)?.icon}{' '}
-                  {USER_TYPES.find(t => t.id === form.userType)?.label}
-                </div>
-              </div>
-
-              <div>
-                <label className="text-[10px] text-gray-500 uppercase tracking-wider">Password *</label>
-                <div className="relative">
-                  <input
-                    value={form.password}
-                    onChange={e => up('password', e.target.value)}
-                    type={showPassword ? 'text' : 'password'}
-                    placeholder="Min 8 characters"
-                    className={inputCls + ' pr-12'}
-                    autoFocus
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(p => !p)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors p-1"
-                    tabIndex={-1}
-                  >
-                    {showPassword ? (
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
-                        <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
-                        <line x1="1" y1="1" x2="23" y2="23" />
-                      </svg>
-                    ) : (
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                        <circle cx="12" cy="12" r="3" />
-                      </svg>
-                    )}
-                  </button>
-                </div>
-                {form.password.length > 0 && form.password.length < 8 && (
-                  <p className="text-[10px] text-amber-400 mt-1">{8 - form.password.length} more characters needed</p>
-                )}
-              </div>
-              <div>
-                <label className="text-[10px] text-gray-500 uppercase tracking-wider">Confirm Password *</label>
-                <input value={form.confirmPassword} onChange={e => up('confirmPassword', e.target.value)} type="password" placeholder="Re-enter password" className={inputCls} />
-                {form.confirmPassword.length > 0 && form.password !== form.confirmPassword && (
-                  <p className="text-[10px] text-rose-400 mt-1">Passwords do not match</p>
-                )}
-              </div>
-              <label className="flex items-start gap-3 cursor-pointer">
-                <input type="checkbox" checked={form.agreeTerms} onChange={e => up('agreeTerms', e.target.checked)}
-                  className="mt-1 w-4 h-4 rounded border-gray-600 bg-white/5 accent-blue-600" />
-                <span className="text-xs text-gray-400">
-                  I agree to the <Link href="/terms" className="text-blue-400">Terms of Service</Link> and <Link href="/privacy" className="text-blue-400">Privacy Policy</Link>
+            <div>
+              <label className="block text-[13px] font-semibold mb-1.5" style={{ color: '#1B2A4A' }}>Confirm Password</label>
+              <input type="password" value={form.confirm} onChange={set('confirm')} placeholder="••••••••" required
+                className="w-full px-4 py-3 rounded-xl text-[15px] outline-none transition-all"
+                style={{ ...inputStyle, borderColor: form.confirm && form.confirm !== form.password ? '#DC4F4F' : '#E5E7EB' }}
+                {...focusHandlers} />
+              {form.confirm && form.confirm !== form.password && (
+                <p className="mt-1 text-[12px]" style={{ color: '#DC4F4F' }}>Passwords don&apos;t match</p>
+              )}
+            </div>
+            <button type="submit" disabled={loading}
+              className="w-full py-3.5 rounded-xl text-[15px] font-bold text-white transition-all hover:-translate-y-px disabled:opacity-60 disabled:cursor-not-allowed mt-2"
+              style={{ background: '#F5920B', boxShadow: '0 4px 16px rgba(245,146,11,0.3)' }}>
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" fill="none" strokeDasharray="32" strokeLinecap="round" />
+                  </svg>
+                  Creating workspace...
                 </span>
-              </label>
-              <div className="flex gap-3">
-                <button onClick={() => setStep(2)}
-                  className="px-6 py-3.5 bg-white/5 text-gray-300 border border-white/10 rounded-xl text-sm hover:bg-white/10 transition-colors">
-                  &larr; Back
-                </button>
-                <button onClick={handleSubmit} disabled={loading}
-                  className="flex-1 py-3.5 bg-blue-600 text-white rounded-xl text-sm font-semibold hover:bg-blue-500 disabled:opacity-50 transition-colors">
-                  {loading ? 'Creating Account...' : 'Create Account'}
-                </button>
-              </div>
-            </div>
-          )}
+              ) : 'Create Your Workspace'}
+            </button>
+          </form>
 
+          <p className="mt-4 text-center text-[12px] text-gray-400">
+            By creating an account you agree to our{' '}
+            <Link href="/terms" className="underline hover:text-gray-600">Terms</Link> and{' '}
+            <Link href="/privacy" className="underline hover:text-gray-600">Privacy Policy</Link>
+          </p>
           <div className="mt-6 text-center">
-            <span className="text-xs text-gray-500">Already have an account? </span>
-            <Link href="/login" className="text-xs text-blue-400 hover:text-blue-300">Sign In</Link>
+            <p className="text-[14px] text-gray-500">
+              Already have an account?{' '}
+              <Link href="/login" className="font-bold hover:underline" style={{ color: '#1B2A4A' }}>Sign in</Link>
+            </p>
           </div>
+          <p className="mt-10 text-center text-[11px] text-gray-400">© 2026 WoulfAI by Woulf Group · Grantsville, UT</p>
         </div>
       </div>
     </div>
-  )
+  );
 }
