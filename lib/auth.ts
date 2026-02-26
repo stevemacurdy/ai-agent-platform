@@ -64,6 +64,41 @@ export function clearUser(): void {
   if (typeof window === 'undefined') return;
   localStorage.removeItem(USER_KEY);
 }
+// --- Legacy Session Bridge ---------------------------------------------------
+// Old pages (hr, seo, [id]) read woulfai_session with camelCase fields.
+// This bridge writes it so they keep working during migration.
+function writeLegacySession(user: AuthUser): void {
+  if (typeof window === 'undefined') return;
+  const legacy = {
+    id: user.id,
+    email: user.email,
+    name: user.name || user.full_name || user.email.split('@')[0],
+    role: user.role,
+    company_id: user.company_id || null,
+    companyId: user.company_id || 'default',
+    companyName: 'Woulf Group',
+    agents: user.approved_agents || [],
+  };
+  localStorage.setItem('woulfai_session', JSON.stringify(legacy));
+}
+
+// --- Legacy Session Bridge ---------------------------------------------------
+// Old pages (hr, seo, [id]) read woulfai_session with camelCase fields.
+// This bridge writes it so they keep working during migration.
+function writeLegacySession(user: AuthUser): void {
+  if (typeof window === 'undefined') return;
+  const legacy = {
+    id: user.id,
+    email: user.email,
+    name: user.name || user.full_name || user.email.split('@')[0],
+    role: user.role,
+    company_id: user.company_id || null,
+    companyId: user.company_id || 'default',
+    companyName: 'Woulf Group',
+    agents: user.approved_agents || [],
+  };
+  localStorage.setItem('woulfai_session', JSON.stringify(legacy));
+}
 
 // --- Auth Actions -----------------------------------------------------------
 
@@ -94,6 +129,7 @@ export async function login(email: string, password: string): Promise<LoginResul
       company_id: data.user.company_id || null,
     };
     setUser(user);
+    writeLegacySession(user);
 
     return { success: true, user };
   } catch (e: any) {
@@ -177,6 +213,7 @@ export async function refreshUser(): Promise<AuthUser | null> {
         approved_agents: data.user.approved_agents || [],
       };
       setUser(user);
+      writeLegacySession(user);
       return user;
     }
     return null;

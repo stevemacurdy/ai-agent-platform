@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
     // Get profile data
     const { data: profile } = await sb
       .from('profiles')
-      .select('role, full_name, must_reset_password')
+      .select('role, full_name, must_reset_password, company_id')
       .eq('id', user.id)
       .single();
 
@@ -49,6 +49,7 @@ export async function GET(req: NextRequest) {
         email: user.email,
         role: profile?.role || 'employee',
         full_name: profile?.full_name || null,
+        company_id: profile?.company_id || null,
         must_reset_password: profile?.must_reset_password || false,
         approved_agents,
       }
