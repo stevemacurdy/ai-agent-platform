@@ -82,22 +82,6 @@ function writeLegacySession(user: AuthUser): void {
   localStorage.setItem('woulfai_session', JSON.stringify(legacy));
 }
 
-}
-
-// --- Auth Actions -----------------------------------------------------------
-
-export async function login(email: string, password: string): Promise<LoginResult> {
-  try {
-    const res = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    });
-    const data = await res.json();
-
-    if (!res.ok || !data.success) {
-      return { success: false, error: data.error || 'Invalid email or password' };
-    }
 
     // Store the access token (this is what /api/auth/me needs as Bearer)
     if (data.session?.access_token) {
