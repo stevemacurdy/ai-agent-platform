@@ -29,7 +29,8 @@ export default function LoginPage() {
       const data = await res.json();
       if (!res.ok) { setError(data.error || 'Invalid email or password'); setLoading(false); return; }
       if (data.must_reset_password) { router.push('/reset-password'); return; }
-      router.push(data.redirect || '/portal');
+      localStorage.setItem("woulfai_token", data.session.access_token);
+      router.push(data.redirect || "/portal");
     } catch {
       setError('Something went wrong. Please try again.');
       setLoading(false);
