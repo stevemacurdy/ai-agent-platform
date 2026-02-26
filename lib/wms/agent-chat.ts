@@ -4,16 +4,26 @@
 // ============================================================================
 import OpenAI from 'openai';
 import { WMS_TOOLS, executeTool } from '@/lib/wms/wms-tools';
+import { PALLET_TOOLS, executePalletTool } from '@/lib/wms/pallet-tools';
 
-export async function runAgentChat(
-  systemPrompt: string,
-  message: string,
-  history: Array<{ role: string; content: string }> | undefined,
-  companyId: string
-): Promise<{ success: boolean; response?: string; error?: string }> {
+const ALL_TOOLS = [...WMS_TOOLS, ...PALLET_TOOLS];
+
+async function executeAnyTool(name, args, companyId) {
+  // Try WMS tools first
+  const wmsTool = WMS_TOOLS.find(t => t.function.name === name);
+  if (wmsTool) return executeTool(name, args, companyId);
+
+  // Try pallet tools
+  const palletTool = PALLET_TOOLS.find(t => t.function.name === name);
+  if (palletTool) return executePalletTool(name, args, companyId);
+
+  return { error: `Unknown tool: ${name}` };
+}
+
+export async function runAgentChat(systemPrompt, message, history, companyId) {
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-  const messages: any[] = [{ role: 'system', content: systemPrompt }];
+  const messages = [{ role: 'system', content: systemPrompt }];
 
   if (history && Array.isArray(history)) {
     for (const msg of history.slice(-10)) {
@@ -27,7 +37,7 @@ export async function runAgentChat(
     let response = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
       messages,
-      tools: WMS_TOOLS,
+      tools: ALL_TOOLS,
       tool_choice: 'auto',
       max_tokens: 1500,
       temperature: 0.3,
@@ -41,14 +51,10 @@ export async function runAgentChat(
       messages.push(assistantMessage);
 
       const toolResults = await Promise.all(
-        assistantMessage.tool_calls.map(async (tc: any) => {
+        assistantMessage.tool_calls.map(async (tc) => {
           const args = JSON.parse(tc.function.arguments);
-          const result = await executeTool(tc.function.name, args, companyId);
-          return {
-            role: 'tool' as const,
-            tool_call_id: tc.id,
-            content: JSON.stringify(result),
-          };
+          const result = await executeAnyTool(tc.function.name, args, companyId);
+          return { role: 'tool', tool_call_id: tc.id, content: JSON.stringify(result) };
         })
       );
 
@@ -57,7 +63,7 @@ export async function runAgentChat(
       response = await openai.chat.completions.create({
         model: 'gpt-4o-mini',
         messages,
-        tools: WMS_TOOLS,
+        tools: ALL_TOOLS,
         tool_choice: 'auto',
         max_tokens: 1500,
         temperature: 0.3,
@@ -67,7 +73,7 @@ export async function runAgentChat(
     }
 
     return { success: true, response: assistantMessage.content || 'No response generated.' };
-  } catch (err: any) {
+  } catch (err) {
     console.error('Agent chat error:', err);
     return { success: false, error: err.message || 'AI request failed' };
   }
