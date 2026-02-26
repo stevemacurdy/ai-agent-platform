@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WoulfAI — AI Agents That Run Your Business</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1B2A4A;
+  --navy-dark: #132038;
+  --navy-light: #233756;
+  --teal: #2A9D8F;
+  --teal-light: #3BB5A6;
+  --orange: #F5920B;
+  --orange-hover: #FF9F1C;
+  --bg: #F4F5F7;
+  --surface: #FFFFFF;
+  --surface-alt: #FAFBFC;
+  --text: #1A1A2E;
+  --text-light: #6B7280;
+  --text-lighter: #9CA3AF;
+  --border: #E5E7EB;
+  --border-light: #F0F1F3;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --shadow-sm: 0 1px 3px rgba(27,42,74,0.06), 0 1px 2px rgba(27,42,74,0.04);
+  --shadow-md: 0 4px 12px rgba(27,42,74,0.08), 0 2px 4px rgba(27,42,74,0.04);
+  --shadow-lg: 0 12px 40px rgba(27,42,74,0.12), 0 4px 12px rgba(27,42,74,0.06);
+  --shadow-xl: 0 20px 60px rgba(27,42,74,0.15), 0 8px 20px rgba(27,42,74,0.08);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+h1, h2, h3, h4 { font-family: 'Outfit', 'DM Sans', sans-serif; color: var(--navy); }
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; }
+
+/* Animations */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pulse-teal { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+.fade-up { animation: fadeUp 0.7s ease-out both; }
+.fade-up-d1 { animation-delay: 0.1s; }
+.fade-up-d2 { animation-delay: 0.2s; }
+.fade-up-d3 { animation-delay: 0.3s; }
+.fade-up-d4 { animation-delay: 0.4s; }
+.fade-up-d5 { animation-delay: 0.5s; }
+
+/* ═══ NAVBAR ═══ */
+.navbar {
+  position: fixed; top: 0; width: 100%; z-index: 100;
+  background: rgba(27,42,74,0.92); backdrop-filter: blur(16px) saturate(1.6);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  transition: all 0.3s ease;
+}
+.navbar.scrolled { background: rgba(27,42,74,0.97); box-shadow: 0 4px 24px rgba(0,0,0,0.2); }
+.navbar-inner {
+  max-width: 1280px; margin: 0 auto; padding: 0 32px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 72px; transition: height 0.3s;
+}
+.navbar.scrolled .navbar-inner { height: 60px; }
+.nav-logo { display: flex; align-items: center; gap: 12px; }
+.nav-logo img { height: 42px; width: auto; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3)); transition: transform 0.3s; }
+.nav-logo:hover img { transform: scale(1.06); }
+.nav-logo-text { display: flex; flex-direction: column; }
+.nav-logo-text .brand { font-family: 'Outfit', sans-serif; font-size: 22px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+.nav-logo-text .brand span { color: var(--orange); }
+.nav-logo-text .sub { font-size: 9px; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 2.5px; margin-top: -2px; }
+.nav-links { display: flex; align-items: center; gap: 32px; }
+.nav-links a { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.65); transition: color 0.2s; }
+.nav-links a:hover { color: #fff; }
+.nav-cta { display: flex; align-items: center; gap: 12px; }
+.btn-ghost { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.65); padding: 8px 18px; border-radius: var(--radius-md); transition: all 0.2s; border: none; background: none; cursor: pointer; }
+.btn-ghost:hover { color: #fff; background: rgba(255,255,255,0.08); }
+.btn-orange {
+  font-size: 14px; font-weight: 700; color: #fff; padding: 10px 24px;
+  background: var(--orange); border: none; border-radius: var(--radius-md);
+  cursor: pointer; transition: all 0.25s; box-shadow: 0 4px 16px rgba(245,146,11,0.3);
+}
+.btn-orange:hover { background: var(--orange-hover); transform: translateY(-1px); box-shadow: 0 6px 24px rgba(245,146,11,0.4); }
+.mobile-toggle { display: none; background: none; border: none; color: #fff; cursor: pointer; padding: 8px; }
+
+/* ═══ HERO ═══ */
+.hero {
+  position: relative; padding: 140px 32px 80px; overflow: hidden;
+  background: linear-gradient(165deg, var(--navy-dark) 0%, var(--navy) 40%, var(--navy-light) 100%);
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 0L46.2 13.8L60 20L46.2 26.2L40 40L33.8 26.2L20 20L33.8 13.8L40 0z' fill='%23ffffff' fill-opacity='0.015'/%3E%3C/svg%3E");
+  opacity: 0.5;
+}
+.hero-divider {
+  position: absolute; bottom: -2px; left: 0; right: 0; height: 100px;
+  background: var(--bg);
+  clip-path: polygon(0 40%, 100% 0%, 100% 100%, 0% 100%);
+}
+.hero-glow {
+  position: absolute; top: -200px; right: -200px; width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(42,157,143,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-glow-orange {
+  position: absolute; bottom: -100px; left: -100px; width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(245,146,11,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-inner {
+  max-width: 1280px; margin: 0 auto; position: relative; z-index: 2;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 16px 6px 8px; border-radius: 100px;
+  background: rgba(42,157,143,0.12); border: 1px solid rgba(42,157,143,0.25);
+  font-size: 12px; font-weight: 600; color: var(--teal-light);
+  margin-bottom: 24px;
+}
+.hero-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); animation: pulse-teal 2s infinite; }
+.hero h1 { font-size: 56px; font-weight: 900; color: #fff; line-height: 1.08; letter-spacing: -1.5px; }
+.hero h1 .accent { color: var(--orange); display: block; }
+.hero-desc { margin-top: 24px; font-size: 18px; color: rgba(255,255,255,0.55); line-height: 1.65; max-width: 520px; }
+.hero-actions { margin-top: 36px; display: flex; gap: 16px; flex-wrap: wrap; }
+.btn-hero-primary {
+  padding: 16px 36px; border-radius: var(--radius-lg); font-size: 15px; font-weight: 700;
+  color: #fff; background: var(--orange); border: none; cursor: pointer;
+  box-shadow: 0 8px 32px rgba(245,146,11,0.35); transition: all 0.3s;
+}
+.btn-hero-primary:hover { background: var(--orange-hover); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(245,146,11,0.45); }
+.btn-hero-secondary {
+  padding: 16px 36px; border-radius: var(--radius-lg); font-size: 15px; font-weight: 600;
+  color: #fff; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15);
+  cursor: pointer; transition: all 0.3s;
+}
+.btn-hero-secondary:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.25); }
+.trust-badges { margin-top: 40px; display: flex; gap: 24px; flex-wrap: wrap; }
+.trust-badge { display: flex; align-items: center; gap: 8px; }
+.trust-badge svg { flex-shrink: 0; }
+.trust-badge span { font-size: 12px; color: rgba(255,255,255,0.45); font-weight: 500; }
+
+/* Stats cards */
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.stat-card {
+  padding: 28px 24px; border-radius: var(--radius-xl);
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(8px); transition: all 0.3s;
+}
+.stat-card:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15); transform: translateY(-2px); }
+.stat-card.featured { background: rgba(245,146,11,0.06); border-color: rgba(245,146,11,0.18); }
+.stat-card .val { font-family: 'Outfit', sans-serif; font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -1px; }
+.stat-card .label { font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.75); margin-top: 4px; }
+.stat-card .sub { font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 2px; }
+
+/* ═══ SECTION SHARED ═══ */
+.section { padding: 100px 32px; }
+.section-header { text-align: center; max-width: 640px; margin: 0 auto 64px; }
+.section-eyebrow { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 12px; }
+.section-eyebrow.teal { color: var(--teal); }
+.section-eyebrow.orange { color: var(--orange); }
+.section-title { font-size: 40px; font-weight: 800; line-height: 1.15; letter-spacing: -0.8px; }
+.section-desc { margin-top: 16px; font-size: 16px; color: var(--text-light); line-height: 1.7; }
+.container { max-width: 1280px; margin: 0 auto; }
+
+/* ═══ AGENTS GRID ═══ */
+.agents-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.agent-card {
+  padding: 28px; border-radius: var(--radius-xl); background: var(--surface);
+  border: 1px solid var(--border); transition: all 0.35s; cursor: default;
+  position: relative; overflow: hidden;
+}
+.agent-card::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--teal), var(--teal-light));
+  transform: scaleX(0); transform-origin: left; transition: transform 0.35s;
+}
+.agent-card:hover { border-color: var(--teal); box-shadow: var(--shadow-lg); transform: translateY(-3px); }
+.agent-card:hover::after { transform: scaleX(1); }
+.agent-card-top { display: flex; align-items: flex-start; gap: 16px; }
+.agent-icon { font-size: 32px; line-height: 1; }
+.agent-info { flex: 1; }
+.agent-name { font-size: 16px; font-weight: 700; color: var(--navy); }
+.agent-cat {
+  display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 10px;
+  border-radius: 100px; background: rgba(42,157,143,0.08); color: var(--teal);
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+.agent-desc { margin-top: 8px; font-size: 13px; color: var(--text-light); line-height: 1.6; }
+.agents-cta { text-align: center; margin-top: 40px; }
+.agents-cta a { font-size: 14px; font-weight: 700; color: var(--orange); display: inline-flex; align-items: center; gap: 6px; transition: gap 0.2s; }
+.agents-cta a:hover { gap: 10px; }
+
+/* ═══ FEATURES (dark) ═══ */
+.section-dark { background: var(--navy); color: #fff; }
+.section-dark .section-title { color: #fff; }
+.section-dark .section-desc { color: rgba(255,255,255,0.5); }
+.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.feature-card {
+  padding: 32px; border-radius: var(--radius-xl);
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+  transition: all 0.3s;
+}
+.feature-card:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.15); transform: translateY(-2px); }
+.feature-icon { font-size: 28px; margin-bottom: 16px; }
+.feature-title { font-size: 17px; font-weight: 700; color: #fff; }
+.feature-desc { margin-top: 8px; font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.65; }
+
+/* ═══ HOW IT WORKS ═══ */
+.steps-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; position: relative; }
+.steps-row::before {
+  content: ''; position: absolute; top: 36px; left: 12.5%; right: 12.5%;
+  height: 2px; background: linear-gradient(90deg, var(--teal), var(--orange));
+  opacity: 0.25;
+}
+.step {
+  text-align: center; position: relative; z-index: 1;
+}
+.step-num {
+  width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 20px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 800; color: #fff;
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+  border: 3px solid var(--border-light);
+  box-shadow: var(--shadow-md);
+}
+.step-num.active { background: linear-gradient(135deg, var(--orange) 0%, #FFa72e 100%); border-color: rgba(245,146,11,0.3); }
+.step-title { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+.step-desc { font-size: 13px; color: var(--text-light); line-height: 1.6; max-width: 220px; margin: 0 auto; }
+
+/* ═══ PRICING ═══ */
+.pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1100px; margin: 0 auto; }
+.price-card {
+  padding: 40px 32px; border-radius: var(--radius-2xl); border: 2px solid var(--border);
+  background: var(--surface); transition: all 0.35s; position: relative;
+}
+.price-card:hover { box-shadow: var(--shadow-xl); }
+.price-card.featured {
+  background: var(--navy); color: #fff; border-color: var(--orange);
+  transform: scale(1.03); box-shadow: var(--shadow-xl);
+}
+.price-card.featured:hover { transform: scale(1.05); }
+.price-popular {
+  display: inline-block; font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1.5px; padding: 4px 14px; border-radius: 100px;
+  background: rgba(245,146,11,0.15); color: var(--orange); margin-bottom: 16px;
+}
+.price-name { font-size: 22px; font-weight: 800; }
+.price-desc { font-size: 13px; margin-top: 4px; }
+.price-card:not(.featured) .price-desc { color: var(--text-light); }
+.price-card.featured .price-desc { color: rgba(255,255,255,0.5); }
+.price-amount { font-family: 'Outfit', sans-serif; font-size: 48px; font-weight: 900; margin-top: 20px; letter-spacing: -2px; }
+.price-amount .period { font-size: 14px; font-weight: 400; letter-spacing: 0; }
+.price-card:not(.featured) .price-amount .period { color: var(--text-lighter); }
+.price-card.featured .price-amount .period { color: rgba(255,255,255,0.4); }
+.price-features { list-style: none; margin-top: 28px; display: flex; flex-direction: column; gap: 14px; }
+.price-features li { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+.price-card:not(.featured) .price-features li { color: var(--text-light); }
+.price-card.featured .price-features li { color: rgba(255,255,255,0.75); }
+.price-check { width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.price-card:not(.featured) .price-check { background: rgba(42,157,143,0.1); }
+.price-card.featured .price-check { background: rgba(245,146,11,0.2); }
+.price-btn {
+  display: block; text-align: center; margin-top: 32px; padding: 14px 24px;
+  border-radius: var(--radius-lg); font-size: 15px; font-weight: 700;
+  transition: all 0.3s; border: none; cursor: pointer; width: 100%;
+}
+.price-btn-primary { background: var(--orange); color: #fff; box-shadow: 0 4px 16px rgba(245,146,11,0.3); }
+.price-btn-primary:hover { background: var(--orange-hover); transform: translateY(-1px); }
+.price-btn-outline { background: transparent; color: var(--navy); border: 2px solid var(--navy); }
+.price-btn-outline:hover { background: var(--navy); color: #fff; }
+
+/* ═══ CTA BANNER ═══ */
+.cta-banner {
+  max-width: 1100px; margin: 0 auto; padding: 72px 64px; border-radius: var(--radius-2xl);
+  background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 60%, var(--navy-light) 100%);
+  text-align: center; position: relative; overflow: hidden;
+}
+.cta-banner::before {
+  content: ''; position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L35 10L45 15L35 20L30 30L25 20L15 15L25 10L30 0z' fill='%23F5920B' fill-opacity='0.03'/%3E%3C/svg%3E");
+}
+.cta-banner > * { position: relative; z-index: 1; }
+.cta-logo { width: 64px; height: 64px; margin: 0 auto 28px; animation: float 4s ease-in-out infinite; }
+.cta-banner h2 { font-size: 40px; font-weight: 800; color: #fff; letter-spacing: -0.8px; }
+.cta-banner p { margin-top: 16px; font-size: 16px; color: rgba(255,255,255,0.5); max-width: 500px; margin-left: auto; margin-right: auto; line-height: 1.65; }
+.cta-actions { margin-top: 36px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+/* ═══ FOOTER ═══ */
+.footer {
+  background: var(--navy-dark); padding: 72px 32px 40px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.footer-grid { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 48px; }
+.footer-brand p { font-size: 13px; color: rgba(255,255,255,0.35); line-height: 1.7; margin-top: 12px; }
+.footer-brand .loc { font-size: 11px; color: rgba(255,255,255,0.2); margin-top: 8px; }
+.footer h4 { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.7); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px; }
+.footer ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer ul a { font-size: 13px; color: rgba(255,255,255,0.4); transition: color 0.2s; }
+.footer ul a:hover { color: rgba(255,255,255,0.8); }
+.footer-bottom {
+  max-width: 1280px; margin: 48px auto 0; padding-top: 32px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.footer-bottom p { font-size: 11px; color: rgba(255,255,255,0.2); }
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 1024px) {
+  .hero-inner { grid-template-columns: 1fr; text-align: center; }
+  .hero-desc { margin: 24px auto 0; }
+  .hero-actions { justify-content: center; }
+  .trust-badges { justify-content: center; }
+  .stats-grid { max-width: 400px; margin: 48px auto 0; }
+  .agents-grid, .features-grid { grid-template-columns: repeat(2, 1fr); }
+  .steps-row { grid-template-columns: repeat(2, 1fr); }
+  .steps-row::before { display: none; }
+  .pricing-grid { grid-template-columns: 1fr; max-width: 440px; }
+  .price-card.featured { transform: none; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  .nav-links { display: none; }
+  .nav-cta { display: none; }
+  .mobile-toggle { display: block; }
+  .hero { padding: 120px 20px 60px; }
+  .hero h1 { font-size: 36px; }
+  .section { padding: 64px 20px; }
+  .section-title { font-size: 28px; }
+  .agents-grid, .features-grid { grid-template-columns: 1fr; }
+  .steps-row { grid-template-columns: 1fr; gap: 32px; }
+  .cta-banner { padding: 48px 24px; margin: 0 20px; }
+  .cta-banner h2 { font-size: 28px; }
+  .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+  .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav class="navbar" id="navbar">
+  <div class="navbar-inner">
+    <a href="/" class="nav-logo">
+      <img src="/mnt/user-data/uploads/Woulf_Badge-12.png" alt="Woulf Group Badge" style="height:42px;" onerror="this.style.display='none'">
+      <div class="nav-logo-text">
+        <div class="brand">Woulf<span>AI</span></div>
+        <div class="sub">by Woulf Group</div>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="#agents">Agents</a>
+      <a href="#features">Features</a>
+      <a href="#how">How It Works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="/about">About</a>
+    </div>
+    <div class="nav-cta">
+      <button class="btn-ghost">Sign In</button>
+      <button class="btn-orange">Get Started</button>
+    </div>
+    <button class="mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('show')">
+      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow-orange"></div>
+  <div class="hero-divider"></div>
+  <div class="hero-inner">
+    <div class="fade-up">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        21 AI Agents Live
+      </div>
+      <h1>
+        AI Agents That
+        <span class="accent">Run Your Business</span>
+      </h1>
+      <p class="hero-desc">
+        Deploy purpose-built AI agents for warehouse operations, finance, sales, and more.
+        Each agent integrates with your tools and works 24/7 — built by the warehouse experts at Woulf Group.
+      </p>
+      <div class="hero-actions">
+        <button class="btn-hero-primary">Start Free Trial</button>
+        <button class="btn-hero-secondary">▶ Watch Demo</button>
+      </div>
+      <div class="trust-badges">
+        <div class="trust-badge">
+          <svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 1L10 5.5L15 6.5L11.5 10L12.5 15L8 12.5L3.5 15L4.5 10L1 6.5L6 5.5L8 1Z" fill="#2A9D8F"/></svg>
+          <span>SOC 2 Ready</span>
+        </div>
+        <div class="trust-badge">
+          <svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 1L10 5.5L15 6.5L11.5 10L12.5 15L8 12.5L3.5 15L4.5 10L1 6.5L6 5.5L8 1Z" fill="#2A9D8F"/></svg>
+          <span>Tenant Isolated</span>
+        </div>
+        <div class="trust-badge">
+          <svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 1L10 5.5L15 6.5L11.5 10L12.5 15L8 12.5L3.5 15L4.5 10L1 6.5L6 5.5L8 1Z" fill="#2A9D8F"/></svg>
+          <span>Enterprise Grade</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-grid fade-up fade-up-d2">
+      <div class="stat-card featured">
+        <div class="val">21+</div>
+        <div class="label">AI Agents</div>
+        <div class="sub">Purpose-built</div>
+      </div>
+      <div class="stat-card">
+        <div class="val">1,200+</div>
+        <div class="label">Projects</div>
+        <div class="sub">4M+ sq ft integrated</div>
+      </div>
+      <div class="stat-card">
+        <div class="val">6</div>
+        <div class="label">Countries</div>
+        <div class="sub">Global operations</div>
+      </div>
+      <div class="stat-card">
+        <div class="val">24/7</div>
+        <div class="label">Always On</div>
+        <div class="sub">Zero downtime</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ AGENTS ═══ -->
+<section class="section" id="agents">
+  <div class="container">
+    <div class="section-header fade-up">
+      <div class="section-eyebrow teal">Specialized AI Workforce</div>
+      <h2 class="section-title">Agents for Every Department</h2>
+      <p class="section-desc">Each agent is purpose-built for its domain — trained on industry best practices and integrated with your existing tools.</p>
+    </div>
+    <div class="agents-grid">
+      <div class="agent-card fade-up fade-up-d1">
+        <div class="agent-card-top">
+          <div class="agent-icon">💰</div>
+          <div class="agent-info">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+              <div class="agent-name">CFO Agent</div>
+              <span class="agent-cat">Finance</span>
+            </div>
+            <p class="agent-desc">Financial intelligence, cash flow management, and automated reporting across all your accounts.</p>
+          </div>
+        </div>
+      </div>
+      <div class="agent-card fade-up fade-up-d2">
+        <div class="agent-card-top">
+          <div class="agent-icon">🏭</div>
+          <div class="agent-info">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+              <div class="agent-name">WMS Agent</div>
+              <span class="agent-cat">Operations</span>
+            </div>
+            <p class="agent-desc">Warehouse management, inventory tracking, and real-time operational intelligence with live data.</p>
+          </div>
+        </div>
+      </div>
+      <div class="agent-card fade-up fade-up-d3">
+        <div class="agent-card-top">
+          <div class="agent-icon">🎯</div>
+          <div class="agent-info">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+              <div class="agent-name">Sales Agent</div>
+              <span class="agent-cat">Revenue</span>
+            </div>
+            <p class="agent-desc">Pipeline intelligence, deal coaching, and competitive insights to close more business faster.</p>
+          </div>
+        </div>
+      </div>
+      <div class="agent-card fade-up fade-up-d3">
+        <div class="agent-card-top">
+          <div class="agent-icon">📢</div>
+          <div class="agent-info">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+              <div class="agent-name">Marketing Agent</div>
+              <span class="agent-cat">Revenue</span>
+            </div>
+            <p class="agent-desc">Campaign strategy, content generation, SEO optimization, and performance analytics.</p>
+          </div>
+        </div>
+      </div>
+      <div class="agent-card fade-up fade-up-d4">
+        <div class="agent-card-top">
+          <div class="agent-icon">⚙️</div>
+          <div class="agent-info">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+              <div class="agent-name">Operations Agent</div>
+              <span class="agent-cat">Operations</span>
+            </div>
+            <p class="agent-desc">Order fulfillment, logistics optimization, and daily operations management at scale.</p>
+          </div>
+        </div>
+      </div>
+      <div class="agent-card fade-up fade-up-d5">
+        <div class="agent-card-top">
+          <div class="agent-icon">👥</div>
+          <div class="agent-info">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+              <div class="agent-name">HR Agent</div>
+              <span class="agent-cat">People</span>
+            </div>
+            <p class="agent-desc">Employee management, compliance tracking, policy assistance, and workforce analytics.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="agents-cta fade-up">
+      <a href="/agents">View all 21 agents →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FEATURES (dark) ═══ -->
+<section class="section section-dark" id="features">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow orange">Built Different</div>
+      <h2 class="section-title">30+ Years of Warehouse Expertise,<br>Now AI-Powered</h2>
+      <p class="section-desc">We don't just build software — we've integrated over 1,200 warehouse systems across six countries. Every AI agent is informed by decades of real-world operations experience.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🛡️</div>
+        <div class="feature-title">Enterprise Security</div>
+        <div class="feature-desc">SOC 2 ready infrastructure with row-level tenant isolation, encrypted data, and role-based access controls.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <div class="feature-title">Instant Deployment</div>
+        <div class="feature-desc">Go from signup to production in minutes. No complex setup, lengthy onboarding, or consultants required.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Real-Time Analytics</div>
+        <div class="feature-desc">Track agent performance, ROI, and operational metrics from a unified dashboard with live data feeds.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔗</div>
+        <div class="feature-title">Deep Integrations</div>
+        <div class="feature-desc">Connect with QuickBooks, HubSpot, NetSuite, and your existing ERP — agents work with your tools.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏢</div>
+        <div class="feature-title">Multi-Tenant Ready</div>
+        <div class="feature-desc">Built for organizations managing multiple brands, locations, or client accounts with total data isolation.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧠</div>
+        <div class="feature-title">Continuous Learning</div>
+        <div class="feature-desc">Agents improve over time, adapting to your business patterns, preferences, and industry specifics.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<section class="section" id="how">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow teal">Simple Setup</div>
+      <h2 class="section-title">Up and Running in Minutes</h2>
+      <p class="section-desc">No consultants, no months of implementation. Get enterprise AI agents working for your business today.</p>
+    </div>
+    <div class="steps-row">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-title">Sign Up</div>
+        <div class="step-desc">Create your secure workspace in under 60 seconds.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-title">Choose Agents</div>
+        <div class="step-desc">Select the AI agents your business needs from 21+ options.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-title">Connect Tools</div>
+        <div class="step-desc">Link your existing systems — ERP, CRM, accounting, email.</div>
+      </div>
+      <div class="step">
+        <div class="step-num active">4</div>
+        <div class="step-title">Go Live</div>
+        <div class="step-desc">Your agents start working immediately, learning and improving daily.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PRICING ═══ -->
+<section class="section" style="background: var(--surface-alt);" id="pricing">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow teal">Simple Pricing</div>
+      <h2 class="section-title">Transparent Plans, No Surprises</h2>
+      <p class="section-desc">Every plan includes full security, tenant isolation, and dedicated support. Scale as you grow.</p>
+    </div>
+    <div class="pricing-grid">
+      <!-- Starter -->
+      <div class="price-card">
+        <div class="price-name">Starter</div>
+        <div class="price-desc">For small teams getting started</div>
+        <div class="price-amount">$499<span class="period">/mo</span></div>
+        <ul class="price-features">
+          <li><span class="price-check"><svg width="12" height="12" viewBox="0 0 16 16" fill="#2A9D8F"><path d="M6.5 11.5L3 8l1-1 2.5 2.5L12 4l1 1z"/></svg></span>5 AI Agents</li>
+          <li><span class="price-check"><svg width="12" height="12" viewBox="0 0 16 16" fill="#2A9D8F"><path d="M6.5 11.5L3 8l1-1 2.5 2.5L12 4l1 1z"/></svg></span>Basic analytics</li>
+          <li><span class="price-check"><svg width="12" height="12" viewBox="0 0 16 16" fill="#2A9D8F"><path d="M6.5 11.5L3 8l1-1 2.5 2.5L12 4l1 1z"/></svg></span>Email support</li>
+          <li><span class="price-check"><svg width="12" height="12" viewBox="0 0 16 16" fill="#2A9D8F"><path d="M6.5 11.5L3 8l1-1 2.5 2.5L12 4l1 1z"/></svg></span>2 team members</li>
+        </ul>
+        <button class="price-btn price-btn-outline">View Details</button>
+      </div>
+      <!-- Professional -->
+      <div class="price-card featured">
+        <div class="price-popular">Most Popular</div>
+        <div class="price-name">Professional</div>
+        <div class="price-desc">Full coverage for growing companies</div>
+        <div class="price-amount">$1,200<span class="period">/mo</span></div>
+        <ul class="price-features">
+          <li><span class="price-check"><svg width="12" height="12" viewBox="0 0 16 16" fill="#F5920B"><path d="M6.5 11.5L3 8l1-1 2.5 2.5L12 4l1 1z"/></svg></span>15 AI Agents</li>
+          <li><span class="price-check"><svg width="12" height="12" viewBox="0 0 16 16" fill="#F5920B"><path d="M6.5 11.5L3 8l1-1 2.5 2.5L12 4l1 1z"/></svg></span>Advanced analytics</li>
+          <li><span class="price-check"><svg width="12" height="12" viewBox="0 0 16 16" fill="#F5920B"><path d="M6.5 11.5L3 8l1-1 2.5 2.5L12 4l1 1z"/></svg></span>Priority support</li>
+          <li><span class="price-check"><svg width="12" height="12" viewBox="0 0 16 16" fill="#F5920B"><path d="M6.5 11.5L3 8l1-1 2.5 2.5L12 4l1 1z"/></svg></span>10 team members</li>
+          <li><span class="price-check"><svg width="12" height="12" viewBox="0 0 16 16" fill="#F5920B"><path d="M6.5 11.5L3 8l1-1 2.5 2.5L12 4l1 1z"/></svg></span>Custom integrations</li>
+        </ul>
+        <button class="price-btn price-btn-primary">Start Free Trial</button>
+      </div>
+      <!-- Enterprise -->
+      <div class="price-card">
+        <div class="price-name">Enterprise</div>
+        <div class="price-desc">Unlimited power with white-glove service</div>
+        <div class="price-amount">$2,499<span class="period">/mo</span></div>
+        <ul class="price-features">
+          <li><span class="price-check"><svg width="12" height="12" viewBox="0 0 16 16" fill="#2A9D8F"><path d="M6.5 11.5L3 8l1-1 2.5 2.5L12 4l1 1z"/></svg></span>All 21 Agents</li>
+          <li><span class="price-check"><svg width="12" height="12" viewBox="0 0 16 16" fill="#2A9D8F"><path d="M6.5 11.5L3 8l1-1 2.5 2.5L12 4l1 1z"/></svg></span>Dedicated success manager</li>
+          <li><span class="price-check"><svg width="12" height="12" viewBox="0 0 16 16" fill="#2A9D8F"><path d="M6.5 11.5L3 8l1-1 2.5 2.5L12 4l1 1z"/></svg></span>Custom domain</li>
+          <li><span class="price-check"><svg width="12" height="12" viewBox="0 0 16 16" fill="#2A9D8F"><path d="M6.5 11.5L3 8l1-1 2.5 2.5L12 4l1 1z"/></svg></span>Unlimited members</li>
+          <li><span class="price-check"><svg width="12" height="12" viewBox="0 0 16 16" fill="#2A9D8F"><path d="M6.5 11.5L3 8l1-1 2.5 2.5L12 4l1 1z"/></svg></span>SLA guarantee</li>
+          <li><span class="price-check"><svg width="12" height="12" viewBox="0 0 16 16" fill="#2A9D8F"><path d="M6.5 11.5L3 8l1-1 2.5 2.5L12 4l1 1z"/></svg></span>SOC 2 compliance docs</li>
+        </ul>
+        <button class="price-btn price-btn-outline">View Details</button>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:32px;font-size:14px;color:var(--text-lighter);">
+      Need something custom? <a href="/contact" style="font-weight:600;color:var(--orange);">Contact our team</a>
+    </p>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="section" style="padding-bottom: 120px;">
+  <div class="cta-banner">
+    <img src="/mnt/user-data/uploads/Woulf_Badge-12.png" alt="Woulf Group" class="cta-logo" onerror="this.style.display='none'">
+    <h2>Ready to Transform<br>Your Operations?</h2>
+    <p>Join forward-thinking companies using WoulfAI to automate, optimize, and scale their warehouse and business operations.</p>
+    <div class="cta-actions">
+      <button class="btn-hero-primary">Start Free Trial</button>
+      <button class="btn-hero-secondary">Talk to Sales</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:4px;">
+        <img src="/mnt/user-data/uploads/Woulf_Badge-12.png" alt="Woulf Group" style="height:36px;" onerror="this.style.display='none'">
+        <span style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:800;color:#fff;">Woulf<span style="color:#F5920B;">AI</span></span>
+      </div>
+      <p>AI-powered business agents built by Woulf Group. Warehouse systems integration meets artificial intelligence.</p>
+      <div class="loc">Grantsville, UT &middot; woulfgroup.com</div>
+    </div>
+    <div>
+      <h4>Product</h4>
+      <ul>
+        <li><a href="/agents">All Agents</a></li>
+        <li><a href="/pricing">Pricing</a></li>
+        <li><a href="/solutions">Solutions</a></li>
+        <li><a href="/demo/marketing">Demos</a></li>
+        <li><a href="/warehouse">Warehouse Portal</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <ul>
+        <li><a href="/about">About</a></li>
+        <li><a href="/case-studies">Case Studies</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="https://woulfgroup.com">Woulf Group</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="/terms">Terms of Service</a></li>
+        <li><a href="/privacy">Privacy Policy</a></li>
+        <li><a href="/security">Security</a></li>
+        <li><a href="mailto:security@woulfgroup.com">Report a Vulnerability</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 WoulfAI by Woulf Group. All rights reserved.</p>
+    <p>21 agents deployed &middot; Built in Grantsville, UT</p>
+  </div>
+</footer>
+
+<script>
+// Navbar scroll effect
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 20);
+});
+
+// Intersection Observer for fade-up animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.animationPlayState = 'running';
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade-up').forEach(el => {
+  el.style.animationPlayState = 'paused';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
