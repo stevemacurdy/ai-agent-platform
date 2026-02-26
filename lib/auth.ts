@@ -82,22 +82,6 @@ function writeLegacySession(user: AuthUser): void {
   localStorage.setItem('woulfai_session', JSON.stringify(legacy));
 }
 
-// --- Legacy Session Bridge ---------------------------------------------------
-// Old pages (hr, seo, [id]) read woulfai_session with camelCase fields.
-// This bridge writes it so they keep working during migration.
-function writeLegacySession(user: AuthUser): void {
-  if (typeof window === 'undefined') return;
-  const legacy = {
-    id: user.id,
-    email: user.email,
-    name: user.name || user.full_name || user.email.split('@')[0],
-    role: user.role,
-    company_id: user.company_id || null,
-    companyId: user.company_id || 'default',
-    companyName: 'Woulf Group',
-    agents: user.approved_agents || [],
-  };
-  localStorage.setItem('woulfai_session', JSON.stringify(legacy));
 }
 
 // --- Auth Actions -----------------------------------------------------------
