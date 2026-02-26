@@ -36,7 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           })();
         `}} />
       </head>
-      <body suppressHydrationWarning className="bg-[#0a0a0f] text-white antialiased">
+      <body suppressHydrationWarning className="bg-[#F4F5F7] text-[#1A1A2E] antialiased">
         <TenantProvider><CompanyProvider>{children}</CompanyProvider></TenantProvider>
         <CartDrawer />
         <ChatWidget />
