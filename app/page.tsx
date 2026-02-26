@@ -78,7 +78,6 @@ export default function LandingPage() {
 
       {/* eslint-disable-next-line @next/next/no-css-tags */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap');
         h1, h2, h3, h4 { font-family: 'Outfit', 'DM Sans', sans-serif; }
         body { font-family: 'DM Sans', -apple-system, sans-serif; }
         @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
