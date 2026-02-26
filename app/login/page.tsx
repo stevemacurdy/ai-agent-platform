@@ -18,25 +18,16 @@ export default function LoginPage() {
     setLoading(true)
 
     try {
-      const { data, error: authErr } = await sb.auth.signInWithPassword({ email, password })
-      if (authErr) {
-        setError(authErr.message)
+      const result = await authLogin(email, password)
+      if (!result.success) {
+        setError(result.error || 'Invalid email or password')
         setLoading(false)
         return
       }
-
-      // Check if must_reset_password
-      const res = await fetch('/api/auth/me', {
-        headers: { 'Authorization': 'Bearer ' + data.session?.access_token }
-      })
-      if (res.ok) {
-        const meData = await res.json()
-        if (meData.user?.must_reset_password) {
-          router.push('/reset-password')
-          return
-        }
+      if (result.must_reset_password) {
+        router.push('/reset-password')
+        return
       }
-
       router.push('/portal')
     } catch (err: any) {
       setError('Connection error. Please try again.')
