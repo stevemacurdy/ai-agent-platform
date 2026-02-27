@@ -4,23 +4,6 @@ import { useRouter, useParams } from 'next/navigation'
 import { TenantProvider, useTenant } from '@/lib/tenant-context'
 
 // ============================================================================
-// AGENT DEFINITIONS
-// ============================================================================
-const AGENTS: Record<string, { name: string; icon: string; color: string; modules: string[] }> = {
-  cfo: { name: 'CFO Agent', icon: '📈', color: 'emerald', modules: ['P&L Dashboard', 'Cash Flow Forecast', 'AR/AP Overview', 'Budget vs Actual', 'Financial Health Score'] },
-  sales: { name: 'Sales Agent', icon: '💼', color: 'blue', modules: ['Pipeline Kanban', 'Deal Intelligence', 'Sales Intel', 'Commissions', 'CRM Sync'] },
-  finops: { name: 'FinOps Agent', icon: '💰', color: 'amber', modules: ['Expense Dashboard', 'Cost Optimization', 'Vendor Analysis', 'Budget Tracking', 'Spend Alerts'] },
-  payables: { name: 'Payables Agent', icon: '🧾', color: 'orange', modules: ['Invoice Queue', 'Payment Scheduling', 'Vendor Management', 'Approval Workflows', 'OCR Scanner'] },
-  collections: { name: 'Collections Agent', icon: '📬', color: 'rose', modules: ['Overdue Dashboard', 'Collection Queue', 'Auto-Reminders', 'Payment Plans', 'Aging Report'] },
-  hr: { name: 'HR Agent', icon: '👥', color: 'violet', modules: ['Employee Directory', 'Time Tracking', 'PTO Management', 'Onboarding', 'Compliance'] },
-  operations: { name: 'Operations Agent', icon: '⚙️', color: 'slate', modules: ['Project Tracker', 'Resource Allocation', 'Milestone Dashboard', 'Field Reports', 'Equipment Status'] },
-  legal: { name: 'Legal Agent', icon: '⚖️', color: 'cyan', modules: ['Contract Review', 'Clause Library', 'Compliance Monitor', 'Risk Assessment', 'Document Vault'] },
-  marketing: { name: 'Marketing Agent', icon: '📣', color: 'pink', modules: ['Campaign Dashboard', 'Lead Tracking', 'Content Calendar', 'ROI Analysis', 'Market Intel'] },
-  wms: { name: 'WMS Agent', icon: '🏭', color: 'teal', modules: ['Inventory Dashboard', 'Inbound/Outbound', 'Pick & Pack', 'Location Management', 'Cycle Counts'] },
-  compliance: { name: 'Compliance Agent', icon: '🛡️', color: 'indigo', modules: ['Regulation Tracker', 'Audit Log', 'Policy Manager', 'Risk Dashboard', 'Certificate Tracking'] },
-}
-
-// ============================================================================
 // SAMPLE TENANT-SCOPED DATA (in production, fetched from API with companyId filter)
 // ============================================================================
 const TENANT_DATA: Record<string, Record<string, { kpis: { label: string; value: string; trend: string }[]; recentActivity: string[] }>> = {
@@ -45,11 +28,30 @@ function getTenantData(companyId: string, agentId: string) {
 }
 
 // ============================================================================
+// Registry Agent type
+// ============================================================================
+interface RegistryAgent {
+  slug: string
+  display_name: string
+  description: string | null
+  short_description: string | null
+  icon: string
+  color: string
+  status: string
+  modules: { id: string; slug: string; display_name: string; icon: string; display_order: number; is_default: boolean }[]
+  categories: any[]
+  tenant_config: any
+}
+
+// ============================================================================
 // LIVE AGENT WORKSPACE COMPONENT
 // ============================================================================
-function LiveAgentWorkspace({ agentId, agent }: { agentId: string; agent: typeof AGENTS[string] }) {
+function LiveAgentWorkspace({ agentId, agent }: { agentId: string; agent: RegistryAgent }) {
   const { companyId, companyName, isGlobalAdmin, userName } = useTenant()
-  const [activeModule, setActiveModule] = useState(agent.modules[0])
+  const moduleNames = agent.modules.length > 0
+    ? agent.modules.map(m => m.display_name)
+    : ['Dashboard']
+  const [activeModule, setActiveModule] = useState(moduleNames[0])
   const data = getTenantData(companyId, agentId)
 
   return (
@@ -68,7 +70,7 @@ function LiveAgentWorkspace({ agentId, agent }: { agentId: string; agent: typeof
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {data.kpis.map((kpi, i) => (
           <div key={i} className="bg-[#0A0E15] border border-white/5 rounded-xl p-4">
             <div className="text-[9px] text-gray-500 uppercase">{kpi.label}</div>
@@ -78,13 +80,13 @@ function LiveAgentWorkspace({ agentId, agent }: { agentId: string; agent: typeof
         ))}
       </div>
 
-      {/* Module Tabs */}
-      <div className="flex gap-1 bg-[#0A0E15] border border-white/5 rounded-xl p-1">
-        {agent.modules.map(mod => (
+      {/* Module Tabs — from registry */}
+      <div className="flex gap-1 bg-[#0A0E15] border border-white/5 rounded-xl p-1 overflow-x-auto">
+        {moduleNames.map(mod => (
           <button
             key={mod}
             onClick={() => setActiveModule(mod)}
-            className={"px-4 py-2 rounded-lg text-xs transition-all " + (activeModule === mod ? 'bg-white/10 text-white font-semibold' : 'text-gray-500 hover:text-gray-300 hover:bg-white/5')}
+            className={"px-4 py-2 rounded-lg text-xs whitespace-nowrap transition-all " + (activeModule === mod ? 'bg-white/10 text-white font-semibold' : 'text-gray-500 hover:text-gray-300 hover:bg-white/5')}
           >
             {mod}
           </button>
@@ -117,7 +119,7 @@ function LiveAgentWorkspace({ agentId, agent }: { agentId: string; agent: typeof
             <div className="flex gap-3">
               <div className="w-6 h-6 bg-blue-500/20 rounded-full flex items-center justify-center text-[10px] shrink-0">{agent.icon}</div>
               <div className="text-sm text-gray-300">
-                Hello {userName.split(' ')[0]}! I am your {agent.name}. I have access to {companyName} data. Ask me anything about your {activeModule.toLowerCase()}.
+                Hello {userName.split(' ')[0]}! I am your {agent.display_name}. I have access to {companyName} data. Ask me anything about your {activeModule.toLowerCase()}.
               </div>
             </div>
             <div className="flex gap-2">
@@ -138,31 +140,74 @@ function LiveAgentWorkspace({ agentId, agent }: { agentId: string; agent: typeof
 }
 
 // ============================================================================
-// AGENT PAGE — Wraps workspace in TenantProvider
+// AGENT PAGE — Fetches from registry, wraps workspace in TenantProvider
 // ============================================================================
 export default function AgentPage() {
   const router = useRouter()
   const params = useParams()
   const agentId = params?.id as string
   const [user, setUser] = useState<any>(null)
+  const [agent, setAgent] = useState<RegistryAgent | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem('woulfai_session')
-      if (!saved) { router.replace('/login'); return }
-      const parsed = JSON.parse(saved)
-      setUser(parsed)
+    async function load() {
+      try {
+        // Auth check
+        const saved = localStorage.getItem('woulfai_session')
+        if (!saved) { router.replace('/login'); return }
+        const parsed = JSON.parse(saved)
+        setUser(parsed)
 
-      // Check agent access
-      const isAdmin = parsed.role === 'super_admin' || parsed.role === 'admin'
-      if (!isAdmin && !parsed.agents.includes(agentId)) {
-        router.replace('/portal')
+        // Check agent access
+        const isAdmin = parsed.role === 'super_admin' || parsed.role === 'admin'
+        if (!isAdmin && parsed.agents?.length > 0 && !parsed.agents.includes(agentId)) {
+          router.replace('/portal')
+          return
+        }
+
+        // Fetch agent from registry
+        const res = await fetch(`/api/agents/registry?slug=${agentId}`)
+        if (!res.ok) {
+          setError('Agent not found')
+          return
+        }
+        const data = await res.json()
+        setAgent(data.agent)
+      } catch {
+        router.replace('/login')
+      } finally {
+        setLoading(false)
       }
-    } catch { router.replace('/login') }
+    }
+    load()
   }, [agentId, router])
 
-  const agent = AGENTS[agentId]
-  if (!agent || !user) return null
+  if (loading) return (
+    <div className="min-h-screen bg-[#060910] flex items-center justify-center">
+      <div className="text-center">
+        <div className="w-10 h-10 rounded-full border-[3px] mx-auto mb-4" style={{ borderColor: '#1a1a2e', borderTopColor: '#2A9D8F', animation: 'spin 0.8s linear infinite' }} />
+        <p className="text-sm text-gray-500">Loading agent...</p>
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      </div>
+    </div>
+  )
+
+  if (error || !agent) return (
+    <div className="min-h-screen bg-[#060910] flex items-center justify-center text-white">
+      <div className="text-center">
+        <p className="text-5xl mb-4">🔍</p>
+        <p className="text-lg font-bold mb-2">Agent not found</p>
+        <p className="text-sm text-gray-500 mb-6">The agent &quot;{agentId}&quot; doesn&apos;t exist in the registry.</p>
+        <button onClick={() => router.push('/portal')} className="px-4 py-2 bg-white/10 rounded-lg text-sm hover:bg-white/20">
+          ← Back to Portal
+        </button>
+      </div>
+    </div>
+  )
+
+  if (!user) return null
 
   return (
     <TenantProvider user={user}>
@@ -177,10 +222,10 @@ export default function AgentPage() {
               </button>
               <span className="text-gray-700">|</span>
               <span className="text-xl">{agent.icon}</span>
-              <span className="text-sm font-semibold">{agent.name}</span>
+              <span className="text-sm font-semibold">{agent.display_name}</span>
               <div className="flex items-center gap-1.5 ml-2">
                 <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
-                <span className="text-[10px] text-emerald-400 font-medium">LIVE</span>
+                <span className="text-[10px] text-emerald-400 font-medium uppercase">{agent.status}</span>
               </div>
             </div>
             <div className="flex items-center gap-3">
