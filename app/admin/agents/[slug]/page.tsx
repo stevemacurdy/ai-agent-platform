@@ -1,7 +1,7 @@
 'use client';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { AGENTS } from '@/lib/agents/agent-registry';
+import { useAgents } from '@/lib/hooks/useAgents';
 
 // Detailed capability map for selling each agent
 const AGENT_DETAILS: Record<string, {
@@ -182,6 +182,7 @@ const AGENT_DETAILS: Record<string, {
 };
 
 export default function AdminAgentDetailPage() {
+  const { agents: AGENTS, loading: agentsLoading } = useAgents();
   const { slug } = useParams<{ slug: string }>();
   const agent = AGENTS.find(a => a.slug === slug);
   const details = AGENT_DETAILS[slug];

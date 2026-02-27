@@ -1,10 +1,11 @@
 'use client';
 import Link from 'next/link';
-import { AGENTS, CATEGORY_LABELS, CATEGORY_ORDER, type AgentCategory } from '@/lib/agents/agent-registry';
+import { useAgents, CATEGORY_LABELS, CATEGORY_ORDER, type AgentCategory } from '@/lib/hooks/useAgents';
 
-const LIVE_AGENTS = AGENTS.filter(a => a.status === 'live');
 
 export default function DemoHub() {
+  const { agents: AGENTS, loading: agentsLoading } = useAgents();
+  const LIVE_AGENTS = AGENTS.filter(a => a.status === 'live');
   const grouped = CATEGORY_ORDER.reduce((acc, cat) => {
     const agents = LIVE_AGENTS.filter(a => a.category === cat);
     if (agents.length > 0) acc[cat] = agents;

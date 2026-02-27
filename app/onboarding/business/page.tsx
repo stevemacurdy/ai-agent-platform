@@ -2,11 +2,9 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { getSupabaseBrowser } from '@/lib/supabase-browser';
-import { AGENTS } from '@/lib/agents/agent-registry';
+import { useAgents } from '@/lib/hooks/useAgents';
 import { ArrowRight, ArrowLeft, CheckCircle2, Building2 } from 'lucide-react';
 
-const LIVE_AGENTS = AGENTS.filter(a => a.status === 'live');
-const CATEGORIES = [...new Set(LIVE_AGENTS.map(a => a.category))];
 
 const INDUSTRY_OPTIONS = [
   'Warehousing & Distribution',
@@ -61,6 +59,9 @@ const STEPS = [
 ];
 
 export default function BusinessOnboarding() {
+  const { agents: AGENTS, loading: agentsLoading } = useAgents();
+  const LIVE_AGENTS = AGENTS.filter(a => a.status === 'live');
+  const CATEGORIES = [...new Set(LIVE_AGENTS.map(a => a.category))];
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [saving, setSaving] = useState(false);

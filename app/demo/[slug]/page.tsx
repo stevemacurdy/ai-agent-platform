@@ -1,7 +1,7 @@
 'use client';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { AGENTS } from '@/lib/agents/agent-registry';
+import { useAgents } from '@/lib/hooks/useAgents';
 
 // Rich capability descriptions that SELL each agent
 const CAPABILITIES: Record<string, { headline: string; bullets: string[]; aha: string }> = {
@@ -39,6 +39,7 @@ const DEMO_KPIS: Record<string, { label: string; value: string; trend?: string }
 };
 
 export default function DemoAgentPage() {
+  const { agents: AGENTS, loading: agentsLoading } = useAgents();
   const { slug } = useParams<{ slug: string }>();
   const router = useRouter();
   const agent = AGENTS.find(a => a.slug === slug);

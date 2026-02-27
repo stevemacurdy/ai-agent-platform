@@ -2,10 +2,9 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { getSupabaseBrowser } from '@/lib/supabase-browser';
-import { AGENTS } from '@/lib/agents/agent-registry';
+import { useAgents } from '@/lib/hooks/useAgents';
 import Link from 'next/link';
 
-const LIVE_AGENTS = AGENTS.filter(a => a.status === 'live');
 
 const PLANS = [
   {
@@ -36,11 +35,11 @@ const PLANS = [
     key: 'enterprise',
     name: 'Enterprise',
     price: 0,
-    agents: LIVE_AGENTS.length,
+    agents: 21,
     companies: -1,
     users: -1,
     features: [
-      'All ' + LIVE_AGENTS.length + ' AI Agents',
+      'All 21 AI Agents',
       'Unlimited workspaces',
       'Unlimited team members',
       'Dedicated account manager',
@@ -57,6 +56,8 @@ const PLANS = [
 ];
 
 export default function PricingPage() {
+  const { agents: AGENTS, loading: agentsLoading } = useAgents();
+  const LIVE_AGENTS = AGENTS.filter(a => a.status === 'live');
   const [loading, setLoading] = useState<string | null>(null);
   const params = useSearchParams();
   const canceled = params.get('canceled');

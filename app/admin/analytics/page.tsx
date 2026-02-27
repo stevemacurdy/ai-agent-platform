@@ -1,10 +1,11 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { AGENTS } from '@/lib/agents'
+import { useAgents } from '@/lib/hooks/useAgents';
 
 function getEmail() { try { return JSON.parse(localStorage.getItem('woulfai_session') || '{}')?.user?.email || 'admin' } catch { return 'admin' } }
 
 export default function AnalyticsPage() {
+  const { agents: AGENTS, loading: agentsLoading } = useAgents();
   const [clickData, setClickData] = useState<any[]>([])
   const [leadData, setLeadData] = useState<any>({ totalLeads: 0, byAgent: {} })
   const [loading, setLoading] = useState(true)

@@ -1,9 +1,8 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { AGENTS } from '@/lib/agents/agent-registry';
+import { useAgents } from '@/lib/hooks/useAgents';
 import { getSupabaseBrowser } from '@/lib/supabase-browser';
 
-const LIVE_AGENTS = AGENTS.filter(a => a.status === 'live');
 
 const ROLES = [
   { value: 'super_admin', label: 'Super Admin', color: 'bg-rose-500/10 text-rose-400' },
@@ -23,6 +22,8 @@ interface UserRecord {
 }
 
 export default function AdminUsersPage() {
+  const { agents: AGENTS, loading: agentsLoading } = useAgents();
+  const LIVE_AGENTS = AGENTS.filter(a => a.status === 'live');
   const [users, setUsers] = useState<UserRecord[]>([]);
   const [showCreate, setShowCreate] = useState(false);
   const [createMode, setCreateMode] = useState<'password' | 'invite'>('password');

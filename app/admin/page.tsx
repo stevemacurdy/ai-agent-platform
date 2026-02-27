@@ -1,13 +1,14 @@
 'use client';
 import { getSupabaseBrowser } from '@/lib/supabase-browser';
 import Link from 'next/link';
-import { AGENTS } from '@/lib/agents/agent-registry';
+import { useAgents } from '@/lib/hooks/useAgents';
 import { useState, useEffect } from 'react';
 
-const LIVE = AGENTS.filter(a => a.status === 'live');
-const CATEGORIES = [...new Set(LIVE.map(a => a.category))];
 
 export default function AdminDashboard() {
+  const { agents: AGENTS, loading: agentsLoading } = useAgents();
+  const LIVE = AGENTS.filter(a => a.status === 'live');
+  const CATEGORIES = [...new Set(LIVE.map(a => a.category))];
   const [userCount, setUserCount] = useState(0);
   const [selectedCat, setSelectedCat] = useState<string | null>(null);
 

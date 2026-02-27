@@ -1,9 +1,10 @@
 'use client';
 import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { AGENTS } from '@/lib/agents/agent-registry';
+import { useAgents } from '@/lib/hooks/useAgents';
 
 export default function OnboardingWizard() {
+  const { agents: AGENTS, loading: agentsLoading } = useAgents();
   const params = useParams();
   const router = useRouter();
   const agentId = params.agentId as string;

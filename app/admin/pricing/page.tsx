@@ -1,9 +1,8 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { AGENTS } from '@/lib/agents/agent-registry';
+import { useAgents } from '@/lib/hooks/useAgents';
 import { getSupabaseBrowser } from '@/lib/supabase-browser';
 
-const LIVE_AGENTS = AGENTS.filter(a => a.status === 'live');
 
 interface AgentPrice {
   agent_slug: string;
@@ -21,6 +20,8 @@ interface Bundle {
 }
 
 export default function AdminPricingPage() {
+  const { agents: AGENTS, loading: agentsLoading } = useAgents();
+  const LIVE_AGENTS = AGENTS.filter(a => a.status === 'live');
   const [prices, setPrices] = useState<AgentPrice[]>([]);
   const [bundles, setBundles] = useState<Bundle[]>([]);
   const [loading, setLoading] = useState(true);

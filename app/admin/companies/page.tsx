@@ -1,10 +1,9 @@
 'use client';
 import { getSupabaseBrowser } from '@/lib/supabase-browser';
 import { useState, useEffect } from 'react';
-import { AGENTS } from '@/lib/agents/agent-registry';
+import { useAgents } from '@/lib/hooks/useAgents';
 import Link from 'next/link';
 
-const LIVE_AGENTS = AGENTS.filter(a => a.status === 'live');
 
 interface Company {
   id: string;
@@ -18,6 +17,8 @@ interface Company {
 }
 
 export default function AdminCompaniesPage() {
+  const { agents: AGENTS, loading: agentsLoading } = useAgents();
+  const LIVE_AGENTS = AGENTS.filter(a => a.status === 'live');
   const [companies, setCompanies] = useState<Company[]>([]);
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState<'list' | 'compare'>('list');

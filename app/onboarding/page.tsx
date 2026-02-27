@@ -1,11 +1,12 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
-import { AGENTS } from '@/lib/agents/agent-registry';
+import { useAgents } from '@/lib/hooks/useAgents';
 
-const LIVE_AGENTS = Object.values(AGENTS).filter(a => a.status === 'live');
 
 export default function OnboardingHub() {
+  const { agents: AGENTS, loading: agentsLoading } = useAgents();
+  const LIVE_AGENTS = Object.values(AGENTS).filter(a => a.status === 'live');
   const [search, setSearch] = useState('');
 
   const filtered = LIVE_AGENTS.filter(a =>

@@ -1,11 +1,12 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
-import { AGENTS } from '@/lib/agents'
+import { useAgents } from '@/lib/hooks/useAgents';
 import { trackClick } from '@/lib/track'
 import LeadCaptureModal from '@/components/LeadCaptureModal'
 
 export default function AgentDashboard() {
+  const { agents: AGENTS, loading: agentsLoading } = useAgents();
   const [showLead, setShowLead] = useState<{ slug: string; name: string } | null>(null)
   const live = AGENTS.filter(a => a.status === 'live')
   const dev = AGENTS.filter(a => a.status !== 'live')
