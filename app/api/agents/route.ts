@@ -1,31 +1,25 @@
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
-import { AGENTS, getAgent, getLiveAgents, getDevAgents } from '@/lib/agents';
+import { getSupabaseClient } from '@/lib/supabase';
 
 export async function GET(request: NextRequest) {
+  const sb = getSupabaseClient();
   const { searchParams } = new URL(request.url);
   const slug = searchParams.get('slug');
-  const filter = searchParams.get('filter'); // 'live', 'dev', or null for all
+  const filter = searchParams.get('filter');
 
   if (slug) {
-    const agent = getAgent(slug);
-    return agent ? NextResponse.json({ agent }) : NextResponse.json({ error: 'Not found' }, { status: 404 });
+    const { data: agent } = await sb.from('agent_registry').select('*').eq('slug', slug).single();
+    if (!agent) return NextResponse.json({ error: 'Not found' }, { status: 404 });
+    return NextResponse.json({ agent: { slug: agent.slug, name: agent.display_name, description: agent.description || agent.short_description, icon: agent.icon, status: agent.status, category: null, completionPct: 0 } });
   }
 
-  let agents = AGENTS;
-  if (filter === 'live') agents = getLiveAgents();
-  else if (filter === 'dev') agents = getDevAgents();
+  let query = sb.from('agent_registry').select('*').order('display_order');
+  if (filter === 'live') query = query.eq('status', 'live');
+  else if (filter === 'dev') query = query.in('status', ['draft', 'beta']);
 
-  return NextResponse.json({
-    agents: agents.map(a => ({
-      slug: a.slug, name: a.name, description: a.description, icon: a.icon,
-      status: a.status, completionPct: a.completionPct, category: a.category,
-      liveRoute: a.liveRoute, demoRoute: a.demoRoute,
-      featuresDone: a.features.filter(f => f.status === 'done').length,
-      featuresTotal: a.features.length,
-    })),
-    totalAgents: agents.length,
-    liveCount: agents.filter(a => a.status === 'live').length,
-    devCount: agents.filter(a => a.status !== 'live').length,
-  });
+  const { data: agents } = await query;
+  const list = (agents || []).map(a => ({ slug: a.slug, name: a.display_name, description: a.description || a.short_description, icon: a.icon, status: a.status, completionPct: 0, category: null, liveRoute: a.component_path ? '/' + a.component_path : null, demoRoute: null, featuresDone: 0, featuresTotal: 0 }));
+
+  return NextResponse.json({ agents: list, totalAgents: list.length, liveCount: list.filter(a => a.status === 'live').length, devCount: list.filter(a => a.status !== 'live').length });
 }
