@@ -22,7 +22,7 @@ export default function PortalPage() {
   useEffect(() => {
     async function load() {
       try {
-        const [userRes, agentsRes] = await Promise.all([fetch('/api/auth/me', { headers: { Authorization: 'Bearer ' + localStorage.getItem('woulfai_token') } }), fetch('/api/agents')]);
+        const [userRes, agentsRes] = await Promise.all([fetch('/api/auth/me', { headers: { Authorization: 'Bearer ' + localStorage.getItem('woulfai_token') } }), fetch('/api/agents/registry')]);
         if (!userRes.ok) { router.push('/login'); return; }
         const userData = await userRes.json();
         setUser(userData.user || userData);
@@ -32,7 +32,7 @@ export default function PortalPage() {
     load();
   }, [router]);
 
-  const filtered = agents.filter((a) => a.name?.toLowerCase().includes(searchQuery.toLowerCase()) || a.category?.toLowerCase().includes(searchQuery.toLowerCase()));
+  const filtered = agents.filter((a) => a.name?.toLowerCase().includes(searchQuery.toLowerCase()) || a.primary_category?.display_name?.toLowerCase().includes(searchQuery.toLowerCase()) || a.keywords?.some((k) => k.toLowerCase().includes(searchQuery.toLowerCase())));
   const activeCount = agents.filter((a) => a.status === 'active' || !a.status).length;
 
   if (loading) return (
@@ -148,7 +148,7 @@ export default function PortalPage() {
               <p className="text-[14px] text-gray-500 mt-1.5">{searchQuery ? 'Try a different search term' : 'Contact your admin to enable AI Employees for your workspace'}</p>
             </div>
           ) : filtered.map((agent) => {
-            const catColor = CAT_COLORS[agent.category || ''] || CAT_COLORS.default;
+            const catColor = agent.color || '#2A9D8F';
             const icon = agent.icon || ICONS[agent.slug] || '🤖';
             return (
               <Link key={agent.id || agent.slug} href={`/portal/agent/${agent.slug || agent.id}`}
@@ -164,11 +164,11 @@ export default function PortalPage() {
                       <span className="w-2 h-2 rounded-full flex-shrink-0"
                         style={{ background: agent.status === 'inactive' ? '#E5E7EB' : '#2A9D8F', animation: agent.status !== 'inactive' ? 'pulse-dot 2s infinite' : 'none' }} />
                     </div>
-                    {agent.category && (
+                    {(agent.primary_category || agent.category) && (
                       <span className="inline-block mt-1 text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider"
-                        style={{ background: `${catColor}10`, color: catColor }}>{agent.category}</span>
+                        style={{ background: `${catColor}10`, color: catColor }}>{agent.primary_category?.display_name || agent.category}</span>
                     )}
-                    {agent.description && <p className="text-[12px] text-gray-500 mt-2 leading-relaxed line-clamp-2">{agent.description}</p>}
+                    {(agent.description || agent.short_description) && <p className="text-[12px] text-gray-500 mt-2 leading-relaxed line-clamp-2">{agent.description || agent.short_description}</p>}
                   </div>
                 </div>
                 <div className="absolute bottom-5 right-5 opacity-0 group-hover:opacity-100 transition-opacity">
