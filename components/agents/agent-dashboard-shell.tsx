@@ -12,7 +12,7 @@
 
 import React, { ReactNode, useState } from 'react';
 import { useTenant } from '@/lib/providers/tenant-provider';
-import type { AgentDefinition } from '@/lib/agents/agent-registry';
+import type { AgentDefinition } from '@/lib/hooks/useAgents';
 
 interface Props {
   agent: AgentDefinition;
