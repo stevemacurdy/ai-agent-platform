@@ -2,14 +2,14 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { AGENTS } from '@/lib/agents/agent-registry';
+import { useAgents } from '@/lib/hooks/useAgents';
 import { getSupabaseBrowser } from '@/lib/supabase-browser';
 
 interface UserInfo { role: string; email: string; approved_agents: string[]; }
 
-const LIVE_AGENTS = Object.values(AGENTS).filter(a => a.status === 'live');
-
 export default function SidebarNav() {
+  const { agents: AGENTS } = useAgents();
+  const LIVE_AGENTS = AGENTS.filter(a => a.status === 'live');
   const pathname = usePathname();
   const [user, setUser] = useState<UserInfo | null>(null);
   const [loading, setLoading] = useState(true);
