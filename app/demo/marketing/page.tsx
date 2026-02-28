@@ -37,7 +37,7 @@ const brandsData = [
 
 const contentCalendar = [
   { id: 1, title: 'AI Trends 2026 Blog Post', type: 'blog', platform: 'Website', date: '2026-02-10', status: 'scheduled', author: 'AI Generated' },
-  { id: 2, title: 'WMS Agent Demo Video', type: 'video', platform: 'YouTube', date: '2026-02-12', status: 'draft', author: 'Marketing Team' },
+  { id: 2, title: 'WMS Employee Demo Video', type: 'video', platform: 'YouTube', date: '2026-02-12', status: 'draft', author: 'Marketing Team' },
   { id: 3, title: 'Customer Success Story', type: 'social', platform: 'LinkedIn', date: '2026-02-14', status: 'scheduled', author: 'AI Generated' },
   { id: 4, title: 'Weekly Newsletter', type: 'email', platform: 'Mailchimp', date: '2026-02-15', status: 'draft', author: 'AI Generated' },
 ]
@@ -188,7 +188,7 @@ Most businesses still rely on manual processes for critical operations:
 
 ## Enter AI Agents
 
-AI agents are purpose-built digital employees that handle specific business functions 24/7. Unlike generic chatbots, these agents understand your industry, integrate with your tools, and deliver measurable ROI.
+AI Employees are purpose-built digital employees that handle specific business functions 24/7. Unlike generic chatbots, these agents understand your industry, integrate with your tools, and deliver measurable ROI.
 
 ### Real Results from Real Businesses
 
@@ -198,12 +198,12 @@ AI agents are purpose-built digital employees that handle specific business func
 
 ## Getting Started
 
-The best part? You can deploy an AI agent in days, not months. Start with a 14-day free trial and see the difference for yourself.
+The best part? You can deploy an AI Employee in days, not months. Start with a 14-day free trial and see the difference for yourself.
 
 [Start Free Trial →](https://woulfai.com/contact)`,
       social: `🚀 Stop wasting 8+ hours on manual billing every month.
 
-Our WMS Agent automates:
+Our WMS Employee automates:
 ✅ Photo-verified receiving
 ✅ Automatic invoice generation
 ✅ Real-time inventory tracking
@@ -223,7 +223,7 @@ I noticed you downloaded our WMS Guide last week. Quick question:
 
 How many hours does your team spend on billing each month?
 
-Most warehouse operators tell us 6-10 hours. One of our customers was at 8+ hours—until they deployed our WMS Agent.
+Most warehouse operators tell us 6-10 hours. One of our customers was at 8+ hours—until they deployed our WMS Employee.
 
 Now? **15 minutes.** Fully automated, photo-verified, zero errors.
 
@@ -294,7 +294,7 @@ Budget Recommendation: $50-100/day for testing`
   ]
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] text-white">
+    <div className="min-h-screen bg-[#F4F5F7] text-[#1B2A4A]">
       {/* Notification Toast */}
       {notification && (
         <div className="fixed top-4 right-4 z-50 bg-emerald-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 animate-pulse">
@@ -304,25 +304,25 @@ Budget Recommendation: $50-100/day for testing`
       )}
 
       {/* Navigation */}
-      <nav className="sticky top-0 z-40 bg-[#0a0a0f]/90 backdrop-blur-xl border-b border-white/5">
+      <nav className="sticky top-0 z-40 bg-[rgba(27,42,74,0.97)] backdrop-blur-xl text-white border-b border-[#E5E7EB]">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Link href="/demo" className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+              <Link href="/demo" className="flex items-center gap-2 text-[#6B7280] hover:text-[#1B2A4A] transition-colors">
                 <ArrowLeft className="w-5 h-5" />
                 <span>Back</span>
               </Link>
-              <div className="h-6 w-px bg-white/10" />
+              <div className="h-6 w-px bg-gray-100" />
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-rose-400 rounded-xl flex items-center justify-center">
                   <Megaphone className="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h1 className="font-bold">Marketing Agent</h1>
+                    <h1 className="font-bold">Marketing Employee</h1>
                     <img src="/images/woulf-logo.png" alt="Woulf" className="w-5 h-5 rounded" title="Powered by Woulf" />
                   </div>
-                  <p className="text-xs text-gray-400">AI-Powered Campaign Management</p>
+                  <p className="text-xs text-[#6B7280]">AI-Powered Campaign Management</p>
                 </div>
               </div>
             </div>
@@ -336,7 +336,7 @@ Budget Recommendation: $50-100/day for testing`
               </button>
               <button 
                 onClick={() => setShowModal('campaign')}
-                className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-lg font-medium hover:bg-gray-100 transition-colors"
+                className="flex items-center gap-2 bg-[#F5920B] text-white px-4 py-2 rounded-lg font-medium hover:bg-[#e0850a] transition-colors"
               >
                 <Plus className="w-4 h-4" />
                 New Campaign
@@ -347,7 +347,7 @@ Budget Recommendation: $50-100/day for testing`
       </nav>
 
       {/* Tabs */}
-      <div className="border-b border-white/5">
+      <div className="border-b border-[#E5E7EB]">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex gap-1 overflow-x-auto">
             {tabs.map((tab) => (
@@ -356,8 +356,8 @@ Budget Recommendation: $50-100/day for testing`
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-2 px-4 py-3 font-medium transition-colors whitespace-nowrap border-b-2 ${
                   activeTab === tab.id 
-                    ? 'text-white border-pink-500' 
-                    : 'text-gray-400 border-transparent hover:text-white'
+                    ? 'text-[#1B2A4A] border-[#2A9D8F] font-semibold' 
+                    : 'text-[#6B7280] border-transparent hover:text-[#1B2A4A]'
                 }`}
               >
                 <tab.icon className="w-4 h-4" />
@@ -381,27 +381,27 @@ Budget Recommendation: $50-100/day for testing`
                 { label: 'ROAS', value: '5.12x', change: '+18%', up: true, icon: BarChart3 },
                 { label: 'New Leads', value: '354', change: '+28%', up: true, icon: Users },
               ].map((kpi, i) => (
-                <div key={i} className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+                <div key={i} className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                   <div className="flex items-center justify-between mb-4">
-                    <kpi.icon className="w-5 h-5 text-gray-400" />
+                    <kpi.icon className="w-5 h-5 text-[#6B7280]" />
                     <span className={`text-sm flex items-center gap-1 ${kpi.up ? 'text-emerald-400' : 'text-red-400'}`}>
                       {kpi.up ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
                       {kpi.change}
                     </span>
                   </div>
                   <div className="text-2xl font-bold mb-1">{kpi.value}</div>
-                  <div className="text-sm text-gray-400">{kpi.label}</div>
+                  <div className="text-sm text-[#6B7280]">{kpi.label}</div>
                 </div>
               ))}
             </div>
 
             {/* Marketing Funnel */}
-            <div className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+            <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold">Marketing Funnel</h2>
                 <button 
                   onClick={() => setShowModal('funnel')}
-                  className="text-sm text-pink-400 hover:text-pink-300 flex items-center gap-1"
+                  className="text-sm text-[#2A9D8F] hover:text-[#238577] flex items-center gap-1"
                 >
                   <Settings className="w-4 h-4" /> Configure
                 </button>
@@ -410,7 +410,7 @@ Budget Recommendation: $50-100/day for testing`
                 {funnelData.map((stage, i) => (
                   <div key={i} className="flex-1 flex flex-col items-center">
                     <div 
-                      className="w-full bg-gradient-to-t from-pink-500/20 to-purple-500/20 rounded-t-lg border border-white/10 flex items-end justify-center relative group cursor-pointer hover:from-pink-500/30 hover:to-purple-500/30 transition-colors"
+                      className="w-full bg-gradient-to-t from-pink-500/20 to-purple-500/20 rounded-t-lg border border-[#E5E7EB] flex items-end justify-center relative group cursor-pointer hover:from-pink-500/30 hover:to-purple-500/30 transition-colors"
                       style={{ height: `${(stage.value / funnelData[0].value) * 100}%`, minHeight: '40px' }}
                     >
                       <div className="absolute -top-8 text-sm font-bold">{stage.value.toLocaleString()}</div>
@@ -420,7 +420,7 @@ Budget Recommendation: $50-100/day for testing`
                         </div>
                       )}
                     </div>
-                    <div className="mt-2 text-xs text-gray-400 text-center">{stage.stage}</div>
+                    <div className="mt-2 text-xs text-[#6B7280] text-center">{stage.stage}</div>
                   </div>
                 ))}
               </div>
@@ -430,45 +430,45 @@ Budget Recommendation: $50-100/day for testing`
             <div className="grid md:grid-cols-3 gap-4">
               <button 
                 onClick={() => setShowModal('generate')}
-                className="p-6 bg-white/[0.02] border border-white/10 rounded-xl hover:border-pink-500/50 transition-colors text-left group"
+                className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl hover:border-[#2A9D8F]/40 transition-colors text-left group"
               >
                 <div className="w-12 h-12 bg-pink-500/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                   <Wand2 className="w-6 h-6 text-pink-400" />
                 </div>
                 <h3 className="font-semibold mb-1">Generate Content</h3>
-                <p className="text-sm text-gray-400">Use AI to create blog posts, social content, or emails</p>
+                <p className="text-sm text-[#6B7280]">Use AI to create blog posts, social content, or emails</p>
               </button>
               
               <button 
                 onClick={() => setShowModal('campaign')}
-                className="p-6 bg-white/[0.02] border border-white/10 rounded-xl hover:border-blue-500/50 transition-colors text-left group"
+                className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl hover:border-[#2A9D8F]/40 transition-colors text-left group"
               >
                 <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                   <Target className="w-6 h-6 text-blue-400" />
                 </div>
                 <h3 className="font-semibold mb-1">Launch Campaign</h3>
-                <p className="text-sm text-gray-400">Create and launch a new marketing campaign</p>
+                <p className="text-sm text-[#6B7280]">Create and launch a new marketing campaign</p>
               </button>
               
               <button 
                 onClick={() => setShowModal('splitTest')}
-                className="p-6 bg-white/[0.02] border border-white/10 rounded-xl hover:border-purple-500/50 transition-colors text-left group"
+                className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl hover:border-[#2A9D8F]/40 transition-colors text-left group"
               >
                 <div className="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                   <Activity className="w-6 h-6 text-purple-400" />
                 </div>
                 <h3 className="font-semibold mb-1">A/B Test</h3>
-                <p className="text-sm text-gray-400">Set up a new split test to optimize conversions</p>
+                <p className="text-sm text-[#6B7280]">Set up a new split test to optimize conversions</p>
               </button>
             </div>
 
             {/* Recent Campaigns */}
-            <div className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+            <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold">Active Campaigns</h2>
                 <button 
                   onClick={() => setActiveTab('campaigns')}
-                  className="text-sm text-pink-400 hover:text-pink-300"
+                  className="text-sm text-[#2A9D8F] hover:text-[#238577]"
                 >
                   View All →
                 </button>
@@ -476,7 +476,7 @@ Budget Recommendation: $50-100/day for testing`
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="text-left text-sm text-gray-400 border-b border-white/5">
+                    <tr className="text-left text-sm text-[#6B7280] border-b border-[#E5E7EB]">
                       <th className="pb-3 font-medium">Campaign</th>
                       <th className="pb-3 font-medium">Platform</th>
                       <th className="pb-3 font-medium">Status</th>
@@ -488,7 +488,7 @@ Budget Recommendation: $50-100/day for testing`
                   </thead>
                   <tbody>
                     {campaignsData.slice(0, 3).map((campaign) => (
-                      <tr key={campaign.id} className="border-b border-white/5 hover:bg-white/[0.02]">
+                      <tr key={campaign.id} className="border-b border-[#E5E7EB] hover:bg-white shadow-sm">
                         <td className="py-4 font-medium">{campaign.name}</td>
                         <td className="py-4">
                           <span className="flex items-center gap-2">
@@ -512,13 +512,13 @@ Budget Recommendation: $50-100/day for testing`
                           <div className="flex items-center justify-end gap-2">
                             <button 
                               onClick={() => { setSelectedCampaign(campaign); setShowModal('editCampaign'); }}
-                              className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                              className="p-2 hover:bg-[#e0850a] rounded-lg transition-colors"
                             >
                               <Edit className="w-4 h-4" />
                             </button>
                             <button 
                               onClick={() => showNotification(`${campaign.status === 'active' ? 'Paused' : 'Resumed'} ${campaign.name}`)}
-                              className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                              className="p-2 hover:bg-[#e0850a] rounded-lg transition-colors"
                             >
                               {campaign.status === 'active' ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                             </button>
@@ -532,7 +532,7 @@ Budget Recommendation: $50-100/day for testing`
             </div>
 
             {/* Split Tests */}
-            <div className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+            <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold">Split Tests</h2>
                 <button 
@@ -544,7 +544,7 @@ Budget Recommendation: $50-100/day for testing`
               </div>
               <div className="grid md:grid-cols-2 gap-4">
                 {splitTestsData.map((test) => (
-                  <div key={test.id} className="p-4 bg-white/[0.02] border border-white/5 rounded-lg">
+                  <div key={test.id} className="p-4 bg-white shadow-sm border border-[#E5E7EB] rounded-lg">
                     <div className="flex items-center justify-between mb-3">
                       <span className="font-medium">{test.name}</span>
                       <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
@@ -554,23 +554,23 @@ Budget Recommendation: $50-100/day for testing`
                       </span>
                     </div>
                     <div className="flex items-center gap-4 text-sm">
-                      <div className={`flex-1 p-2 rounded ${test.winner === 'A' ? 'bg-emerald-500/10 border border-emerald-500/30' : 'bg-white/5'}`}>
-                        <div className="text-xs text-gray-400 mb-1">Variant A</div>
+                      <div className={`flex-1 p-2 rounded ${test.winner === 'A' ? 'bg-emerald-500/10 border border-emerald-500/30' : 'bg-[#F4F5F7]'}`}>
+                        <div className="text-xs text-[#6B7280] mb-1">Variant A</div>
                         <div className="truncate">{test.variantA}</div>
                       </div>
-                      <span className="text-gray-500">vs</span>
-                      <div className={`flex-1 p-2 rounded ${test.winner === 'B' ? 'bg-emerald-500/10 border border-emerald-500/30' : 'bg-white/5'}`}>
-                        <div className="text-xs text-gray-400 mb-1">Variant B</div>
+                      <span className="text-[#9CA3AF]">vs</span>
+                      <div className={`flex-1 p-2 rounded ${test.winner === 'B' ? 'bg-emerald-500/10 border border-emerald-500/30' : 'bg-[#F4F5F7]'}`}>
+                        <div className="text-xs text-[#6B7280] mb-1">Variant B</div>
                         <div className="truncate">{test.variantB}</div>
                       </div>
                     </div>
-                    <div className="flex items-center justify-between mt-3 pt-3 border-t border-white/5">
+                    <div className="flex items-center justify-between mt-3 pt-3 border-t border-[#E5E7EB]">
                       <span className="text-sm text-emerald-400 font-medium">{test.lift} lift</span>
-                      <span className="text-sm text-gray-400">{test.confidence}% confidence</span>
+                      <span className="text-sm text-[#6B7280]">{test.confidence}% confidence</span>
                     </div>
                     {test.status === 'running' && (
                       <div className="mt-2">
-                        <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+                        <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
                           <div className="h-full bg-blue-500 rounded-full transition-all" style={{ width: `${test.progress}%` }} />
                         </div>
                       </div>
@@ -588,20 +588,20 @@ Budget Recommendation: $50-100/day for testing`
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
                   <input 
                     type="text"
                     placeholder="Search campaigns..."
-                    className="pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-lg focus:border-pink-500 focus:outline-none w-64"
+                    className="pl-10 pr-4 py-2 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg focus:border-[#2A9D8F] focus:outline-none w-64"
                   />
                 </div>
-                <select className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg focus:border-pink-500 focus:outline-none">
+                <select className="px-4 py-2 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg focus:border-[#2A9D8F] focus:outline-none">
                   <option>All Platforms</option>
                   <option>Google Ads</option>
                   <option>LinkedIn</option>
                   <option>Meta</option>
                 </select>
-                <select className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg focus:border-pink-500 focus:outline-none">
+                <select className="px-4 py-2 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg focus:border-[#2A9D8F] focus:outline-none">
                   <option>All Status</option>
                   <option>Active</option>
                   <option>Paused</option>
@@ -610,16 +610,16 @@ Budget Recommendation: $50-100/day for testing`
               </div>
               <button 
                 onClick={() => setShowModal('campaign')}
-                className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-lg font-medium hover:bg-gray-100 transition-colors"
+                className="flex items-center gap-2 bg-[#F5920B] text-white px-4 py-2 rounded-lg font-medium hover:bg-[#e0850a] transition-colors"
               >
                 <Plus className="w-4 h-4" /> New Campaign
               </button>
             </div>
 
-            <div className="bg-white/[0.02] border border-white/10 rounded-xl overflow-hidden">
+            <div className="bg-white shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden">
               <table className="w-full">
                 <thead>
-                  <tr className="text-left text-sm text-gray-400 border-b border-white/5 bg-white/[0.02]">
+                  <tr className="text-left text-sm text-[#6B7280] border-b border-[#E5E7EB] bg-white shadow-sm">
                     <th className="px-6 py-4 font-medium">Campaign</th>
                     <th className="px-6 py-4 font-medium">Platform</th>
                     <th className="px-6 py-4 font-medium">Status</th>
@@ -632,10 +632,10 @@ Budget Recommendation: $50-100/day for testing`
                 </thead>
                 <tbody>
                   {campaignsData.map((campaign) => (
-                    <tr key={campaign.id} className="border-b border-white/5 hover:bg-white/[0.02]">
+                    <tr key={campaign.id} className="border-b border-[#E5E7EB] hover:bg-white shadow-sm">
                       <td className="px-6 py-4">
                         <div className="font-medium">{campaign.name}</div>
-                        <div className="text-sm text-gray-400">Started {campaign.startDate}</div>
+                        <div className="text-sm text-[#6B7280]">Started {campaign.startDate}</div>
                       </td>
                       <td className="px-6 py-4">
                         <span className="flex items-center gap-2">
@@ -660,28 +660,28 @@ Budget Recommendation: $50-100/day for testing`
                         <div className="flex items-center justify-end gap-1">
                           <button 
                             onClick={() => { setSelectedCampaign(campaign); setShowModal('editCampaign'); }}
-                            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                            className="p-2 hover:bg-[#e0850a] rounded-lg transition-colors"
                             title="Edit"
                           >
                             <Edit className="w-4 h-4" />
                           </button>
                           <button 
                             onClick={() => showNotification(`${campaign.status === 'active' ? 'Paused' : 'Resumed'} ${campaign.name}`)}
-                            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                            className="p-2 hover:bg-[#e0850a] rounded-lg transition-colors"
                             title={campaign.status === 'active' ? 'Pause' : 'Resume'}
                           >
                             {campaign.status === 'active' ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                           </button>
                           <button 
                             onClick={() => showNotification(`Campaign duplicated`)}
-                            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                            className="p-2 hover:bg-[#e0850a] rounded-lg transition-colors"
                             title="Duplicate"
                           >
                             <Copy className="w-4 h-4" />
                           </button>
                           <button 
                             onClick={() => showNotification(`Campaign deleted`)}
-                            className="p-2 hover:bg-white/10 rounded-lg transition-colors text-red-400"
+                            className="p-2 hover:bg-[#e0850a] rounded-lg transition-colors text-red-400"
                             title="Delete"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -715,7 +715,7 @@ Budget Recommendation: $50-100/day for testing`
                       {hubspotLoading ? 'Connecting to HubSpot...' : hubspotConnected ? 'Connected to HubSpot CRM' : 'HubSpot Not Connected'}
                     </span>
                     {hubspotConnected && hubspotStats && (
-                      <span className="text-sm text-gray-400 ml-2">
+                      <span className="text-sm text-[#6B7280] ml-2">
                         {hubspotStats.totalContacts} contacts • {hubspotStats.totalCompanies} companies • {hubspotStats.totalDeals} deals
                       </span>
                     )}
@@ -724,7 +724,7 @@ Budget Recommendation: $50-100/day for testing`
                 {!hubspotConnected && !hubspotLoading && (
                   <button
                     onClick={() => setActiveTab('settings')}
-                    className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg text-sm"
+                    className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm"
                   >
                     Configure in Settings
                   </button>
@@ -736,35 +736,35 @@ Budget Recommendation: $50-100/day for testing`
               <>
                 {/* CRM Stats */}
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                  <div className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+                  <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                     <Users className="w-5 h-5 text-blue-400 mb-3" />
                     <div className="text-2xl font-bold">{hubspotStats?.totalContacts || 0}</div>
-                    <div className="text-sm text-gray-400">Total Contacts</div>
+                    <div className="text-sm text-[#6B7280]">Total Contacts</div>
                   </div>
-                  <div className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+                  <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                     <Building2 className="w-5 h-5 text-purple-400 mb-3" />
                     <div className="text-2xl font-bold">{hubspotStats?.totalCompanies || 0}</div>
-                    <div className="text-sm text-gray-400">Companies</div>
+                    <div className="text-sm text-[#6B7280]">Companies</div>
                   </div>
-                  <div className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+                  <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                     <Target className="w-5 h-5 text-pink-400 mb-3" />
                     <div className="text-2xl font-bold">{hubspotStats?.totalDeals || 0}</div>
-                    <div className="text-sm text-gray-400">Active Deals</div>
+                    <div className="text-sm text-[#6B7280]">Active Deals</div>
                   </div>
-                  <div className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+                  <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                     <DollarSign className="w-5 h-5 text-emerald-400 mb-3" />
                     <div className="text-2xl font-bold">${(hubspotStats?.pipelineValue || 0).toLocaleString()}</div>
-                    <div className="text-sm text-gray-400">Pipeline Value</div>
+                    <div className="text-sm text-[#6B7280]">Pipeline Value</div>
                   </div>
                 </div>
 
                 {/* Contacts Section */}
-                <div className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+                <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                   <div className="flex items-center justify-between mb-6">
                     <h3 className="text-lg font-bold">Contacts</h3>
                     <div className="flex items-center gap-3">
                       <div className="relative">
-                        <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                        <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#6B7280]" />
                         <input
                           type="text"
                           placeholder="Search contacts..."
@@ -773,12 +773,12 @@ Budget Recommendation: $50-100/day for testing`
                             setContactSearch(e.target.value)
                             searchHubSpotContacts(e.target.value)
                           }}
-                          className="pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm focus:border-pink-500 focus:outline-none w-64"
+                          className="pl-10 pr-4 py-2 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg text-sm focus:border-[#2A9D8F] focus:outline-none w-64"
                         />
                       </div>
                       <button
                         onClick={() => setShowAddContact(true)}
-                        className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-lg font-medium text-sm hover:bg-gray-100"
+                        className="flex items-center gap-2 bg-[#F5920B] text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-[#e0850a]"
                       >
                         <UserPlus className="w-4 h-4" />
                         Add Contact
@@ -788,41 +788,41 @@ Budget Recommendation: $50-100/day for testing`
 
                   {/* Add Contact Form */}
                   {showAddContact && (
-                    <div className="mb-6 p-4 bg-white/5 border border-white/10 rounded-lg">
+                    <div className="mb-6 p-4 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg">
                       <div className="grid grid-cols-4 gap-4 mb-4">
                         <input
                           type="text"
                           placeholder="First Name"
                           value={newContact.firstname}
                           onChange={(e) => setNewContact({ ...newContact, firstname: e.target.value })}
-                          className="px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm"
+                          className="px-3 py-2 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg text-sm"
                         />
                         <input
                           type="text"
                           placeholder="Last Name"
                           value={newContact.lastname}
                           onChange={(e) => setNewContact({ ...newContact, lastname: e.target.value })}
-                          className="px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm"
+                          className="px-3 py-2 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg text-sm"
                         />
                         <input
                           type="email"
                           placeholder="Email"
                           value={newContact.email}
                           onChange={(e) => setNewContact({ ...newContact, email: e.target.value })}
-                          className="px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm"
+                          className="px-3 py-2 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg text-sm"
                         />
                         <input
                           type="text"
                           placeholder="Company"
                           value={newContact.company}
                           onChange={(e) => setNewContact({ ...newContact, company: e.target.value })}
-                          className="px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm"
+                          className="px-3 py-2 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg text-sm"
                         />
                       </div>
                       <div className="flex justify-end gap-2">
                         <button
                           onClick={() => setShowAddContact(false)}
-                          className="px-4 py-2 text-sm text-gray-400 hover:text-white"
+                          className="px-4 py-2 text-sm text-[#6B7280] hover:text-[#1B2A4A]"
                         >
                           Cancel
                         </button>
@@ -839,7 +839,7 @@ Budget Recommendation: $50-100/day for testing`
                   {/* Contacts Table */}
                   <table className="w-full">
                     <thead>
-                      <tr className="text-left text-sm text-gray-400 border-b border-white/10">
+                      <tr className="text-left text-sm text-[#6B7280] border-b border-[#E5E7EB]">
                         <th className="pb-3">Name</th>
                         <th className="pb-3">Email</th>
                         <th className="pb-3">Company</th>
@@ -850,13 +850,13 @@ Budget Recommendation: $50-100/day for testing`
                     <tbody>
                       {hubspotContacts.length === 0 ? (
                         <tr>
-                          <td colSpan={5} className="py-8 text-center text-gray-400">
+                          <td colSpan={5} className="py-8 text-center text-[#6B7280]">
                             {contactSearch ? 'No contacts found matching your search' : 'No contacts yet. Add your first contact!'}
                           </td>
                         </tr>
                       ) : (
                         hubspotContacts.map((contact) => (
-                          <tr key={contact.id} className="border-b border-white/5 hover:bg-white/[0.02]">
+                          <tr key={contact.id} className="border-b border-[#E5E7EB] hover:bg-white shadow-sm">
                             <td className="py-4">
                               <div className="flex items-center gap-3">
                                 <div className="w-8 h-8 bg-gradient-to-br from-pink-500 to-purple-500 rounded-full flex items-center justify-center text-sm font-medium">
@@ -867,14 +867,14 @@ Budget Recommendation: $50-100/day for testing`
                                 </span>
                               </div>
                             </td>
-                            <td className="py-4 text-gray-400">{contact.properties?.email}</td>
-                            <td className="py-4 text-gray-400">{contact.properties?.company || '-'}</td>
+                            <td className="py-4 text-[#6B7280]">{contact.properties?.email}</td>
+                            <td className="py-4 text-[#6B7280]">{contact.properties?.company || '-'}</td>
                             <td className="py-4">
                               <span className={`px-2 py-1 rounded-full text-xs ${
                                 contact.properties?.lifecyclestage === 'customer' ? 'bg-emerald-500/20 text-emerald-400' :
                                 contact.properties?.lifecyclestage === 'lead' ? 'bg-blue-500/20 text-blue-400' :
                                 contact.properties?.lifecyclestage === 'opportunity' ? 'bg-purple-500/20 text-purple-400' :
-                                'bg-gray-500/20 text-gray-400'
+                                'bg-gray-500/20 text-[#6B7280]'
                               }`}>
                                 {contact.properties?.lifecyclestage || 'subscriber'}
                               </span>
@@ -883,15 +883,15 @@ Budget Recommendation: $50-100/day for testing`
                               <div className="flex items-center gap-2">
                                 <button 
                                   onClick={() => showNotification(`Opening ${contact.properties?.email}`)}
-                                  className="p-1.5 hover:bg-white/10 rounded"
+                                  className="p-1.5 hover:bg-[#e0850a] rounded"
                                 >
-                                  <Mail className="w-4 h-4 text-gray-400" />
+                                  <Mail className="w-4 h-4 text-[#6B7280]" />
                                 </button>
                                 <button 
                                   onClick={() => window.open(`https://app.hubspot.com/contacts/${contact.id}`, '_blank')}
-                                  className="p-1.5 hover:bg-white/10 rounded"
+                                  className="p-1.5 hover:bg-[#e0850a] rounded"
                                 >
-                                  <ExternalLink className="w-4 h-4 text-gray-400" />
+                                  <ExternalLink className="w-4 h-4 text-[#6B7280]" />
                                 </button>
                               </div>
                             </td>
@@ -904,19 +904,19 @@ Budget Recommendation: $50-100/day for testing`
 
                 {/* Deals Section */}
                 {hubspotDeals.length > 0 && (
-                  <div className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+                  <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                     <h3 className="text-lg font-bold mb-6">Recent Deals</h3>
                     <div className="grid md:grid-cols-3 gap-4">
                       {hubspotDeals.slice(0, 6).map((deal) => (
-                        <div key={deal.id} className="p-4 bg-white/5 border border-white/10 rounded-lg hover:border-pink-500/50 transition-colors">
+                        <div key={deal.id} className="p-4 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg hover:border-[#2A9D8F]/40 transition-colors">
                           <div className="flex items-center justify-between mb-2">
                             <span className="font-medium truncate">{deal.properties?.dealname}</span>
                             <span className="text-emerald-400 font-bold">
                               ${parseFloat(deal.properties?.amount || 0).toLocaleString()}
                             </span>
                           </div>
-                          <div className="flex items-center gap-2 text-sm text-gray-400">
-                            <span className="px-2 py-0.5 bg-white/10 rounded">{deal.properties?.dealstage || 'New'}</span>
+                          <div className="flex items-center gap-2 text-sm text-[#6B7280]">
+                            <span className="px-2 py-0.5 bg-gray-100 rounded">{deal.properties?.dealstage || 'New'}</span>
                             {deal.properties?.closedate && (
                               <span>Close: {new Date(deal.properties.closedate).toLocaleDateString()}</span>
                             )}
@@ -929,19 +929,19 @@ Budget Recommendation: $50-100/day for testing`
               </>
             ) : !hubspotLoading && (
               /* Demo Mode - Not Connected */
-              <div className="p-8 bg-white/[0.02] border border-white/10 rounded-xl text-center">
+              <div className="p-8 bg-white shadow-sm border border-[#E5E7EB] rounded-xl text-center">
                 <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
                   <Users className="w-8 h-8 text-white" />
                 </div>
                 <h3 className="text-xl font-bold mb-2">Connect HubSpot CRM</h3>
-                <p className="text-gray-400 mb-6 max-w-md mx-auto">
+                <p className="text-[#6B7280] mb-6 max-w-md mx-auto">
                   Connect your HubSpot account to sync contacts, companies, and deals. 
                   Manage your entire sales pipeline from this dashboard.
                 </p>
                 <div className="flex items-center justify-center gap-4">
                   <button
                     onClick={() => setActiveTab('settings')}
-                    className="px-6 py-3 bg-white text-black rounded-lg font-medium hover:bg-gray-100"
+                    className="px-6 py-3 bg-[#F5920B] text-white rounded-lg font-medium hover:bg-[#e0850a]"
                   >
                     Configure HubSpot
                   </button>
@@ -949,7 +949,7 @@ Budget Recommendation: $50-100/day for testing`
                     href="https://www.hubspot.com/products/get-started" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="px-6 py-3 border border-white/20 rounded-lg font-medium hover:bg-white/5 flex items-center gap-2"
+                    className="px-6 py-3 border border-[#E5E7EB] rounded-lg font-medium hover:bg-[#F4F5F7] flex items-center gap-2"
                   >
                     Get Free HubSpot <ExternalLink className="w-4 h-4" />
                   </a>
@@ -973,7 +973,7 @@ Budget Recommendation: $50-100/day for testing`
                 </button>
                 <button 
                   onClick={() => setShowModal('scheduleContent')}
-                  className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-lg font-medium"
+                  className="flex items-center gap-2 bg-[#F5920B] text-white px-4 py-2 rounded-lg font-medium"
                 >
                   <Plus className="w-4 h-4" /> Schedule Content
                 </button>
@@ -987,18 +987,18 @@ Budget Recommendation: $50-100/day for testing`
                 { label: 'Email Campaigns', value: 8, icon: Mail, color: 'purple' },
                 { label: 'Ad Creatives', value: 24, icon: Image, color: 'orange' },
               ].map((stat, i) => (
-                <div key={i} className="p-4 bg-white/[0.02] border border-white/10 rounded-xl">
+                <div key={i} className="p-4 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                   <stat.icon className={`w-5 h-5 text-${stat.color}-400 mb-2`} />
                   <div className="text-2xl font-bold">{stat.value}</div>
-                  <div className="text-sm text-gray-400">{stat.label}</div>
+                  <div className="text-sm text-[#6B7280]">{stat.label}</div>
                 </div>
               ))}
             </div>
 
-            <div className="bg-white/[0.02] border border-white/10 rounded-xl overflow-hidden">
+            <div className="bg-white shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden">
               <table className="w-full">
                 <thead>
-                  <tr className="text-left text-sm text-gray-400 border-b border-white/5 bg-white/[0.02]">
+                  <tr className="text-left text-sm text-[#6B7280] border-b border-[#E5E7EB] bg-white shadow-sm">
                     <th className="px-6 py-4 font-medium">Content</th>
                     <th className="px-6 py-4 font-medium">Type</th>
                     <th className="px-6 py-4 font-medium">Platform</th>
@@ -1009,10 +1009,10 @@ Budget Recommendation: $50-100/day for testing`
                 </thead>
                 <tbody>
                   {contentCalendar.map((content) => (
-                    <tr key={content.id} className="border-b border-white/5 hover:bg-white/[0.02]">
+                    <tr key={content.id} className="border-b border-[#E5E7EB] hover:bg-white shadow-sm">
                       <td className="px-6 py-4">
                         <div className="font-medium">{content.title}</div>
-                        <div className="text-sm text-gray-400">By {content.author}</div>
+                        <div className="text-sm text-[#6B7280]">By {content.author}</div>
                       </td>
                       <td className="px-6 py-4">
                         <span className="flex items-center gap-2 capitalize">
@@ -1036,19 +1036,19 @@ Budget Recommendation: $50-100/day for testing`
                         <div className="flex items-center justify-end gap-1">
                           <button 
                             onClick={() => showNotification('Opening editor...')}
-                            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                            className="p-2 hover:bg-[#e0850a] rounded-lg transition-colors"
                           >
                             <Edit className="w-4 h-4" />
                           </button>
                           <button 
                             onClick={() => showNotification('Preview opened')}
-                            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                            className="p-2 hover:bg-[#e0850a] rounded-lg transition-colors"
                           >
                             <Eye className="w-4 h-4" />
                           </button>
                           <button 
                             onClick={() => showNotification('Content deleted')}
-                            className="p-2 hover:bg-white/10 rounded-lg transition-colors text-red-400"
+                            className="p-2 hover:bg-[#e0850a] rounded-lg transition-colors text-red-400"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -1069,7 +1069,7 @@ Budget Recommendation: $50-100/day for testing`
               <h2 className="text-xl font-bold">Brand Management</h2>
               <button 
                 onClick={() => { setSelectedBrand(null); setShowModal('addBrand'); }}
-                className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-lg font-medium"
+                className="flex items-center gap-2 bg-[#F5920B] text-white px-4 py-2 rounded-lg font-medium"
               >
                 <Plus className="w-4 h-4" /> Add Brand
               </button>
@@ -1077,7 +1077,7 @@ Budget Recommendation: $50-100/day for testing`
 
             <div className="grid md:grid-cols-2 gap-6">
               {brandsData.map((brand) => (
-                <div key={brand.id} className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+                <div key={brand.id} className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-4">
                       <div 
@@ -1088,28 +1088,28 @@ Budget Recommendation: $50-100/day for testing`
                       </div>
                       <div>
                         <h3 className="text-xl font-bold">{brand.name}</h3>
-                        <a href={`https://${brand.domain}`} className="text-sm text-gray-400 hover:text-white flex items-center gap-1">
+                        <a href={`https://${brand.domain}`} className="text-sm text-[#6B7280] hover:text-[#1B2A4A] flex items-center gap-1">
                           {brand.domain} <ExternalLink className="w-3 h-3" />
                         </a>
                       </div>
                     </div>
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      brand.status === 'active' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-gray-500/10 text-gray-400'
+                      brand.status === 'active' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-gray-500/10 text-[#6B7280]'
                     }`}>
                       {brand.status}
                     </span>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4 mb-4">
-                    <div className="p-3 bg-white/5 rounded-lg">
-                      <div className="text-xs text-gray-400 mb-1">Brand Color</div>
+                    <div className="p-3 bg-[#F4F5F7] rounded-lg">
+                      <div className="text-xs text-[#6B7280] mb-1">Brand Color</div>
                       <div className="flex items-center gap-2">
                         <div className="w-6 h-6 rounded" style={{ backgroundColor: brand.color }} />
                         <span className="font-mono text-sm">{brand.color}</span>
                       </div>
                     </div>
-                    <div className="p-3 bg-white/5 rounded-lg">
-                      <div className="text-xs text-gray-400 mb-1">Trademark</div>
+                    <div className="p-3 bg-[#F4F5F7] rounded-lg">
+                      <div className="text-xs text-[#6B7280] mb-1">Trademark</div>
                       <span className={`text-sm font-medium ${
                         brand.trademark === 'registered' ? 'text-emerald-400' :
                         brand.trademark === 'filed' ? 'text-blue-400' : 'text-yellow-400'
@@ -1123,19 +1123,19 @@ Budget Recommendation: $50-100/day for testing`
                   <div className="flex items-center gap-2">
                     <button 
                       onClick={() => { setSelectedBrand(brand); setShowModal('editBrand'); }}
-                      className="flex-1 flex items-center justify-center gap-2 py-2 bg-white/5 rounded-lg hover:bg-white/10 transition-colors"
+                      className="flex-1 flex items-center justify-center gap-2 py-2 bg-[#F4F5F7] rounded-lg hover:bg-[#e0850a] transition-colors"
                     >
                       <Edit className="w-4 h-4" /> Edit
                     </button>
                     <button 
                       onClick={() => showNotification('Assets downloaded')}
-                      className="flex-1 flex items-center justify-center gap-2 py-2 bg-white/5 rounded-lg hover:bg-white/10 transition-colors"
+                      className="flex-1 flex items-center justify-center gap-2 py-2 bg-[#F4F5F7] rounded-lg hover:bg-[#e0850a] transition-colors"
                     >
                       <Download className="w-4 h-4" /> Assets
                     </button>
                     <button 
                       onClick={() => setShowModal('trademark')}
-                      className="flex-1 flex items-center justify-center gap-2 py-2 bg-white/5 rounded-lg hover:bg-white/10 transition-colors"
+                      className="flex-1 flex items-center justify-center gap-2 py-2 bg-[#F4F5F7] rounded-lg hover:bg-[#e0850a] transition-colors"
                     >
                       <Zap className="w-4 h-4" /> Trademark
                     </button>
@@ -1153,12 +1153,12 @@ Budget Recommendation: $50-100/day for testing`
               <h2 className="text-xl font-bold">Knowledge Base</h2>
               <div className="flex items-center gap-3">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  <input type="text" placeholder="Search documents..." className="pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-lg w-64" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
+                  <input type="text" placeholder="Search documents..." className="pl-10 pr-4 py-2 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg w-64" />
                 </div>
                 <button 
                   onClick={() => showNotification('Upload coming soon')}
-                  className="flex items-center gap-2 bg-white text-black px-4 py-2 rounded-lg font-medium"
+                  className="flex items-center gap-2 bg-[#F5920B] text-white px-4 py-2 rounded-lg font-medium"
                 >
                   <Upload className="w-4 h-4" /> Upload Document
                 </button>
@@ -1168,17 +1168,17 @@ Budget Recommendation: $50-100/day for testing`
             {/* Document Categories */}
             <div className="grid grid-cols-4 gap-4">
               {['All Documents', 'Sales Collateral', 'Brand Assets', 'Product Info', 'Market Research'].map((cat, i) => (
-                <button key={cat} className={`p-3 rounded-lg text-sm font-medium transition-colors ${i === 0 ? 'bg-pink-500/20 text-pink-400 border border-pink-500/30' : 'bg-white/5 text-gray-400 hover:bg-white/10'}`}>
+                <button key={cat} className={`p-3 rounded-lg text-sm font-medium transition-colors ${i === 0 ? 'bg-pink-500/20 text-pink-400 border border-pink-500/30' : 'bg-[#F4F5F7] text-[#6B7280] hover:bg-[#e0850a]'}`}>
                   {cat}
                 </button>
               ))}
             </div>
 
             {/* Documents List */}
-            <div className="bg-white/[0.02] border border-white/10 rounded-xl overflow-hidden">
+            <div className="bg-white shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-white/10 text-left text-sm text-gray-400">
+                  <tr className="border-b border-[#E5E7EB] text-left text-sm text-[#6B7280]">
                     <th className="px-6 py-4">Document</th>
                     <th className="px-6 py-4">Category</th>
                     <th className="px-6 py-4">Pages</th>
@@ -1189,7 +1189,7 @@ Budget Recommendation: $50-100/day for testing`
                 </thead>
                 <tbody>
                   {knowledgeBaseDocs.map((doc) => (
-                    <tr key={doc.id} className="border-b border-white/5 hover:bg-white/[0.02]">
+                    <tr key={doc.id} className="border-b border-[#E5E7EB] hover:bg-white shadow-sm">
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 bg-red-500/20 rounded-lg flex items-center justify-center">
@@ -1197,26 +1197,26 @@ Budget Recommendation: $50-100/day for testing`
                           </div>
                           <div>
                             <div className="font-medium">{doc.name}</div>
-                            <div className="text-xs text-gray-500">{doc.type}</div>
+                            <div className="text-xs text-[#9CA3AF]">{doc.type}</div>
                           </div>
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <span className="px-2 py-1 bg-white/5 rounded text-xs">{doc.category}</span>
+                        <span className="px-2 py-1 bg-[#F4F5F7] rounded text-xs">{doc.category}</span>
                       </td>
-                      <td className="px-6 py-4 text-gray-400">{doc.pages}</td>
-                      <td className="px-6 py-4 text-gray-400">{doc.size}</td>
-                      <td className="px-6 py-4 text-gray-400">{doc.uploaded}</td>
+                      <td className="px-6 py-4 text-[#6B7280]">{doc.pages}</td>
+                      <td className="px-6 py-4 text-[#6B7280]">{doc.size}</td>
+                      <td className="px-6 py-4 text-[#6B7280]">{doc.uploaded}</td>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
-                          <a href={doc.url} target="_blank" rel="noopener noreferrer" className="p-2 hover:bg-white/10 rounded-lg">
-                            <Eye className="w-4 h-4 text-gray-400" />
+                          <a href={doc.url} target="_blank" rel="noopener noreferrer" className="p-2 hover:bg-[#e0850a] rounded-lg">
+                            <Eye className="w-4 h-4 text-[#6B7280]" />
                           </a>
-                          <button onClick={() => showNotification('Downloaded ' + doc.name)} className="p-2 hover:bg-white/10 rounded-lg">
-                            <Download className="w-4 h-4 text-gray-400" />
+                          <button onClick={() => showNotification('Downloaded ' + doc.name)} className="p-2 hover:bg-[#e0850a] rounded-lg">
+                            <Download className="w-4 h-4 text-[#6B7280]" />
                           </button>
-                          <button className="p-2 hover:bg-white/10 rounded-lg">
-                            <Share2 className="w-4 h-4 text-gray-400" />
+                          <button className="p-2 hover:bg-[#e0850a] rounded-lg">
+                            <Share2 className="w-4 h-4 text-[#6B7280]" />
                           </button>
                         </div>
                       </td>
@@ -1234,10 +1234,10 @@ Budget Recommendation: $50-100/day for testing`
                 </div>
                 <div>
                   <h3 className="font-semibold mb-2">AI Document Analysis</h3>
-                  <p className="text-sm text-gray-400 mb-3">
+                  <p className="text-sm text-[#6B7280] mb-3">
                     The Knowledge Base contains 5 documents with 258 total pages. The Woulf Sales Materials (132 pages) is your primary sales collateral with comprehensive product information, pricing guides, and case studies.
                   </p>
-                  <button onClick={() => showNotification('Generating insights...')} className="text-sm text-pink-400 hover:text-pink-300 flex items-center gap-1">
+                  <button onClick={() => showNotification('Generating insights...')} className="text-sm text-[#2A9D8F] hover:text-[#238577] flex items-center gap-1">
                     <Wand2 className="w-4 h-4" /> Generate content from these documents
                   </button>
                 </div>
@@ -1252,7 +1252,7 @@ Budget Recommendation: $50-100/day for testing`
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-bold">Analytics Dashboard</h2>
               <div className="flex items-center gap-3">
-                <select className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg">
+                <select className="px-4 py-2 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg">
                   <option>Last 7 Days</option>
                   <option>Last 30 Days</option>
                   <option>Last 90 Days</option>
@@ -1260,7 +1260,7 @@ Budget Recommendation: $50-100/day for testing`
                 </select>
                 <button 
                   onClick={() => showNotification('Report exported')}
-                  className="flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-lg"
+                  className="flex items-center gap-2 bg-[#F4F5F7] border border-[#E5E7EB] px-4 py-2 rounded-lg"
                 >
                   <Download className="w-4 h-4" /> Export
                 </button>
@@ -1274,8 +1274,8 @@ Budget Recommendation: $50-100/day for testing`
                 { label: 'Bounce Rate', value: '42%', change: '-5%' },
                 { label: 'Avg Session', value: '3:24', change: '+15%' },
               ].map((stat, i) => (
-                <div key={i} className="p-4 bg-white/[0.02] border border-white/10 rounded-xl">
-                  <div className="text-sm text-gray-400 mb-1">{stat.label}</div>
+                <div key={i} className="p-4 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
+                  <div className="text-sm text-[#6B7280] mb-1">{stat.label}</div>
                   <div className="flex items-end justify-between">
                     <span className="text-2xl font-bold">{stat.value}</span>
                     <span className={`text-sm ${stat.change.startsWith('+') ? 'text-emerald-400' : 'text-red-400'}`}>
@@ -1287,7 +1287,7 @@ Budget Recommendation: $50-100/day for testing`
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+              <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                 <h3 className="font-bold mb-4">Traffic Sources</h3>
                 <div className="space-y-4">
                   {[
@@ -1301,7 +1301,7 @@ Budget Recommendation: $50-100/day for testing`
                         <span>{item.source}</span>
                         <span>{item.value}%</span>
                       </div>
-                      <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                      <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
                         <div className={`h-full ${item.color} rounded-full`} style={{ width: `${item.value}%` }} />
                       </div>
                     </div>
@@ -1309,7 +1309,7 @@ Budget Recommendation: $50-100/day for testing`
                 </div>
               </div>
 
-              <div className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+              <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                 <h3 className="font-bold mb-4">Top Performing Content</h3>
                 <div className="space-y-3">
                   {[
@@ -1318,14 +1318,14 @@ Budget Recommendation: $50-100/day for testing`
                     { title: 'Customer Success Story', views: '3.1K', type: 'Case Study' },
                     { title: 'Pricing Comparison Guide', views: '2.8K', type: 'Guide' },
                   ].map((item, i) => (
-                    <div key={i} className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+                    <div key={i} className="flex items-center justify-between p-3 bg-[#F4F5F7] rounded-lg">
                       <div>
                         <div className="font-medium">{item.title}</div>
-                        <div className="text-xs text-gray-400">{item.type}</div>
+                        <div className="text-xs text-[#6B7280]">{item.type}</div>
                       </div>
                       <div className="text-right">
                         <div className="font-medium">{item.views}</div>
-                        <div className="text-xs text-gray-400">views</div>
+                        <div className="text-xs text-[#6B7280]">views</div>
                       </div>
                     </div>
                   ))}
@@ -1338,10 +1338,10 @@ Budget Recommendation: $50-100/day for testing`
         {/* Settings Tab */}
         {activeTab === 'settings' && (
           <div className="space-y-6">
-            <h2 className="text-xl font-bold">Marketing Agent Settings</h2>
+            <h2 className="text-xl font-bold">Marketing Employee Settings</h2>
 
             {/* HubSpot CRM Configuration */}
-            <div className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+            <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
@@ -1349,7 +1349,7 @@ Budget Recommendation: $50-100/day for testing`
                   </div>
                   <div>
                     <h3 className="font-bold">HubSpot CRM</h3>
-                    <p className="text-sm text-gray-400">Manage contacts, companies, and deals</p>
+                    <p className="text-sm text-[#6B7280]">Manage contacts, companies, and deals</p>
                   </div>
                 </div>
                 <div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg ${hubspotConnected ? 'bg-emerald-500/10' : 'bg-red-500/10'}`}>
@@ -1370,26 +1370,26 @@ Budget Recommendation: $50-100/day for testing`
               </div>
               
               {hubspotConnected ? (
-                <div className="grid grid-cols-3 gap-4 p-4 bg-white/5 rounded-lg">
+                <div className="grid grid-cols-3 gap-4 p-4 bg-[#F4F5F7] rounded-lg">
                   <div className="text-center">
                     <div className="text-2xl font-bold text-blue-400">{hubspotStats?.totalContacts || 0}</div>
-                    <div className="text-sm text-gray-400">Contacts</div>
+                    <div className="text-sm text-[#6B7280]">Contacts</div>
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold text-purple-400">{hubspotStats?.totalCompanies || 0}</div>
-                    <div className="text-sm text-gray-400">Companies</div>
+                    <div className="text-sm text-[#6B7280]">Companies</div>
                   </div>
                   <div className="text-center">
                     <div className="text-2xl font-bold text-emerald-400">{hubspotStats?.totalDeals || 0}</div>
-                    <div className="text-sm text-gray-400">Deals</div>
+                    <div className="text-sm text-[#6B7280]">Deals</div>
                   </div>
                 </div>
               ) : (
-                <div className="p-4 bg-white/5 rounded-lg">
-                  <p className="text-sm text-gray-400 mb-3">
-                    To connect HubSpot, add your Private App token to <code className="px-1 py-0.5 bg-white/10 rounded">.env.local</code>:
+                <div className="p-4 bg-[#F4F5F7] rounded-lg">
+                  <p className="text-sm text-[#6B7280] mb-3">
+                    To connect HubSpot, add your Private App token to <code className="px-1 py-0.5 bg-gray-100 rounded">.env.local</code>:
                   </p>
-                  <pre className="p-3 bg-black/50 rounded text-sm text-gray-300 overflow-x-auto">
+                  <pre className="p-3 bg-[#1B2A4A]/30 rounded text-sm text-[#4B5563] overflow-x-auto">
                     HUBSPOT_ACCESS_TOKEN=pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
                   </pre>
                 </div>
@@ -1397,7 +1397,7 @@ Budget Recommendation: $50-100/day for testing`
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+              <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                 <h3 className="font-bold mb-4">Connected Platforms</h3>
                 <div className="space-y-3">
                   {[
@@ -1408,7 +1408,7 @@ Budget Recommendation: $50-100/day for testing`
                     { name: 'Mailchimp', icon: Mail, connected: true },
                     { name: 'Buffer', icon: Share2, connected: false },
                   ].map((platform, i) => (
-                    <div key={i} className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+                    <div key={i} className="flex items-center justify-between p-3 bg-[#F4F5F7] rounded-lg">
                       <div className="flex items-center gap-3">
                         <platform.icon className="w-5 h-5" />
                         <span>{platform.name}</span>
@@ -1418,7 +1418,7 @@ Budget Recommendation: $50-100/day for testing`
                         className={`px-3 py-1 rounded-lg text-sm font-medium ${
                           platform.connected 
                             ? 'bg-emerald-500/10 text-emerald-400' 
-                            : 'bg-white/10 text-gray-400 hover:bg-white/20'
+                            : 'bg-gray-100 text-[#6B7280] hover:bg-gray-200'
                         }`}
                       >
                         {platform.connected ? 'Connected' : 'Connect'}
@@ -1428,12 +1428,12 @@ Budget Recommendation: $50-100/day for testing`
                 </div>
               </div>
 
-              <div className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+              <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                 <h3 className="font-bold mb-4">AI Content Settings</h3>
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium mb-2">Default Tone</label>
-                    <select className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg">
+                    <select className="w-full px-4 py-2 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg">
                       <option>Professional</option>
                       <option>Casual</option>
                       <option>Formal</option>
@@ -1442,7 +1442,7 @@ Budget Recommendation: $50-100/day for testing`
                   </div>
                   <div>
                     <label className="block text-sm font-medium mb-2">Target Audience</label>
-                    <select className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg">
+                    <select className="w-full px-4 py-2 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg">
                       <option>B2B - Enterprise</option>
                       <option>B2B - SMB</option>
                       <option>B2C - Consumers</option>
@@ -1450,7 +1450,7 @@ Budget Recommendation: $50-100/day for testing`
                   </div>
                   <div>
                     <label className="block text-sm font-medium mb-2">Industry Focus</label>
-                    <select className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg">
+                    <select className="w-full px-4 py-2 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg">
                       <option>Logistics & 3PL</option>
                       <option>Manufacturing</option>
                       <option>E-Commerce</option>
@@ -1472,14 +1472,14 @@ Budget Recommendation: $50-100/day for testing`
 
       {/* Modals */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80">
-          <div className="bg-[#111118] border border-white/10 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#1B2A4A]/40">
+          <div className="bg-white border border-[#E5E7EB] rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             {/* AI Generate Modal */}
             {showModal === 'generate' && (
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-xl font-bold">AI Content Generator</h2>
-                  <button onClick={() => setShowModal(null)} className="p-2 hover:bg-white/10 rounded-lg">
+                  <button onClick={() => setShowModal(null)} className="p-2 hover:bg-[#e0850a] rounded-lg">
                     <X className="w-5 h-5" />
                   </button>
                 </div>
@@ -1493,7 +1493,7 @@ Budget Recommendation: $50-100/day for testing`
                           key={type}
                           onClick={() => setContentType(type)}
                           className={`p-3 rounded-lg text-sm font-medium capitalize ${
-                            contentType === type ? 'bg-pink-500 text-white' : 'bg-white/5 hover:bg-white/10'
+                            contentType === type ? 'bg-pink-500 text-white' : 'bg-[#F4F5F7] hover:bg-[#e0850a]'
                           }`}
                         >
                           {type === 'ad' ? 'Ad Copy' : type}
@@ -1509,7 +1509,7 @@ Budget Recommendation: $50-100/day for testing`
                       value={contentTopic}
                       onChange={(e) => setContentTopic(e.target.value)}
                       placeholder="e.g., How AI is transforming warehouse operations..."
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-pink-500 focus:outline-none"
+                      className="w-full px-4 py-3 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg focus:border-[#2A9D8F] focus:outline-none"
                     />
                   </div>
 
@@ -1538,24 +1538,24 @@ Budget Recommendation: $50-100/day for testing`
                         <div className="flex items-center gap-2">
                           <button 
                             onClick={() => { navigator.clipboard.writeText(generatedContent); showNotification('Copied!'); }}
-                            className="p-2 hover:bg-white/10 rounded-lg"
+                            className="p-2 hover:bg-[#e0850a] rounded-lg"
                           >
                             <Copy className="w-4 h-4" />
                           </button>
                           <button 
                             onClick={handleGenerateContent}
-                            className="p-2 hover:bg-white/10 rounded-lg"
+                            className="p-2 hover:bg-[#e0850a] rounded-lg"
                           >
                             <RefreshCw className="w-4 h-4" />
                           </button>
                         </div>
                       </div>
-                      <div className="p-4 bg-white/5 rounded-lg max-h-64 overflow-y-auto">
-                        <pre className="whitespace-pre-wrap text-sm text-gray-300 font-sans">{generatedContent}</pre>
+                      <div className="p-4 bg-[#F4F5F7] rounded-lg max-h-64 overflow-y-auto">
+                        <pre className="whitespace-pre-wrap text-sm text-[#4B5563] font-sans">{generatedContent}</pre>
                       </div>
                       <button
                         onClick={() => { handleScheduleContent(); setGeneratedContent(''); }}
-                        className="w-full mt-4 py-2 bg-white text-black rounded-lg font-medium"
+                        className="w-full mt-4 py-2 bg-[#F5920B] text-white rounded-lg font-medium"
                       >
                         Schedule This Content
                       </button>
@@ -1570,7 +1570,7 @@ Budget Recommendation: $50-100/day for testing`
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-xl font-bold">Create New Campaign</h2>
-                  <button onClick={() => setShowModal(null)} className="p-2 hover:bg-white/10 rounded-lg">
+                  <button onClick={() => setShowModal(null)} className="p-2 hover:bg-[#e0850a] rounded-lg">
                     <X className="w-5 h-5" />
                   </button>
                 </div>
@@ -1581,7 +1581,7 @@ Budget Recommendation: $50-100/day for testing`
                     <input
                       type="text"
                       placeholder="e.g., Spring Product Launch"
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-pink-500 focus:outline-none"
+                      className="w-full px-4 py-3 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg focus:border-[#2A9D8F] focus:outline-none"
                     />
                   </div>
 
@@ -1595,7 +1595,7 @@ Budget Recommendation: $50-100/day for testing`
                       ].map((platform) => (
                         <button
                           key={platform.name}
-                          className="p-3 bg-white/5 hover:bg-white/10 rounded-lg flex items-center gap-2 justify-center"
+                          className="p-3 bg-[#F4F5F7] hover:bg-[#e0850a] rounded-lg flex items-center gap-2 justify-center"
                         >
                           <platform.icon className="w-4 h-4" />
                           {platform.name}
@@ -1610,12 +1610,12 @@ Budget Recommendation: $50-100/day for testing`
                       <input
                         type="text"
                         placeholder="$100"
-                        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-pink-500 focus:outline-none"
+                        className="w-full px-4 py-3 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg focus:border-[#2A9D8F] focus:outline-none"
                       />
                     </div>
                     <div>
                       <label className="block text-sm font-medium mb-2">Duration</label>
-                      <select className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg">
+                      <select className="w-full px-4 py-3 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg">
                         <option>7 days</option>
                         <option>14 days</option>
                         <option>30 days</option>
@@ -1629,7 +1629,7 @@ Budget Recommendation: $50-100/day for testing`
                     <textarea
                       placeholder="Describe your target audience..."
                       rows={3}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-pink-500 focus:outline-none resize-none"
+                      className="w-full px-4 py-3 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg focus:border-[#2A9D8F] focus:outline-none resize-none"
                     />
                   </div>
 
@@ -1637,7 +1637,7 @@ Budget Recommendation: $50-100/day for testing`
                     <label className="block text-sm font-medium mb-2">Campaign Goal</label>
                     <div className="grid grid-cols-3 gap-2">
                       {['Lead Generation', 'Brand Awareness', 'Conversions'].map((goal) => (
-                        <button key={goal} className="p-3 bg-white/5 hover:bg-white/10 rounded-lg text-sm">
+                        <button key={goal} className="p-3 bg-[#F4F5F7] hover:bg-[#e0850a] rounded-lg text-sm">
                           {goal}
                         </button>
                       ))}
@@ -1647,13 +1647,13 @@ Budget Recommendation: $50-100/day for testing`
                   <div className="flex gap-3 pt-4">
                     <button
                       onClick={() => setShowModal(null)}
-                      className="flex-1 py-3 border border-white/10 rounded-lg font-medium hover:bg-white/5"
+                      className="flex-1 py-3 border border-[#E5E7EB] rounded-lg font-medium hover:bg-[#F4F5F7]"
                     >
                       Cancel
                     </button>
                     <button
                       onClick={handleCreateCampaign}
-                      className="flex-1 py-3 bg-white text-black rounded-lg font-medium hover:bg-gray-100"
+                      className="flex-1 py-3 bg-[#F5920B] text-white rounded-lg font-medium hover:bg-[#e0850a]"
                     >
                       Create Campaign
                     </button>
@@ -1667,7 +1667,7 @@ Budget Recommendation: $50-100/day for testing`
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-xl font-bold">Create A/B Test</h2>
-                  <button onClick={() => setShowModal(null)} className="p-2 hover:bg-white/10 rounded-lg">
+                  <button onClick={() => setShowModal(null)} className="p-2 hover:bg-[#e0850a] rounded-lg">
                     <X className="w-5 h-5" />
                   </button>
                 </div>
@@ -1678,7 +1678,7 @@ Budget Recommendation: $50-100/day for testing`
                     <input
                       type="text"
                       placeholder="e.g., Homepage CTA Color"
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-pink-500 focus:outline-none"
+                      className="w-full px-4 py-3 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg focus:border-[#2A9D8F] focus:outline-none"
                     />
                   </div>
 
@@ -1686,7 +1686,7 @@ Budget Recommendation: $50-100/day for testing`
                     <label className="block text-sm font-medium mb-2">Test Type</label>
                     <div className="grid grid-cols-3 gap-2">
                       {['Headlines', 'CTA Buttons', 'Page Layout', 'Email Subject', 'Ad Copy', 'Images'].map((type) => (
-                        <button key={type} className="p-3 bg-white/5 hover:bg-white/10 rounded-lg text-sm">
+                        <button key={type} className="p-3 bg-[#F4F5F7] hover:bg-[#e0850a] rounded-lg text-sm">
                           {type}
                         </button>
                       ))}
@@ -1699,7 +1699,7 @@ Budget Recommendation: $50-100/day for testing`
                       <textarea
                         placeholder="Enter control variant..."
                         rows={3}
-                        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-pink-500 focus:outline-none resize-none"
+                        className="w-full px-4 py-3 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg focus:border-[#2A9D8F] focus:outline-none resize-none"
                       />
                     </div>
                     <div>
@@ -1707,7 +1707,7 @@ Budget Recommendation: $50-100/day for testing`
                       <textarea
                         placeholder="Enter test variant..."
                         rows={3}
-                        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-pink-500 focus:outline-none resize-none"
+                        className="w-full px-4 py-3 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg focus:border-[#2A9D8F] focus:outline-none resize-none"
                       />
                     </div>
                   </div>
@@ -1715,7 +1715,7 @@ Budget Recommendation: $50-100/day for testing`
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium mb-2">Traffic Split</label>
-                      <select className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg">
+                      <select className="w-full px-4 py-3 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg">
                         <option>50/50</option>
                         <option>70/30</option>
                         <option>90/10</option>
@@ -1726,7 +1726,7 @@ Budget Recommendation: $50-100/day for testing`
                       <input
                         type="number"
                         placeholder="1000"
-                        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-pink-500 focus:outline-none"
+                        className="w-full px-4 py-3 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg focus:border-[#2A9D8F] focus:outline-none"
                       />
                     </div>
                   </div>
@@ -1734,7 +1734,7 @@ Budget Recommendation: $50-100/day for testing`
                   <div className="flex gap-3 pt-4">
                     <button
                       onClick={() => setShowModal(null)}
-                      className="flex-1 py-3 border border-white/10 rounded-lg font-medium hover:bg-white/5"
+                      className="flex-1 py-3 border border-[#E5E7EB] rounded-lg font-medium hover:bg-[#F4F5F7]"
                     >
                       Cancel
                     </button>
@@ -1754,7 +1754,7 @@ Budget Recommendation: $50-100/day for testing`
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-xl font-bold">File Trademark</h2>
-                  <button onClick={() => setShowModal(null)} className="p-2 hover:bg-white/10 rounded-lg">
+                  <button onClick={() => setShowModal(null)} className="p-2 hover:bg-[#e0850a] rounded-lg">
                     <X className="w-5 h-5" />
                   </button>
                 </div>
@@ -1771,7 +1771,7 @@ Budget Recommendation: $50-100/day for testing`
                     <input
                       type="text"
                       placeholder="Enter the name to trademark"
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-pink-500 focus:outline-none"
+                      className="w-full px-4 py-3 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg focus:border-[#2A9D8F] focus:outline-none"
                     />
                   </div>
 
@@ -1779,13 +1779,13 @@ Budget Recommendation: $50-100/day for testing`
                     <label className="block text-sm font-medium mb-2">Trademark Type</label>
                     <div className="grid grid-cols-2 gap-2">
                       <button className="p-3 bg-pink-500 text-white rounded-lg text-sm">Word Mark</button>
-                      <button className="p-3 bg-white/5 hover:bg-white/10 rounded-lg text-sm">Logo/Design</button>
+                      <button className="p-3 bg-[#F4F5F7] hover:bg-[#e0850a] rounded-lg text-sm">Logo/Design</button>
                     </div>
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium mb-2">Goods/Services Category</label>
-                    <select className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg">
+                    <select className="w-full px-4 py-3 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg">
                       <option>Class 9 - Software & Technology</option>
                       <option>Class 35 - Advertising & Business</option>
                       <option>Class 42 - Scientific & Tech Services</option>
@@ -1795,13 +1795,13 @@ Budget Recommendation: $50-100/day for testing`
                   <div className="flex gap-3 pt-4">
                     <button
                       onClick={() => setShowModal(null)}
-                      className="flex-1 py-3 border border-white/10 rounded-lg font-medium hover:bg-white/5"
+                      className="flex-1 py-3 border border-[#E5E7EB] rounded-lg font-medium hover:bg-[#F4F5F7]"
                     >
                       Cancel
                     </button>
                     <button
                       onClick={handleFileTrademark}
-                      className="flex-1 py-3 bg-white text-black rounded-lg font-medium hover:bg-gray-100"
+                      className="flex-1 py-3 bg-[#F5920B] text-white rounded-lg font-medium hover:bg-[#e0850a]"
                     >
                       Prepare Application
                     </button>
@@ -1815,7 +1815,7 @@ Budget Recommendation: $50-100/day for testing`
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-xl font-bold">Add New Brand</h2>
-                  <button onClick={() => setShowModal(null)} className="p-2 hover:bg-white/10 rounded-lg">
+                  <button onClick={() => setShowModal(null)} className="p-2 hover:bg-[#e0850a] rounded-lg">
                     <X className="w-5 h-5" />
                   </button>
                 </div>
@@ -1826,7 +1826,7 @@ Budget Recommendation: $50-100/day for testing`
                     <input
                       type="text"
                       placeholder="e.g., My New Brand"
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-pink-500 focus:outline-none"
+                      className="w-full px-4 py-3 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg focus:border-[#2A9D8F] focus:outline-none"
                     />
                   </div>
 
@@ -1835,7 +1835,7 @@ Budget Recommendation: $50-100/day for testing`
                     <input
                       type="text"
                       placeholder="e.g., mynewbrand.com"
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-pink-500 focus:outline-none"
+                      className="w-full px-4 py-3 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg focus:border-[#2A9D8F] focus:outline-none"
                     />
                   </div>
 
@@ -1850,30 +1850,30 @@ Budget Recommendation: $50-100/day for testing`
                       <input
                         type="text"
                         placeholder="#3B82F6"
-                        className="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-pink-500 focus:outline-none font-mono"
+                        className="flex-1 px-4 py-3 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg focus:border-[#2A9D8F] focus:outline-none font-mono"
                       />
                     </div>
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium mb-2">Logo Upload</label>
-                    <div className="border-2 border-dashed border-white/10 rounded-lg p-8 text-center hover:border-white/20 transition-colors cursor-pointer">
-                      <Upload className="w-8 h-8 mx-auto mb-2 text-gray-400" />
-                      <p className="text-sm text-gray-400">Drag & drop or click to upload</p>
-                      <p className="text-xs text-gray-500 mt-1">PNG, SVG up to 5MB</p>
+                    <div className="border-2 border-dashed border-[#E5E7EB] rounded-lg p-8 text-center hover:border-[#E5E7EB] transition-colors cursor-pointer">
+                      <Upload className="w-8 h-8 mx-auto mb-2 text-[#6B7280]" />
+                      <p className="text-sm text-[#6B7280]">Drag & drop or click to upload</p>
+                      <p className="text-xs text-[#9CA3AF] mt-1">PNG, SVG up to 5MB</p>
                     </div>
                   </div>
 
                   <div className="flex gap-3 pt-4">
                     <button
                       onClick={() => setShowModal(null)}
-                      className="flex-1 py-3 border border-white/10 rounded-lg font-medium hover:bg-white/5"
+                      className="flex-1 py-3 border border-[#E5E7EB] rounded-lg font-medium hover:bg-[#F4F5F7]"
                     >
                       Cancel
                     </button>
                     <button
                       onClick={handleSaveBrand}
-                      className="flex-1 py-3 bg-white text-black rounded-lg font-medium hover:bg-gray-100"
+                      className="flex-1 py-3 bg-[#F5920B] text-white rounded-lg font-medium hover:bg-[#e0850a]"
                     >
                       Add Brand
                     </button>

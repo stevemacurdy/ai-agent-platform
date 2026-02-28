@@ -68,7 +68,7 @@ const researchResults = {
   ],
   talkingPoints: [
     'Reference their Dallas expansion and operational scaling challenges',
-    'Highlight automation investment alignment with WMS Agent capabilities',
+    'Highlight automation investment alignment with WMS Employee capabilities',
     'Mention similar 3PL client success stories with billing automation',
     'Ask about their current WMS pain points and modernization timeline',
   ],
@@ -115,7 +115,7 @@ export default function ResearchIntelPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] text-white">
+    <div className="min-h-screen bg-[#F4F5F7] text-[#1B2A4A]">
       {/* Notification Toast */}
       {notification && (
         <div className="fixed top-4 right-4 z-50 bg-emerald-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 animate-pulse">
@@ -125,11 +125,11 @@ export default function ResearchIntelPage() {
       )}
       
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-[#0a0a0f]/90 backdrop-blur-xl border-b border-white/10">
+      <header className="sticky top-0 z-50 bg-[rgba(27,42,74,0.97)] backdrop-blur-xl text-white border-b border-[#E5E7EB]">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Link href="/demo" className="p-2 hover:bg-white/5 rounded-lg transition-colors">
+              <Link href="/demo" className="p-2 hover:bg-[#F4F5F7] rounded-lg transition-colors">
                 <ArrowLeft className="w-5 h-5" />
               </Link>
               <div className="flex items-center gap-3">
@@ -138,19 +138,19 @@ export default function ResearchIntelPage() {
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h1 className="font-bold text-lg">Research Agent</h1>
+                    <h1 className="font-bold text-lg">Research Employee</h1>
                     <img src="/images/woulf-logo.png" alt="Woulf" className="w-5 h-5 rounded" title="Powered by Woulf" />
                   </div>
-                  <p className="text-xs text-gray-400">Company Intelligence & Pre-Call Research</p>
+                  <p className="text-xs text-[#6B7280]">Company Intelligence & Pre-Call Research</p>
                 </div>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <button onClick={() => showNotification(`You have ${savedReports.length} saved reports`)} className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-colors">
+              <button onClick={() => showNotification(`You have ${savedReports.length} saved reports`)} className="flex items-center gap-2 px-4 py-2 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg hover:bg-[#e0850a] transition-colors">
                 <Bookmark className="w-4 h-4" />
                 Saved ({savedReports.length})
               </button>
-              <button onClick={() => showNotification('Search history opened')} className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-colors">
+              <button onClick={() => showNotification('Search history opened')} className="flex items-center gap-2 px-4 py-2 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg hover:bg-[#e0850a] transition-colors">
                 <Clock className="w-4 h-4" />
                 History
               </button>
@@ -164,13 +164,13 @@ export default function ResearchIntelPage() {
         <div className="max-w-3xl mx-auto mb-12">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold mb-3">Research Any Company Instantly</h2>
-            <p className="text-gray-400">Get comprehensive intelligence for sales calls, competitive analysis, and market research</p>
+            <p className="text-[#6B7280]">Get comprehensive intelligence for sales calls, competitive analysis, and market research</p>
           </div>
 
           <div className="relative">
             <div className="flex gap-3">
               <div className="relative flex-1">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#6B7280]" />
                 <input
                   type="text"
                   value={searchQuery}
@@ -180,12 +180,12 @@ export default function ResearchIntelPage() {
                   }}
                   onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                   placeholder="Enter company name, domain, or LinkedIn URL..."
-                  className="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 rounded-xl focus:border-indigo-500 focus:outline-none text-lg"
+                  className="w-full pl-12 pr-4 py-4 bg-[#F4F5F7] border border-[#E5E7EB] rounded-xl focus:border-[#2A9D8F] focus:outline-none text-lg"
                 />
                 
                 {/* Suggestions Dropdown */}
                 {showSuggestions && (
-                  <div className="absolute top-full left-0 right-0 mt-2 bg-[#1a1a24] border border-white/10 rounded-xl overflow-hidden z-10">
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-[#E5E7EB] rounded-xl overflow-hidden z-10">
                     {sampleCompanies.filter(c => c.name.toLowerCase().includes(searchQuery.toLowerCase())).map((company, i) => (
                       <button
                         key={i}
@@ -193,14 +193,14 @@ export default function ResearchIntelPage() {
                           setSearchQuery(company.name)
                           setShowSuggestions(false)
                         }}
-                        className="w-full flex items-center gap-3 p-4 hover:bg-white/5 transition-colors text-left"
+                        className="w-full flex items-center gap-3 p-4 hover:bg-[#F4F5F7] transition-colors text-left"
                       >
                         <div className="w-10 h-10 bg-indigo-500/20 rounded-lg flex items-center justify-center">
                           <Building2 className="w-5 h-5 text-indigo-400" />
                         </div>
                         <div>
                           <div className="font-medium">{company.name}</div>
-                          <div className="text-sm text-gray-400">{company.industry} • {company.employees} employees</div>
+                          <div className="text-sm text-[#6B7280]">{company.industry} • {company.employees} employees</div>
                         </div>
                       </button>
                     ))}
@@ -236,17 +236,17 @@ export default function ResearchIntelPage() {
 
           {/* Quick Actions */}
           <div className="flex items-center justify-center gap-4 mt-6">
-            <button onClick={() => showNotification('Browse by industry coming soon')} className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors">
+            <button onClick={() => showNotification('Browse by industry coming soon')} className="flex items-center gap-2 text-sm text-[#6B7280] hover:text-[#1B2A4A] transition-colors">
               <Globe className="w-4 h-4" />
               Browse by Industry
             </button>
-            <span className="text-gray-600">•</span>
-            <button onClick={() => showNotification('Trending companies loading...')} className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors">
+            <span className="text-[#4B5563]">•</span>
+            <button onClick={() => showNotification('Trending companies loading...')} className="flex items-center gap-2 text-sm text-[#6B7280] hover:text-[#1B2A4A] transition-colors">
               <TrendingUp className="w-4 h-4" />
               Trending Companies
             </button>
-            <span className="text-gray-600">•</span>
-            <button onClick={() => showNotification('Loading target accounts...')} className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors">
+            <span className="text-[#4B5563]">•</span>
+            <button onClick={() => showNotification('Loading target accounts...')} className="flex items-center gap-2 text-sm text-[#6B7280] hover:text-[#1B2A4A] transition-colors">
               <Target className="w-4 h-4" />
               My Target Accounts
             </button>
@@ -256,26 +256,26 @@ export default function ResearchIntelPage() {
         {/* Loading State */}
         {isSearching && (
           <div className="max-w-2xl mx-auto">
-            <div className="p-8 bg-white/[0.02] border border-white/10 rounded-xl">
+            <div className="p-8 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
               <div className="flex items-center gap-4 mb-6">
                 <div className="w-12 h-12 bg-indigo-500/20 rounded-xl flex items-center justify-center">
                   <Loader2 className="w-6 h-6 text-indigo-400 animate-spin" />
                 </div>
                 <div>
                   <h3 className="font-semibold">Gathering Intelligence...</h3>
-                  <p className="text-sm text-gray-400">Analyzing multiple data sources</p>
+                  <p className="text-sm text-[#6B7280]">Analyzing multiple data sources</p>
                 </div>
               </div>
               <div className="space-y-3">
                 {['Scanning company database...', 'Finding leadership profiles...', 'Analyzing news & updates...', 'Identifying pain points...'].map((step, i) => (
                   <div key={i} className="flex items-center gap-3 text-sm">
                     <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                    <span className="text-gray-300">{step}</span>
+                    <span className="text-[#4B5563]">{step}</span>
                   </div>
                 ))}
                 <div className="flex items-center gap-3 text-sm">
                   <Loader2 className="w-4 h-4 text-indigo-400 animate-spin" />
-                  <span className="text-gray-400">Generating sales insights...</span>
+                  <span className="text-[#6B7280]">Generating sales insights...</span>
                 </div>
               </div>
             </div>
@@ -286,15 +286,15 @@ export default function ResearchIntelPage() {
         {hasResults && !isSearching && (
           <div className="space-y-6">
             {/* Company Header */}
-            <div className="flex items-start justify-between p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+            <div className="flex items-start justify-between p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center text-2xl font-bold">
                   {researchResults.company.logo}
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold">{researchResults.company.name}</h2>
-                  <p className="text-gray-400">{researchResults.company.tagline}</p>
-                  <div className="flex items-center gap-4 mt-2 text-sm text-gray-400">
+                  <p className="text-[#6B7280]">{researchResults.company.tagline}</p>
+                  <div className="flex items-center gap-4 mt-2 text-sm text-[#6B7280]">
                     <span className="flex items-center gap-1"><Globe className="w-4 h-4" />{researchResults.company.website}</span>
                     <span className="flex items-center gap-1"><MapPin className="w-4 h-4" />{researchResults.company.hq}</span>
                     <span className="flex items-center gap-1"><Users className="w-4 h-4" />{researchResults.company.employees} employees</span>
@@ -302,15 +302,15 @@ export default function ResearchIntelPage() {
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <button onClick={handleSaveReport} className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-colors">
+                <button onClick={handleSaveReport} className="flex items-center gap-2 px-4 py-2 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg hover:bg-[#e0850a] transition-colors">
                   <Bookmark className={`w-4 h-4 ${savedReports.includes(researchResults.company.name) ? 'fill-current text-yellow-400' : ''}`} />
                   {savedReports.includes(researchResults.company.name) ? 'Saved' : 'Save'}
                 </button>
-                <button onClick={() => showNotification('Report exported as PDF')} className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-colors">
+                <button onClick={() => showNotification('Report exported as PDF')} className="flex items-center gap-2 px-4 py-2 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg hover:bg-[#e0850a] transition-colors">
                   <Download className="w-4 h-4" />
                   Export
                 </button>
-                <button onClick={() => showNotification('Share link copied to clipboard')} className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-colors">
+                <button onClick={() => showNotification('Share link copied to clipboard')} className="flex items-center gap-2 px-4 py-2 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg hover:bg-[#e0850a] transition-colors">
                   <Share2 className="w-4 h-4" />
                   Share
                 </button>
@@ -324,7 +324,7 @@ export default function ResearchIntelPage() {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors whitespace-nowrap ${
-                    activeTab === tab.id ? 'bg-indigo-600 text-white' : 'bg-white/5 text-gray-400 hover:bg-white/10'
+                    activeTab === tab.id ? 'bg-[#1B2A4A] text-white' : 'bg-[#F4F5F7] text-[#6B7280] hover:bg-[#e0850a]'
                   }`}
                 >
                   <tab.icon className="w-4 h-4" />
@@ -339,7 +339,7 @@ export default function ResearchIntelPage() {
               <div className="lg:col-span-2 space-y-6">
                 {activeTab === 'overview' && (
                   <>
-                    <div className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+                    <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                       <h3 className="font-semibold mb-4">Company Overview</h3>
                       <div className="grid sm:grid-cols-2 gap-4">
                         {[
@@ -350,10 +350,10 @@ export default function ResearchIntelPage() {
                           { label: 'Headquarters', value: researchResults.company.hq, icon: MapPin },
                           { label: 'Website', value: researchResults.company.website, icon: Globe },
                         ].map((item, i) => (
-                          <div key={i} className="flex items-center gap-3 p-3 bg-white/[0.02] rounded-lg">
+                          <div key={i} className="flex items-center gap-3 p-3 bg-white shadow-sm rounded-lg">
                             <item.icon className="w-5 h-5 text-indigo-400" />
                             <div>
-                              <div className="text-xs text-gray-500">{item.label}</div>
+                              <div className="text-xs text-[#9CA3AF]">{item.label}</div>
                               <div className="font-medium">{item.value}</div>
                             </div>
                           </div>
@@ -361,17 +361,17 @@ export default function ResearchIntelPage() {
                       </div>
                     </div>
 
-                    <div className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+                    <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                       <h3 className="font-semibold mb-4">Recent News</h3>
                       <div className="space-y-3">
                         {researchResults.news.slice(0, 3).map((item, i) => (
-                          <div key={i} className="flex items-start gap-3 p-3 bg-white/[0.02] rounded-lg hover:bg-white/[0.04] transition-colors cursor-pointer">
+                          <div key={i} className="flex items-start gap-3 p-3 bg-white shadow-sm rounded-lg hover:bg-white/[0.04] transition-colors cursor-pointer">
                             <div className={`w-2 h-2 mt-2 rounded-full ${item.sentiment === 'positive' ? 'bg-emerald-400' : 'bg-gray-400'}`} />
                             <div className="flex-1">
                               <div className="font-medium">{item.title}</div>
-                              <div className="text-sm text-gray-400">{item.source} • {item.date}</div>
+                              <div className="text-sm text-[#6B7280]">{item.source} • {item.date}</div>
                             </div>
-                            <ExternalLink className="w-4 h-4 text-gray-500" />
+                            <ExternalLink className="w-4 h-4 text-[#9CA3AF]" />
                           </div>
                         ))}
                       </div>
@@ -380,29 +380,29 @@ export default function ResearchIntelPage() {
                 )}
 
                 {activeTab === 'leadership' && (
-                  <div className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+                  <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                     <h3 className="font-semibold mb-4">Key Decision Makers</h3>
                     <div className="space-y-4">
                       {researchResults.leadership.map((person, i) => (
-                        <div key={i} className="flex items-center justify-between p-4 bg-white/[0.02] rounded-lg">
+                        <div key={i} className="flex items-center justify-between p-4 bg-white shadow-sm rounded-lg">
                           <div className="flex items-center gap-4">
                             <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center font-bold">
                               {person.name.split(' ').map(n => n[0]).join('')}
                             </div>
                             <div>
                               <div className="font-medium">{person.name}</div>
-                              <div className="text-sm text-gray-400">{person.title} • {person.tenure}</div>
+                              <div className="text-sm text-[#6B7280]">{person.title} • {person.tenure}</div>
                             </div>
                           </div>
                           <div className="flex items-center gap-2">
-                            <button onClick={() => showNotification(`Opening ${person.name}'s LinkedIn profile`)} className="p-2 bg-white/5 rounded-lg hover:bg-white/10 transition-colors" title="LinkedIn">
+                            <button onClick={() => showNotification(`Opening ${person.name}'s LinkedIn profile`)} className="p-2 bg-[#F4F5F7] rounded-lg hover:bg-[#e0850a] transition-colors" title="LinkedIn">
                               <Linkedin className="w-4 h-4 text-blue-400" />
                             </button>
-                            <button onClick={() => showNotification(`Composing email to ${person.email}`)} className="p-2 bg-white/5 rounded-lg hover:bg-white/10 transition-colors" title="Email">
-                              <Mail className="w-4 h-4 text-gray-400" />
+                            <button onClick={() => showNotification(`Composing email to ${person.email}`)} className="p-2 bg-[#F4F5F7] rounded-lg hover:bg-[#e0850a] transition-colors" title="Email">
+                              <Mail className="w-4 h-4 text-[#6B7280]" />
                             </button>
-                            <button onClick={() => showNotification(`Copied ${person.email} to clipboard`)} className="p-2 bg-white/5 rounded-lg hover:bg-white/10 transition-colors" title="Copy Email">
-                              <Copy className="w-4 h-4 text-gray-400" />
+                            <button onClick={() => showNotification(`Copied ${person.email} to clipboard`)} className="p-2 bg-[#F4F5F7] rounded-lg hover:bg-[#e0850a] transition-colors" title="Copy Email">
+                              <Copy className="w-4 h-4 text-[#6B7280]" />
                             </button>
                           </div>
                         </div>
@@ -412,30 +412,30 @@ export default function ResearchIntelPage() {
                 )}
 
                 {activeTab === 'financials' && (
-                  <div className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+                  <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                     <h3 className="font-semibold mb-4">Financial Overview</h3>
                     <div className="grid sm:grid-cols-3 gap-4 mb-6">
-                      <div className="p-4 bg-white/[0.02] rounded-lg text-center">
+                      <div className="p-4 bg-white shadow-sm rounded-lg text-center">
                         <div className="text-2xl font-bold text-emerald-400">{researchResults.financials.growth}</div>
-                        <div className="text-sm text-gray-400">Revenue Growth</div>
+                        <div className="text-sm text-[#6B7280]">Revenue Growth</div>
                       </div>
-                      <div className="p-4 bg-white/[0.02] rounded-lg text-center">
+                      <div className="p-4 bg-white shadow-sm rounded-lg text-center">
                         <div className="text-2xl font-bold">{researchResults.financials.funding}</div>
-                        <div className="text-sm text-gray-400">Funding Status</div>
+                        <div className="text-sm text-[#6B7280]">Funding Status</div>
                       </div>
-                      <div className="p-4 bg-white/[0.02] rounded-lg text-center">
+                      <div className="p-4 bg-white shadow-sm rounded-lg text-center">
                         <div className="text-2xl font-bold">{researchResults.financials.valuation}</div>
-                        <div className="text-sm text-gray-400">Est. Valuation</div>
+                        <div className="text-sm text-[#6B7280]">Est. Valuation</div>
                       </div>
                     </div>
-                    <div className="h-48 flex items-end justify-between gap-2 p-4 bg-white/[0.02] rounded-lg">
+                    <div className="h-48 flex items-end justify-between gap-2 p-4 bg-white shadow-sm rounded-lg">
                       {researchResults.financials.revenue.map((rev, i) => (
                         <div key={i} className="flex-1 flex flex-col items-center gap-2">
                           <div 
                             className="w-full bg-gradient-to-t from-indigo-600 to-indigo-400 rounded-t-lg transition-all"
                             style={{ height: `${(rev / 400) * 100}%` }}
                           />
-                          <div className="text-xs text-gray-400">{researchResults.financials.years[i]}</div>
+                          <div className="text-xs text-[#6B7280]">{researchResults.financials.years[i]}</div>
                         </div>
                       ))}
                     </div>
@@ -443,21 +443,21 @@ export default function ResearchIntelPage() {
                 )}
 
                 {activeTab === 'news' && (
-                  <div className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+                  <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                     <h3 className="font-semibold mb-4">News & Updates</h3>
                     <div className="space-y-3">
                       {researchResults.news.map((item, i) => (
-                        <div key={i} className="flex items-start gap-3 p-4 bg-white/[0.02] rounded-lg hover:bg-white/[0.04] transition-colors cursor-pointer">
+                        <div key={i} className="flex items-start gap-3 p-4 bg-white shadow-sm rounded-lg hover:bg-white/[0.04] transition-colors cursor-pointer">
                           <div className={`px-2 py-1 rounded text-xs font-medium ${
-                            item.sentiment === 'positive' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-gray-500/20 text-gray-400'
+                            item.sentiment === 'positive' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-gray-500/20 text-[#6B7280]'
                           }`}>
                             {item.sentiment}
                           </div>
                           <div className="flex-1">
                             <div className="font-medium mb-1">{item.title}</div>
-                            <div className="text-sm text-gray-400">{item.source} • {item.date}</div>
+                            <div className="text-sm text-[#6B7280]">{item.source} • {item.date}</div>
                           </div>
-                          <ExternalLink className="w-4 h-4 text-gray-500" />
+                          <ExternalLink className="w-4 h-4 text-[#9CA3AF]" />
                         </div>
                       ))}
                     </div>
@@ -465,19 +465,19 @@ export default function ResearchIntelPage() {
                 )}
 
                 {activeTab === 'competitors' && (
-                  <div className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+                  <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                     <h3 className="font-semibold mb-4">Competitive Landscape</h3>
                     <div className="space-y-4">
                       {researchResults.competitors.map((comp, i) => (
-                        <div key={i} className="p-4 bg-white/[0.02] rounded-lg">
+                        <div key={i} className="p-4 bg-white shadow-sm rounded-lg">
                           <div className="flex items-center justify-between mb-2">
                             <div className="font-medium">{comp.name}</div>
-                            <div className="text-sm text-gray-400">{comp.overlap}% overlap</div>
+                            <div className="text-sm text-[#6B7280]">{comp.overlap}% overlap</div>
                           </div>
-                          <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden mb-2">
+                          <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden mb-2">
                             <div className="h-full bg-indigo-500 rounded-full" style={{ width: `${comp.overlap}%` }} />
                           </div>
-                          <div className="text-sm text-gray-400">Strength: {comp.strength}</div>
+                          <div className="text-sm text-[#6B7280]">Strength: {comp.strength}</div>
                         </div>
                       ))}
                     </div>
@@ -486,25 +486,25 @@ export default function ResearchIntelPage() {
 
                 {activeTab === 'insights' && (
                   <>
-                    <div className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+                    <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                       <h3 className="font-semibold mb-4 flex items-center gap-2">
                         <AlertCircle className="w-5 h-5 text-amber-400" />
                         Identified Pain Points
                       </h3>
                       <div className="space-y-3">
                         {researchResults.painPoints.map((point, i) => (
-                          <div key={i} className="p-4 bg-white/[0.02] rounded-lg">
+                          <div key={i} className="p-4 bg-white shadow-sm rounded-lg">
                             <div className="flex items-center justify-between mb-2">
                               <div className="font-medium">{point.issue}</div>
                               <div className="text-sm text-emerald-400">{point.confidence}% confidence</div>
                             </div>
-                            <div className="text-sm text-gray-400">Source: {point.source}</div>
+                            <div className="text-sm text-[#6B7280]">Source: {point.source}</div>
                           </div>
                         ))}
                       </div>
                     </div>
 
-                    <div className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+                    <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                       <h3 className="font-semibold mb-4 flex items-center gap-2">
                         <Zap className="w-5 h-5 text-emerald-400" />
                         Opportunities
@@ -533,7 +533,7 @@ export default function ResearchIntelPage() {
                     {researchResults.talkingPoints.map((point, i) => (
                       <div key={i} className="flex items-start gap-2 text-sm">
                         <ChevronRight className="w-4 h-4 text-indigo-400 mt-0.5 flex-shrink-0" />
-                        <span className="text-gray-300">{point}</span>
+                        <span className="text-[#4B5563]">{point}</span>
                       </div>
                     ))}
                   </div>
@@ -543,22 +543,22 @@ export default function ResearchIntelPage() {
                   </button>
                 </div>
 
-                <div className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+                <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                   <h3 className="font-semibold mb-4">Quick Actions</h3>
                   <div className="space-y-2">
-                    <button onClick={() => showNotification('Email draft generated')} className="w-full flex items-center gap-3 p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-colors text-left">
+                    <button onClick={() => showNotification('Email draft generated')} className="w-full flex items-center gap-3 p-3 bg-[#F4F5F7] rounded-lg hover:bg-[#e0850a] transition-colors text-left">
                       <Mail className="w-5 h-5 text-blue-400" />
                       <span>Draft Outreach Email</span>
                     </button>
-                    <button onClick={() => showNotification('Call script ready')} className="w-full flex items-center gap-3 p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-colors text-left">
+                    <button onClick={() => showNotification('Call script ready')} className="w-full flex items-center gap-3 p-3 bg-[#F4F5F7] rounded-lg hover:bg-[#e0850a] transition-colors text-left">
                       <FileText className="w-5 h-5 text-purple-400" />
                       <span>Generate Call Script</span>
                     </button>
-                    <button onClick={() => showNotification('Added to CRM')} className="w-full flex items-center gap-3 p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-colors text-left">
+                    <button onClick={() => showNotification('Added to CRM')} className="w-full flex items-center gap-3 p-3 bg-[#F4F5F7] rounded-lg hover:bg-[#e0850a] transition-colors text-left">
                       <Target className="w-5 h-5 text-emerald-400" />
                       <span>Add to CRM</span>
                     </button>
-                    <button onClick={() => showNotification('Follow-up scheduled')} className="w-full flex items-center gap-3 p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-colors text-left">
+                    <button onClick={() => showNotification('Follow-up scheduled')} className="w-full flex items-center gap-3 p-3 bg-[#F4F5F7] rounded-lg hover:bg-[#e0850a] transition-colors text-left">
                       <Calendar className="w-5 h-5 text-amber-400" />
                       <span>Schedule Follow-up</span>
                     </button>
@@ -578,10 +578,10 @@ export default function ResearchIntelPage() {
                 { icon: Lightbulb, title: 'Sales Intelligence', desc: 'AI-generated talking points, pain points, and opportunities for your sales calls' },
                 { icon: Target, title: 'Competitive Analysis', desc: 'Understand market positioning and identify key differentiators' },
               ].map((feature, i) => (
-                <div key={i} className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+                <div key={i} className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                   <feature.icon className="w-10 h-10 text-indigo-400 mb-4" />
                   <h3 className="font-semibold mb-2">{feature.title}</h3>
-                  <p className="text-sm text-gray-400">{feature.desc}</p>
+                  <p className="text-sm text-[#6B7280]">{feature.desc}</p>
                 </div>
               ))}
             </div>

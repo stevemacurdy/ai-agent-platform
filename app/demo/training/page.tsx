@@ -150,7 +150,7 @@ export default function TrainingPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] text-white">
+    <div className="min-h-screen bg-[#F4F5F7] text-[#1B2A4A]">
       {/* Notification Toast */}
       {notification && (
         <div className="fixed top-4 right-4 z-50 bg-emerald-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 animate-pulse">
@@ -160,11 +160,11 @@ export default function TrainingPage() {
       )}
       
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-[#0a0a0f]/90 backdrop-blur-xl border-b border-white/10">
+      <header className="sticky top-0 z-50 bg-[rgba(27,42,74,0.97)] backdrop-blur-xl text-white border-b border-[#E5E7EB]">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Link href="/demo" className="p-2 hover:bg-white/5 rounded-lg transition-colors">
+              <Link href="/demo" className="p-2 hover:bg-[#F4F5F7] rounded-lg transition-colors">
                 <ArrowLeft className="w-5 h-5" />
               </Link>
               <div className="flex items-center gap-3">
@@ -173,15 +173,15 @@ export default function TrainingPage() {
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h1 className="font-bold text-lg">Training Agent</h1>
+                    <h1 className="font-bold text-lg">Training Employee</h1>
                     <img src="/images/woulf-logo.png" alt="Woulf" className="w-5 h-5 rounded" title="Powered by Woulf" />
                   </div>
-                  <p className="text-xs text-gray-400">Staff Certification & Onboarding</p>
+                  <p className="text-xs text-[#6B7280]">Staff Certification & Onboarding</p>
                 </div>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <button onClick={() => showNotification('3 new training updates')} className="p-2 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-colors relative">
+              <button onClick={() => showNotification('3 new training updates')} className="p-2 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg hover:bg-[#e0850a] transition-colors relative">
                 <Bell className="w-5 h-5" />
                 <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-xs flex items-center justify-center">3</span>
               </button>
@@ -205,7 +205,7 @@ export default function TrainingPage() {
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors whitespace-nowrap ${
-                activeTab === tab.id ? 'bg-orange-600 text-white' : 'bg-white/5 text-gray-400 hover:bg-white/10'
+                activeTab === tab.id ? 'bg-[#1B2A4A] text-white' : 'bg-[#F4F5F7] text-[#6B7280] hover:bg-[#e0850a]'
               }`}
             >
               <tab.icon className="w-4 h-4" />
@@ -220,7 +220,7 @@ export default function TrainingPage() {
             {/* Stats Grid */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {stats.map((stat, i) => (
-                <div key={i} className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+                <div key={i} className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                   <div className="flex items-center justify-between mb-4">
                     <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
                       stat.color === 'blue' ? 'bg-blue-500/20' :
@@ -235,7 +235,7 @@ export default function TrainingPage() {
                     </div>
                   </div>
                   <div className="text-3xl font-bold mb-1">{stat.value}</div>
-                  <div className="text-sm text-gray-400">{stat.label}</div>
+                  <div className="text-sm text-[#6B7280]">{stat.label}</div>
                   <div className="text-xs text-emerald-400 mt-2">{stat.change}</div>
                 </div>
               ))}
@@ -243,21 +243,21 @@ export default function TrainingPage() {
 
             <div className="grid lg:grid-cols-3 gap-6">
               {/* Recent Activity */}
-              <div className="lg:col-span-2 p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+              <div className="lg:col-span-2 p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                 <h3 className="font-semibold mb-4">Recent Activity</h3>
                 <div className="space-y-4">
                   {recentActivity.map((activity, i) => (
-                    <div key={i} className="flex items-center gap-4 p-3 bg-white/[0.02] rounded-lg">
+                    <div key={i} className="flex items-center gap-4 p-3 bg-white shadow-sm rounded-lg">
                       <div className="w-10 h-10 bg-orange-500/20 rounded-full flex items-center justify-center text-sm font-medium">
                         {activity.user.split(' ').map(n => n[0]).join('')}
                       </div>
                       <div className="flex-1">
                         <div>
                           <span className="font-medium">{activity.user}</span>
-                          <span className="text-gray-400"> {activity.action} </span>
+                          <span className="text-[#6B7280]"> {activity.action} </span>
                           <span className="text-orange-400">{activity.item}</span>
                         </div>
-                        <div className="text-sm text-gray-500">{activity.time}</div>
+                        <div className="text-sm text-[#9CA3AF]">{activity.time}</div>
                       </div>
                     </div>
                   ))}
@@ -265,7 +265,7 @@ export default function TrainingPage() {
               </div>
 
               {/* Expiring Certifications */}
-              <div className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+              <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                 <h3 className="font-semibold mb-4 flex items-center gap-2">
                   <AlertCircle className="w-5 h-5 text-amber-400" />
                   Expiring Soon
@@ -278,10 +278,10 @@ export default function TrainingPage() {
                         <span className="font-medium">{cert.name}</span>
                       </div>
                       <div className="text-sm text-amber-400">Expires: {cert.expires}</div>
-                      <div className="text-sm text-gray-400">{cert.holders} employees affected</div>
+                      <div className="text-sm text-[#6B7280]">{cert.holders} employees affected</div>
                     </div>
                   ))}
-                  <button onClick={() => setActiveTab('certifications')} className="w-full py-2 text-sm text-orange-400 hover:text-orange-300 transition-colors">
+                  <button onClick={() => setActiveTab('certifications')} className="w-full py-2 text-sm text-[#2A9D8F] hover:text-[#238577] transition-colors">
                     View All Certifications →
                   </button>
                 </div>
@@ -289,23 +289,23 @@ export default function TrainingPage() {
             </div>
 
             {/* Popular Courses */}
-            <div className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+            <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold">Popular Courses</h3>
-                <button onClick={() => setActiveTab('courses')} className="text-sm text-orange-400 hover:text-orange-300">View All</button>
+                <button onClick={() => setActiveTab('courses')} className="text-sm text-[#2A9D8F] hover:text-[#238577]">View All</button>
               </div>
               <div className="grid md:grid-cols-3 gap-4">
                 {coursesData.slice(0, 3).map((course) => (
                   <div 
                     key={course.id} 
                     onClick={() => setSelectedCourse(course)}
-                    className="p-4 bg-white/[0.02] border border-white/10 rounded-lg hover:border-orange-500/50 transition-all cursor-pointer"
+                    className="p-4 bg-white shadow-sm border border-[#E5E7EB] rounded-lg hover:border-[#2A9D8F]/40 transition-all cursor-pointer"
                   >
                     <div className="text-3xl mb-3">{course.thumbnail}</div>
                     <h4 className="font-medium mb-1">{course.title}</h4>
-                    <div className="text-sm text-gray-400 mb-3">{course.duration} • {course.modules} modules</div>
+                    <div className="text-sm text-[#6B7280] mb-3">{course.duration} • {course.modules} modules</div>
                     <div className="flex items-center justify-between">
-                      <div className="text-sm text-gray-400">{course.enrolled} enrolled</div>
+                      <div className="text-sm text-[#6B7280]">{course.enrolled} enrolled</div>
                       <div className="text-sm text-emerald-400">{Math.round(course.completed / course.enrolled * 100)}% complete</div>
                     </div>
                   </div>
@@ -320,16 +320,16 @@ export default function TrainingPage() {
           <div className="space-y-6">
             <div className="flex items-center gap-4">
               <div className="relative flex-1">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#6B7280]" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search courses..."
-                  className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:border-orange-500 focus:outline-none"
+                  className="w-full pl-12 pr-4 py-3 bg-[#F4F5F7] border border-[#E5E7EB] rounded-xl focus:border-[#2A9D8F] focus:outline-none"
                 />
               </div>
-              <button onClick={() => showNotification('Course filters opened')} className="flex items-center gap-2 px-4 py-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10">
+              <button onClick={() => showNotification('Course filters opened')} className="flex items-center gap-2 px-4 py-3 bg-[#F4F5F7] border border-[#E5E7EB] rounded-xl hover:bg-[#e0850a]">
                 <Filter className="w-5 h-5" />
                 Filter
               </button>
@@ -340,7 +340,7 @@ export default function TrainingPage() {
                 <div 
                   key={course.id}
                   onClick={() => setSelectedCourse(course)}
-                  className="p-6 bg-white/[0.02] border border-white/10 rounded-xl hover:border-orange-500/50 transition-all cursor-pointer group"
+                  className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl hover:border-[#2A9D8F]/40 transition-all cursor-pointer group"
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div className="text-4xl">{course.thumbnail}</div>
@@ -349,14 +349,14 @@ export default function TrainingPage() {
                     )}
                   </div>
                   <h3 className="font-semibold mb-2 group-hover:text-orange-400 transition-colors">{course.title}</h3>
-                  <div className="text-sm text-gray-400 mb-4">{course.category} • {course.duration}</div>
+                  <div className="text-sm text-[#6B7280] mb-4">{course.category} • {course.duration}</div>
                   
                   <div className="mb-4">
                     <div className="flex items-center justify-between text-sm mb-1">
-                      <span className="text-gray-400">Completion</span>
+                      <span className="text-[#6B7280]">Completion</span>
                       <span className="text-emerald-400">{Math.round(course.completed / course.enrolled * 100)}%</span>
                     </div>
-                    <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                    <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
                       <div 
                         className="h-full bg-emerald-500 rounded-full"
                         style={{ width: `${(course.completed / course.enrolled) * 100}%` }}
@@ -364,13 +364,13 @@ export default function TrainingPage() {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between text-sm text-gray-400">
+                  <div className="flex items-center justify-between text-sm text-[#6B7280]">
                     <span>{course.enrolled} enrolled</span>
                     <span>{course.modules} modules</span>
                   </div>
                   
                   {course.dueDate && (
-                    <div className="mt-3 pt-3 border-t border-white/10 text-sm text-amber-400">
+                    <div className="mt-3 pt-3 border-t border-[#E5E7EB] text-sm text-amber-400">
                       Due: {course.dueDate}
                     </div>
                   )}
@@ -385,7 +385,7 @@ export default function TrainingPage() {
           <div className="space-y-6">
             <button 
               onClick={() => setSelectedCourse(null)}
-              className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+              className="flex items-center gap-2 text-[#6B7280] hover:text-[#1B2A4A] transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to Courses
@@ -398,7 +398,7 @@ export default function TrainingPage() {
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-6xl">{selectedCourse.thumbnail}</div>
                   </div>
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+                  <div className="absolute inset-0 flex items-center justify-center bg-[#1B2A4A]/30">
                     <button 
                       onClick={() => setIsPlaying(!isPlaying)}
                       className="w-20 h-20 bg-orange-600 hover:bg-orange-700 rounded-full flex items-center justify-center transition-colors"
@@ -408,16 +408,16 @@ export default function TrainingPage() {
                   </div>
                   {/* Progress Bar */}
                   <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black">
-                    <div className="w-full h-1 bg-white/20 rounded-full overflow-hidden">
+                    <div className="w-full h-1 bg-gray-200 rounded-full overflow-hidden">
                       <div className="h-full w-1/3 bg-orange-500 rounded-full" />
                     </div>
                     <div className="flex items-center justify-between mt-2 text-sm">
                       <span>5:23 / 15:00</span>
                       <div className="flex items-center gap-2">
-                        <button onClick={() => showNotification('Restarting from beginning')} className="p-1 hover:bg-white/10 rounded">
+                        <button onClick={() => showNotification('Restarting from beginning')} className="p-1 hover:bg-[#e0850a] rounded">
                           <RotateCcw className="w-4 h-4" />
                         </button>
-                        <button onClick={() => showNotification('Video settings opened')} className="p-1 hover:bg-white/10 rounded">
+                        <button onClick={() => showNotification('Video settings opened')} className="p-1 hover:bg-[#e0850a] rounded">
                           <Settings className="w-4 h-4" />
                         </button>
                       </div>
@@ -425,16 +425,16 @@ export default function TrainingPage() {
                   </div>
                 </div>
 
-                <div className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+                <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                   <h2 className="text-2xl font-bold mb-2">{selectedCourse.title}</h2>
-                  <div className="flex items-center gap-4 text-sm text-gray-400 mb-4">
+                  <div className="flex items-center gap-4 text-sm text-[#6B7280] mb-4">
                     <span>{selectedCourse.category}</span>
                     <span>•</span>
                     <span>{selectedCourse.duration}</span>
                     <span>•</span>
                     <span>{selectedCourse.modules} modules</span>
                   </div>
-                  <p className="text-gray-300 mb-6">
+                  <p className="text-[#4B5563] mb-6">
                     This comprehensive course covers all essential aspects of {selectedCourse.title.toLowerCase()}. 
                     Learn from industry experts and gain practical skills you can apply immediately.
                   </p>
@@ -443,11 +443,11 @@ export default function TrainingPage() {
                       <Play className="w-4 h-4" />
                       Continue Learning
                     </button>
-                    <button onClick={() => showNotification('Downloading course materials...')} className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-colors">
+                    <button onClick={() => showNotification('Downloading course materials...')} className="flex items-center gap-2 px-4 py-2 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg hover:bg-[#e0850a] transition-colors">
                       <Download className="w-4 h-4" />
                       Download Materials
                     </button>
-                    <button onClick={() => showNotification('Share link copied to clipboard')} className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-colors">
+                    <button onClick={() => showNotification('Share link copied to clipboard')} className="flex items-center gap-2 px-4 py-2 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg hover:bg-[#e0850a] transition-colors">
                       <Share2 className="w-4 h-4" />
                       Share
                     </button>
@@ -456,7 +456,7 @@ export default function TrainingPage() {
               </div>
 
               {/* Module List */}
-              <div className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+              <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                 <h3 className="font-semibold mb-4">Course Modules</h3>
                 <div className="space-y-2">
                   {moduleContent.map((module, i) => (
@@ -464,8 +464,8 @@ export default function TrainingPage() {
                       key={module.id}
                       className={`flex items-center gap-3 p-3 rounded-lg transition-colors ${
                         module.current ? 'bg-orange-500/20 border border-orange-500/30' :
-                        module.completed ? 'bg-white/[0.02]' : 
-                        module.locked ? 'opacity-50' : 'bg-white/[0.02] hover:bg-white/[0.04] cursor-pointer'
+                        module.completed ? 'bg-white shadow-sm' : 
+                        module.locked ? 'opacity-50' : 'bg-white shadow-sm hover:bg-white/[0.04] cursor-pointer'
                       }`}
                     >
                       <div className="flex-shrink-0">
@@ -474,16 +474,16 @@ export default function TrainingPage() {
                         ) : module.current ? (
                           <PlayCircle className="w-5 h-5 text-orange-400" />
                         ) : module.locked ? (
-                          <Lock className="w-5 h-5 text-gray-500" />
+                          <Lock className="w-5 h-5 text-[#9CA3AF]" />
                         ) : (
-                          <Circle className="w-5 h-5 text-gray-500" />
+                          <Circle className="w-5 h-5 text-[#9CA3AF]" />
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className={`font-medium truncate ${module.locked ? 'text-gray-500' : ''}`}>
+                        <div className={`font-medium truncate ${module.locked ? 'text-[#9CA3AF]' : ''}`}>
                           {module.title}
                         </div>
-                        <div className="text-sm text-gray-500 flex items-center gap-2">
+                        <div className="text-sm text-[#9CA3AF] flex items-center gap-2">
                           {module.type === 'video' ? <Video className="w-3 h-3" /> : <FileText className="w-3 h-3" />}
                           {module.duration}
                         </div>
@@ -501,14 +501,14 @@ export default function TrainingPage() {
           <div className="space-y-6">
             <div className="flex items-center gap-4">
               <div className="relative flex-1">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#6B7280]" />
                 <input
                   type="text"
                   placeholder="Search employees..."
-                  className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:border-orange-500 focus:outline-none"
+                  className="w-full pl-12 pr-4 py-3 bg-[#F4F5F7] border border-[#E5E7EB] rounded-xl focus:border-[#2A9D8F] focus:outline-none"
                 />
               </div>
-              <button onClick={() => showNotification('Employee filters opened')} className="flex items-center gap-2 px-4 py-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10">
+              <button onClick={() => showNotification('Employee filters opened')} className="flex items-center gap-2 px-4 py-3 bg-[#F4F5F7] border border-[#E5E7EB] rounded-xl hover:bg-[#e0850a]">
                 <Filter className="w-5 h-5" />
                 Filter
               </button>
@@ -518,21 +518,21 @@ export default function TrainingPage() {
               </button>
             </div>
 
-            <div className="bg-white/[0.02] border border-white/10 rounded-xl overflow-hidden">
+            <div className="bg-white shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-white/10">
-                    <th className="text-left p-4 font-medium text-gray-400">Employee</th>
-                    <th className="text-left p-4 font-medium text-gray-400">Role</th>
-                    <th className="text-left p-4 font-medium text-gray-400">Progress</th>
-                    <th className="text-left p-4 font-medium text-gray-400">Certifications</th>
-                    <th className="text-left p-4 font-medium text-gray-400">Last Active</th>
+                  <tr className="border-b border-[#E5E7EB]">
+                    <th className="text-left p-4 font-medium text-[#6B7280]">Employee</th>
+                    <th className="text-left p-4 font-medium text-[#6B7280]">Role</th>
+                    <th className="text-left p-4 font-medium text-[#6B7280]">Progress</th>
+                    <th className="text-left p-4 font-medium text-[#6B7280]">Certifications</th>
+                    <th className="text-left p-4 font-medium text-[#6B7280]">Last Active</th>
                     <th className="p-4"></th>
                   </tr>
                 </thead>
                 <tbody>
                   {employeesData.map((employee) => (
-                    <tr key={employee.id} className="border-b border-white/5 hover:bg-white/[0.02]">
+                    <tr key={employee.id} className="border-b border-[#E5E7EB] hover:bg-white shadow-sm">
                       <td className="p-4">
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-10 bg-orange-500/20 rounded-full flex items-center justify-center font-medium">
@@ -540,17 +540,17 @@ export default function TrainingPage() {
                           </div>
                           <div>
                             <div className="font-medium">{employee.name}</div>
-                            <div className="text-sm text-gray-400">{employee.department}</div>
+                            <div className="text-sm text-[#6B7280]">{employee.department}</div>
                           </div>
                         </div>
                       </td>
-                      <td className="p-4 text-gray-300">{employee.role}</td>
+                      <td className="p-4 text-[#4B5563]">{employee.role}</td>
                       <td className="p-4">
                         <div className="flex items-center gap-2">
                           <span className="text-emerald-400">{employee.coursesCompleted}</span>
-                          <span className="text-gray-500">/</span>
-                          <span className="text-gray-400">{employee.coursesCompleted + employee.coursesInProgress}</span>
-                          <span className="text-sm text-gray-500">courses</span>
+                          <span className="text-[#9CA3AF]">/</span>
+                          <span className="text-[#6B7280]">{employee.coursesCompleted + employee.coursesInProgress}</span>
+                          <span className="text-sm text-[#9CA3AF]">courses</span>
                         </div>
                       </td>
                       <td className="p-4">
@@ -559,9 +559,9 @@ export default function TrainingPage() {
                           <span>{employee.certifications}</span>
                         </div>
                       </td>
-                      <td className="p-4 text-gray-400">{employee.lastActive}</td>
+                      <td className="p-4 text-[#6B7280]">{employee.lastActive}</td>
                       <td className="p-4">
-                        <button onClick={() => showNotification(`Employee options for ${employee.name}`)} className="p-2 hover:bg-white/10 rounded-lg transition-colors">
+                        <button onClick={() => showNotification(`Employee options for ${employee.name}`)} className="p-2 hover:bg-[#e0850a] rounded-lg transition-colors">
                           <MoreHorizontal className="w-5 h-5" />
                         </button>
                       </td>
@@ -578,7 +578,7 @@ export default function TrainingPage() {
           <div className="space-y-6">
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {certificationsData.map((cert) => (
-                <div key={cert.id} className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+                <div key={cert.id} className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                   <div className="flex items-start justify-between mb-4">
                     <div className="text-4xl">{cert.icon}</div>
                     <span className={`px-2 py-1 text-xs rounded-full ${
@@ -589,14 +589,14 @@ export default function TrainingPage() {
                     </span>
                   </div>
                   <h3 className="font-semibold mb-2">{cert.name}</h3>
-                  <div className="text-sm text-gray-400 mb-4">{cert.holders} employees certified</div>
+                  <div className="text-sm text-[#6B7280] mb-4">{cert.holders} employees certified</div>
                   {cert.expires && (
-                    <div className="text-sm text-gray-500">
+                    <div className="text-sm text-[#9CA3AF]">
                       Expires: {cert.expires}
                     </div>
                   )}
                   <div className="flex items-center gap-2 mt-4">
-                    <button onClick={() => showNotification(`Viewing ${cert.holders} certified employees`)} className="flex-1 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-sm transition-colors">
+                    <button onClick={() => showNotification(`Viewing ${cert.holders} certified employees`)} className="flex-1 py-2 bg-[#F4F5F7] hover:bg-[#e0850a] rounded-lg text-sm transition-colors">
                       View Holders
                     </button>
                     <button onClick={() => showNotification('Certification form opened')} className="flex-1 py-2 bg-orange-600 hover:bg-orange-700 rounded-lg text-sm transition-colors">
@@ -621,11 +621,11 @@ export default function TrainingPage() {
                 { title: 'Time Spent Learning', desc: 'Hours by department/employee', icon: Clock },
                 { title: 'Assessment Results', desc: 'Quiz and test scores', icon: Target },
               ].map((report, i) => (
-                <div key={i} className="p-6 bg-white/[0.02] border border-white/10 rounded-xl hover:border-orange-500/50 transition-all cursor-pointer group">
+                <div key={i} className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl hover:border-[#2A9D8F]/40 transition-all cursor-pointer group">
                   <report.icon className="w-10 h-10 text-orange-400 mb-4" />
                   <h3 className="font-semibold mb-2 group-hover:text-orange-400 transition-colors">{report.title}</h3>
-                  <p className="text-sm text-gray-400 mb-4">{report.desc}</p>
-                  <button onClick={() => showNotification(`Generating ${report.title}...`)} className="flex items-center gap-2 text-sm text-orange-400 hover:text-orange-300 transition-colors">
+                  <p className="text-sm text-[#6B7280] mb-4">{report.desc}</p>
+                  <button onClick={() => showNotification(`Generating ${report.title}...`)} className="flex items-center gap-2 text-sm text-[#2A9D8F] hover:text-[#238577] transition-colors">
                     Generate Report <ChevronRight className="w-4 h-4" />
                   </button>
                 </div>
@@ -637,9 +637,9 @@ export default function TrainingPage() {
         {/* Settings Tab */}
         {activeTab === 'settings' && (
           <div className="space-y-6">
-            <h2 className="text-xl font-bold">Training Agent Settings</h2>
+            <h2 className="text-xl font-bold">Training Employee Settings</h2>
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+              <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                 <h3 className="font-bold mb-4">LMS Integrations</h3>
                 <div className="space-y-3">
                   {[
@@ -648,21 +648,21 @@ export default function TrainingPage() {
                     { name: 'Workday Learning', connected: false },
                     { name: 'Google Classroom', connected: true },
                   ].map((integration, i) => (
-                    <div key={i} className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+                    <div key={i} className="flex items-center justify-between p-3 bg-[#F4F5F7] rounded-lg">
                       <span>{integration.name}</span>
-                      <button onClick={() => showNotification(integration.connected ? `Disconnected ${integration.name}` : `Connected ${integration.name}`)} className={`px-3 py-1 rounded-lg text-sm font-medium ${integration.connected ? 'bg-emerald-500/10 text-emerald-400' : 'bg-white/10 text-gray-400 hover:bg-white/20'}`}>
+                      <button onClick={() => showNotification(integration.connected ? `Disconnected ${integration.name}` : `Connected ${integration.name}`)} className={`px-3 py-1 rounded-lg text-sm font-medium ${integration.connected ? 'bg-emerald-500/10 text-emerald-400' : 'bg-gray-100 text-[#6B7280] hover:bg-gray-200'}`}>
                         {integration.connected ? 'Connected' : 'Connect'}
                       </button>
                     </div>
                   ))}
                 </div>
               </div>
-              <div className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+              <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                 <h3 className="font-bold mb-4">Notification Settings</h3>
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium mb-2">Certification Reminder</label>
-                    <select className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg">
+                    <select className="w-full px-4 py-2 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg">
                       <option>30 days before expiry</option>
                       <option>60 days before expiry</option>
                       <option>90 days before expiry</option>
@@ -670,7 +670,7 @@ export default function TrainingPage() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium mb-2">Course Deadline Reminder</label>
-                    <select className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg">
+                    <select className="w-full px-4 py-2 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg">
                       <option>1 week before</option>
                       <option>3 days before</option>
                       <option>1 day before</option>
@@ -686,12 +686,12 @@ export default function TrainingPage() {
                 </div>
               </div>
             </div>
-            <div className="p-6 bg-white/[0.02] border border-white/10 rounded-xl">
+            <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
               <h3 className="font-bold mb-4">AI Course Generation</h3>
               <div className="grid md:grid-cols-3 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-2">Default Course Length</label>
-                  <select className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg">
+                  <select className="w-full px-4 py-2 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg">
                     <option>30 minutes</option>
                     <option>1 hour</option>
                     <option>2 hours</option>
@@ -699,7 +699,7 @@ export default function TrainingPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-2">Content Style</label>
-                  <select className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg">
+                  <select className="w-full px-4 py-2 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg">
                     <option>Interactive</option>
                     <option>Video-based</option>
                     <option>Reading-based</option>
@@ -707,7 +707,7 @@ export default function TrainingPage() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-2">Quiz Difficulty</label>
-                  <select className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg">
+                  <select className="w-full px-4 py-2 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg">
                     <option>Easy</option>
                     <option>Medium</option>
                     <option>Hard</option>
@@ -721,17 +721,17 @@ export default function TrainingPage() {
 
       {/* New Course Modal */}
       {showNewCourseModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <div className="w-full max-w-lg p-6 bg-[#1a1a24] border border-white/10 rounded-xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1B2A4A]/30 backdrop-blur-sm">
+          <div className="w-full max-w-lg p-6 bg-white border border-[#E5E7EB] rounded-xl">
             <h2 className="text-xl font-bold mb-6">Create New Course</h2>
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium mb-2">Course Title</label>
-                <input type="text" className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-orange-500 focus:outline-none" placeholder="Enter course title" />
+                <input type="text" className="w-full px-4 py-3 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg focus:border-[#2A9D8F] focus:outline-none" placeholder="Enter course title" />
               </div>
               <div>
                 <label className="block text-sm font-medium mb-2">Category</label>
-                <select className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-orange-500 focus:outline-none">
+                <select className="w-full px-4 py-3 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg focus:border-[#2A9D8F] focus:outline-none">
                   <option>Safety</option>
                   <option>Equipment</option>
                   <option>Technology</option>
@@ -741,7 +741,7 @@ export default function TrainingPage() {
               </div>
               <div>
                 <label className="block text-sm font-medium mb-2">Description</label>
-                <textarea className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-orange-500 focus:outline-none h-24" placeholder="Course description..." />
+                <textarea className="w-full px-4 py-3 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg focus:border-[#2A9D8F] focus:outline-none h-24" placeholder="Course description..." />
               </div>
               <div className="flex items-center gap-2">
                 <input type="checkbox" id="required" className="rounded" />
@@ -749,7 +749,7 @@ export default function TrainingPage() {
               </div>
             </div>
             <div className="flex items-center gap-3 mt-6">
-              <button onClick={() => setShowNewCourseModal(false)} className="flex-1 py-3 bg-white/5 hover:bg-white/10 rounded-lg transition-colors">
+              <button onClick={() => setShowNewCourseModal(false)} className="flex-1 py-3 bg-[#F4F5F7] hover:bg-[#e0850a] rounded-lg transition-colors">
                 Cancel
               </button>
               <button onClick={() => { showNotification('Course created successfully'); setShowNewCourseModal(false); }} className="flex-1 py-3 bg-orange-600 hover:bg-orange-700 rounded-lg font-medium transition-colors">
