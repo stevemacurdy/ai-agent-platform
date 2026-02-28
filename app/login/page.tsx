@@ -1,138 +1,152 @@
-'use client'
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { login as authLogin } from '@/lib/auth'
+'use client';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import Image from 'next/image';
+import { login as authLogin } from '@/lib/auth';
 
 export default function LoginPage() {
-  const router = useRouter()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [showPassword, setShowPassword] = useState(false)
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
+  const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
-    setLoading(true)
+    e.preventDefault();
+    setError('');
+    setLoading(true);
 
     try {
-      const result = await authLogin(email, password)
+      const result = await authLogin(email, password);
       if (!result.success) {
-        setError(result.error || 'Invalid email or password')
-        setLoading(false)
-        return
+        setError(result.error || 'Invalid email or password');
+        setLoading(false);
+        return;
       }
       if (result.must_reset_password) {
-        router.push('/reset-password')
-        return
+        router.push('/reset-password');
+        return;
       }
-      router.push('/portal')
+      router.push('/portal');
     } catch (err: any) {
-      setError('Connection error. Please try again.')
+      setError('Connection error. Please try again.');
     }
-    setLoading(false)
-  }
+    setLoading(false);
+  };
 
-  const inputCls = "w-full px-4 py-3.5 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder-gray-600 focus:border-blue-500/30 focus:outline-none focus:ring-1 focus:ring-blue-500/20 transition-all"
+  const inputStyle = { background: '#FFFFFF', border: '1.5px solid #E5E7EB', color: '#1A1A2E' };
+  const focusHandlers = {
+    onFocus: (e: React.FocusEvent<HTMLInputElement>) => { e.target.style.borderColor = '#2A9D8F'; e.target.style.boxShadow = '0 0 0 3px rgba(42,157,143,0.1)'; },
+    onBlur: (e: React.FocusEvent<HTMLInputElement>) => { e.target.style.borderColor = '#E5E7EB'; e.target.style.boxShadow = 'none'; },
+  };
 
   return (
-    <div className="min-h-screen bg-[#060910] flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center p-4" style={{ background: '#F4F5F7', fontFamily: "'DM Sans', -apple-system, sans-serif" }}>
+      <style>{`h1, h2, h3, h4 { font-family: 'Outfit', 'DM Sans', sans-serif; }`}</style>
+
+      <div className="w-full max-w-[420px]">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-2xl border border-white/10 mb-4">
-            <span className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 text-transparent bg-clip-text">W</span>
-          </div>
-          <h1 className="text-2xl font-bold text-white">Welcome to WoulfAI</h1>
-          <p className="text-sm text-gray-500 mt-2">Sign in to access your AI agents</p>
+          <Link href="/" className="inline-flex items-center gap-3 group">
+            <Image src="/woulf-badge.png" alt="Woulf Group" width={48} height={48}
+              className="drop-shadow-lg group-hover:scale-105 transition-transform" />
+            <div className="flex flex-col text-left">
+              <span className="text-2xl font-extrabold tracking-tight" style={{ color: '#1B2A4A', fontFamily: "'Outfit', sans-serif" }}>
+                Woulf<span style={{ color: '#F5920B' }}>AI</span>
+              </span>
+              <span className="text-[9px] uppercase tracking-[2.5px] -mt-0.5" style={{ color: '#9CA3AF' }}>by Woulf Group</span>
+            </div>
+          </Link>
+          <p className="mt-5 text-[15px] text-gray-500">Sign in to manage your AI employees</p>
         </div>
 
-        <div className="bg-[#0A0E15] border border-white/5 rounded-2xl p-8">
+        <div className="bg-white rounded-2xl p-8 border border-gray-200/60" style={{ boxShadow: '0 4px 12px rgba(27,42,74,0.06)' }}>
           <form onSubmit={handleLogin} className="space-y-5">
             <div>
-              <label className="text-[10px] text-gray-500 uppercase tracking-wider block mb-2">Email</label>
+              <label className="block text-[13px] font-semibold mb-1.5" style={{ color: '#1B2A4A' }}>Email</label>
               <input type="email" value={email} onChange={e => setEmail(e.target.value)}
-                placeholder="you@company.com" className={inputCls} autoFocus required />
+                placeholder="you@company.com"
+                className="w-full px-4 py-3 rounded-xl text-[15px] outline-none transition-all"
+                style={inputStyle} {...focusHandlers} autoFocus required />
             </div>
             <div>
-              <label className="text-[10px] text-gray-500 uppercase tracking-wider block mb-2">Password</label>
+              <label className="block text-[13px] font-semibold mb-1.5" style={{ color: '#1B2A4A' }}>Password</label>
               <div className="relative">
                 <input
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   placeholder="Enter your password"
-                  className={inputCls + ' pr-12'}
+                  className="w-full px-4 py-3 pr-12 rounded-xl text-[15px] outline-none transition-all"
+                  style={inputStyle}
+                  {...focusHandlers}
                   required
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(p => !p)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors p-1"
-                  tabIndex={-1}
-                >
-                  {showPassword ? (
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
-                      <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
-                      <line x1="1" y1="1" x2="23" y2="23" />
-                    </svg>
-                  ) : (
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                      <circle cx="12" cy="12" r="3" />
-                    </svg>
-                  )}
+                <button type="button" onClick={() => setShowPassword(p => !p)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg hover:bg-gray-100 transition-colors" tabIndex={-1}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="2">
+                    {showPassword
+                      ? <><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" /><line x1="1" y1="1" x2="23" y2="23" /></>
+                      : <><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></>}
+                  </svg>
                 </button>
               </div>
             </div>
 
             {error && (
-              <div className="bg-rose-500/10 border border-rose-500/20 text-rose-400 text-sm px-4 py-3 rounded-xl">{error}</div>
+              <div className="px-4 py-3 rounded-xl text-sm font-medium"
+                style={{ background: 'rgba(220,79,79,0.08)', color: '#DC4F4F', border: '1px solid rgba(220,79,79,0.15)' }}>
+                {error}
+              </div>
             )}
 
             <button type="submit" disabled={loading}
-              className="w-full py-3.5 bg-blue-600 hover:bg-blue-500 disabled:bg-blue-600/50 text-white rounded-xl text-sm font-semibold transition-all">
+              className="w-full py-3.5 rounded-xl text-[15px] font-bold text-white transition-all hover:-translate-y-px disabled:opacity-60 disabled:cursor-not-allowed"
+              style={{ background: '#F5920B', boxShadow: '0 4px 16px rgba(245,146,11,0.3)' }}>
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
 
           <div className="mt-5 flex items-center justify-between">
-            <Link href="/forgot-password" className="text-xs text-gray-500 hover:text-gray-300 transition-colors">
+            <Link href="/forgot-password" className="text-[13px] text-gray-400 hover:text-gray-600 transition-colors">
               Forgot password?
             </Link>
-            <Link href="/register" className="text-xs text-blue-400 hover:text-blue-300 transition-colors font-medium">
-              Set up an account &rarr;
+            <Link href="/register" className="text-[13px] font-bold transition-colors hover:underline" style={{ color: '#1B2A4A' }}>
+              Create account &rarr;
             </Link>
           </div>
 
-          {/* Dev quick fills — remove before production */}
-          <div className="mt-6 pt-5 border-t border-white/5">
-            <div className="text-[9px] text-gray-600 uppercase tracking-wider text-center mb-3">Quick Login (Dev Only)</div>
-            <div className="grid grid-cols-2 gap-2">
-              {[
-                { label: 'Steve (Admin)', email: 'steve@woulfgroup.com', pw: 'admin123' },
-                { label: 'Marcus (Employee)', email: 'marcus@woulfgroup.com', pw: 'bravo-delta-42' },
-                { label: 'Rachel (Org Lead)', email: 'paid@enterprise.com', pw: 'ridge-slate-19' },
-                { label: 'Sarah (Beta)', email: 'demo@client1.com', pw: 'nova-peak-55' },
-              ].map(q => (
-                <button key={q.email} onClick={() => { setEmail(q.email); setPassword(q.pw) }}
-                  className="px-3 py-2 bg-white/[0.03] border border-white/5 rounded-lg text-[10px] text-gray-500 hover:text-white hover:bg-white/[0.06] transition-all text-left">
-                  <div className="font-medium">{q.label}</div>
-                  <div className="text-gray-700 truncate">{q.email}</div>
-                </button>
-              ))}
+          {/* Dev quick fills — REMOVE BEFORE PRODUCTION */}
+          {process.env.NODE_ENV === 'development' && (
+            <div className="mt-6 pt-5 border-t" style={{ borderColor: '#E5E7EB' }}>
+              <div className="text-[9px] text-gray-400 uppercase tracking-wider text-center mb-3">Dev Quick Login</div>
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { label: 'Steve (Admin)', email: 'steve@woulfgroup.com', pw: 'admin123' },
+                  { label: 'Marcus (Employee)', email: 'marcus@woulfgroup.com', pw: 'bravo-delta-42' },
+                  { label: 'Rachel (Org Lead)', email: 'paid@enterprise.com', pw: 'ridge-slate-19' },
+                  { label: 'Sarah (Beta)', email: 'demo@client1.com', pw: 'nova-peak-55' },
+                ].map(q => (
+                  <button key={q.email} onClick={() => { setEmail(q.email); setPassword(q.pw); }}
+                    className="px-3 py-2 rounded-lg text-[10px] text-gray-400 hover:text-gray-600 transition-all text-left border"
+                    style={{ background: '#FAFBFC', borderColor: '#E5E7EB' }}>
+                    <div className="font-medium">{q.label}</div>
+                    <div className="text-gray-400 truncate">{q.email}</div>
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
-        <p className="text-center text-[10px] text-gray-700 mt-6">
-          {"Don't have an account? "}
-          <Link href="/register" className="text-blue-400 hover:text-blue-300">Set up an account</Link>
+        <p className="text-center text-[13px] text-gray-400 mt-6">
+          Don&apos;t have an account?{' '}
+          <Link href="/register" className="font-bold hover:underline" style={{ color: '#1B2A4A' }}>Create your workspace</Link>
         </p>
+        <p className="text-center text-[11px] text-gray-400 mt-6">© 2026 WoulfAI by Woulf Group</p>
       </div>
     </div>
-  )
+  );
 }

@@ -123,7 +123,7 @@ export default function PortalPage() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8 fade-up fade-up-1">
           {[
             { label: 'Active Employees', value: String(activeCount), icon: '🤖', accent: '#2A9D8F' },
-            { label: 'Total Agents', value: String(agents.length), icon: '📊', accent: '#1B2A4A' },
+            { label: 'Team Size', value: String(agents.length), icon: '📊', accent: '#1B2A4A' },
             { label: 'Uptime', value: '99.9%', icon: '⚡', accent: '#2A9D8F' },
             { label: 'Team Status', value: 'Healthy', icon: '✅', accent: '#2A9D8F' },
           ].map((stat) => (
@@ -139,7 +139,7 @@ export default function PortalPage() {
           ))}
         </div>
 
-        {/* Agent grid */}
+        {/* Employee grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 fade-up fade-up-2">
           {filtered.length === 0 ? (
             <div className="col-span-full text-center py-16">
