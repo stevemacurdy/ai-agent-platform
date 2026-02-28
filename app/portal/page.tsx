@@ -14,7 +14,7 @@ export default function PortalPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [user, setUser] = useState<User | null>(null);
-  const [agents, setAgents] = useState<Agent[]>([]);
+  const [agents, setAgents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const welcome = searchParams.get('welcome');
@@ -32,7 +32,7 @@ export default function PortalPage() {
     load();
   }, [router]);
 
-  const filtered = agents.filter((a) => a.name?.toLowerCase().includes(searchQuery.toLowerCase()) || a.primary_category?.display_name?.toLowerCase().includes(searchQuery.toLowerCase()) || a.keywords?.some((k) => k.toLowerCase().includes(searchQuery.toLowerCase())));
+  const filtered = agents.filter((a) => a.name?.toLowerCase().includes(searchQuery.toLowerCase()) || a.primary_category?.display_name?.toLowerCase().includes(searchQuery.toLowerCase()) || a.keywords?.some((k: string) => k.toLowerCase().includes(searchQuery.toLowerCase())));
   const activeCount = agents.filter((a) => a.status === 'active' || !a.status).length;
 
   if (loading) return (

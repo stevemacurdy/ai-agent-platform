@@ -10,7 +10,7 @@ export default function DemoHub() {
     const agents = LIVE_AGENTS.filter(a => a.category === cat);
     if (agents.length > 0) acc[cat] = agents;
     return acc;
-  }, {} as Record<AgentCategory, typeof LIVE_AGENTS>);
+  }, {} as Record<string, typeof LIVE_AGENTS>);
 
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-8">

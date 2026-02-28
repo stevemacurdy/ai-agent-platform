@@ -23,6 +23,7 @@ export interface AuthUser {
 export interface LoginResult {
   success: boolean;
   error?: string;
+  must_reset_password?: boolean;
   user?: AuthUser;
 }
 
