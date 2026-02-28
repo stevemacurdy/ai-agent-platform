@@ -96,7 +96,7 @@ export default function CFOAgentDemo() {
                     <h1 className="font-bold">CFO Employee</h1>
                     <img src="/images/woulf-logo.png" alt="Woulf" className="w-5 h-5 rounded" title="Powered by Woulf" />
                   </div>
-                  <p className="text-xs text-[#6B7280]">Financial Intelligence</p>
+                  <p className="text-xs text-white/60">Financial Intelligence</p>
                 </div>
               </div>
             </div>

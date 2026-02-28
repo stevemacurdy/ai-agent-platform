@@ -107,7 +107,7 @@ export default function SupportAgentDemo() {
                     <h1 className="font-bold">Support Employee</h1>
                     <img src="/images/woulf-logo.png" alt="Woulf" className="w-5 h-5 rounded" title="Powered by Woulf" />
                   </div>
-                  <p className="text-xs text-[#6B7280]">AI-Powered Customer Service</p>
+                  <p className="text-xs text-white/60">AI-Powered Customer Service</p>
                 </div>
               </div>
             </div>

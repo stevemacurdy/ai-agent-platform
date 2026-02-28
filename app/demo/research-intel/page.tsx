@@ -141,7 +141,7 @@ export default function ResearchIntelPage() {
                     <h1 className="font-bold text-lg">Research Employee</h1>
                     <img src="/images/woulf-logo.png" alt="Woulf" className="w-5 h-5 rounded" title="Powered by Woulf" />
                   </div>
-                  <p className="text-xs text-[#6B7280]">Company Intelligence & Pre-Call Research</p>
+                  <p className="text-xs text-white/60">Company Intelligence & Pre-Call Research</p>
                 </div>
               </div>
             </div>
