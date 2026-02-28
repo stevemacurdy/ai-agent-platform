@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* ═══════════════════════════════════════════════════════════
    WoulfAI Design System — CSS Custom Properties
    Apply platform-wide via globals.css
@@ -77,6 +81,14 @@
 }
 
 /* ── Base Resets ──────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--w-bg);
   color: var(--w-text);
@@ -88,6 +100,31 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--w-font-heading);
   color: var(--w-navy);
+}
+
+/* ── Selection ───────────────────────────────────── */
+::selection {
+  background: rgba(42, 157, 143, 0.3);
+  color: var(--w-text);
+}
+
+/* ── Scrollbar (light theme, brand-aligned) ──────── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--w-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--w-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--w-text-faint);
 }
 
 /* ── Utility Classes ─────────────────────────────── */
@@ -211,6 +248,29 @@ h1, h2, h3, h4, h5, h6 {
 }
 .w-input::placeholder {
   color: var(--w-text-faint);
+}
+
+/* Select dropdowns (brand-aligned, light theme) */
+select {
+  color: var(--w-text);
+  background-color: var(--w-surface);
+}
+
+select option {
+  color: var(--w-text);
+  background-color: var(--w-surface);
+  padding: 8px;
+}
+
+select option:hover,
+select option:checked {
+  background-color: var(--w-surface-row);
+  color: var(--w-text);
+}
+
+select:focus {
+  outline: none;
+  border-color: var(--w-teal);
 }
 
 /* Toggle switch */
@@ -342,60 +402,8 @@ h1, h2, h3, h4, h5, h6 {
 .w-divider-up {
   clip-path: polygon(0 30%, 100% 0%, 100% 100%, 0% 100%);
 }
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
-:root {
-  --background: #0a0a0f;
-  --foreground: #ffffff;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-::selection {
-  background: rgba(59, 130, 246, 0.4);
-  color: #fff;
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-/* Animations */
+/* ── Animations (kept from legacy, used by landing + components) ── */
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
@@ -412,28 +420,4 @@ body {
 
 .animate-glow {
   animation: glow 2s ease-in-out infinite;
-}
-
-/* Fix select dropdown options - dark text on light background */
-select {
-  color: white;
-  background-color: #1a1a2e;
-}
-
-select option {
-  color: #000000;
-  background-color: #ffffff;
-  padding: 8px;
-}
-
-select option:hover,
-select option:checked {
-  background-color: #e5e7eb;
-  color: #000000;
-}
-
-/* Ensure select focus state is visible */
-select:focus {
-  outline: none;
-  border-color: #8b5cf6;
 }

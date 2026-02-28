@@ -7,11 +7,11 @@ import CartDrawer from '@/components/cart-drawer';
 
 export const metadata: Metadata = {
   title: "WoulfAI - AI Employees That Actually Work",
-  description: "Deploy intelligent AI agents for warehouse management, sales, finance, marketing, and customer support. Automate your operations 24/7.",
-  keywords: "AI agents, warehouse management, WMS, sales automation, CFO automation, marketing AI, customer support AI",
+  description: "Hire intelligent AI employees for warehouse management, sales, finance, marketing, and customer support. Your AI workforce operates 24/7.",
+  keywords: "AI employees, warehouse management, WMS, sales automation, CFO automation, marketing AI, customer support AI, AI workforce",
   openGraph: {
     title: "WoulfAI - AI Employees That Actually Work",
-    description: "Deploy intelligent AI agents that handle your operations 24/7.",
+    description: "Hire intelligent AI employees that handle your operations 24/7.",
     type: "website",
   },
 };
