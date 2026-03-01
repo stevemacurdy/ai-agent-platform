@@ -84,26 +84,26 @@ export default function AdminChatsPage() {
     <div className="max-w-5xl mx-auto p-6 space-y-6">
       <div>
         <h1 className="text-2xl font-bold">Chat Conversations</h1>
-        <p className="text-sm text-gray-400 mt-1">AI sales chat sessions from website visitors</p>
+        <p className="text-sm text-[#6B7280] mt-1">AI sales chat sessions from website visitors</p>
       </div>
 
       {loading ? (
-        <div className="text-center py-12 text-gray-500 text-sm">Loading conversations...</div>
+        <div className="text-center py-12 text-[#9CA3AF] text-sm">Loading conversations...</div>
       ) : sessions.length === 0 ? (
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-12 text-center">
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-12 text-center">
           <div className="text-3xl mb-3">💬</div>
-          <div className="text-sm text-gray-500">No chat sessions yet. They will appear here when visitors use the chat widget.</div>
+          <div className="text-sm text-[#9CA3AF]">No chat sessions yet. They will appear here when visitors use the chat widget.</div>
         </div>
       ) : (
         <div className="space-y-3">
           {sessions.map(s => (
-            <div key={s.id} className="bg-[#0A0E15] border border-white/5 rounded-xl overflow-hidden">
+            <div key={s.id} className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden">
               <button
                 onClick={() => toggleSession(s.id)}
-                className="w-full px-5 py-4 flex items-center justify-between hover:bg-white/[0.02] transition text-left"
+                className="w-full px-5 py-4 flex items-center justify-between hover:bg-white shadow-sm transition text-left"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center text-sm">
+                  <div className="w-9 h-9 rounded-full bg-white shadow-sm flex items-center justify-center text-sm">
                     {s.visitor_name ? s.visitor_name[0].toUpperCase() : '?'}
                   </div>
                   <div>
@@ -112,37 +112,37 @@ export default function AdminChatsPage() {
                         {s.visitor_name || 'Anonymous Visitor'}
                       </span>
                       <span className={"text-[9px] px-1.5 py-0.5 rounded font-medium " +
-                        (s.status === 'active' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-gray-500/10 text-gray-500')}>
+                        (s.status === 'active' ? 'bg-emerald-50 text-emerald-600' : 'bg-gray-500/10 text-[#9CA3AF]')}>
                         {s.status}
                       </span>
                     </div>
                     <div className="flex items-center gap-3 mt-0.5">
-                      {s.visitor_email && <span className="text-[10px] text-blue-400">{s.visitor_email}</span>}
-                      <span className="text-[10px] text-gray-600">{timeAgo(s.created_at)}</span>
-                      <span className="text-[10px] text-gray-600">via {s.source}</span>
+                      {s.visitor_email && <span className="text-[10px] text-blue-600">{s.visitor_email}</span>}
+                      <span className="text-[10px] text-[#6B7280]">{timeAgo(s.created_at)}</span>
+                      <span className="text-[10px] text-[#6B7280]">via {s.source}</span>
                     </div>
                   </div>
                 </div>
-                <span className="text-xs text-gray-600">
+                <span className="text-xs text-[#6B7280]">
                   {expandedSession === s.id ? '▲' : '▼'}
                 </span>
               </button>
 
               {expandedSession === s.id && (
-                <div className="px-5 pb-4 border-t border-white/5">
+                <div className="px-5 pb-4 border-t border-[#E5E7EB]">
                   <div className="py-4 space-y-3 max-h-96 overflow-y-auto">
                     {(sessionMessages[s.id] || []).map(msg => (
                       <div key={msg.id} className={"flex " + (msg.role === 'user' ? 'justify-end' : 'justify-start')}>
                         <div className={"max-w-[80%] px-4 py-2.5 rounded-2xl text-sm " +
                           (msg.role === 'user'
                             ? 'bg-blue-600/20 text-blue-200 rounded-br-md'
-                            : 'bg-white/[0.04] text-gray-400 rounded-bl-md')}>
+                            : 'bg-white/[0.04] text-[#6B7280] rounded-bl-md')}>
                           {msg.content}
                         </div>
                       </div>
                     ))}
                     {!(sessionMessages[s.id]) && (
-                      <div className="text-center text-gray-600 text-xs py-4">Loading messages...</div>
+                      <div className="text-center text-[#6B7280] text-xs py-4">Loading messages...</div>
                     )}
                   </div>
                 </div>

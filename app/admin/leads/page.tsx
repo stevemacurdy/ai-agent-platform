@@ -17,10 +17,10 @@ interface Lead {
 }
 
 const STATUS_OPTIONS = [
-  { value: 'new', label: 'New', color: 'bg-blue-500/10 text-blue-400 border-blue-500/20' },
-  { value: 'contacted', label: 'Contacted', color: 'bg-amber-500/10 text-amber-400 border-amber-500/20' },
-  { value: 'qualified', label: 'Qualified', color: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' },
-  { value: 'closed', label: 'Closed', color: 'bg-gray-500/10 text-gray-400 border-gray-500/20' },
+  { value: 'new', label: 'New', color: 'bg-blue-50 text-blue-600 border-blue-500/20' },
+  { value: 'contacted', label: 'Contacted', color: 'bg-amber-50 text-amber-600 border-amber-500/20' },
+  { value: 'qualified', label: 'Qualified', color: 'bg-emerald-50 text-emerald-600 border-emerald-500/20' },
+  { value: 'closed', label: 'Closed', color: 'bg-gray-500/10 text-[#6B7280] border-gray-500/20' },
 ];
 
 export default function AdminLeadsPage() {
@@ -73,7 +73,7 @@ export default function AdminLeadsPage() {
 
   const getStatusStyle = (status: string) => {
     const s = STATUS_OPTIONS.find(o => o.value === status);
-    return s ? s.color : 'bg-gray-500/10 text-gray-400 border-gray-500/20';
+    return s ? s.color : 'bg-gray-500/10 text-[#6B7280] border-gray-500/20';
   };
 
   const timeAgo = (dateStr: string) => {
@@ -91,32 +91,32 @@ export default function AdminLeadsPage() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold">Leads</h1>
-          <p className="text-sm text-gray-400 mt-1">Incoming leads from contact forms and demo requests</p>
+          <p className="text-sm text-[#6B7280] mt-1">Incoming leads from contact forms and demo requests</p>
         </div>
-        <Link href="/admin/sales-crm" className="text-xs text-gray-500 hover:text-blue-400 transition">
+        <Link href="/admin/sales-crm" className="text-xs text-[#9CA3AF] hover:text-blue-600 transition">
           ← Back to Sales CRM
         </Link>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-4 gap-3">
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-4">
-          <div className="text-[9px] text-gray-500 uppercase">Total Leads</div>
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-4">
+          <div className="text-[9px] text-[#9CA3AF] uppercase">Total Leads</div>
           <div className="text-2xl font-mono font-bold mt-1">{total}</div>
         </div>
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-4">
-          <div className="text-[9px] text-gray-500 uppercase">New</div>
-          <div className="text-2xl font-mono font-bold text-blue-400 mt-1">{newCount}</div>
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-4">
+          <div className="text-[9px] text-[#9CA3AF] uppercase">New</div>
+          <div className="text-2xl font-mono font-bold text-blue-600 mt-1">{newCount}</div>
         </div>
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-4">
-          <div className="text-[9px] text-gray-500 uppercase">Contacted</div>
-          <div className="text-2xl font-mono font-bold text-amber-400 mt-1">
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-4">
+          <div className="text-[9px] text-[#9CA3AF] uppercase">Contacted</div>
+          <div className="text-2xl font-mono font-bold text-amber-600 mt-1">
             {leads.filter(l => l.status === 'contacted').length}
           </div>
         </div>
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-4">
-          <div className="text-[9px] text-gray-500 uppercase">Qualified</div>
-          <div className="text-2xl font-mono font-bold text-emerald-400 mt-1">
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-4">
+          <div className="text-[9px] text-[#9CA3AF] uppercase">Qualified</div>
+          <div className="text-2xl font-mono font-bold text-emerald-600 mt-1">
             {leads.filter(l => l.status === 'qualified').length}
           </div>
         </div>
@@ -130,8 +130,8 @@ export default function AdminLeadsPage() {
             onClick={() => setFilter(opt.value)}
             className={"px-3 py-1.5 rounded-lg text-xs font-medium transition border " +
               (filter === opt.value
-                ? 'bg-blue-600/20 border-blue-500/30 text-blue-400'
-                : 'bg-white/5 border-white/5 text-gray-500 hover:border-white/10')}
+                ? 'bg-blue-600/20 border-blue-500/30 text-blue-600'
+                : 'bg-white shadow-sm border-[#E5E7EB] text-[#9CA3AF] hover:border-[#E5E7EB]')}
           >
             {opt.label}
           </button>
@@ -140,16 +140,16 @@ export default function AdminLeadsPage() {
 
       {/* Lead cards */}
       {loading ? (
-        <div className="text-center py-12 text-gray-500 text-sm">Loading leads...</div>
+        <div className="text-center py-12 text-[#9CA3AF] text-sm">Loading leads...</div>
       ) : leads.length === 0 ? (
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-12 text-center">
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-12 text-center">
           <div className="text-3xl mb-3">📬</div>
-          <div className="text-sm text-gray-500">No leads yet. They will appear here when someone submits the contact form.</div>
+          <div className="text-sm text-[#9CA3AF]">No leads yet. They will appear here when someone submits the contact form.</div>
         </div>
       ) : (
         <div className="space-y-3">
           {leads.map(lead => (
-            <div key={lead.id} className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
+            <div key={lead.id} className="bg-white border border-[#E5E7EB] rounded-xl p-5">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3">
@@ -157,19 +157,19 @@ export default function AdminLeadsPage() {
                     <span className={"text-[10px] px-2 py-0.5 rounded border font-medium " + getStatusStyle(lead.status)}>
                       {lead.status}
                     </span>
-                    <span className="text-[10px] text-gray-600">{timeAgo(lead.created_at)}</span>
+                    <span className="text-[10px] text-[#6B7280]">{timeAgo(lead.created_at)}</span>
                   </div>
                   <div className="flex items-center gap-4 mt-1">
-                    <span className="text-xs text-gray-400">{lead.email}</span>
-                    {lead.company && <span className="text-xs text-gray-500">• {lead.company}</span>}
-                    {lead.interest && <span className="text-xs text-gray-500">• Interested in: {lead.interest}</span>}
-                    <span className="text-[10px] text-gray-600">via {lead.source?.replace(/_/g, ' ')}</span>
+                    <span className="text-xs text-[#6B7280]">{lead.email}</span>
+                    {lead.company && <span className="text-xs text-[#9CA3AF]">• {lead.company}</span>}
+                    {lead.interest && <span className="text-xs text-[#9CA3AF]">• Interested in: {lead.interest}</span>}
+                    <span className="text-[10px] text-[#6B7280]">via {lead.source?.replace(/_/g, ' ')}</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setExpandedLead(expandedLead === lead.id ? null : lead.id)}
-                    className="text-xs text-gray-500 hover:text-blue-400 transition"
+                    className="text-xs text-[#9CA3AF] hover:text-blue-600 transition"
                   >
                     {expandedLead === lead.id ? 'Collapse' : 'Details'}
                   </button>
@@ -178,28 +178,28 @@ export default function AdminLeadsPage() {
 
               {/* Expanded details */}
               {expandedLead === lead.id && (
-                <div className="mt-4 pt-4 border-t border-white/5 space-y-4">
+                <div className="mt-4 pt-4 border-t border-[#E5E7EB] space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <div className="text-[10px] text-gray-500 uppercase mb-1">Phone</div>
+                      <div className="text-[10px] text-[#9CA3AF] uppercase mb-1">Phone</div>
                       <div className="text-sm text-white">{lead.phone || '—'}</div>
                     </div>
                     <div>
-                      <div className="text-[10px] text-gray-500 uppercase mb-1">Submitted</div>
+                      <div className="text-[10px] text-[#9CA3AF] uppercase mb-1">Submitted</div>
                       <div className="text-sm text-white">{new Date(lead.created_at).toLocaleString()}</div>
                     </div>
                   </div>
 
                   {lead.message && (
                     <div>
-                      <div className="text-[10px] text-gray-500 uppercase mb-1">Message</div>
-                      <div className="text-sm text-gray-300 bg-white/[0.02] border border-white/5 rounded-lg p-3 whitespace-pre-wrap">{lead.message}</div>
+                      <div className="text-[10px] text-[#9CA3AF] uppercase mb-1">Message</div>
+                      <div className="text-sm text-[#4B5563] bg-white shadow-sm border border-[#E5E7EB] rounded-lg p-3 whitespace-pre-wrap">{lead.message}</div>
                     </div>
                   )}
 
                   {/* Status change buttons */}
                   <div>
-                    <div className="text-[10px] text-gray-500 uppercase mb-2">Update Status</div>
+                    <div className="text-[10px] text-[#9CA3AF] uppercase mb-2">Update Status</div>
                     <div className="flex gap-2">
                       {STATUS_OPTIONS.map(opt => (
                         <button
@@ -208,7 +208,7 @@ export default function AdminLeadsPage() {
                           className={"px-3 py-1.5 rounded-lg text-xs font-medium transition border " +
                             (lead.status === opt.value
                               ? opt.color + ' border-current'
-                              : 'bg-white/5 border-white/5 text-gray-500 hover:border-white/10')}
+                              : 'bg-white shadow-sm border-[#E5E7EB] text-[#9CA3AF] hover:border-[#E5E7EB]')}
                         >
                           {opt.label}
                         </button>

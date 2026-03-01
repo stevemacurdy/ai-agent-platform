@@ -27,47 +27,47 @@ export default function SalesRepsPage() {
       <div className="flex justify-between items-start">
         <div>
           <h1 className="text-xl font-bold">Sales Reps</h1>
-          <p className="text-sm text-gray-500 mt-1">Team performance, pipeline, and CRM management</p>
+          <p className="text-sm text-[#9CA3AF] mt-1">Team performance, pipeline, and CRM management</p>
         </div>
         <div className="flex gap-2">
-          <Link href="/agents/sales/intel" className="px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-xs font-medium hover:bg-white/10">🧠 Sales Intel</Link>
-          <Link href="/admin/sales-crm" className="px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-xs font-medium hover:bg-white/10">📊 Sales CRM</Link>
-          <Link href="/agents/sales/solo" className="px-3 py-2 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-500">🎯 My Pipeline</Link>
+          <Link href="/agents/sales/intel" className="px-3 py-2 bg-white border border-[#E5E7EB] shadow-sm rounded-lg text-xs font-medium hover:bg-gray-100">🧠 Sales Intel</Link>
+          <Link href="/admin/sales-crm" className="px-3 py-2 bg-white border border-[#E5E7EB] shadow-sm rounded-lg text-xs font-medium hover:bg-gray-100">📊 Sales CRM</Link>
+          <Link href="/agents/sales/solo" className="px-3 py-2 bg-[#1B2A4A] text-white rounded-lg text-xs font-medium hover:bg-blue-500">🎯 My Pipeline</Link>
         </div>
       </div>
 
       {/* Team KPIs */}
       <div className="grid grid-cols-4 gap-3">
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-4"><div className="text-[9px] text-gray-500 uppercase">Team Pipeline</div><div className="text-xl font-mono font-bold mt-1">{fmt(TEAM_STATS.totalPipeline)}</div></div>
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-4"><div className="text-[9px] text-gray-500 uppercase">Total Closed</div><div className="text-xl font-mono font-bold text-emerald-400 mt-1">{fmt(TEAM_STATS.totalClosed)}</div></div>
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-4"><div className="text-[9px] text-gray-500 uppercase">Avg Win Rate</div><div className="text-xl font-mono font-bold text-blue-400 mt-1">{TEAM_STATS.avgWinRate}%</div></div>
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-4"><div className="text-[9px] text-gray-500 uppercase">Active Deals</div><div className="text-xl font-mono font-bold mt-1">{TEAM_STATS.totalDeals}</div></div>
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-4"><div className="text-[9px] text-[#9CA3AF] uppercase">Team Pipeline</div><div className="text-xl font-mono font-bold mt-1">{fmt(TEAM_STATS.totalPipeline)}</div></div>
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-4"><div className="text-[9px] text-[#9CA3AF] uppercase">Total Closed</div><div className="text-xl font-mono font-bold text-emerald-600 mt-1">{fmt(TEAM_STATS.totalClosed)}</div></div>
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-4"><div className="text-[9px] text-[#9CA3AF] uppercase">Avg Win Rate</div><div className="text-xl font-mono font-bold text-blue-600 mt-1">{TEAM_STATS.avgWinRate}%</div></div>
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-4"><div className="text-[9px] text-[#9CA3AF] uppercase">Active Deals</div><div className="text-xl font-mono font-bold mt-1">{TEAM_STATS.totalDeals}</div></div>
       </div>
 
       {/* Search */}
       <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search reps..."
-        className="w-full max-w-sm px-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-sm placeholder-gray-600 focus:border-blue-500/30 focus:outline-none" />
+        className="w-full max-w-sm px-4 py-2.5 bg-white border border-[#E5E7EB] shadow-sm rounded-xl text-sm placeholder-[#9CA3AF] focus:border-[#2A9D8F]/30 focus:outline-none" />
 
       {/* Rep Cards */}
       <div className="space-y-3">
         {filtered.map(rep => (
-          <div key={rep.id} className="bg-[#0A0E15] border border-white/5 rounded-xl p-5 hover:border-white/10 transition-all">
+          <div key={rep.id} className="bg-white border border-[#E5E7EB] rounded-xl p-5 hover:border-[#E5E7EB] transition-all">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <div className="w-10 h-10 bg-blue-500/10 rounded-full flex items-center justify-center text-lg">{rep.avatar}</div>
+                <div className="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center text-lg">{rep.avatar}</div>
                 <div>
                   <div className="text-sm font-semibold">{rep.name}</div>
-                  <div className="text-xs text-gray-500">{rep.email}</div>
+                  <div className="text-xs text-[#9CA3AF]">{rep.email}</div>
                 </div>
-                <span className={"text-[10px] px-2 py-0.5 rounded font-medium " + (rep.status === 'active' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400')}>
+                <span className={"text-[10px] px-2 py-0.5 rounded font-medium " + (rep.status === 'active' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600')}>
                   {rep.status}
                 </span>
               </div>
               <div className="flex items-center gap-6 text-right">
-                <div><div className="text-xs text-gray-500">Pipeline</div><div className="font-mono text-sm font-bold">{fmt(rep.pipeline)}</div></div>
-                <div><div className="text-xs text-gray-500">Closed</div><div className="font-mono text-sm font-bold text-emerald-400">{fmt(rep.closed)}</div></div>
-                <div><div className="text-xs text-gray-500">Win Rate</div><div className="font-mono text-sm font-bold text-blue-400">{rep.winRate}%</div></div>
-                <div><div className="text-xs text-gray-500">Deals</div><div className="font-mono text-sm font-bold">{rep.deals}</div></div>
+                <div><div className="text-xs text-[#9CA3AF]">Pipeline</div><div className="font-mono text-sm font-bold">{fmt(rep.pipeline)}</div></div>
+                <div><div className="text-xs text-[#9CA3AF]">Closed</div><div className="font-mono text-sm font-bold text-emerald-600">{fmt(rep.closed)}</div></div>
+                <div><div className="text-xs text-[#9CA3AF]">Win Rate</div><div className="font-mono text-sm font-bold text-blue-600">{rep.winRate}%</div></div>
+                <div><div className="text-xs text-[#9CA3AF]">Deals</div><div className="font-mono text-sm font-bold">{rep.deals}</div></div>
               </div>
             </div>
           </div>

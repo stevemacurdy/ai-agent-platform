@@ -334,7 +334,7 @@ export default function AgentCreatorPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center">
+      <div className="min-h-screen bg-[#F4F5F7] flex items-center justify-center">
         <Loader2 className="w-8 h-8 text-purple-500 animate-spin" />
       </div>
     )
@@ -342,12 +342,12 @@ export default function AgentCreatorPage() {
 
   if (!isAdmin) {
     return (
-      <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center">
+      <div className="min-h-screen bg-[#F4F5F7] flex items-center justify-center">
         <div className="text-center">
           <Lock className="w-16 h-16 text-red-500 mx-auto mb-4" />
           <h1 className="text-2xl font-bold text-white mb-2">Access Denied</h1>
-          <p className="text-gray-400 mb-4">This page is only available to administrators.</p>
-          <Link href="/dashboard" className="text-purple-400 hover:text-purple-300">
+          <p className="text-[#6B7280] mb-4">This page is only available to administrators.</p>
+          <Link href="/dashboard" className="text-purple-600 hover:text-purple-300">
             Return to Dashboard
           </Link>
         </div>
@@ -356,13 +356,13 @@ export default function AgentCreatorPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] text-white">
+    <div className="min-h-screen bg-[#F4F5F7] text-white">
       {/* Header */}
-      <div className="border-b border-white/10 bg-[#0a0a0f]/80 backdrop-blur-xl sticky top-0 z-50">
+      <div className="border-b border-[#E5E7EB] bg-[#F4F5F7]/80 backdrop-blur-xl sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Link href="/dashboard" className="p-2 hover:bg-white/10 rounded-lg transition-colors">
+              <Link href="/dashboard" className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                 <ArrowLeft className="w-5 h-5" />
               </Link>
               <div className="flex items-center gap-3">
@@ -371,12 +371,12 @@ export default function AgentCreatorPage() {
                 </div>
                 <div>
                   <h1 className="text-xl font-bold">ACA Master Architect</h1>
-                  <p className="text-sm text-gray-400">Agent Creator · Admin Only</p>
+                  <p className="text-sm text-[#6B7280]">Employee Creator · Admin Only</p>
                 </div>
               </div>
             </div>
             <div className="flex items-center gap-2 px-3 py-1.5 bg-purple-500/20 rounded-full border border-purple-500/30">
-              <Shield className="w-4 h-4 text-purple-400" />
+              <Shield className="w-4 h-4 text-purple-600" />
               <span className="text-sm text-purple-300">Admin Access</span>
             </div>
           </div>
@@ -387,30 +387,30 @@ export default function AgentCreatorPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left: Input Form */}
           <div className="space-y-6">
-            <div className="bg-white/5 rounded-2xl border border-white/10 p-6">
+            <div className="bg-white shadow-sm rounded-2xl border border-[#E5E7EB] p-6">
               <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-purple-400" />
+                <Sparkles className="w-5 h-5 text-purple-600" />
                 Build New Agent
               </h2>
               
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-400 mb-1">Agent Name *</label>
+                  <label className="block text-sm font-medium text-[#6B7280] mb-1">Agent Name *</label>
                   <input
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="e.g., Inventory Agent"
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-purple-500"
+                    className="w-full px-4 py-3 bg-white border border-[#E5E7EB] shadow-sm rounded-xl focus:outline-none focus:border-purple-500"
                   />
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-400 mb-1">Domain *</label>
+                  <label className="block text-sm font-medium text-[#6B7280] mb-1">Domain *</label>
                   <select
                     value={domain}
                     onChange={(e) => setDomain(e.target.value)}
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-purple-500"
+                    className="w-full px-4 py-3 bg-white border border-[#E5E7EB] shadow-sm rounded-xl focus:outline-none focus:border-purple-500"
                   >
                     <option value="">Select domain...</option>
                     <option value="inventory">Inventory</option>
@@ -426,35 +426,35 @@ export default function AgentCreatorPage() {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-400 mb-1">Requirements *</label>
+                  <label className="block text-sm font-medium text-[#6B7280] mb-1">Requirements *</label>
                   <textarea
                     value={requirements}
                     onChange={(e) => setRequirements(e.target.value)}
                     placeholder="Describe what this agent should do..."
                     rows={3}
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-purple-500 resize-none"
+                    className="w-full px-4 py-3 bg-white border border-[#E5E7EB] shadow-sm rounded-xl focus:outline-none focus:border-purple-500 resize-none"
                   />
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-400 mb-1">SOP Content (Optional)</label>
+                  <label className="block text-sm font-medium text-[#6B7280] mb-1">SOP Content (Optional)</label>
                   <textarea
                     value={sopContent}
                     onChange={(e) => setSopContent(e.target.value)}
                     placeholder="Paste your SOP here. Steps will be extracted automatically.&#10;&#10;Example:&#10;1. Receive order request&#10;2. Validate customer info&#10;3. Check inventory&#10;4. Process payment&#10;5. Send confirmation"
                     rows={8}
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-purple-500 resize-none font-mono text-sm"
+                    className="w-full px-4 py-3 bg-white border border-[#E5E7EB] shadow-sm rounded-xl focus:outline-none focus:border-purple-500 resize-none font-mono text-sm"
                   />
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-400 mb-1">Constraints (Optional)</label>
+                  <label className="block text-sm font-medium text-[#6B7280] mb-1">Constraints (Optional)</label>
                   <input
                     type="text"
                     value={constraints}
                     onChange={(e) => setConstraints(e.target.value)}
                     placeholder="Comma-separated: No direct DB writes, Rate limit 100/min"
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-purple-500"
+                    className="w-full px-4 py-3 bg-white border border-[#E5E7EB] shadow-sm rounded-xl focus:outline-none focus:border-purple-500"
                   />
                 </div>
                 
@@ -480,15 +480,15 @@ export default function AgentCreatorPage() {
             
             {/* Info Cards */}
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-white/5 rounded-xl border border-white/10 p-4">
-                <Zap className="w-8 h-8 text-yellow-400 mb-2" />
+              <div className="bg-white shadow-sm rounded-xl border border-[#E5E7EB] p-4">
+                <Zap className="w-8 h-8 text-yellow-600 mb-2" />
                 <h3 className="font-semibold mb-1">8-Phase Protocol</h3>
-                <p className="text-sm text-gray-400">Genius-Stack methodology for production-grade agents</p>
+                <p className="text-sm text-[#6B7280]">Genius-Stack methodology for production-grade agents</p>
               </div>
-              <div className="bg-white/5 rounded-xl border border-white/10 p-4">
-                <Code className="w-8 h-8 text-green-400 mb-2" />
+              <div className="bg-white shadow-sm rounded-xl border border-[#E5E7EB] p-4">
+                <Code className="w-8 h-8 text-green-600 mb-2" />
                 <h3 className="font-semibold mb-1">Auto-Generated</h3>
-                <p className="text-sm text-gray-400">Python code, SQL schemas, API routes</p>
+                <p className="text-sm text-[#6B7280]">Python code, SQL schemas, API routes</p>
               </div>
             </div>
           </div>
@@ -496,9 +496,9 @@ export default function AgentCreatorPage() {
           {/* Right: Output */}
           <div className="space-y-6">
             {manifest ? (
-              <div className="bg-white/5 rounded-2xl border border-white/10 overflow-hidden">
+              <div className="bg-white shadow-sm rounded-2xl border border-[#E5E7EB] overflow-hidden">
                 {/* Status Header */}
-                <div className="p-4 border-b border-white/10 flex items-center justify-between">
+                <div className="p-4 border-b border-[#E5E7EB] flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className={`p-2 rounded-lg ${
                       manifest.deployment_status === 'production_ready' ? 'bg-green-500/20' :
@@ -506,16 +506,16 @@ export default function AgentCreatorPage() {
                       'bg-gray-500/20'
                     }`}>
                       {manifest.deployment_status === 'production_ready' ? (
-                        <CheckCircle2 className="w-5 h-5 text-green-400" />
+                        <CheckCircle2 className="w-5 h-5 text-green-600" />
                       ) : manifest.deployment_status === 'simulation_ready' ? (
-                        <AlertCircle className="w-5 h-5 text-yellow-400" />
+                        <AlertCircle className="w-5 h-5 text-yellow-600" />
                       ) : (
-                        <AlertCircle className="w-5 h-5 text-gray-400" />
+                        <AlertCircle className="w-5 h-5 text-[#6B7280]" />
                       )}
                     </div>
                     <div>
                       <h3 className="font-semibold">{manifest.agent_name}</h3>
-                      <p className="text-sm text-gray-400">
+                      <p className="text-sm text-[#6B7280]">
                         {manifest.deployment_status.replace('_', ' ')} · {(manifest.confidence_score * 100).toFixed(0)}% confidence
                       </p>
                     </div>
@@ -523,14 +523,14 @@ export default function AgentCreatorPage() {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => copyToClipboard(JSON.stringify(manifest, null, 2))}
-                      className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                      className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
                       title="Copy JSON"
                     >
-                      {copied ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
+                      {copied ? <Check className="w-4 h-4 text-green-600" /> : <Copy className="w-4 h-4" />}
                     </button>
                     <button
                       onClick={() => downloadFile(JSON.stringify(manifest, null, 2), 'manifest.json')}
-                      className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                      className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
                       title="Download"
                     >
                       <Download className="w-4 h-4" />
@@ -539,11 +539,11 @@ export default function AgentCreatorPage() {
                 </div>
 
                 {/* Tabs */}
-                <div className="flex border-b border-white/10">
+                <div className="flex border-b border-[#E5E7EB]">
                   <button
                     onClick={() => setActiveTab('manifest')}
                     className={`flex-1 px-4 py-3 text-sm font-medium flex items-center justify-center gap-2 ${
-                      activeTab === 'manifest' ? 'bg-white/5 text-white border-b-2 border-purple-500' : 'text-gray-400 hover:text-white'
+                      activeTab === 'manifest' ? 'bg-white shadow-sm text-white border-b-2 border-purple-500' : 'text-[#6B7280] hover:text-[#1B2A4A]'
                     }`}
                   >
                     <FileJson className="w-4 h-4" />
@@ -552,7 +552,7 @@ export default function AgentCreatorPage() {
                   <button
                     onClick={() => setActiveTab('code')}
                     className={`flex-1 px-4 py-3 text-sm font-medium flex items-center justify-center gap-2 ${
-                      activeTab === 'code' ? 'bg-white/5 text-white border-b-2 border-purple-500' : 'text-gray-400 hover:text-white'
+                      activeTab === 'code' ? 'bg-white shadow-sm text-white border-b-2 border-purple-500' : 'text-[#6B7280] hover:text-[#1B2A4A]'
                     }`}
                   >
                     <Code className="w-4 h-4" />
@@ -561,7 +561,7 @@ export default function AgentCreatorPage() {
                   <button
                     onClick={() => setActiveTab('sql')}
                     className={`flex-1 px-4 py-3 text-sm font-medium flex items-center justify-center gap-2 ${
-                      activeTab === 'sql' ? 'bg-white/5 text-white border-b-2 border-purple-500' : 'text-gray-400 hover:text-white'
+                      activeTab === 'sql' ? 'bg-white shadow-sm text-white border-b-2 border-purple-500' : 'text-[#6B7280] hover:text-[#1B2A4A]'
                     }`}
                   >
                     <Database className="w-4 h-4" />
@@ -574,82 +574,82 @@ export default function AgentCreatorPage() {
                   {activeTab === 'manifest' && (
                     <div className="space-y-3">
                       {/* Persona */}
-                      <div className="border border-white/10 rounded-lg overflow-hidden">
+                      <div className="border border-[#E5E7EB] rounded-lg overflow-hidden">
                         <button
                           onClick={() => setExpanded({ ...expanded, persona: !expanded.persona })}
-                          className="w-full px-4 py-3 flex items-center justify-between hover:bg-white/5"
+                          className="w-full px-4 py-3 flex items-center justify-between hover:bg-white shadow-sm"
                         >
                           <span className="font-medium">Persona</span>
                           {expanded.persona ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
                         </button>
                         {expanded.persona && (
                           <div className="px-4 pb-3 text-sm">
-                            <pre className="text-gray-300 overflow-auto">{JSON.stringify(manifest.persona, null, 2)}</pre>
+                            <pre className="text-[#4B5563] overflow-auto">{JSON.stringify(manifest.persona, null, 2)}</pre>
                           </div>
                         )}
                       </div>
 
                       {/* Workflow */}
-                      <div className="border border-white/10 rounded-lg overflow-hidden">
+                      <div className="border border-[#E5E7EB] rounded-lg overflow-hidden">
                         <button
                           onClick={() => setExpanded({ ...expanded, workflow: !expanded.workflow })}
-                          className="w-full px-4 py-3 flex items-center justify-between hover:bg-white/5"
+                          className="w-full px-4 py-3 flex items-center justify-between hover:bg-white shadow-sm"
                         >
                           <span className="font-medium">Workflow ({manifest.workflow_logic.length} steps)</span>
                           {expanded.workflow ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
                         </button>
                         {expanded.workflow && (
                           <div className="px-4 pb-3 text-sm">
-                            <pre className="text-gray-300 overflow-auto">{JSON.stringify(manifest.workflow_logic, null, 2)}</pre>
+                            <pre className="text-[#4B5563] overflow-auto">{JSON.stringify(manifest.workflow_logic, null, 2)}</pre>
                           </div>
                         )}
                       </div>
 
                       {/* Guardrails */}
-                      <div className="border border-white/10 rounded-lg overflow-hidden">
+                      <div className="border border-[#E5E7EB] rounded-lg overflow-hidden">
                         <button
                           onClick={() => setExpanded({ ...expanded, guardrails: !expanded.guardrails })}
-                          className="w-full px-4 py-3 flex items-center justify-between hover:bg-white/5"
+                          className="w-full px-4 py-3 flex items-center justify-between hover:bg-white shadow-sm"
                         >
                           <span className="font-medium">Guardrails ({manifest.guardrails.length} rules)</span>
                           {expanded.guardrails ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
                         </button>
                         {expanded.guardrails && (
                           <div className="px-4 pb-3 text-sm">
-                            <pre className="text-gray-300 overflow-auto">{JSON.stringify(manifest.guardrails, null, 2)}</pre>
+                            <pre className="text-[#4B5563] overflow-auto">{JSON.stringify(manifest.guardrails, null, 2)}</pre>
                           </div>
                         )}
                       </div>
 
                       {/* Reliability */}
-                      <div className="border border-white/10 rounded-lg overflow-hidden">
+                      <div className="border border-[#E5E7EB] rounded-lg overflow-hidden">
                         <button
                           onClick={() => setExpanded({ ...expanded, reliability: !expanded.reliability })}
-                          className="w-full px-4 py-3 flex items-center justify-between hover:bg-white/5"
+                          className="w-full px-4 py-3 flex items-center justify-between hover:bg-white shadow-sm"
                         >
                           <span className="font-medium">Reliability Layer</span>
                           {expanded.reliability ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
                         </button>
                         {expanded.reliability && (
                           <div className="px-4 pb-3 text-sm">
-                            <pre className="text-gray-300 overflow-auto">{JSON.stringify(manifest.reliability, null, 2)}</pre>
+                            <pre className="text-[#4B5563] overflow-auto">{JSON.stringify(manifest.reliability, null, 2)}</pre>
                           </div>
                         )}
                       </div>
 
                       {/* API Routes */}
-                      <div className="border border-white/10 rounded-lg p-4">
+                      <div className="border border-[#E5E7EB] rounded-lg p-4">
                         <h4 className="font-medium mb-2">API Routes ({manifest.api_routes.length})</h4>
                         <div className="space-y-1 text-sm">
                           {manifest.api_routes.map((route, i) => (
                             <div key={i} className="flex items-center gap-2">
                               <span className={`px-2 py-0.5 rounded text-xs font-mono ${
-                                route.method === 'GET' ? 'bg-green-500/20 text-green-400' :
-                                route.method === 'POST' ? 'bg-blue-500/20 text-blue-400' :
-                                route.method === 'PUT' ? 'bg-yellow-500/20 text-yellow-400' :
-                                'bg-red-500/20 text-red-400'
+                                route.method === 'GET' ? 'bg-green-500/20 text-green-600' :
+                                route.method === 'POST' ? 'bg-blue-100 text-blue-600' :
+                                route.method === 'PUT' ? 'bg-yellow-500/20 text-yellow-600' :
+                                'bg-red-500/20 text-red-600'
                               }`}>{route.method}</span>
-                              <code className="text-gray-400">{route.path}</code>
+                              <code className="text-[#6B7280]">{route.path}</code>
                             </div>
                           ))}
                         </div>
@@ -669,7 +669,7 @@ export default function AgentCreatorPage() {
                         <Download className="w-4 h-4" />
                         Download
                       </button>
-                      <pre className="text-sm text-gray-300 font-mono whitespace-pre-wrap">{manifest.generated_code}</pre>
+                      <pre className="text-sm text-[#4B5563] font-mono whitespace-pre-wrap">{manifest.generated_code}</pre>
                     </div>
                   )}
 
@@ -686,16 +686,16 @@ export default function AgentCreatorPage() {
                         <Download className="w-4 h-4" />
                         Download
                       </button>
-                      <pre className="text-sm text-gray-300 font-mono whitespace-pre-wrap">{generateSQL()}</pre>
+                      <pre className="text-sm text-[#4B5563] font-mono whitespace-pre-wrap">{generateSQL()}</pre>
                     </div>
                   )}
                 </div>
               </div>
             ) : (
-              <div className="bg-white/5 rounded-2xl border border-white/10 p-12 text-center">
-                <Cpu className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-gray-400 mb-2">No Agent Built Yet</h3>
-                <p className="text-gray-500">Fill in the form and click "Build Agent" to generate a new AI agent with the Genius-Stack Protocol.</p>
+              <div className="bg-white shadow-sm rounded-2xl border border-[#E5E7EB] p-12 text-center">
+                <Cpu className="w-16 h-16 text-[#6B7280] mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-[#6B7280] mb-2">No Agent Built Yet</h3>
+                <p className="text-[#9CA3AF]">Fill in the form and click "Build Agent" to generate a new AI Employee with the Genius-Stack Protocol.</p>
               </div>
             )}
           </div>

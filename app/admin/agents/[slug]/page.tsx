@@ -47,7 +47,7 @@ const AGENT_DETAILS: Record<string, {
       { name: 'Executive Summary', status: 'beta', description: 'AI-generated weekly executive briefing' },
       { name: 'Board Deck Generator', status: 'planned', description: 'Auto-generate board presentation from live data' },
     ],
-    integrations: ['All WoulfAI agents', 'Google Workspace', 'Slack', 'Microsoft Teams'],
+    integrations: ['All WoulfAI Employees', 'Google Workspace', 'Slack', 'Microsoft Teams'],
     useCases: ['CEOs wanting single-pane-of-glass visibility', 'COOs tracking operational efficiency', 'Department heads managing cross-functional projects'],
     metrics: ['87% org efficiency score', 'Real-time data from 14 agents', '60% reduction in reporting time'],
   },
@@ -191,7 +191,7 @@ export default function AdminAgentDetailPage() {
     <div className="max-w-lg mx-auto py-20 text-center space-y-4">
       <div className="text-4xl">🤖</div>
       <div className="text-lg font-semibold">Agent not found</div>
-      <Link href="/admin" className="text-blue-400 text-sm">← Back to Admin</Link>
+      <Link href="/admin" className="text-blue-600 text-sm">← Back to Admin</Link>
     </div>
   );
 
@@ -203,17 +203,17 @@ export default function AdminAgentDetailPage() {
           <div className="text-4xl">{agent.icon}</div>
           <div>
             <h1 className="text-2xl font-bold">{agent.name}</h1>
-            <p className="text-sm text-gray-400 mt-1">{agent.description}</p>
+            <p className="text-sm text-[#6B7280] mt-1">{agent.description}</p>
             <div className="flex items-center gap-3 mt-2">
-              <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-semibold">LIVE</span>
+              <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-50 text-emerald-600 font-semibold">LIVE</span>
               <div className="flex items-center gap-2 w-32">
-                <div className="flex-1 bg-white/5 rounded-full h-1.5"><div className="bg-emerald-500 h-1.5 rounded-full" style={{ width: agent.completionPct + '%' }} /></div>
-                <span className="text-[10px] text-gray-500">{agent.completionPct}%</span>
+                <div className="flex-1 bg-white shadow-sm rounded-full h-1.5"><div className="bg-emerald-500 h-1.5 rounded-full" style={{ width: agent.completionPct + '%' }} /></div>
+                <span className="text-[10px] text-[#9CA3AF]">{agent.completionPct}%</span>
               </div>
             </div>
           </div>
         </div>
-        <Link href={agent.liveRoute} className="px-5 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-500 transition">
+        <Link href={agent.liveRoute} className="px-5 py-2.5 bg-[#1B2A4A] text-white rounded-lg text-sm font-medium hover:bg-blue-500 transition">
           Open Live Agent →
         </Link>
       </div>
@@ -221,19 +221,19 @@ export default function AdminAgentDetailPage() {
       {/* Capabilities */}
       {details && (
         <>
-          <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-6">
+          <div className="bg-white border border-[#E5E7EB] rounded-xl p-6">
             <h2 className="text-sm font-semibold mb-4">Capabilities</h2>
             <div className="space-y-3">
               {details.capabilities.map((cap, i) => (
                 <div key={i} className="flex items-start gap-3">
                   <span className={"text-[10px] px-2 py-0.5 rounded font-medium mt-0.5 " +
-                    (cap.status === 'live' ? 'bg-emerald-500/10 text-emerald-400' :
-                     cap.status === 'beta' ? 'bg-blue-500/10 text-blue-400' :
-                     'bg-gray-500/10 text-gray-500')
+                    (cap.status === 'live' ? 'bg-emerald-50 text-emerald-600' :
+                     cap.status === 'beta' ? 'bg-blue-50 text-blue-600' :
+                     'bg-gray-500/10 text-[#9CA3AF]')
                   }>{cap.status.toUpperCase()}</span>
                   <div>
                     <div className="text-sm font-medium text-white">{cap.name}</div>
-                    <div className="text-xs text-gray-500">{cap.description}</div>
+                    <div className="text-xs text-[#9CA3AF]">{cap.description}</div>
                   </div>
                 </div>
               ))}
@@ -241,29 +241,29 @@ export default function AdminAgentDetailPage() {
           </div>
 
           <div className="grid grid-cols-3 gap-4">
-            <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
-              <h3 className="text-xs font-semibold text-gray-400 uppercase mb-3">Integrations</h3>
+            <div className="bg-white border border-[#E5E7EB] rounded-xl p-5">
+              <h3 className="text-xs font-semibold text-[#6B7280] uppercase mb-3">Integrations</h3>
               {details.integrations.map((int, i) => (
-                <div key={i} className="text-sm text-gray-300 py-1">• {int}</div>
+                <div key={i} className="text-sm text-[#4B5563] py-1">• {int}</div>
               ))}
             </div>
-            <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
-              <h3 className="text-xs font-semibold text-gray-400 uppercase mb-3">Use Cases</h3>
+            <div className="bg-white border border-[#E5E7EB] rounded-xl p-5">
+              <h3 className="text-xs font-semibold text-[#6B7280] uppercase mb-3">Use Cases</h3>
               {details.useCases.map((uc, i) => (
-                <div key={i} className="text-sm text-gray-300 py-1">• {uc}</div>
+                <div key={i} className="text-sm text-[#4B5563] py-1">• {uc}</div>
               ))}
             </div>
-            <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
-              <h3 className="text-xs font-semibold text-gray-400 uppercase mb-3">Key Metrics</h3>
+            <div className="bg-white border border-[#E5E7EB] rounded-xl p-5">
+              <h3 className="text-xs font-semibold text-[#6B7280] uppercase mb-3">Key Metrics</h3>
               {details.metrics.map((m, i) => (
-                <div key={i} className="text-sm text-emerald-400 py-1">✓ {m}</div>
+                <div key={i} className="text-sm text-emerald-600 py-1">✓ {m}</div>
               ))}
             </div>
           </div>
         </>
       )}
 
-      <Link href="/admin" className="inline-block text-sm text-gray-500 hover:text-blue-400 transition">← Back to Admin Dashboard</Link>
+      <Link href="/admin" className="inline-block text-sm text-[#9CA3AF] hover:text-blue-600 transition">← Back to Admin Dashboard</Link>
     </div>
   );
 }

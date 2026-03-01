@@ -72,28 +72,28 @@ export default function SalesCRMPage() {
 
   if (loading) return (
     <div className="flex items-center justify-center py-20">
-      <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+      <div className="w-6 h-6 border-2 border-[#2A9D8F] border-t-transparent rounded-full animate-spin" />
     </div>
   );
 
   return (
     <div className="max-w-[1400px] mx-auto space-y-6">
       {toast && (
-        <div className="fixed top-4 right-4 z-50 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm px-4 py-2 rounded-lg">{toast}</div>
+        <div className="fixed top-4 right-4 z-50 bg-emerald-50 border border-emerald-500/20 text-emerald-600 text-sm px-4 py-2 rounded-lg">{toast}</div>
       )}
 
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-xl font-bold">Sales CRM</h1>
-          <p className="text-sm text-gray-500 mt-1">360-degree customer intelligence and deal pipeline</p>
+          <p className="text-sm text-[#9CA3AF] mt-1">360-degree customer intelligence and deal pipeline</p>
         </div>
         <div className="flex gap-2">
           <button onClick={() => setView('pipeline')}
-            className={'px-4 py-2 rounded-lg text-sm font-medium transition-all ' + (view === 'pipeline' ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' : 'text-gray-500 hover:text-white hover:bg-white/5')}>
+            className={'px-4 py-2 rounded-lg text-sm font-medium transition-all ' + (view === 'pipeline' ? 'bg-blue-50 text-blue-600 border border-blue-500/20' : 'text-[#9CA3AF] hover:text-[#1B2A4A] hover:bg-white shadow-sm')}>
             Pipeline
           </button>
           <button onClick={() => setView('contacts')}
-            className={'px-4 py-2 rounded-lg text-sm font-medium transition-all ' + (view === 'contacts' ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' : 'text-gray-500 hover:text-white hover:bg-white/5')}>
+            className={'px-4 py-2 rounded-lg text-sm font-medium transition-all ' + (view === 'contacts' ? 'bg-blue-50 text-blue-600 border border-blue-500/20' : 'text-[#9CA3AF] hover:text-[#1B2A4A] hover:bg-white shadow-sm')}>
             Contacts
           </button>
         </div>
@@ -102,20 +102,20 @@ export default function SalesCRMPage() {
       {/* KPI Row */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div className="bg-gradient-to-br from-blue-500/10 to-blue-500/5 border border-blue-500/20 rounded-xl p-4">
-          <div className="text-[10px] text-gray-400 uppercase tracking-wider font-mono mb-1">Pipeline Value</div>
+          <div className="text-[10px] text-[#6B7280] uppercase tracking-wider font-mono mb-1">Pipeline Value</div>
           <div className="text-2xl font-bold">${pipelineValue.toLocaleString()}</div>
         </div>
         <div className="bg-gradient-to-br from-violet-500/10 to-violet-500/5 border border-violet-500/20 rounded-xl p-4">
-          <div className="text-[10px] text-gray-400 uppercase tracking-wider font-mono mb-1">Weighted Value</div>
+          <div className="text-[10px] text-[#6B7280] uppercase tracking-wider font-mono mb-1">Weighted Value</div>
           <div className="text-2xl font-bold">${Math.round(weightedValue).toLocaleString()}</div>
         </div>
         <div className="bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border border-emerald-500/20 rounded-xl p-4">
-          <div className="text-[10px] text-gray-400 uppercase tracking-wider font-mono mb-1">Closed Won</div>
-          <div className="text-2xl font-bold text-emerald-400">${closedWon.toLocaleString()}</div>
+          <div className="text-[10px] text-[#6B7280] uppercase tracking-wider font-mono mb-1">Closed Won</div>
+          <div className="text-2xl font-bold text-emerald-600">${closedWon.toLocaleString()}</div>
         </div>
         <div className="bg-gradient-to-br from-amber-500/10 to-amber-500/5 border border-amber-500/20 rounded-xl p-4">
-          <div className="text-[10px] text-gray-400 uppercase tracking-wider font-mono mb-1">Win Rate</div>
-          <div className="text-2xl font-bold text-amber-400">{winRate}%</div>
+          <div className="text-[10px] text-[#6B7280] uppercase tracking-wider font-mono mb-1">Win Rate</div>
+          <div className="text-2xl font-bold text-amber-600">{winRate}%</div>
         </div>
       </div>
 
@@ -126,14 +126,14 @@ export default function SalesCRMPage() {
             const stageDeals = deals.filter((d: any) => d.stage === stage.key);
             const stageTotal = stageDeals.reduce((s: number, d: any) => s + d.value, 0);
             return (
-              <div key={stage.key} className="bg-[#0A0E15] border border-white/5 rounded-xl">
-                <div className="p-3 border-b border-white/5">
+              <div key={stage.key} className="bg-white border border-[#E5E7EB] rounded-xl">
+                <div className="p-3 border-b border-[#E5E7EB]">
                   <div className="flex items-center gap-2 mb-1">
                     <div className="w-2 h-2 rounded-full" style={{ background: stage.color }} />
                     <span className="text-xs font-semibold">{stage.label}</span>
-                    <span className="text-[10px] text-gray-500 ml-auto">{stageDeals.length}</span>
+                    <span className="text-[10px] text-[#9CA3AF] ml-auto">{stageDeals.length}</span>
                   </div>
-                  <div className="text-[10px] font-mono text-gray-400">${stageTotal.toLocaleString()}</div>
+                  <div className="text-[10px] font-mono text-[#6B7280]">${stageTotal.toLocaleString()}</div>
                 </div>
                 <div className="p-2 space-y-2 max-h-80 overflow-y-auto">
                   {stageDeals.map((deal: any) => {
@@ -141,12 +141,12 @@ export default function SalesCRMPage() {
                     const nextStages = STAGE_NEXT[deal.stage] || [];
                     return (
                       <Link key={deal.id} href={'/admin/sales-crm/' + deal.contactId}
-                        className="block bg-white/[0.02] border border-white/5 rounded-lg p-2.5 hover:border-white/10 transition-all cursor-pointer">
+                        className="block bg-white shadow-sm border border-[#E5E7EB] rounded-lg p-2.5 hover:border-[#E5E7EB] transition-all cursor-pointer">
                         <div className="text-xs font-medium truncate">{deal.title}</div>
-                        <div className="text-[10px] text-gray-500 mt-0.5">{contact?.name || 'Unknown'}</div>
+                        <div className="text-[10px] text-[#9CA3AF] mt-0.5">{contact?.name || 'Unknown'}</div>
                         <div className="flex items-center justify-between mt-1.5">
                           <span className="text-xs font-mono font-bold">${deal.value.toLocaleString()}</span>
-                          <span className="text-[10px] font-mono text-gray-500">{deal.probability}%</span>
+                          <span className="text-[10px] font-mono text-[#9CA3AF]">{deal.probability}%</span>
                         </div>
                         {nextStages.length > 0 && (
                           <div className="flex gap-1 mt-2">
@@ -154,7 +154,7 @@ export default function SalesCRMPage() {
                               const stg = STAGES.find(st => st.key === s);
                               return (
                                 <button key={s} onClick={(e) => { e.preventDefault(); e.stopPropagation(); moveDeal(deal.id, s); }}
-                                  className="text-[9px] px-1.5 py-0.5 rounded bg-white/5 text-gray-400 hover:text-white hover:bg-white/10 transition-colors">
+                                  className="text-[9px] px-1.5 py-0.5 rounded bg-white shadow-sm text-[#6B7280] hover:text-[#1B2A4A] hover:bg-gray-100 transition-colors">
                                   {stg?.label || s}
                                 </button>
                               );
@@ -165,7 +165,7 @@ export default function SalesCRMPage() {
                     );
                   })}
                   {stageDeals.length === 0 && (
-                    <div className="text-center py-4 text-[10px] text-gray-600">No deals</div>
+                    <div className="text-center py-4 text-[10px] text-[#6B7280]">No deals</div>
                   )}
                 </div>
               </div>
@@ -176,10 +176,10 @@ export default function SalesCRMPage() {
 
       {/* CONTACTS VIEW */}
       {view === 'contacts' && (
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl overflow-hidden">
+        <div className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-[10px] text-gray-500 uppercase tracking-wider border-b border-white/5">
+              <tr className="text-[10px] text-[#9CA3AF] uppercase tracking-wider border-b border-[#E5E7EB]">
                 <th className="text-left py-3 px-4">Contact</th>
                 <th className="text-left py-3 px-4">Company</th>
                 <th className="text-left py-3 px-4">Title</th>
@@ -193,18 +193,18 @@ export default function SalesCRMPage() {
               {contacts.map((c: any) => {
                 const cDeals = deals.filter((d: any) => d.contactId === c.id);
                 return (
-                  <tr key={c.id} className="border-b border-white/[0.03] hover:bg-white/[0.02]">
+                  <tr key={c.id} className="border-b border-white/[0.03] hover:bg-white shadow-sm">
                     <td className="py-3 px-4">
                       <div className="font-medium">{c.name}</div>
-                      <div className="text-[10px] text-gray-500 font-mono">{c.email}</div>
+                      <div className="text-[10px] text-[#9CA3AF] font-mono">{c.email}</div>
                     </td>
-                    <td className="py-3 px-4 text-gray-400">{c.company}</td>
-                    <td className="py-3 px-4 text-gray-400 text-xs">{c.title}</td>
+                    <td className="py-3 px-4 text-[#6B7280]">{c.company}</td>
+                    <td className="py-3 px-4 text-[#6B7280] text-xs">{c.title}</td>
                     <td className="py-3 px-4 text-right font-mono">${c.totalRevenue.toLocaleString()}</td>
-                    <td className="py-3 px-4 text-right font-mono text-emerald-400">${c.lifetimeValue.toLocaleString()}</td>
-                    <td className="py-3 px-4 text-right text-gray-400">{cDeals.length}</td>
+                    <td className="py-3 px-4 text-right font-mono text-emerald-600">${c.lifetimeValue.toLocaleString()}</td>
+                    <td className="py-3 px-4 text-right text-[#6B7280]">{cDeals.length}</td>
                     <td className="py-3 px-4 text-right">
-                      <Link href={'/admin/sales-crm/' + c.id} className="text-xs text-blue-400 hover:text-blue-300">
+                      <Link href={'/admin/sales-crm/' + c.id} className="text-xs text-blue-600 hover:text-blue-600">
                         View 360
                       </Link>
                     </td>

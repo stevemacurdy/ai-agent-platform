@@ -6,10 +6,10 @@ import { getSupabaseBrowser } from '@/lib/supabase-browser';
 
 const ROLES = [
   { value: 'super_admin', label: 'Super Admin', color: 'bg-rose-500/10 text-rose-400' },
-  { value: 'admin', label: 'Admin', color: 'bg-purple-500/10 text-purple-400' },
-  { value: 'employee', label: 'Employee', color: 'bg-blue-500/10 text-blue-400' },
-  { value: 'org_lead', label: 'Org Lead', color: 'bg-amber-500/10 text-amber-400' },
-  { value: 'beta_tester', label: 'Beta Tester', color: 'bg-emerald-500/10 text-emerald-400' },
+  { value: 'admin', label: 'Admin', color: 'bg-purple-50 text-purple-600' },
+  { value: 'employee', label: 'Employee', color: 'bg-blue-50 text-blue-600' },
+  { value: 'org_lead', label: 'Org Lead', color: 'bg-amber-50 text-amber-600' },
+  { value: 'beta_tester', label: 'Beta Tester', color: 'bg-emerald-50 text-emerald-600' },
 ];
 
 interface UserRecord {
@@ -170,7 +170,7 @@ export default function AdminUsersPage() {
 
   const getRoleStyle = (role: string) => {
     const r = ROLES.find(x => x.value === role);
-    return r ? r.color : 'bg-gray-500/10 text-gray-400';
+    return r ? r.color : 'bg-gray-500/10 text-[#6B7280]';
   };
 
   return (
@@ -178,11 +178,11 @@ export default function AdminUsersPage() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold">User Management</h1>
-          <p className="text-sm text-gray-400 mt-1">{users.length} users — assign roles, agents, and manage access</p>
+          <p className="text-sm text-[#6B7280] mt-1">{users.length} users — assign roles, agents, and manage access</p>
         </div>
         <button
           onClick={() => setShowCreate(!showCreate)}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-500 transition"
+          className="px-4 py-2 bg-[#1B2A4A] text-white rounded-lg text-sm font-medium hover:bg-blue-500 transition"
         >
           {showCreate ? 'Close' : '+ Add User'}
         </button>
@@ -190,17 +190,17 @@ export default function AdminUsersPage() {
 
       {/* Create User Panel */}
       {showCreate && (
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-6 space-y-5">
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-6 space-y-5">
           <div className="flex gap-3 mb-4">
             <button
               onClick={() => setCreateMode('password')}
-              className={"px-4 py-2 rounded-lg text-sm font-medium transition " + (createMode === 'password' ? 'bg-blue-600 text-white' : 'bg-white/5 text-gray-400 hover:bg-white/10')}
+              className={"px-4 py-2 rounded-lg text-sm font-medium transition " + (createMode === 'password' ? 'bg-[#1B2A4A] text-white' : 'bg-white shadow-sm text-[#6B7280] hover:bg-gray-100')}
             >
               Temp Password
             </button>
             <button
               onClick={() => setCreateMode('invite')}
-              className={"px-4 py-2 rounded-lg text-sm font-medium transition " + (createMode === 'invite' ? 'bg-blue-600 text-white' : 'bg-white/5 text-gray-400 hover:bg-white/10')}
+              className={"px-4 py-2 rounded-lg text-sm font-medium transition " + (createMode === 'invite' ? 'bg-[#1B2A4A] text-white' : 'bg-white shadow-sm text-[#6B7280] hover:bg-gray-100')}
             >
               Email Invite
             </button>
@@ -208,21 +208,21 @@ export default function AdminUsersPage() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs text-gray-400 mb-1">Email</label>
+              <label className="block text-xs text-[#6B7280] mb-1">Email</label>
               <input type="email" value={form.email} onChange={(e) => setForm(f => ({ ...f, email: e.target.value }))}
-                className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white focus:border-blue-500 focus:outline-none" placeholder="employee@company.com" />
+                className="w-full px-3 py-2 bg-white border border-[#E5E7EB] shadow-sm rounded-lg text-sm text-white focus:border-[#2A9D8F] focus:outline-none" placeholder="employee@company.com" />
             </div>
             <div>
-              <label className="block text-xs text-gray-400 mb-1">Full Name</label>
+              <label className="block text-xs text-[#6B7280] mb-1">Full Name</label>
               <input type="text" value={form.full_name} onChange={(e) => setForm(f => ({ ...f, full_name: e.target.value }))}
-                className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white focus:border-blue-500 focus:outline-none" placeholder="Jane Smith" />
+                className="w-full px-3 py-2 bg-white border border-[#E5E7EB] shadow-sm rounded-lg text-sm text-white focus:border-[#2A9D8F] focus:outline-none" placeholder="Jane Smith" />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs text-gray-400 mb-1">Role</label>
+            <label className="block text-xs text-[#6B7280] mb-1">Role</label>
             <select value={form.role} onChange={(e) => setForm(f => ({ ...f, role: e.target.value }))}
-              className="w-full px-3 py-2 bg-[#0A0E15] border border-white/10 rounded-lg text-sm text-white focus:border-blue-500 focus:outline-none"
+              className="w-full px-3 py-2 bg-white border border-[#E5E7EB] rounded-lg text-sm text-white focus:border-[#2A9D8F] focus:outline-none"
               style={{ colorScheme: 'dark' }}>
               <option value="employee">Employee</option>
               <option value="admin">Admin</option>
@@ -233,10 +233,10 @@ export default function AdminUsersPage() {
 
           <div>
             <div className="flex justify-between items-center mb-2">
-              <label className="text-xs text-gray-400">Assign Agents</label>
+              <label className="text-xs text-[#6B7280]">Assign Agents</label>
               <div className="flex gap-2">
-                <button onClick={selectAll} className="text-[10px] text-blue-400 hover:underline">Select All</button>
-                <button onClick={selectNone} className="text-[10px] text-gray-500 hover:underline">Clear</button>
+                <button onClick={selectAll} className="text-[10px] text-blue-600 hover:underline">Select All</button>
+                <button onClick={selectNone} className="text-[10px] text-[#9CA3AF] hover:underline">Clear</button>
               </div>
             </div>
             <div className="grid grid-cols-3 gap-2">
@@ -244,8 +244,8 @@ export default function AdminUsersPage() {
                 <button key={agent.slug} onClick={() => toggleAgent(agent.slug)}
                   className={"flex items-center gap-2 px-3 py-2 rounded-lg text-xs transition border " +
                     (form.agent_slugs.includes(agent.slug)
-                      ? 'bg-blue-600/20 border-blue-500/30 text-blue-400'
-                      : 'bg-white/5 border-white/5 text-gray-500 hover:border-white/10')}>
+                      ? 'bg-blue-600/20 border-blue-500/30 text-blue-600'
+                      : 'bg-white shadow-sm border-[#E5E7EB] text-[#9CA3AF] hover:border-[#E5E7EB]')}>
                   <span>{agent.icon}</span>
                   <span className="truncate">{agent.name}</span>
                 </button>
@@ -254,19 +254,19 @@ export default function AdminUsersPage() {
           </div>
 
           <button onClick={handleCreate} disabled={loading || !form.email}
-            className="px-6 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-500 disabled:opacity-50 transition">
+            className="px-6 py-2.5 bg-[#1B2A4A] text-white rounded-lg text-sm font-medium hover:bg-blue-500 disabled:opacity-50 transition">
             {loading ? 'Creating...' : createMode === 'password' ? 'Create with Temp Password' : 'Send Invite Email'}
           </button>
 
           {result && (
-            <div className={"px-4 py-3 rounded-lg text-sm " + (result.success ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400' : 'bg-red-500/10 border border-red-500/20 text-red-400')}>
+            <div className={"px-4 py-3 rounded-lg text-sm " + (result.success ? 'bg-emerald-50 border border-emerald-500/20 text-emerald-600' : 'bg-red-50 border border-red-500/20 text-red-600')}>
               {result.success ? (
                 <div>
                   <div className="font-medium">{result.message}</div>
                   {result.temp_password && (
                     <div className="mt-2 bg-black/30 rounded px-3 py-2 font-mono">
                       Temp Password: <span className="text-white font-bold">{result.temp_password}</span>
-                      <p className="text-[10px] text-gray-500 mt-1">Share this with the user.</p>
+                      <p className="text-[10px] text-[#9CA3AF] mt-1">Share this with the user.</p>
                     </div>
                   )}
                 </div>
@@ -281,21 +281,21 @@ export default function AdminUsersPage() {
       {/* User List */}
       <div className="space-y-3">
         {users.map((u) => (
-          <div key={u.id} className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
+          <div key={u.id} className="bg-white border border-[#E5E7EB] rounded-xl p-5">
             {/* User header row */}
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center text-sm font-bold text-gray-400">
+                <div className="w-9 h-9 rounded-full bg-white shadow-sm flex items-center justify-center text-sm font-bold text-[#6B7280]">
                   {(u.full_name || u.email || '?')[0].toUpperCase()}
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-semibold text-white">{u.full_name || 'No Name'}</span>
                     {u.must_reset_password && (
-                      <span className="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 font-medium">TEMP PW</span>
+                      <span className="text-[9px] px-1.5 py-0.5 rounded bg-amber-50 text-amber-600 font-medium">TEMP PW</span>
                     )}
                   </div>
-                  <div className="text-[11px] text-gray-500">{u.email}</div>
+                  <div className="text-[11px] text-[#9CA3AF]">{u.email}</div>
                 </div>
               </div>
               <div className="flex items-center gap-2">
@@ -306,16 +306,16 @@ export default function AdminUsersPage() {
                 )}
                 {editingUser === u.id ? (
                   <div className="flex gap-2">
-                    <button onClick={() => handleSaveEdits(u.id)} className="text-xs px-4 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition font-medium">Save</button>
-                    <button onClick={() => setEditingUser(null)} className="text-xs px-3 py-1.5 text-gray-500 hover:text-gray-300 transition">Cancel</button>
+                    <button onClick={() => handleSaveEdits(u.id)} className="text-xs px-4 py-1.5 bg-[#1B2A4A] text-white rounded-lg hover:bg-blue-500 transition font-medium">Save</button>
+                    <button onClick={() => setEditingUser(null)} className="text-xs px-3 py-1.5 text-[#9CA3AF] hover:text-[#4B5563] transition">Cancel</button>
                   </div>
                 ) : (
                   <div className="flex gap-2">
-                    <button onClick={() => startEditing(u)} className="text-xs px-3 py-1.5 bg-white/5 text-blue-400 rounded-lg hover:bg-white/10 transition">Edit</button>
+                    <button onClick={() => startEditing(u)} className="text-xs px-3 py-1.5 bg-white shadow-sm text-blue-600 rounded-lg hover:bg-gray-100 transition">Edit</button>
                     <button
                       onClick={() => handleResetPassword(u.id)}
                       disabled={resettingUser === u.id}
-                      className="text-xs px-3 py-1.5 bg-white/5 text-gray-500 rounded-lg hover:bg-white/10 hover:text-amber-400 transition disabled:opacity-50"
+                      className="text-xs px-3 py-1.5 bg-white shadow-sm text-[#9CA3AF] rounded-lg hover:bg-gray-100 hover:text-amber-600 transition disabled:opacity-50"
                     >
                       {resettingUser === u.id ? '...' : 'Reset PW'}
                     </button>
@@ -330,7 +330,7 @@ export default function AdminUsersPage() {
                         const d = await res.json();
                         if (d.success) reload(); else alert(d.error || "Delete failed");
                       }}
-                      className="text-xs px-3 py-1.5 bg-white/5 text-gray-500 rounded-lg hover:bg-red-500/10 hover:text-red-400 transition"
+                      className="text-xs px-3 py-1.5 bg-white shadow-sm text-[#9CA3AF] rounded-lg hover:bg-red-50 hover:text-red-600 transition"
                     >
                       Delete
                     </button>
@@ -341,10 +341,10 @@ export default function AdminUsersPage() {
 
             {/* Edit panel */}
             {editingUser === u.id && (
-              <div className="border-t border-white/5 pt-4 mt-3 space-y-4">
+              <div className="border-t border-[#E5E7EB] pt-4 mt-3 space-y-4">
                 {/* Role selector - button group */}
                 <div>
-                  <label className="text-[10px] text-gray-500 uppercase tracking-wider block mb-2">Role</label>
+                  <label className="text-[10px] text-[#9CA3AF] uppercase tracking-wider block mb-2">Role</label>
                   <div className="flex flex-wrap gap-2">
                     {ROLES.map(r => (
                       <button
@@ -353,7 +353,7 @@ export default function AdminUsersPage() {
                         className={"px-3 py-1.5 rounded-lg text-xs font-medium transition border " +
                           (editRole === r.value
                             ? r.color + ' border-current'
-                            : 'bg-white/5 border-white/5 text-gray-500 hover:border-white/10 hover:text-gray-300')}
+                            : 'bg-white shadow-sm border-[#E5E7EB] text-[#9CA3AF] hover:border-[#E5E7EB] hover:text-[#4B5563]')}
                       >
                         {r.label}
                       </button>
@@ -364,10 +364,10 @@ export default function AdminUsersPage() {
                 {/* Agent selector */}
                 <div>
                   <div className="flex justify-between items-center mb-2">
-                    <label className="text-[10px] text-gray-500 uppercase tracking-wider">Agent Access</label>
+                    <label className="text-[10px] text-[#9CA3AF] uppercase tracking-wider">Agent Access</label>
                     <div className="flex gap-2">
-                      <button onClick={() => setEditAgents(LIVE_AGENTS.map(a => a.slug))} className="text-[10px] text-blue-400 hover:underline">Select All</button>
-                      <button onClick={() => setEditAgents([])} className="text-[10px] text-gray-500 hover:underline">Clear</button>
+                      <button onClick={() => setEditAgents(LIVE_AGENTS.map(a => a.slug))} className="text-[10px] text-blue-600 hover:underline">Select All</button>
+                      <button onClick={() => setEditAgents([])} className="text-[10px] text-[#9CA3AF] hover:underline">Clear</button>
                     </div>
                   </div>
                   <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
@@ -378,8 +378,8 @@ export default function AdminUsersPage() {
                         )}
                         className={"flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[11px] transition border " +
                           (editAgents.includes(a.slug)
-                            ? 'bg-blue-600/20 border-blue-500/30 text-blue-400'
-                            : 'bg-white/5 border-white/5 text-gray-600 hover:border-white/10 hover:text-gray-400')}
+                            ? 'bg-blue-600/20 border-blue-500/30 text-blue-600'
+                            : 'bg-white shadow-sm border-[#E5E7EB] text-[#6B7280] hover:border-[#E5E7EB] hover:text-[#6B7280]')}
                         title={a.name}
                       >
                         <span>{a.icon}</span>
@@ -399,20 +399,20 @@ export default function AdminUsersPage() {
                   return a ? <span key={slug} title={a.name} className="text-sm">{a.icon}</span> : null;
                 })}
                 {(u.approved_agents || []).length > 8 && (
-                  <span className="text-[10px] text-gray-500 ml-1">+{u.approved_agents.length - 8}</span>
+                  <span className="text-[10px] text-[#9CA3AF] ml-1">+{u.approved_agents.length - 8}</span>
                 )}
                 {(u.approved_agents || []).length === 0 && (u.role === 'super_admin' || u.role === 'admin') && (
-                  <span className="text-[10px] text-purple-400 italic">all access</span>
+                  <span className="text-[10px] text-purple-600 italic">all access</span>
                 )}
                 {(u.approved_agents || []).length === 0 && u.role !== 'super_admin' && u.role !== 'admin' && (
-                  <span className="text-[10px] text-gray-600 italic">no agents assigned</span>
+                  <span className="text-[10px] text-[#6B7280] italic">no employees assigned</span>
                 )}
               </div>
             )}
 
             {/* Status message */}
             {statusMsg && statusMsg.userId === u.id && (
-              <div className={"mt-3 text-xs px-3 py-2 rounded-lg " + (statusMsg.type === 'success' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400')}>
+              <div className={"mt-3 text-xs px-3 py-2 rounded-lg " + (statusMsg.type === 'success' ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600')}>
                 {statusMsg.msg}
               </div>
             )}
@@ -420,22 +420,22 @@ export default function AdminUsersPage() {
             {/* Reset password result */}
             {resetResult && resetResult.userId === u.id && (
               <div className={"mt-3 px-4 py-3 rounded-lg text-xs " +
-                (resetResult.password ? 'bg-emerald-500/10 border border-emerald-500/20' : 'bg-red-500/10 border border-red-500/20')}>
+                (resetResult.password ? 'bg-emerald-50 border border-emerald-500/20' : 'bg-red-50 border border-red-500/20')}>
                 {resetResult.password ? (
                   <div>
-                    <div className="text-emerald-400 font-medium">New temp password:</div>
+                    <div className="text-emerald-600 font-medium">New temp password:</div>
                     <div className="font-mono text-white text-sm mt-1 select-all">{resetResult.password}</div>
-                    <div className="text-gray-500 mt-1">Share this with the user.</div>
+                    <div className="text-[#9CA3AF] mt-1">Share this with the user.</div>
                   </div>
                 ) : (
-                  <div className="text-red-400">{resetResult.error}</div>
+                  <div className="text-red-600">{resetResult.error}</div>
                 )}
               </div>
             )}
           </div>
         ))}
         {users.length === 0 && (
-          <div className="bg-[#0A0E15] border border-white/5 rounded-xl px-4 py-8 text-center text-sm text-gray-600">No users found</div>
+          <div className="bg-white border border-[#E5E7EB] rounded-xl px-4 py-8 text-center text-sm text-[#6B7280]">No users found</div>
         )}
       </div>
     </div>
