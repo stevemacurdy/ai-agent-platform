@@ -75,7 +75,7 @@ export default function LandingPage() {
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-  useEffect(() => {    const fetchBundles = async () => {      try {        const sb = getSupabaseBrowser();        const { data } = await sb.from('agent_bundles' as any).select('slug,display_name,description,price_monthly_cents,is_featured,target_tier').eq('is_active', true).order('display_order') as any;        if (data && data.length > 0) {          const mapped = data.map((b: any) => ({            name: b.display_name,            price: b.target_tier === 'enterprise' ? null : '$' + (b.price_monthly_cents / 100).toLocaleString('en-US', { maximumFractionDigits: 0 }),            desc: b.description,            features: DEFAULT_TIERS.find((t: any) => t.name.toLowerCase() === b.target_tier)?.features || [],            featured: b.is_featured,          }));          if (mapped.length > 0) setTiers(mapped);        }      } catch {}    };    fetchBundles();  }, []);
+  useEffect(() => {    const fetchBundles = async () => {      try {        const sb = getSupabaseBrowser();        const { data } = await sb.from('agent_bundles' as any).select('slug,display_name,description,price_monthly_cents,is_featured,target_tier').eq('is_active', true).order('display_order') as any;        if (data && data.length > 0) {          const mapped = data.map((b: any) => ({            name: b.display_name,            price: b.target_tier === 'enterprise' ? null : '$' + (b.price_monthly_cents / 100).toLocaleString('en-US', { maximumFractionDigits: 0 }),            desc: b.description,            features: DEFAULT_TIERS.find((t: any) => t.name === b.display_name)?.features || [],            featured: b.is_featured,          }));          if (mapped.length > 0) setTiers(mapped);        }      } catch {}    };    fetchBundles();  }, []);
 
   return (
     <div className="min-h-screen" style={{ background: '#F4F5F7', color: '#1A1A2E' }}>
@@ -321,7 +321,7 @@ export default function LandingPage() {
             <h2 className="text-3xl sm:text-4xl font-extrabold" style={{ color: '#1B2A4A' }}>Choose Your Team Size</h2>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6 max-w-[1100px] mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[1200px] mx-auto">
             {tiers.map((t, i) => (
               <div
                 key={i}
@@ -338,7 +338,7 @@ export default function LandingPage() {
                   </span>
                 )}
                 <h3 className="text-[22px] font-extrabold" style={{ fontFamily: "'Outfit', sans-serif" }}>{t.name}</h3>
-                <p className={`text-[13px] mt-1 ${t.featured ? 'text-[#6B7280]' : 'text-[#9CA3AF]'}`}>{t.desc}</p>
+                <p className={`text-[13px] mt-1 ${t.featured ? 'text-white/60' : 'text-[#9CA3AF]'}`}>{t.desc}</p>
                 <p className="text-5xl font-black mt-5 tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
                 {t.price ? (
                   <>{t.price}<span className={`text-sm font-normal ${t.featured ? 'text-[#6B7280]' : 'text-[#6B7280]'}`}>/mo</span></>
