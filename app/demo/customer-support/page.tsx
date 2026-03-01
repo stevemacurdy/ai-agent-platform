@@ -93,7 +93,7 @@ export default function SupportAgentDemo() {
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Link href="/demo" className="flex items-center gap-2 text-white/60 hover:text-white transition-colors">
+              <Link href="/demo" className="flex items-center gap-2 text-[#6B7280] hover:text-[#1B2A4A] transition-colors">
                 <ArrowLeft className="w-5 h-5" />
                 <span>Back</span>
               </Link>
@@ -107,7 +107,7 @@ export default function SupportAgentDemo() {
                     <h1 className="font-bold">Support Employee</h1>
                     <img src="/images/woulf-logo.png" alt="Woulf" className="w-5 h-5 rounded" title="Powered by Woulf" />
                   </div>
-                  <p className="text-xs text-white/60">AI-Powered Customer Service</p>
+                  <p className="text-xs text-[#6B7280]">AI-Powered Customer Service</p>
                 </div>
               </div>
             </div>
@@ -171,7 +171,7 @@ export default function SupportAgentDemo() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-violet-500/20 rounded-xl flex items-center justify-center">
-                    <Bot className="w-6 h-6 text-violet-400" />
+                    <Bot className="w-6 h-6 text-violet-600" />
                   </div>
                   <div>
                     <h3 className="font-bold">AI Employee Status</h3>
@@ -180,7 +180,7 @@ export default function SupportAgentDemo() {
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="text-right">
-                    <div className="text-2xl font-bold text-emerald-400">Active</div>
+                    <div className="text-2xl font-bold text-emerald-600">Active</div>
                     <div className="text-sm text-[#6B7280]">24/7 Coverage</div>
                   </div>
                   <div className="w-3 h-3 bg-emerald-400 rounded-full animate-pulse" />
@@ -191,22 +191,22 @@ export default function SupportAgentDemo() {
             {/* Quick Actions */}
             <div className="grid md:grid-cols-4 gap-4">
               <button onClick={handleStartCall} className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl hover:border-[#2A9D8F]/40 transition-colors text-left group">
-                <Phone className="w-8 h-8 text-violet-400 mb-4" />
+                <Phone className="w-8 h-8 text-violet-600 mb-4" />
                 <h3 className="font-semibold mb-1">Test AI Phone</h3>
                 <p className="text-sm text-[#6B7280]">Simulate an incoming call</p>
               </button>
               <button onClick={() => setActiveTab('chat')} className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl hover:border-[#2A9D8F]/40 transition-colors text-left group">
-                <MessageSquare className="w-8 h-8 text-blue-400 mb-4" />
+                <MessageSquare className="w-8 h-8 text-blue-600 mb-4" />
                 <h3 className="font-semibold mb-1">Live Chat</h3>
                 <p className="text-sm text-[#6B7280]">View active chat sessions</p>
               </button>
               <button onClick={() => setActiveTab('knowledge')} className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl hover:border-[#2A9D8F]/40 transition-colors text-left group">
-                <BookOpen className="w-8 h-8 text-emerald-400 mb-4" />
+                <BookOpen className="w-8 h-8 text-emerald-600 mb-4" />
                 <h3 className="font-semibold mb-1">Knowledge Base</h3>
                 <p className="text-sm text-[#6B7280]">Manage AI responses</p>
               </button>
               <button onClick={() => showNotification('Routing rules opened')} className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl hover:border-[#2A9D8F]/40 transition-colors text-left group">
-                <Zap className="w-8 h-8 text-orange-400 mb-4" />
+                <Zap className="w-8 h-8 text-orange-600 mb-4" />
                 <h3 className="font-semibold mb-1">Call Routing</h3>
                 <p className="text-sm text-[#6B7280]">Configure AI routing</p>
               </button>
@@ -230,9 +230,9 @@ export default function SupportAgentDemo() {
                     </div>
                     <div className="text-right">
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        ticket.status === 'open' ? 'bg-blue-500/10 text-blue-400' :
-                        ticket.status === 'resolved' ? 'bg-emerald-500/10 text-emerald-400' :
-                        'bg-yellow-500/10 text-yellow-400'
+                        ticket.status === 'open' ? 'bg-blue-50 text-blue-600' :
+                        ticket.status === 'resolved' ? 'bg-emerald-50 text-emerald-600' :
+                        'bg-yellow-50 text-yellow-600'
                       }`}>
                         {ticket.status}
                       </span>
@@ -296,24 +296,24 @@ export default function SupportAgentDemo() {
                       </td>
                       <td className="px-6 py-4">
                         <span className={`px-2 py-1 rounded-full text-xs font-medium capitalize ${
-                          ticket.priority === 'high' ? 'bg-red-500/10 text-red-400' :
-                          ticket.priority === 'medium' ? 'bg-yellow-500/10 text-yellow-400' :
-                          'bg-blue-500/10 text-blue-400'
+                          ticket.priority === 'high' ? 'bg-red-50 text-red-600' :
+                          ticket.priority === 'medium' ? 'bg-yellow-50 text-yellow-600' :
+                          'bg-blue-50 text-blue-600'
                         }`}>
                           {ticket.priority}
                         </span>
                       </td>
                       <td className="px-6 py-4">
                         <span className={`px-2 py-1 rounded-full text-xs font-medium capitalize ${
-                          ticket.status === 'open' ? 'bg-blue-500/10 text-blue-400' :
-                          ticket.status === 'resolved' ? 'bg-emerald-500/10 text-emerald-400' :
-                          'bg-yellow-500/10 text-yellow-400'
+                          ticket.status === 'open' ? 'bg-blue-50 text-blue-600' :
+                          ticket.status === 'resolved' ? 'bg-emerald-50 text-emerald-600' :
+                          'bg-yellow-50 text-yellow-600'
                         }`}>
                           {ticket.status}
                         </span>
                       </td>
                       <td className="px-6 py-4">
-                        <span className={ticket.agent === 'AI' ? 'text-violet-400' : ''}>{ticket.agent}</span>
+                        <span className={ticket.agent === 'AI' ? 'text-violet-600' : ''}>{ticket.agent}</span>
                       </td>
                       <td className="px-6 py-4 text-right">
                         <button onClick={() => { setSelectedTicket(ticket); setShowModal('ticketDetail'); }} className="p-2 hover:bg-[#e0850a] rounded-lg">
@@ -357,7 +357,7 @@ export default function SupportAgentDemo() {
                       <td className="px-6 py-4">{call.duration}</td>
                       <td className="px-6 py-4">
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          call.status === 'completed' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'
+                          call.status === 'completed' ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'
                         }`}>
                           {call.status}
                         </span>
@@ -402,11 +402,11 @@ export default function SupportAgentDemo() {
                   <div className="w-10 h-10 bg-gradient-to-br from-violet-500 to-purple-500 rounded-full flex items-center justify-center font-bold">P</div>
                   <div>
                     <div className="font-medium">Pacific Logistics</div>
-                    <div className="text-xs text-emerald-400">Online</div>
+                    <div className="text-xs text-emerald-600">Online</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="px-2 py-1 bg-violet-500/10 text-violet-400 text-xs rounded-full flex items-center gap-1">
+                  <span className="px-2 py-1 bg-violet-500/10 text-violet-600 text-xs rounded-full flex items-center gap-1">
                     <Bot className="w-3 h-3" /> AI Handling
                   </span>
                 </div>
@@ -417,9 +417,9 @@ export default function SupportAgentDemo() {
                     <div className={`max-w-[70%] p-3 rounded-lg ${
                       msg.role === 'customer' ? 'bg-gray-100' :
                       msg.role === 'ai' ? 'bg-violet-500/20 border border-violet-500/30' :
-                      'bg-blue-500/20'
+                      'bg-blue-100'
                     }`}>
-                      {msg.role === 'ai' && <div className="text-xs text-violet-400 mb-1 flex items-center gap-1"><Bot className="w-3 h-3" /> AI Employee</div>}
+                      {msg.role === 'ai' && <div className="text-xs text-violet-600 mb-1 flex items-center gap-1"><Bot className="w-3 h-3" /> AI Employee</div>}
                       <p className="text-sm">{msg.text}</p>
                     </div>
                   </div>
@@ -456,13 +456,13 @@ export default function SupportAgentDemo() {
               {knowledgeBase.map((article) => (
                 <div key={article.id} className="p-4 bg-white shadow-sm border border-[#E5E7EB] rounded-xl hover:border-[#2A9D8F]/40 cursor-pointer" onClick={() => showNotification('Article opened')}>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="px-2 py-0.5 bg-violet-500/10 text-violet-400 text-xs rounded">{article.category}</span>
+                    <span className="px-2 py-0.5 bg-violet-500/10 text-violet-600 text-xs rounded">{article.category}</span>
                     <span className="text-xs text-[#6B7280]">{article.views} views</span>
                   </div>
                   <h3 className="font-medium mb-2">{article.title}</h3>
                   <div className="flex items-center gap-2">
                     <button onClick={(e) => { e.stopPropagation(); showNotification('Article edited'); }} className="text-xs text-[#6B7280] hover:text-[#1B2A4A]">Edit</button>
-                    <button onClick={(e) => { e.stopPropagation(); showNotification('Article deleted'); }} className="text-xs text-red-400 hover:text-red-300">Delete</button>
+                    <button onClick={(e) => { e.stopPropagation(); showNotification('Article deleted'); }} className="text-xs text-red-600 hover:text-red-300">Delete</button>
                   </div>
                 </div>
               ))}
@@ -499,7 +499,7 @@ export default function SupportAgentDemo() {
                   ].map((int, i) => (
                     <div key={i} className="flex items-center justify-between p-3 bg-[#F4F5F7] rounded-lg">
                       <span>{int.name}</span>
-                      <button onClick={() => showNotification(int.connected ? `Disconnected ${int.name}` : `Connected ${int.name}`)} className={`px-3 py-1 rounded-lg text-sm font-medium ${int.connected ? 'bg-emerald-500/10 text-emerald-400' : 'bg-gray-100 text-[#6B7280]'}`}>
+                      <button onClick={() => showNotification(int.connected ? `Disconnected ${int.name}` : `Connected ${int.name}`)} className={`px-3 py-1 rounded-lg text-sm font-medium ${int.connected ? 'bg-emerald-50 text-emerald-600' : 'bg-gray-100 text-[#6B7280]'}`}>
                         {int.connected ? 'Connected' : 'Connect'}
                       </button>
                     </div>
@@ -519,7 +519,7 @@ export default function SupportAgentDemo() {
               <div className="p-6">
                 <div className="text-center py-8">
                   <div className="w-20 h-20 bg-violet-500/20 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
-                    <Phone className="w-10 h-10 text-violet-400" />
+                    <Phone className="w-10 h-10 text-violet-600" />
                   </div>
                   <h2 className="text-2xl font-bold mb-2">AI Call Active</h2>
                   <p className="text-[#6B7280] mb-6">Simulating incoming customer call...</p>
@@ -557,7 +557,7 @@ export default function SupportAgentDemo() {
                   <div>
                     <label className="block text-sm font-medium mb-2">Priority</label>
                     <div className="grid grid-cols-3 gap-2">
-                      <button className="p-2 bg-red-500/10 text-red-400 rounded-lg border border-red-500/30">High</button>
+                      <button className="p-2 bg-red-50 text-red-600 rounded-lg border border-red-500/30">High</button>
                       <button className="p-2 bg-[#F4F5F7] rounded-lg">Medium</button>
                       <button className="p-2 bg-[#F4F5F7] rounded-lg">Low</button>
                     </div>

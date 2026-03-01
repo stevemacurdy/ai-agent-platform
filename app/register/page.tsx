@@ -103,7 +103,7 @@ export default function RegisterPage() {
             ].map((item) => (
               <div key={item.text} className="flex items-start gap-3">
                 <span className="text-lg mt-0.5">{item.icon}</span>
-                <span className="text-[13px] text-white/50 leading-relaxed">{item.text}</span>
+                <span className="text-[13px] text-[#6B7280] leading-relaxed">{item.text}</span>
               </div>
             ))}
           </div>
@@ -112,7 +112,7 @@ export default function RegisterPage() {
         <div className="relative z-10 flex items-center gap-3">
           <Image src="/woulf-badge.png" alt="Woulf Group" width={28} height={28} className="opacity-40"
             style={{ animation: 'float 4s ease-in-out infinite' }} />
-          <p className="text-[11px] text-white/20">Enterprise security · SOC 2 ready · Tenant isolated</p>
+          <p className="text-[11px] text-[#9CA3AF]">Enterprise security · SOC 2 ready · Tenant isolated</p>
         </div>
       </div>
 
@@ -131,7 +131,7 @@ export default function RegisterPage() {
           <h2 className="text-[28px] font-extrabold tracking-tight" style={{ color: '#1B2A4A', fontFamily: "'Outfit', sans-serif" }}>
             Start hiring AI Employees
           </h2>
-          <p className="mt-1.5 text-[15px] text-gray-500">Create your workspace — it takes under 60 seconds</p>
+          <p className="mt-1.5 text-[15px] text-[#9CA3AF]">Create your workspace — it takes under 60 seconds</p>
 
           {error && (
             <div className="mt-5 px-4 py-3 rounded-xl text-sm font-medium"
@@ -209,18 +209,18 @@ export default function RegisterPage() {
             </button>
           </form>
 
-          <p className="mt-4 text-center text-[12px] text-gray-400">
+          <p className="mt-4 text-center text-[12px] text-[#6B7280]">
             By creating an account you agree to our{' '}
-            <Link href="/terms" className="underline hover:text-gray-600">Terms</Link> and{' '}
-            <Link href="/privacy" className="underline hover:text-gray-600">Privacy Policy</Link>
+            <Link href="/terms" className="underline hover:text-[#6B7280]">Terms</Link> and{' '}
+            <Link href="/privacy" className="underline hover:text-[#6B7280]">Privacy Policy</Link>
           </p>
           <div className="mt-6 text-center">
-            <p className="text-[14px] text-gray-500">
+            <p className="text-[14px] text-[#9CA3AF]">
               Already have an account?{' '}
               <Link href="/login" className="font-bold hover:underline" style={{ color: '#1B2A4A' }}>Sign in</Link>
             </p>
           </div>
-          <p className="mt-10 text-center text-[11px] text-gray-400">© 2026 WoulfAI by Woulf Group · Grantsville, UT</p>
+          <p className="mt-10 text-center text-[11px] text-[#6B7280]">© 2026 WoulfAI by Woulf Group · Grantsville, UT</p>
         </div>
       </div>
     </div>

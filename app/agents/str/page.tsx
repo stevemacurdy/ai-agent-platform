@@ -419,7 +419,7 @@ export default function STRAgent() {
                   )}
                   <div className={'max-w-[75%] px-3 py-2 rounded-xl text-sm ' +
                     (l.direction === 'out'
-                      ? 'bg-blue-600/20 text-blue-100 rounded-br-sm'
+                      ? 'bg-blue-50 text-blue-100 rounded-br-sm'
                       : l.channel === 'Call'
                         ? 'bg-purple-50 text-purple-200 rounded-bl-sm italic'
                         : 'bg-white/[0.06] text-[#4B5563] rounded-bl-sm')}>
@@ -427,7 +427,7 @@ export default function STRAgent() {
                     {l.message}
                   </div>
                   {l.direction === 'out' && (
-                    <div className="w-7 h-7 bg-blue-600/20 rounded-lg flex items-center justify-center flex-shrink-0 text-[10px]">🤖</div>
+                    <div className="w-7 h-7 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0 text-[10px]">🤖</div>
                   )}
                 </div>
               ))}

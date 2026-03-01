@@ -203,8 +203,8 @@ export default function BusinessOnboarding() {
                   onClick={() => setAnswers(a => ({ ...a, industry: opt }))}
                   className={"w-full text-left px-4 py-3 rounded-xl text-sm transition border " +
                     (answers.industry === opt
-                      ? 'bg-blue-600/20 border-blue-300 text-blue-600'
-                      : 'bg-white/[0.03] border-[#E5E7EB] text-[#6B7280] hover:border-[#E5E7EB] hover:text-[#1B2A4A]')}
+                      ? 'bg-blue-50 border-blue-300 text-blue-600'
+                      : 'bg-white shadow-sm border-[#E5E7EB] text-[#6B7280] hover:border-[#E5E7EB] hover:text-[#1B2A4A]')}
                 >
                   {opt}
                 </button>
@@ -231,8 +231,8 @@ export default function BusinessOnboarding() {
                   onClick={() => setAnswers(a => ({ ...a, employees: opt }))}
                   className={"px-4 py-3 rounded-xl text-sm transition border " +
                     (answers.employees === opt
-                      ? 'bg-blue-600/20 border-blue-300 text-blue-600'
-                      : 'bg-white/[0.03] border-[#E5E7EB] text-[#6B7280] hover:border-[#E5E7EB] hover:text-[#1B2A4A]')}
+                      ? 'bg-blue-50 border-blue-300 text-blue-600'
+                      : 'bg-white shadow-sm border-[#E5E7EB] text-[#6B7280] hover:border-[#E5E7EB] hover:text-[#1B2A4A]')}
                 >
                   {opt}
                 </button>
@@ -250,8 +250,8 @@ export default function BusinessOnboarding() {
                   onClick={() => toggleMulti('bottlenecks', opt)}
                   className={"w-full text-left px-4 py-3 rounded-xl text-sm transition border flex items-center gap-3 " +
                     (answers.bottlenecks.includes(opt)
-                      ? 'bg-blue-600/20 border-blue-300 text-blue-600'
-                      : 'bg-white/[0.03] border-[#E5E7EB] text-[#6B7280] hover:border-[#E5E7EB] hover:text-[#1B2A4A]')}
+                      ? 'bg-blue-50 border-blue-300 text-blue-600'
+                      : 'bg-white shadow-sm border-[#E5E7EB] text-[#6B7280] hover:border-[#E5E7EB] hover:text-[#1B2A4A]')}
                 >
                   <span className={"w-4 h-4 rounded border flex-shrink-0 flex items-center justify-center " +
                     (answers.bottlenecks.includes(opt) ? 'bg-blue-500 border-blue-500' : 'border-gray-600')}>
@@ -273,8 +273,8 @@ export default function BusinessOnboarding() {
                   onClick={() => toggleMulti('automate', cat)}
                   className={"w-full text-left px-4 py-3 rounded-xl text-sm transition border flex items-center gap-3 " +
                     (answers.automate.includes(cat)
-                      ? 'bg-blue-600/20 border-blue-300 text-blue-600'
-                      : 'bg-white/[0.03] border-[#E5E7EB] text-[#6B7280] hover:border-[#E5E7EB] hover:text-[#1B2A4A]')}
+                      ? 'bg-blue-50 border-blue-300 text-blue-600'
+                      : 'bg-white shadow-sm border-[#E5E7EB] text-[#6B7280] hover:border-[#E5E7EB] hover:text-[#1B2A4A]')}
                 >
                   <span className={"w-4 h-4 rounded border flex-shrink-0 flex items-center justify-center " +
                     (answers.automate.includes(cat) ? 'bg-blue-500 border-blue-500' : 'border-gray-600')}>
@@ -315,8 +315,8 @@ export default function BusinessOnboarding() {
                   onClick={() => setAnswers(a => ({ ...a, timeline: opt }))}
                   className={"w-full text-left px-4 py-3 rounded-xl text-sm transition border " +
                     (answers.timeline === opt
-                      ? 'bg-blue-600/20 border-blue-300 text-blue-600'
-                      : 'bg-white/[0.03] border-[#E5E7EB] text-[#6B7280] hover:border-[#E5E7EB] hover:text-[#1B2A4A]')}
+                      ? 'bg-blue-50 border-blue-300 text-blue-600'
+                      : 'bg-white shadow-sm border-[#E5E7EB] text-[#6B7280] hover:border-[#E5E7EB] hover:text-[#1B2A4A]')}
                 >
                   {opt}
                 </button>

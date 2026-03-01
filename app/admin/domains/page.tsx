@@ -103,14 +103,14 @@ export default function AdminDomainsPage() {
   }
 
   const statusColors: Record<string, string> = {
-    active: 'bg-green-500/20 text-green-600 border-green-500/30',
+    active: 'bg-green-100 text-green-600 border-green-500/30',
     pending: 'bg-yellow-500/20 text-yellow-600 border-yellow-500/30',
     verifying: 'bg-blue-100 text-blue-600 border-blue-500/30',
-    failed: 'bg-red-500/20 text-red-600 border-red-500/30',
+    failed: 'bg-red-100 text-red-600 border-red-500/30',
   };
 
   return (
-    <div className="min-h-screen bg-[#06080D] text-white p-8">
+    <div className="min-h-screen bg-[#F4F5F7] text-white p-8">
       <div className="max-w-5xl mx-auto">
         <h1 className="text-2xl font-bold mb-2">Custom Domains</h1>
         <p className="text-[#6B7280] mb-8">Assign custom domains to company portals for white-label access.</p>

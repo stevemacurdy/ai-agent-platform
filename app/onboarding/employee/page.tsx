@@ -212,7 +212,7 @@ export default function EmployeeOnboardingPage() {
                 </div>
 
                 {error && (
-                  <div className="px-3 py-2 rounded-lg text-sm bg-red-500/10 text-red-600 border border-red-500/20">
+                  <div className="px-3 py-2 rounded-lg text-sm bg-red-50 text-red-600 border border-red-500/20">
                     {error}
                   </div>
                 )}
@@ -246,7 +246,7 @@ export default function EmployeeOnboardingPage() {
               </p>
 
               <div className="bg-white border border-[#E5E7EB] shadow-sm rounded-lg p-4 mb-6">
-                <h3 className="text-sm font-medium text-white mb-3">Your AI Agents</h3>
+                <h3 className="text-sm font-medium text-white mb-3">Your AI Employees</h3>
                 <div className="grid grid-cols-2 gap-2">
                   {[
                     { name: 'WMS Agent', desc: 'Warehouse management' },

@@ -225,7 +225,7 @@ export default function AdminCompaniesPage() {
                   </div>
                   <div className="flex gap-2">
                     <Link href={'/portal?company=' + c.slug}
-                      className="px-3 py-1.5 bg-blue-600/10 text-blue-600 rounded-lg text-xs hover:bg-blue-600/20 transition">
+                      className="px-3 py-1.5 bg-blue-600/10 text-blue-600 rounded-lg text-xs hover:bg-blue-50 transition">
                       Open Portal
                     </Link>
                     <button onClick={() => startEditAgents(c)}

@@ -394,7 +394,7 @@ export default function AdminPricingPage() {
                 onClick={() => toggleBundleAgent(a.slug)}
                 className={"flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] transition border " +
                   (bundleForm.agent_slugs.includes(a.slug)
-                    ? 'bg-blue-600/20 border-blue-500/30 text-blue-600'
+                    ? 'bg-blue-50 border-blue-500/30 text-blue-600'
                     : 'bg-white shadow-sm border-[#E5E7EB] text-[#6B7280] hover:border-[#E5E7EB]')}
               >
                 <span>{a.icon}</span>

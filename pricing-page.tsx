@@ -113,13 +113,13 @@ export default function PricingPage() {
             </span>
           </Link>
           <div className="hidden md:flex items-center gap-8">
-            <Link href="/solutions" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] transition-colors">Solutions</Link>
+            <Link href="/solutions" className="text-sm text-white/60 hover:text-white transition-colors">Solutions</Link>
             <Link href="/pricing" className="text-sm text-white font-medium">Pricing</Link>
-            <Link href="/case-studies" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] transition-colors">Case Studies</Link>
-            <Link href="/about" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] transition-colors">About</Link>
+            <Link href="/case-studies" className="text-sm text-white/60 hover:text-white transition-colors">Case Studies</Link>
+            <Link href="/about" className="text-sm text-white/60 hover:text-white transition-colors">About</Link>
           </div>
           <div className="flex items-center gap-3">
-            <Link href="/login" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] px-4 py-2 transition-colors">Sign In</Link>
+            <Link href="/login" className="text-sm text-white/60 hover:text-white px-4 py-2 transition-colors">Sign In</Link>
             <Link href="/register" className="text-sm font-bold text-white px-5 py-2.5 rounded-xl transition-all hover:-translate-y-px"
               style={{ background: '#F5920B', boxShadow: '0 4px 16px rgba(245,146,11,0.3)' }}>
               Hire Your AI Team
@@ -135,7 +135,7 @@ export default function PricingPage() {
           <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight" style={{ color: '#1B2A4A' }}>
             Choose Your Team Size
           </h1>
-          <p className="mt-4 text-[#9CA3AF] text-lg">
+          <p className="mt-4 text-gray-500 text-lg">
             Hire AI Employees that work for your business. Scale up or down anytime.
           </p>
           {canceled && (
@@ -172,15 +172,15 @@ export default function PricingPage() {
               {plan.isEnterprise ? (
                 <div className="mt-2">
                   <p className="text-2xl font-bold" style={{ color: plan.popular ? 'rgba(255,255,255,0.7)' : '#6B7280' }}>Custom Pricing</p>
-                  <p className={`text-xs mt-1 ${plan.popular ? 'text-[#6B7280]' : 'text-[#6B7280]'}`}>Tailored to your organization</p>
+                  <p className={`text-xs mt-1 ${plan.popular ? 'text-white/40' : 'text-gray-400'}`}>Tailored to your organization</p>
                 </div>
               ) : (
                 <div className="mt-2">
                   <p className="text-5xl font-black tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
                     ${plan.price.toLocaleString()}
-                    <span className={`text-sm font-normal ${plan.popular ? 'text-[#6B7280]' : 'text-[#6B7280]'}`}>/mo</span>
+                    <span className={`text-sm font-normal ${plan.popular ? 'text-white/40' : 'text-gray-400'}`}>/mo</span>
                   </p>
-                  <p className={`text-xs mt-1 ${plan.popular ? 'text-[#6B7280]' : 'text-[#6B7280]'}`}>
+                  <p className={`text-xs mt-1 ${plan.popular ? 'text-white/40' : 'text-gray-400'}`}>
                     {plan.employees} employees · {plan.companies === -1 ? 'Unlimited' : plan.companies} {plan.companies === 1 ? 'workspace' : 'workspaces'} · {plan.users === -1 ? 'Unlimited' : plan.users} users
                   </p>
                 </div>
@@ -193,7 +193,7 @@ export default function PricingPage() {
                       style={{ background: plan.popular ? 'rgba(245,146,11,0.2)' : 'rgba(42,157,143,0.1)' }}>
                       <Check color={plan.popular ? '#F5920B' : '#2A9D8F'} />
                     </span>
-                    <span className={plan.popular ? 'text-white/75' : 'text-[#6B7280]'}>{f}</span>
+                    <span className={plan.popular ? 'text-white/75' : 'text-gray-600'}>{f}</span>
                   </li>
                 ))}
               </ul>
@@ -216,9 +216,9 @@ export default function PricingPage() {
         </div>
 
         <div className="text-center mt-10 space-y-1">
-          <p className="text-sm text-[#6B7280]">Starter and Professional plans include a 14-day free trial. No credit card required.</p>
-          <p className="text-xs text-[#6B7280]">Powered by Stripe · PCI compliant · Cancel anytime</p>
-          <p className="text-sm text-[#9CA3AF] mt-4">
+          <p className="text-sm text-gray-400">Starter and Professional plans include a 14-day free trial. No credit card required.</p>
+          <p className="text-xs text-gray-400">Powered by Stripe · PCI compliant · Cancel anytime</p>
+          <p className="text-sm text-gray-500 mt-4">
             Need something custom? <Link href="/contact" className="font-semibold" style={{ color: '#F5920B' }}>Contact our team</Link>
           </p>
         </div>
@@ -227,10 +227,10 @@ export default function PricingPage() {
       {/* FOOTER */}
       <footer className="py-8 px-6 border-t" style={{ borderColor: '#E5E7EB' }}>
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <span className="text-[11px] text-[#6B7280]">© 2026 WoulfAI by Woulf Group</span>
+          <span className="text-[11px] text-gray-400">© 2026 WoulfAI by Woulf Group</span>
           <div className="flex gap-4">
-            <Link href="/privacy" className="text-[11px] text-[#6B7280] hover:text-[#6B7280]">Privacy</Link>
-            <Link href="/terms" className="text-[11px] text-[#6B7280] hover:text-[#6B7280]">Terms</Link>
+            <Link href="/privacy" className="text-[11px] text-gray-400 hover:text-gray-600">Privacy</Link>
+            <Link href="/terms" className="text-[11px] text-gray-400 hover:text-gray-600">Terms</Link>
           </div>
         </div>
       </footer>

@@ -501,7 +501,7 @@ export default function AgentCreatorPage() {
                 <div className="p-4 border-b border-[#E5E7EB] flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className={`p-2 rounded-lg ${
-                      manifest.deployment_status === 'production_ready' ? 'bg-green-500/20' :
+                      manifest.deployment_status === 'production_ready' ? 'bg-green-100' :
                       manifest.deployment_status === 'simulation_ready' ? 'bg-yellow-500/20' :
                       'bg-gray-500/20'
                     }`}>
@@ -644,10 +644,10 @@ export default function AgentCreatorPage() {
                           {manifest.api_routes.map((route, i) => (
                             <div key={i} className="flex items-center gap-2">
                               <span className={`px-2 py-0.5 rounded text-xs font-mono ${
-                                route.method === 'GET' ? 'bg-green-500/20 text-green-600' :
+                                route.method === 'GET' ? 'bg-green-100 text-green-600' :
                                 route.method === 'POST' ? 'bg-blue-100 text-blue-600' :
                                 route.method === 'PUT' ? 'bg-yellow-500/20 text-yellow-600' :
-                                'bg-red-500/20 text-red-600'
+                                'bg-red-100 text-red-600'
                               }`}>{route.method}</span>
                               <code className="text-[#6B7280]">{route.path}</code>
                             </div>

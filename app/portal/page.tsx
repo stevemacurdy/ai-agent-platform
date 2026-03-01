@@ -39,7 +39,7 @@ export default function PortalPage() {
     <div className="min-h-screen flex items-center justify-center" style={{ background: '#F4F5F7' }}>
       <div className="text-center">
         <div className="w-10 h-10 rounded-full border-[3px] mx-auto mb-4" style={{ borderColor: '#E5E7EB', borderTopColor: '#2A9D8F', animation: 'spin 0.8s linear infinite' }} />
-        <p className="text-sm text-gray-500" style={{ fontFamily: "'DM Sans', sans-serif" }}>Loading your workspace...</p>
+        <p className="text-sm text-[#9CA3AF]" style={{ fontFamily: "'DM Sans', sans-serif" }}>Loading your workspace...</p>
       </div>
     </div>
   );
@@ -67,7 +67,7 @@ export default function PortalPage() {
             </span>
           </Link>
           <div className="flex items-center gap-4">
-            <Link href="/billing" className="hidden sm:flex items-center gap-1.5 text-[13px] text-white/50 hover:text-white/80 transition-colors">
+            <Link href="/billing" className="hidden sm:flex items-center gap-1.5 text-[13px] text-[#6B7280] hover:text-[#4B5563] transition-colors">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="4" width="22" height="16" rx="2" /><line x1="1" y1="10" x2="23" y2="10" /></svg>
               Billing
             </Link>
@@ -75,7 +75,7 @@ export default function PortalPage() {
               <div className="w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-bold text-white" style={{ background: '#2A9D8F' }}>
                 {user?.name?.charAt(0)?.toUpperCase() || user?.email?.charAt(0)?.toUpperCase() || 'U'}
               </div>
-              <span className="hidden sm:block text-[13px] text-white/70 font-medium max-w-[120px] truncate">{user?.name || user?.email}</span>
+              <span className="hidden sm:block text-[13px] text-[#4B5563] font-medium max-w-[120px] truncate">{user?.name || user?.email}</span>
             </div>
           </div>
         </div>
@@ -89,7 +89,7 @@ export default function PortalPage() {
             <span className="text-2xl">🎉</span>
             <div>
               <p className="text-[15px] font-bold" style={{ color: '#1B2A4A' }}>Welcome to WoulfAI{user?.name ? `, ${user.name.split(' ')[0]}` : ''}!</p>
-              <p className="text-[13px] text-gray-500">Your workspace is ready. Start by exploring your AI Employees below.</p>
+              <p className="text-[13px] text-[#9CA3AF]">Your workspace is ready. Start by exploring your AI Employees below.</p>
             </div>
           </div>
         )}
@@ -97,7 +97,7 @@ export default function PortalPage() {
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8 fade-up">
           <div>
             <h1 className="text-[28px] font-extrabold tracking-tight" style={{ color: '#1B2A4A', fontFamily: "'Outfit', sans-serif" }}>Your AI Team</h1>
-            <p className="mt-1 text-[15px] text-gray-500">{activeCount} AI Employee{activeCount !== 1 ? 's' : ''} working for you</p>
+            <p className="mt-1 text-[15px] text-[#9CA3AF]">{activeCount} AI Employee{activeCount !== 1 ? 's' : ''} working for you</p>
           </div>
           <div className="flex items-center gap-3">
             <div className="relative">
@@ -134,7 +134,7 @@ export default function PortalPage() {
                 <span className="w-2 h-2 rounded-full" style={{ background: stat.accent, animation: 'pulse-dot 2s infinite' }} />
               </div>
               <p className="text-2xl font-extrabold tracking-tight" style={{ color: '#1B2A4A', fontFamily: "'Outfit', sans-serif" }}>{stat.value}</p>
-              <p className="text-[12px] text-gray-500 mt-0.5">{stat.label}</p>
+              <p className="text-[12px] text-[#9CA3AF] mt-0.5">{stat.label}</p>
             </div>
           ))}
         </div>
@@ -145,7 +145,7 @@ export default function PortalPage() {
             <div className="col-span-full text-center py-16">
               <p className="text-5xl mb-4">🔍</p>
               <p className="text-lg font-bold" style={{ color: '#1B2A4A' }}>{searchQuery ? 'No employees match your search' : 'No AI Employees yet'}</p>
-              <p className="text-[14px] text-gray-500 mt-1.5">{searchQuery ? 'Try a different search term' : 'Contact your admin to enable AI Employees for your workspace'}</p>
+              <p className="text-[14px] text-[#9CA3AF] mt-1.5">{searchQuery ? 'Try a different search term' : 'Contact your admin to enable AI Employees for your workspace'}</p>
             </div>
           ) : filtered.map((agent) => {
             const catColor = agent.color || '#2A9D8F';
@@ -168,7 +168,7 @@ export default function PortalPage() {
                       <span className="inline-block mt-1 text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider"
                         style={{ background: `${catColor}10`, color: catColor }}>{agent.primary_category?.display_name || agent.category}</span>
                     )}
-                    {(agent.description || agent.short_description) && <p className="text-[12px] text-gray-500 mt-2 leading-relaxed line-clamp-2">{agent.description || agent.short_description}</p>}
+                    {(agent.description || agent.short_description) && <p className="text-[12px] text-[#9CA3AF] mt-2 leading-relaxed line-clamp-2">{agent.description || agent.short_description}</p>}
                   </div>
                 </div>
                 <div className="absolute bottom-5 right-5 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -192,7 +192,7 @@ export default function PortalPage() {
               <span className="text-2xl">{link.icon}</span>
               <div>
                 <p className="font-bold text-[14px]" style={{ color: '#1B2A4A' }}>{link.label}</p>
-                <p className="text-[12px] text-gray-500">{link.desc}</p>
+                <p className="text-[12px] text-[#9CA3AF]">{link.desc}</p>
               </div>
             </Link>
           ))}
@@ -203,12 +203,12 @@ export default function PortalPage() {
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <Image src="/woulf-badge.png" alt="Woulf Group" width={20} height={20} className="opacity-50" />
-            <span className="text-[11px] text-gray-400">© 2026 WoulfAI by Woulf Group</span>
+            <span className="text-[11px] text-[#6B7280]">© 2026 WoulfAI by Woulf Group</span>
           </div>
           <div className="flex items-center gap-4">
-            <Link href="/security" className="text-[11px] text-gray-400 hover:text-gray-600 transition-colors">Security</Link>
-            <Link href="/terms" className="text-[11px] text-gray-400 hover:text-gray-600 transition-colors">Terms</Link>
-            <Link href="/privacy" className="text-[11px] text-gray-400 hover:text-gray-600 transition-colors">Privacy</Link>
+            <Link href="/security" className="text-[11px] text-[#6B7280] hover:text-[#6B7280] transition-colors">Security</Link>
+            <Link href="/terms" className="text-[11px] text-[#6B7280] hover:text-[#6B7280] transition-colors">Terms</Link>
+            <Link href="/privacy" className="text-[11px] text-[#6B7280] hover:text-[#6B7280] transition-colors">Privacy</Link>
           </div>
         </div>
       </footer>

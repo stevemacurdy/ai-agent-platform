@@ -68,18 +68,18 @@ export default function InviteAcceptPage() {
   }
 
   if (loading) return (
-    <div className="min-h-screen bg-[#06080D] flex items-center justify-center">
-      <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+    <div className="min-h-screen bg-[#F4F5F7] flex items-center justify-center">
+      <div className="w-8 h-8 border-2 border-[#2A9D8F] border-t-transparent rounded-full animate-spin" />
     </div>
   )
 
   if (error) return (
-    <div className="min-h-screen bg-[#06080D] flex items-center justify-center p-4">
-      <div className="bg-[#0D1117] border border-white/10 rounded-xl p-8 max-w-md w-full text-center">
+    <div className="min-h-screen bg-[#F4F5F7] flex items-center justify-center p-4">
+      <div className="bg-[#0D1117] border border-[#E5E7EB] rounded-xl p-8 max-w-md w-full text-center">
         <div className="text-4xl mb-4">{'\u26A0\uFE0F'}</div>
         <h1 className="text-xl font-bold text-white mb-2">Invite Issue</h1>
-        <p className="text-gray-400 mb-6">{error}</p>
-        <Link href="/login" className="px-6 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-500">
+        <p className="text-[#6B7280] mb-6">{error}</p>
+        <Link href="/login" className="px-6 py-2 bg-[#1B2A4A] text-white rounded-lg text-sm hover:bg-blue-500">
           Go to Login
         </Link>
       </div>
@@ -87,61 +87,61 @@ export default function InviteAcceptPage() {
   )
 
   if (success) return (
-    <div className="min-h-screen bg-[#06080D] flex items-center justify-center p-4">
-      <div className="bg-[#0D1117] border border-white/10 rounded-xl p-8 max-w-md w-full text-center">
+    <div className="min-h-screen bg-[#F4F5F7] flex items-center justify-center p-4">
+      <div className="bg-[#0D1117] border border-[#E5E7EB] rounded-xl p-8 max-w-md w-full text-center">
         <div className="text-4xl mb-4">{'\u2705'}</div>
         <h1 className="text-xl font-bold text-white mb-2">Welcome!</h1>
-        <p className="text-gray-400">Account created. Redirecting to login...</p>
+        <p className="text-[#6B7280]">Account created. Redirecting to login...</p>
       </div>
     </div>
   )
 
   return (
-    <div className="min-h-screen bg-[#06080D] flex items-center justify-center p-4">
-      <div className="bg-[#0D1117] border border-white/10 rounded-xl p-8 max-w-md w-full">
+    <div className="min-h-screen bg-[#F4F5F7] flex items-center justify-center p-4">
+      <div className="bg-[#0D1117] border border-[#E5E7EB] rounded-xl p-8 max-w-md w-full">
         <div className="text-center mb-6">
           <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-xl flex items-center justify-center text-xl font-bold mx-auto mb-3">W</div>
           <h1 className="text-xl font-bold text-white">Join WoulfAI</h1>
-          <p className="text-sm text-gray-400 mt-1">You&apos;ve been invited as <span className="text-blue-400">{invite.role}</span></p>
+          <p className="text-sm text-[#6B7280] mt-1">You&apos;ve been invited as <span className="text-blue-600">{invite.role}</span></p>
           {invite.companies && (
-            <p className="text-xs text-gray-500 mt-1">Company: {invite.companies.name}</p>
+            <p className="text-xs text-[#9CA3AF] mt-1">Company: {invite.companies.name}</p>
           )}
         </div>
 
         <div className="space-y-4">
           <div>
-            <label className="block text-xs text-gray-400 mb-1">Email</label>
+            <label className="block text-xs text-[#6B7280] mb-1">Email</label>
             <input type="email" value={invite.email} disabled
-              className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-gray-500" />
+              className="w-full px-3 py-2 bg-white border border-[#E5E7EB] shadow-sm rounded-lg text-sm text-[#9CA3AF]" />
           </div>
           <div>
-            <label className="block text-xs text-gray-400 mb-1">Full Name *</label>
+            <label className="block text-xs text-[#6B7280] mb-1">Full Name *</label>
             <input type="text" value={form.fullName} onChange={e => setForm(p => ({ ...p, fullName: e.target.value }))}
-              className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white focus:border-blue-500/50 focus:outline-none" />
+              className="w-full px-3 py-2 bg-white border border-[#E5E7EB] shadow-sm rounded-lg text-sm text-white focus:border-[#2A9D8F]/50 focus:outline-none" />
           </div>
           <div>
-            <label className="block text-xs text-gray-400 mb-1">Password * (min 8 characters)</label>
+            <label className="block text-xs text-[#6B7280] mb-1">Password * (min 8 characters)</label>
             <input type="password" value={form.password} onChange={e => setForm(p => ({ ...p, password: e.target.value }))}
-              className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white focus:border-blue-500/50 focus:outline-none" />
+              className="w-full px-3 py-2 bg-white border border-[#E5E7EB] shadow-sm rounded-lg text-sm text-white focus:border-[#2A9D8F]/50 focus:outline-none" />
           </div>
           <div>
-            <label className="block text-xs text-gray-400 mb-1">Confirm Password *</label>
+            <label className="block text-xs text-[#6B7280] mb-1">Confirm Password *</label>
             <input type="password" value={form.confirmPassword} onChange={e => setForm(p => ({ ...p, confirmPassword: e.target.value }))}
-              className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white focus:border-blue-500/50 focus:outline-none" />
+              className="w-full px-3 py-2 bg-white border border-[#E5E7EB] shadow-sm rounded-lg text-sm text-white focus:border-[#2A9D8F]/50 focus:outline-none" />
           </div>
 
           {formError && (
-            <div className="px-3 py-2 rounded-lg text-sm bg-red-500/10 text-red-400 border border-red-500/20">{formError}</div>
+            <div className="px-3 py-2 rounded-lg text-sm bg-red-50 text-red-600 border border-red-500/20">{formError}</div>
           )}
 
           <button onClick={handleSubmit} disabled={submitting}
-            className="w-full py-3 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-500 disabled:opacity-50 transition-all">
+            className="w-full py-3 bg-[#1B2A4A] text-white rounded-lg text-sm font-medium hover:bg-blue-500 disabled:opacity-50 transition-all">
             {submitting ? 'Creating Account...' : 'Accept Invite & Create Account'}
           </button>
         </div>
 
-        <p className="text-center text-xs text-gray-500 mt-4">
-          Already have an account? <Link href="/login" className="text-blue-400 hover:underline">Sign in</Link>
+        <p className="text-center text-xs text-[#9CA3AF] mt-4">
+          Already have an account? <Link href="/login" className="text-blue-600 hover:underline">Sign in</Link>
         </p>
       </div>
     </div>

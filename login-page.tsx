@@ -59,7 +59,7 @@ export default function LoginPage() {
               <span className="text-[9px] uppercase tracking-[2.5px] -mt-0.5" style={{ color: '#9CA3AF' }}>by Woulf Group</span>
             </div>
           </Link>
-          <p className="mt-5 text-[15px] text-[#9CA3AF]">Sign in to manage your AI employees</p>
+          <p className="mt-5 text-[15px] text-gray-500">Sign in to manage your AI employees</p>
         </div>
 
         <div className="bg-white rounded-2xl p-8 border border-gray-200/60" style={{ boxShadow: '0 4px 12px rgba(27,42,74,0.06)' }}>
@@ -110,7 +110,7 @@ export default function LoginPage() {
           </form>
 
           <div className="mt-5 flex items-center justify-between">
-            <Link href="/forgot-password" className="text-[13px] text-[#6B7280] hover:text-[#6B7280] transition-colors">
+            <Link href="/forgot-password" className="text-[13px] text-gray-400 hover:text-gray-600 transition-colors">
               Forgot password?
             </Link>
             <Link href="/register" className="text-[13px] font-bold transition-colors hover:underline" style={{ color: '#1B2A4A' }}>
@@ -121,7 +121,7 @@ export default function LoginPage() {
           {/* Dev quick fills — REMOVE BEFORE PRODUCTION */}
           {process.env.NODE_ENV === 'development' && (
             <div className="mt-6 pt-5 border-t" style={{ borderColor: '#E5E7EB' }}>
-              <div className="text-[9px] text-[#6B7280] uppercase tracking-wider text-center mb-3">Dev Quick Login</div>
+              <div className="text-[9px] text-gray-400 uppercase tracking-wider text-center mb-3">Dev Quick Login</div>
               <div className="grid grid-cols-2 gap-2">
                 {[
                   { label: 'Steve (Admin)', email: 'steve@woulfgroup.com', pw: 'admin123' },
@@ -130,10 +130,10 @@ export default function LoginPage() {
                   { label: 'Sarah (Beta)', email: 'demo@client1.com', pw: 'nova-peak-55' },
                 ].map(q => (
                   <button key={q.email} onClick={() => { setEmail(q.email); setPassword(q.pw); }}
-                    className="px-3 py-2 rounded-lg text-[10px] text-[#6B7280] hover:text-[#6B7280] transition-all text-left border"
+                    className="px-3 py-2 rounded-lg text-[10px] text-gray-400 hover:text-gray-600 transition-all text-left border"
                     style={{ background: '#FAFBFC', borderColor: '#E5E7EB' }}>
                     <div className="font-medium">{q.label}</div>
-                    <div className="text-[#6B7280] truncate">{q.email}</div>
+                    <div className="text-gray-400 truncate">{q.email}</div>
                   </button>
                 ))}
               </div>
@@ -141,11 +141,11 @@ export default function LoginPage() {
           )}
         </div>
 
-        <p className="text-center text-[13px] text-[#6B7280] mt-6">
+        <p className="text-center text-[13px] text-gray-400 mt-6">
           Don&apos;t have an account?{' '}
           <Link href="/register" className="font-bold hover:underline" style={{ color: '#1B2A4A' }}>Create your workspace</Link>
         </p>
-        <p className="text-center text-[11px] text-[#6B7280] mt-6">© 2026 WoulfAI by Woulf Group</p>
+        <p className="text-center text-[11px] text-gray-400 mt-6">© 2026 WoulfAI by Woulf Group</p>
       </div>
     </div>
   );

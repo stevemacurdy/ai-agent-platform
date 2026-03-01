@@ -50,7 +50,7 @@ export default function DemoAgentPage() {
     <div className="max-w-lg mx-auto py-20 text-center space-y-4">
       <div className="text-4xl">🤖</div>
       <div className="text-lg font-semibold">Agent not found</div>
-      <Link href="/demo" className="text-blue-400 text-sm">← Back to all agents</Link>
+      <Link href="/demo" className="text-blue-600 text-sm">← Back to all agents</Link>
     </div>
   );
 
@@ -62,14 +62,14 @@ export default function DemoAgentPage() {
           <div className="text-5xl">{agent.icon}</div>
           <div>
             <h1 className="text-2xl font-bold">{agent.name}</h1>
-            <p className="text-lg text-gray-300 mt-1">{caps?.headline || agent.description}</p>
+            <p className="text-lg text-[#4B5563] mt-1">{caps?.headline || agent.description}</p>
             <div className="flex items-center gap-3 mt-2">
-              <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-semibold">LIVE</span>
-              <span className="text-[10px] text-gray-500">{agent.completionPct}% Complete</span>
+              <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-50 text-emerald-600 font-semibold">LIVE</span>
+              <span className="text-[10px] text-[#9CA3AF]">{agent.completionPct}% Complete</span>
             </div>
           </div>
         </div>
-        <button onClick={() => router.push('/onboarding?agent=' + agent.slug)} className="px-6 py-3 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-500 transition">
+        <button onClick={() => router.push('/onboarding?agent=' + agent.slug)} className="px-6 py-3 bg-[#1B2A4A] text-white rounded-lg text-sm font-semibold hover:bg-blue-500 transition">
           Start Free →
         </button>
       </div>
@@ -77,11 +77,11 @@ export default function DemoAgentPage() {
       {/* KPI Preview */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {kpis.map((kpi, i) => (
-          <div key={i} className="bg-[#0A0E15] border border-white/5 rounded-xl p-4">
-            <div className="text-[9px] text-gray-500 uppercase">{kpi.label}</div>
+          <div key={i} className="bg-white border border-[#E5E7EB] rounded-xl p-4">
+            <div className="text-[9px] text-[#9CA3AF] uppercase">{kpi.label}</div>
             <div className="text-xl font-mono font-bold mt-1">{kpi.value}</div>
-            {kpi.trend && <div className="text-[10px] text-emerald-400 mt-1">{kpi.trend}</div>}
-            <div className="text-[9px] text-amber-400/50 mt-1 italic">sample data</div>
+            {kpi.trend && <div className="text-[10px] text-emerald-600 mt-1">{kpi.trend}</div>}
+            <div className="text-[9px] text-amber-600/50 mt-1 italic">sample data</div>
           </div>
         ))}
       </div>
@@ -93,8 +93,8 @@ export default function DemoAgentPage() {
           <div className="space-y-3">
             {caps.bullets.map((b, i) => (
               <div key={i} className="flex items-start gap-3">
-                <span className="text-blue-400 mt-0.5">✓</span>
-                <span className="text-sm text-gray-300">{b}</span>
+                <span className="text-blue-600 mt-0.5">✓</span>
+                <span className="text-sm text-[#4B5563]">{b}</span>
               </div>
             ))}
           </div>
@@ -103,19 +103,19 @@ export default function DemoAgentPage() {
 
       {/* Aha Moment */}
       {caps && (
-        <div className="bg-[#0A0E15] border border-emerald-500/20 rounded-xl p-6">
-          <div className="text-[10px] text-emerald-400 uppercase font-semibold mb-2">⚡ First 10 Minutes</div>
+        <div className="bg-white border border-emerald-500/20 rounded-xl p-6">
+          <div className="text-[10px] text-emerald-600 uppercase font-semibold mb-2">⚡ First 10 Minutes</div>
           <p className="text-lg text-white font-medium">{caps.aha}</p>
         </div>
       )}
 
       {/* Features */}
-      <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
-        <h3 className="text-sm font-semibold text-gray-400 mb-3">Built-In Features ({agent.features.length})</h3>
+      <div className="bg-white border border-[#E5E7EB] rounded-xl p-5">
+        <h3 className="text-sm font-semibold text-[#6B7280] mb-3">Built-In Features ({agent.features.length})</h3>
         <div className="grid grid-cols-2 gap-2">
           {agent.features.map((f, i) => (
-            <div key={i} className="flex items-center gap-2 py-1.5 text-sm text-gray-300">
-              <span className="text-emerald-400">✓</span> {typeof f === 'string' ? f : f.name}
+            <div key={i} className="flex items-center gap-2 py-1.5 text-sm text-[#4B5563]">
+              <span className="text-emerald-600">✓</span> {typeof f === 'string' ? f : f.name}
             </div>
           ))}
         </div>
@@ -124,10 +124,10 @@ export default function DemoAgentPage() {
       {/* CTA */}
       <div className="bg-gradient-to-r from-blue-600/20 to-cyan-600/20 border border-blue-500/20 rounded-xl p-8 text-center">
         <h3 className="text-xl font-bold mb-2">Ready to see {agent.name} with YOUR data?</h3>
-        <p className="text-sm text-gray-400 mb-5">Connect in under 10 minutes. No credit card required.</p>
+        <p className="text-sm text-[#6B7280] mb-5">Connect in under 10 minutes. No credit card required.</p>
         <div className="flex justify-center gap-3">
-          <button onClick={() => router.push('/onboarding?agent=' + agent.slug)} className="px-6 py-3 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-500 transition">Start Onboarding</button>
-          <button onClick={() => router.push(agent.liveRoute)} className="px-6 py-3 bg-white/5 text-gray-300 rounded-lg text-sm font-semibold hover:bg-white/10 transition">View Live Agent</button>
+          <button onClick={() => router.push('/onboarding?agent=' + agent.slug)} className="px-6 py-3 bg-[#1B2A4A] text-white rounded-lg text-sm font-semibold hover:bg-blue-500 transition">Start Onboarding</button>
+          <button onClick={() => router.push(agent.liveRoute)} className="px-6 py-3 bg-white shadow-sm text-[#4B5563] rounded-lg text-sm font-semibold hover:bg-gray-100 transition">View Live Agent</button>
         </div>
       </div>
     </div>

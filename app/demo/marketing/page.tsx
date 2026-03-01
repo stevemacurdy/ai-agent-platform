@@ -186,7 +186,7 @@ Most businesses still rely on manual processes for critical operations:
 - **Finance departments** chase payments manually
 - **Customer support** can't scale without hiring
 
-## Enter AI Agents
+## Enter AI Employees
 
 AI Employees are purpose-built digital employees that handle specific business functions 24/7. Unlike generic chatbots, these agents understand your industry, integrate with your tools, and deliver measurable ROI.
 
@@ -308,7 +308,7 @@ Budget Recommendation: $50-100/day for testing`
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Link href="/demo" className="flex items-center gap-2 text-white/60 hover:text-white transition-colors">
+              <Link href="/demo" className="flex items-center gap-2 text-[#6B7280] hover:text-[#1B2A4A] transition-colors">
                 <ArrowLeft className="w-5 h-5" />
                 <span>Back</span>
               </Link>
@@ -322,7 +322,7 @@ Budget Recommendation: $50-100/day for testing`
                     <h1 className="font-bold">Marketing Employee</h1>
                     <img src="/images/woulf-logo.png" alt="Woulf" className="w-5 h-5 rounded" title="Powered by Woulf" />
                   </div>
-                  <p className="text-xs text-white/60">AI-Powered Campaign Management</p>
+                  <p className="text-xs text-[#6B7280]">AI-Powered Campaign Management</p>
                 </div>
               </div>
             </div>
@@ -384,7 +384,7 @@ Budget Recommendation: $50-100/day for testing`
                 <div key={i} className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                   <div className="flex items-center justify-between mb-4">
                     <kpi.icon className="w-5 h-5 text-[#6B7280]" />
-                    <span className={`text-sm flex items-center gap-1 ${kpi.up ? 'text-emerald-400' : 'text-red-400'}`}>
+                    <span className={`text-sm flex items-center gap-1 ${kpi.up ? 'text-emerald-600' : 'text-red-600'}`}>
                       {kpi.up ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
                       {kpi.change}
                     </span>
@@ -433,7 +433,7 @@ Budget Recommendation: $50-100/day for testing`
                 className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl hover:border-[#2A9D8F]/40 transition-colors text-left group"
               >
                 <div className="w-12 h-12 bg-pink-500/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <Wand2 className="w-6 h-6 text-pink-400" />
+                  <Wand2 className="w-6 h-6 text-pink-600" />
                 </div>
                 <h3 className="font-semibold mb-1">Generate Content</h3>
                 <p className="text-sm text-[#6B7280]">Use AI to create blog posts, social content, or emails</p>
@@ -443,8 +443,8 @@ Budget Recommendation: $50-100/day for testing`
                 onClick={() => setShowModal('campaign')}
                 className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl hover:border-[#2A9D8F]/40 transition-colors text-left group"
               >
-                <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <Target className="w-6 h-6 text-blue-400" />
+                <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Target className="w-6 h-6 text-blue-600" />
                 </div>
                 <h3 className="font-semibold mb-1">Launch Campaign</h3>
                 <p className="text-sm text-[#6B7280]">Create and launch a new marketing campaign</p>
@@ -454,8 +454,8 @@ Budget Recommendation: $50-100/day for testing`
                 onClick={() => setShowModal('splitTest')}
                 className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl hover:border-[#2A9D8F]/40 transition-colors text-left group"
               >
-                <div className="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <Activity className="w-6 h-6 text-purple-400" />
+                <div className="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Activity className="w-6 h-6 text-purple-600" />
                 </div>
                 <h3 className="font-semibold mb-1">A/B Test</h3>
                 <p className="text-sm text-[#6B7280]">Set up a new split test to optimize conversions</p>
@@ -492,7 +492,7 @@ Budget Recommendation: $50-100/day for testing`
                         <td className="py-4 font-medium">{campaign.name}</td>
                         <td className="py-4">
                           <span className="flex items-center gap-2">
-                            {campaign.platform === 'Google Ads' && <Globe className="w-4 h-4 text-blue-400" />}
+                            {campaign.platform === 'Google Ads' && <Globe className="w-4 h-4 text-blue-600" />}
                             {campaign.platform === 'LinkedIn' && <Linkedin className="w-4 h-4 text-blue-500" />}
                             {campaign.platform === 'Meta' && <Facebook className="w-4 h-4 text-blue-600" />}
                             {campaign.platform}
@@ -500,13 +500,13 @@ Budget Recommendation: $50-100/day for testing`
                         </td>
                         <td className="py-4">
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                            campaign.status === 'active' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-yellow-500/10 text-yellow-400'
+                            campaign.status === 'active' ? 'bg-emerald-50 text-emerald-600' : 'bg-yellow-50 text-yellow-600'
                           }`}>
                             {campaign.status}
                           </span>
                         </td>
                         <td className="py-4 text-right">${campaign.spend.toLocaleString()}</td>
-                        <td className="py-4 text-right text-emerald-400">${campaign.revenue.toLocaleString()}</td>
+                        <td className="py-4 text-right text-emerald-600">${campaign.revenue.toLocaleString()}</td>
                         <td className="py-4 text-right font-medium">{campaign.roas}x</td>
                         <td className="py-4 text-right">
                           <div className="flex items-center justify-end gap-2">
@@ -537,7 +537,7 @@ Budget Recommendation: $50-100/day for testing`
                 <h2 className="text-xl font-bold">Split Tests</h2>
                 <button 
                   onClick={() => setShowModal('splitTest')}
-                  className="text-sm bg-purple-500/10 text-purple-400 px-3 py-1.5 rounded-lg hover:bg-purple-500/20 transition-colors flex items-center gap-1"
+                  className="text-sm bg-purple-50 text-purple-600 px-3 py-1.5 rounded-lg hover:bg-purple-500/20 transition-colors flex items-center gap-1"
                 >
                   <Plus className="w-4 h-4" /> New Test
                 </button>
@@ -548,24 +548,24 @@ Budget Recommendation: $50-100/day for testing`
                     <div className="flex items-center justify-between mb-3">
                       <span className="font-medium">{test.name}</span>
                       <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                        test.status === 'winner' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-blue-500/10 text-blue-400'
+                        test.status === 'winner' ? 'bg-emerald-50 text-emerald-600' : 'bg-blue-50 text-blue-600'
                       }`}>
                         {test.status === 'winner' ? '✓ Winner' : 'Running'}
                       </span>
                     </div>
                     <div className="flex items-center gap-4 text-sm">
-                      <div className={`flex-1 p-2 rounded ${test.winner === 'A' ? 'bg-emerald-500/10 border border-emerald-500/30' : 'bg-[#F4F5F7]'}`}>
+                      <div className={`flex-1 p-2 rounded ${test.winner === 'A' ? 'bg-emerald-50 border border-emerald-500/30' : 'bg-[#F4F5F7]'}`}>
                         <div className="text-xs text-[#6B7280] mb-1">Variant A</div>
                         <div className="truncate">{test.variantA}</div>
                       </div>
                       <span className="text-[#9CA3AF]">vs</span>
-                      <div className={`flex-1 p-2 rounded ${test.winner === 'B' ? 'bg-emerald-500/10 border border-emerald-500/30' : 'bg-[#F4F5F7]'}`}>
+                      <div className={`flex-1 p-2 rounded ${test.winner === 'B' ? 'bg-emerald-50 border border-emerald-500/30' : 'bg-[#F4F5F7]'}`}>
                         <div className="text-xs text-[#6B7280] mb-1">Variant B</div>
                         <div className="truncate">{test.variantB}</div>
                       </div>
                     </div>
                     <div className="flex items-center justify-between mt-3 pt-3 border-t border-[#E5E7EB]">
-                      <span className="text-sm text-emerald-400 font-medium">{test.lift} lift</span>
+                      <span className="text-sm text-emerald-600 font-medium">{test.lift} lift</span>
                       <span className="text-sm text-[#6B7280]">{test.confidence}% confidence</span>
                     </div>
                     {test.status === 'running' && (
@@ -639,7 +639,7 @@ Budget Recommendation: $50-100/day for testing`
                       </td>
                       <td className="px-6 py-4">
                         <span className="flex items-center gap-2">
-                          {campaign.platform === 'Google Ads' && <Globe className="w-4 h-4 text-blue-400" />}
+                          {campaign.platform === 'Google Ads' && <Globe className="w-4 h-4 text-blue-600" />}
                           {campaign.platform === 'LinkedIn' && <Linkedin className="w-4 h-4 text-blue-500" />}
                           {campaign.platform === 'Meta' && <Facebook className="w-4 h-4 text-blue-600" />}
                           {campaign.platform}
@@ -647,13 +647,13 @@ Budget Recommendation: $50-100/day for testing`
                       </td>
                       <td className="px-6 py-4">
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          campaign.status === 'active' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-yellow-500/10 text-yellow-400'
+                          campaign.status === 'active' ? 'bg-emerald-50 text-emerald-600' : 'bg-yellow-50 text-yellow-600'
                         }`}>
                           {campaign.status}
                         </span>
                       </td>
                       <td className="px-6 py-4 text-right">${campaign.spend.toLocaleString()}</td>
-                      <td className="px-6 py-4 text-right text-emerald-400">${campaign.revenue.toLocaleString()}</td>
+                      <td className="px-6 py-4 text-right text-emerald-600">${campaign.revenue.toLocaleString()}</td>
                       <td className="px-6 py-4 text-right font-medium">{campaign.roas}x</td>
                       <td className="px-6 py-4 text-right">{campaign.leads}</td>
                       <td className="px-6 py-4 text-right">
@@ -681,7 +681,7 @@ Budget Recommendation: $50-100/day for testing`
                           </button>
                           <button 
                             onClick={() => showNotification(`Campaign deleted`)}
-                            className="p-2 hover:bg-[#e0850a] rounded-lg transition-colors text-red-400"
+                            className="p-2 hover:bg-[#e0850a] rounded-lg transition-colors text-red-600"
                             title="Delete"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -700,15 +700,15 @@ Budget Recommendation: $50-100/day for testing`
         {activeTab === 'crm' && (
           <div className="space-y-6">
             {/* Connection Status */}
-            <div className={`p-4 rounded-xl border ${hubspotConnected ? 'bg-emerald-500/10 border-emerald-500/30' : hubspotLoading ? 'bg-yellow-500/10 border-yellow-500/30' : 'bg-red-500/10 border-red-500/30'}`}>
+            <div className={`p-4 rounded-xl border ${hubspotConnected ? 'bg-emerald-50 border-emerald-500/30' : hubspotLoading ? 'bg-yellow-50 border-yellow-500/30' : 'bg-red-50 border-red-500/30'}`}>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   {hubspotLoading ? (
-                    <Loader2 className="w-5 h-5 text-yellow-400 animate-spin" />
+                    <Loader2 className="w-5 h-5 text-yellow-600 animate-spin" />
                   ) : hubspotConnected ? (
-                    <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                    <CheckCircle2 className="w-5 h-5 text-emerald-600" />
                   ) : (
-                    <XCircle className="w-5 h-5 text-red-400" />
+                    <XCircle className="w-5 h-5 text-red-600" />
                   )}
                   <div>
                     <span className="font-medium">
@@ -737,22 +737,22 @@ Budget Recommendation: $50-100/day for testing`
                 {/* CRM Stats */}
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                   <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
-                    <Users className="w-5 h-5 text-blue-400 mb-3" />
+                    <Users className="w-5 h-5 text-blue-600 mb-3" />
                     <div className="text-2xl font-bold">{hubspotStats?.totalContacts || 0}</div>
                     <div className="text-sm text-[#6B7280]">Total Contacts</div>
                   </div>
                   <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
-                    <Building2 className="w-5 h-5 text-purple-400 mb-3" />
+                    <Building2 className="w-5 h-5 text-purple-600 mb-3" />
                     <div className="text-2xl font-bold">{hubspotStats?.totalCompanies || 0}</div>
                     <div className="text-sm text-[#6B7280]">Companies</div>
                   </div>
                   <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
-                    <Target className="w-5 h-5 text-pink-400 mb-3" />
+                    <Target className="w-5 h-5 text-pink-600 mb-3" />
                     <div className="text-2xl font-bold">{hubspotStats?.totalDeals || 0}</div>
                     <div className="text-sm text-[#6B7280]">Active Deals</div>
                   </div>
                   <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
-                    <DollarSign className="w-5 h-5 text-emerald-400 mb-3" />
+                    <DollarSign className="w-5 h-5 text-emerald-600 mb-3" />
                     <div className="text-2xl font-bold">${(hubspotStats?.pipelineValue || 0).toLocaleString()}</div>
                     <div className="text-sm text-[#6B7280]">Pipeline Value</div>
                   </div>
@@ -871,9 +871,9 @@ Budget Recommendation: $50-100/day for testing`
                             <td className="py-4 text-[#6B7280]">{contact.properties?.company || '-'}</td>
                             <td className="py-4">
                               <span className={`px-2 py-1 rounded-full text-xs ${
-                                contact.properties?.lifecyclestage === 'customer' ? 'bg-emerald-500/20 text-emerald-400' :
-                                contact.properties?.lifecyclestage === 'lead' ? 'bg-blue-500/20 text-blue-400' :
-                                contact.properties?.lifecyclestage === 'opportunity' ? 'bg-purple-500/20 text-purple-400' :
+                                contact.properties?.lifecyclestage === 'customer' ? 'bg-emerald-100 text-emerald-600' :
+                                contact.properties?.lifecyclestage === 'lead' ? 'bg-blue-100 text-blue-600' :
+                                contact.properties?.lifecyclestage === 'opportunity' ? 'bg-purple-500/20 text-purple-600' :
                                 'bg-gray-500/20 text-[#6B7280]'
                               }`}>
                                 {contact.properties?.lifecyclestage || 'subscriber'}
@@ -911,7 +911,7 @@ Budget Recommendation: $50-100/day for testing`
                         <div key={deal.id} className="p-4 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg hover:border-[#2A9D8F]/40 transition-colors">
                           <div className="flex items-center justify-between mb-2">
                             <span className="font-medium truncate">{deal.properties?.dealname}</span>
-                            <span className="text-emerald-400 font-bold">
+                            <span className="text-emerald-600 font-bold">
                               ${parseFloat(deal.properties?.amount || 0).toLocaleString()}
                             </span>
                           </div>
@@ -1016,10 +1016,10 @@ Budget Recommendation: $50-100/day for testing`
                       </td>
                       <td className="px-6 py-4">
                         <span className="flex items-center gap-2 capitalize">
-                          {content.type === 'blog' && <FileText className="w-4 h-4 text-blue-400" />}
-                          {content.type === 'video' && <Youtube className="w-4 h-4 text-red-400" />}
-                          {content.type === 'social' && <Share2 className="w-4 h-4 text-pink-400" />}
-                          {content.type === 'email' && <Mail className="w-4 h-4 text-purple-400" />}
+                          {content.type === 'blog' && <FileText className="w-4 h-4 text-blue-600" />}
+                          {content.type === 'video' && <Youtube className="w-4 h-4 text-red-600" />}
+                          {content.type === 'social' && <Share2 className="w-4 h-4 text-pink-600" />}
+                          {content.type === 'email' && <Mail className="w-4 h-4 text-purple-600" />}
                           {content.type}
                         </span>
                       </td>
@@ -1027,7 +1027,7 @@ Budget Recommendation: $50-100/day for testing`
                       <td className="px-6 py-4">{content.date}</td>
                       <td className="px-6 py-4">
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          content.status === 'scheduled' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-yellow-500/10 text-yellow-400'
+                          content.status === 'scheduled' ? 'bg-emerald-50 text-emerald-600' : 'bg-yellow-50 text-yellow-600'
                         }`}>
                           {content.status}
                         </span>
@@ -1048,7 +1048,7 @@ Budget Recommendation: $50-100/day for testing`
                           </button>
                           <button 
                             onClick={() => showNotification('Content deleted')}
-                            className="p-2 hover:bg-[#e0850a] rounded-lg transition-colors text-red-400"
+                            className="p-2 hover:bg-[#e0850a] rounded-lg transition-colors text-red-600"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -1094,7 +1094,7 @@ Budget Recommendation: $50-100/day for testing`
                       </div>
                     </div>
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      brand.status === 'active' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-gray-500/10 text-[#6B7280]'
+                      brand.status === 'active' ? 'bg-emerald-50 text-emerald-600' : 'bg-gray-500/10 text-[#6B7280]'
                     }`}>
                       {brand.status}
                     </span>
@@ -1111,8 +1111,8 @@ Budget Recommendation: $50-100/day for testing`
                     <div className="p-3 bg-[#F4F5F7] rounded-lg">
                       <div className="text-xs text-[#6B7280] mb-1">Trademark</div>
                       <span className={`text-sm font-medium ${
-                        brand.trademark === 'registered' ? 'text-emerald-400' :
-                        brand.trademark === 'filed' ? 'text-blue-400' : 'text-yellow-400'
+                        brand.trademark === 'registered' ? 'text-emerald-600' :
+                        brand.trademark === 'filed' ? 'text-blue-600' : 'text-yellow-600'
                       }`}>
                         {brand.trademark === 'registered' ? '® Registered' :
                          brand.trademark === 'filed' ? '™ Filed' : '⏳ Pending'}
@@ -1168,7 +1168,7 @@ Budget Recommendation: $50-100/day for testing`
             {/* Document Categories */}
             <div className="grid grid-cols-4 gap-4">
               {['All Documents', 'Sales Collateral', 'Brand Assets', 'Product Info', 'Market Research'].map((cat, i) => (
-                <button key={cat} className={`p-3 rounded-lg text-sm font-medium transition-colors ${i === 0 ? 'bg-pink-500/20 text-pink-400 border border-pink-500/30' : 'bg-[#F4F5F7] text-[#6B7280] hover:bg-[#e0850a]'}`}>
+                <button key={cat} className={`p-3 rounded-lg text-sm font-medium transition-colors ${i === 0 ? 'bg-pink-500/20 text-pink-600 border border-pink-500/30' : 'bg-[#F4F5F7] text-[#6B7280] hover:bg-[#e0850a]'}`}>
                   {cat}
                 </button>
               ))}
@@ -1192,8 +1192,8 @@ Budget Recommendation: $50-100/day for testing`
                     <tr key={doc.id} className="border-b border-[#E5E7EB] hover:bg-white shadow-sm">
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-red-500/20 rounded-lg flex items-center justify-center">
-                            <FileText className="w-5 h-5 text-red-400" />
+                          <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                            <FileText className="w-5 h-5 text-red-600" />
                           </div>
                           <div>
                             <div className="font-medium">{doc.name}</div>
@@ -1230,7 +1230,7 @@ Budget Recommendation: $50-100/day for testing`
             <div className="p-6 bg-gradient-to-br from-pink-500/10 to-purple-500/10 border border-pink-500/20 rounded-xl">
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 bg-pink-500/20 rounded-lg flex items-center justify-center">
-                  <Bot className="w-5 h-5 text-pink-400" />
+                  <Bot className="w-5 h-5 text-pink-600" />
                 </div>
                 <div>
                   <h3 className="font-semibold mb-2">AI Document Analysis</h3>
@@ -1278,7 +1278,7 @@ Budget Recommendation: $50-100/day for testing`
                   <div className="text-sm text-[#6B7280] mb-1">{stat.label}</div>
                   <div className="flex items-end justify-between">
                     <span className="text-2xl font-bold">{stat.value}</span>
-                    <span className={`text-sm ${stat.change.startsWith('+') ? 'text-emerald-400' : 'text-red-400'}`}>
+                    <span className={`text-sm ${stat.change.startsWith('+') ? 'text-emerald-600' : 'text-red-600'}`}>
                       {stat.change}
                     </span>
                   </div>
@@ -1352,18 +1352,18 @@ Budget Recommendation: $50-100/day for testing`
                     <p className="text-sm text-[#6B7280]">Manage contacts, companies, and deals</p>
                   </div>
                 </div>
-                <div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg ${hubspotConnected ? 'bg-emerald-500/10' : 'bg-red-500/10'}`}>
+                <div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg ${hubspotConnected ? 'bg-emerald-50' : 'bg-red-50'}`}>
                   {hubspotLoading ? (
-                    <Loader2 className="w-4 h-4 text-yellow-400 animate-spin" />
+                    <Loader2 className="w-4 h-4 text-yellow-600 animate-spin" />
                   ) : hubspotConnected ? (
                     <>
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                      <span className="text-sm text-emerald-400">Connected</span>
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                      <span className="text-sm text-emerald-600">Connected</span>
                     </>
                   ) : (
                     <>
-                      <XCircle className="w-4 h-4 text-red-400" />
-                      <span className="text-sm text-red-400">Not Connected</span>
+                      <XCircle className="w-4 h-4 text-red-600" />
+                      <span className="text-sm text-red-600">Not Connected</span>
                     </>
                   )}
                 </div>
@@ -1372,15 +1372,15 @@ Budget Recommendation: $50-100/day for testing`
               {hubspotConnected ? (
                 <div className="grid grid-cols-3 gap-4 p-4 bg-[#F4F5F7] rounded-lg">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-blue-400">{hubspotStats?.totalContacts || 0}</div>
+                    <div className="text-2xl font-bold text-blue-600">{hubspotStats?.totalContacts || 0}</div>
                     <div className="text-sm text-[#6B7280]">Contacts</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-purple-400">{hubspotStats?.totalCompanies || 0}</div>
+                    <div className="text-2xl font-bold text-purple-600">{hubspotStats?.totalCompanies || 0}</div>
                     <div className="text-sm text-[#6B7280]">Companies</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-emerald-400">{hubspotStats?.totalDeals || 0}</div>
+                    <div className="text-2xl font-bold text-emerald-600">{hubspotStats?.totalDeals || 0}</div>
                     <div className="text-sm text-[#6B7280]">Deals</div>
                   </div>
                 </div>
@@ -1417,7 +1417,7 @@ Budget Recommendation: $50-100/day for testing`
                         onClick={() => showNotification(platform.connected ? `Disconnected ${platform.name}` : `Connected ${platform.name}`)}
                         className={`px-3 py-1 rounded-lg text-sm font-medium ${
                           platform.connected 
-                            ? 'bg-emerald-500/10 text-emerald-400' 
+                            ? 'bg-emerald-50 text-emerald-600' 
                             : 'bg-gray-100 text-[#6B7280] hover:bg-gray-200'
                         }`}
                       >
@@ -1760,8 +1760,8 @@ Budget Recommendation: $50-100/day for testing`
                 </div>
                 
                 <div className="space-y-4">
-                  <div className="p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
-                    <p className="text-sm text-blue-300">
+                  <div className="p-4 bg-blue-50 border border-blue-500/30 rounded-lg">
+                    <p className="text-sm text-blue-600">
                       This wizard will help you prepare your trademark application. Final filing will be done through the USPTO.
                     </p>
                   </div>

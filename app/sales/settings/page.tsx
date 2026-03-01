@@ -210,16 +210,16 @@ export default function SalesSettingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] text-white">
-      <header className="border-b border-white/10">
+    <div className="min-h-screen bg-[#F4F5F7] text-white">
+      <header className="border-b border-[#E5E7EB]">
         <div className="max-w-4xl mx-auto px-6 py-4">
           <div className="flex items-center gap-4">
-            <Link href="/dashboard" className="p-2 hover:bg-white/10 rounded-lg">
+            <Link href="/dashboard" className="p-2 hover:bg-gray-100 rounded-lg">
               <ChevronLeft className="w-5 h-5" />
             </Link>
             <div>
               <h1 className="text-xl font-bold">CRM Settings</h1>
-              <p className="text-sm text-gray-400">Connect your CRM to push leads automatically</p>
+              <p className="text-sm text-[#6B7280]">Connect your CRM to push leads automatically</p>
             </div>
           </div>
         </div>
@@ -228,18 +228,18 @@ export default function SalesSettingsPage() {
       <main className="max-w-4xl mx-auto px-6 py-8">
         {/* Alerts */}
         {error && (
-          <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-xl flex items-center gap-3">
-            <AlertTriangle className="w-5 h-5 text-red-400 flex-shrink-0" />
+          <div className="mb-6 p-4 bg-red-50 border border-red-500/30 rounded-xl flex items-center gap-3">
+            <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0" />
             <span>{error}</span>
-            <button onClick={() => setError(null)} className="ml-auto text-red-400 hover:text-red-300">×</button>
+            <button onClick={() => setError(null)} className="ml-auto text-red-600 hover:text-red-300">×</button>
           </div>
         )}
         
         {success && (
-          <div className="mb-6 p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-center gap-3">
-            <CheckCircle className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+          <div className="mb-6 p-4 bg-emerald-50 border border-emerald-500/30 rounded-xl flex items-center gap-3">
+            <CheckCircle className="w-5 h-5 text-emerald-600 flex-shrink-0" />
             <span>{success}</span>
-            <button onClick={() => setSuccess(null)} className="ml-auto text-emerald-400 hover:text-emerald-300">×</button>
+            <button onClick={() => setSuccess(null)} className="ml-auto text-emerald-600 hover:text-emerald-300">×</button>
           </div>
         )}
 
@@ -254,21 +254,21 @@ export default function SalesSettingsPage() {
             return (
               <div
                 key={provider.provider}
-                className="bg-white/5 border border-white/10 rounded-xl overflow-hidden"
+                className="bg-white border border-[#E5E7EB] shadow-sm rounded-xl overflow-hidden"
               >
                 <div className="p-4 flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bold ${
-                      isConnected ? 'bg-emerald-500/20 text-emerald-400' : 'bg-white/10 text-gray-400'
+                      isConnected ? 'bg-emerald-100 text-emerald-600' : 'bg-gray-100 text-[#6B7280]'
                     }`}>
                       {provider.icon}
                     </div>
                     <div>
                       <div className="font-medium flex items-center gap-2">
                         {provider.displayName}
-                        {isConnected && <CheckCircle className="w-4 h-4 text-emerald-400" />}
+                        {isConnected && <CheckCircle className="w-4 h-4 text-emerald-600" />}
                       </div>
-                      <div className="text-sm text-gray-400">
+                      <div className="text-sm text-[#6B7280]">
                         {isConnected ? connection?.accountLabel || 'Connected' : provider.description}
                       </div>
                     </div>
@@ -280,7 +280,7 @@ export default function SalesSettingsPage() {
                         <button
                           onClick={() => handleTestConnection(provider.provider)}
                           disabled={testing === provider.provider}
-                          className="p-2 hover:bg-white/10 rounded-lg text-gray-400 hover:text-white"
+                          className="p-2 hover:bg-gray-100 rounded-lg text-[#6B7280] hover:text-[#1B2A4A]"
                           title="Test Connection"
                         >
                           {testing === provider.provider ? (
@@ -291,7 +291,7 @@ export default function SalesSettingsPage() {
                         </button>
                         <button
                           onClick={() => handleDisconnect(provider.provider)}
-                          className="p-2 hover:bg-red-500/20 rounded-lg text-gray-400 hover:text-red-400"
+                          className="p-2 hover:bg-red-100 rounded-lg text-[#6B7280] hover:text-red-600"
                           title="Disconnect"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -305,23 +305,23 @@ export default function SalesSettingsPage() {
                         Connect
                       </button>
                     ) : (
-                      <span className="text-sm text-gray-500">Coming Soon</span>
+                      <span className="text-sm text-[#9CA3AF]">Coming Soon</span>
                     )}
                   </div>
                 </div>
 
                 {/* Expanded Connection Form */}
                 {isExpanded && !isConnected && (
-                  <div className="border-t border-white/10 p-4 bg-white/[0.02]">
+                  <div className="border-t border-[#E5E7EB] p-4 bg-white shadow-sm">
                     {provider.supportsManualAuth && provider.manualAuthFields && (
                       <div className="space-y-4">
-                        <p className="text-sm text-gray-400">
+                        <p className="text-sm text-[#6B7280]">
                           Enter your {provider.displayName} credentials:
                         </p>
                         
                         {provider.manualAuthFields.map((field) => (
                           <div key={field.name}>
-                            <label className="block text-sm text-gray-400 mb-1">
+                            <label className="block text-sm text-[#6B7280] mb-1">
                               {field.label} {field.required && '*'}
                             </label>
                             <div className="relative">
@@ -329,7 +329,7 @@ export default function SalesSettingsPage() {
                                 type={field.type === 'password' && !showSecrets[field.name] ? 'password' : 'text'}
                                 value={credentials[field.name] || ''}
                                 onChange={e => setCredentials({ ...credentials, [field.name]: e.target.value })}
-                                className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg focus:border-blue-500 focus:outline-none pr-10"
+                                className="w-full px-4 py-2 bg-white border border-[#E5E7EB] shadow-sm rounded-lg focus:border-[#2A9D8F] focus:outline-none pr-10"
                                 placeholder={field.placeholder}
                                 required={field.required}
                               />
@@ -337,7 +337,7 @@ export default function SalesSettingsPage() {
                                 <button
                                   type="button"
                                   onClick={() => setShowSecrets({ ...showSecrets, [field.name]: !showSecrets[field.name] })}
-                                  className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-white"
+                                  className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-[#6B7280] hover:text-[#1B2A4A]"
                                 >
                                   {showSecrets[field.name] ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                 </button>
@@ -368,12 +368,12 @@ export default function SalesSettingsPage() {
         </div>
 
         {/* Help Section */}
-        <div className="mt-8 p-6 bg-white/5 border border-white/10 rounded-xl">
+        <div className="mt-8 p-6 bg-white border border-[#E5E7EB] shadow-sm rounded-xl">
           <h3 className="font-semibold mb-2">Need Help?</h3>
-          <p className="text-gray-400 text-sm mb-4">
+          <p className="text-[#6B7280] text-sm mb-4">
             Each CRM has different authentication methods. Here's where to find your credentials:
           </p>
-          <ul className="space-y-2 text-sm text-gray-400">
+          <ul className="space-y-2 text-sm text-[#6B7280]">
             <li>
               <strong className="text-white">HubSpot:</strong> Settings → Integrations → Private Apps → Create a private app
             </li>

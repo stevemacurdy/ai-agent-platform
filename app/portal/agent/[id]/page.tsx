@@ -60,7 +60,7 @@ function LiveAgentWorkspace({ agentId, agent }: { agentId: string; agent: Regist
       <div className="bg-blue-500/5 border border-blue-500/10 rounded-lg px-4 py-2 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
-          <span className="text-xs text-gray-400">
+          <span className="text-xs text-[#6B7280]">
             Live Agent — Data scoped to <span className="text-white font-semibold">{companyName}</span>
           </span>
         </div>
@@ -72,21 +72,21 @@ function LiveAgentWorkspace({ agentId, agent }: { agentId: string; agent: Regist
       {/* KPI Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {data.kpis.map((kpi, i) => (
-          <div key={i} className="bg-[#0A0E15] border border-white/5 rounded-xl p-4">
-            <div className="text-[9px] text-gray-500 uppercase">{kpi.label}</div>
+          <div key={i} className="bg-white border border-[#E5E7EB] rounded-xl p-4">
+            <div className="text-[9px] text-[#9CA3AF] uppercase">{kpi.label}</div>
             <div className="text-xl font-mono font-bold mt-1">{kpi.value}</div>
-            {kpi.trend && <div className={"text-[10px] mt-1 " + (kpi.trend.startsWith('+') ? 'text-emerald-400' : kpi.trend.startsWith('-') ? 'text-rose-400' : 'text-gray-500')}>{kpi.trend}</div>}
+            {kpi.trend && <div className={"text-[10px] mt-1 " + (kpi.trend.startsWith('+') ? 'text-emerald-600' : kpi.trend.startsWith('-') ? 'text-rose-400' : 'text-[#9CA3AF]')}>{kpi.trend}</div>}
           </div>
         ))}
       </div>
 
       {/* Module Tabs — from registry */}
-      <div className="flex gap-1 bg-[#0A0E15] border border-white/5 rounded-xl p-1 overflow-x-auto">
+      <div className="flex gap-1 bg-white border border-[#E5E7EB] rounded-xl p-1 overflow-x-auto">
         {moduleNames.map(mod => (
           <button
             key={mod}
             onClick={() => setActiveModule(mod)}
-            className={"px-4 py-2 rounded-lg text-xs whitespace-nowrap transition-all " + (activeModule === mod ? 'bg-white/10 text-white font-semibold' : 'text-gray-500 hover:text-gray-300 hover:bg-white/5')}
+            className={"px-4 py-2 rounded-lg text-xs whitespace-nowrap transition-all " + (activeModule === mod ? 'bg-gray-100 text-white font-semibold' : 'text-[#9CA3AF] hover:text-[#4B5563] hover:bg-white shadow-sm')}
           >
             {mod}
           </button>
@@ -94,31 +94,31 @@ function LiveAgentWorkspace({ agentId, agent }: { agentId: string; agent: Regist
       </div>
 
       {/* Module Content Area */}
-      <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-6 min-h-[400px]">
+      <div className="bg-white border border-[#E5E7EB] rounded-xl p-6 min-h-[400px]">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-sm font-semibold">{activeModule}</h3>
-          <span className="text-[9px] text-gray-600">{companyName} | {new Date().toLocaleDateString()}</span>
+          <span className="text-[9px] text-[#6B7280]">{companyName} | {new Date().toLocaleDateString()}</span>
         </div>
 
         {/* Recent Activity */}
         <div className="space-y-3 mb-6">
-          <div className="text-[10px] text-gray-500 uppercase">Recent Activity</div>
+          <div className="text-[10px] text-[#9CA3AF] uppercase">Recent Activity</div>
           {data.recentActivity.map((activity, i) => (
             <div key={i} className="flex items-start gap-3 py-2 border-b border-white/[0.03] last:border-0">
               <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-1.5 shrink-0" />
-              <span className="text-sm text-gray-300">{activity}</span>
-              <span className="text-[10px] text-gray-600 ml-auto shrink-0">{i === 0 ? '2m ago' : i === 1 ? '1h ago' : i === 2 ? '3h ago' : 'Yesterday'}</span>
+              <span className="text-sm text-[#4B5563]">{activity}</span>
+              <span className="text-[10px] text-[#6B7280] ml-auto shrink-0">{i === 0 ? '2m ago' : i === 1 ? '1h ago' : i === 2 ? '3h ago' : 'Yesterday'}</span>
             </div>
           ))}
         </div>
 
         {/* AI Chat Interface placeholder */}
-        <div className="border-t border-white/5 pt-4 mt-4">
-          <div className="text-[10px] text-gray-500 uppercase mb-3">AI Assistant</div>
+        <div className="border-t border-[#E5E7EB] pt-4 mt-4">
+          <div className="text-[10px] text-[#9CA3AF] uppercase mb-3">AI Assistant</div>
           <div className="bg-black/20 rounded-xl p-4 space-y-3">
             <div className="flex gap-3">
-              <div className="w-6 h-6 bg-blue-500/20 rounded-full flex items-center justify-center text-[10px] shrink-0">{agent.icon}</div>
-              <div className="text-sm text-gray-300">
+              <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center text-[10px] shrink-0">{agent.icon}</div>
+              <div className="text-sm text-[#4B5563]">
                 Hello {userName.split(' ')[0]}! I am your {agent.display_name}. I have access to {companyName} data. Ask me anything about your {activeModule.toLowerCase()}.
               </div>
             </div>
@@ -126,9 +126,9 @@ function LiveAgentWorkspace({ agentId, agent }: { agentId: string; agent: Regist
               <input
                 type="text"
                 placeholder={"Ask about " + activeModule.toLowerCase() + "..."}
-                className="flex-1 px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder-gray-600 focus:border-blue-500/30 focus:outline-none"
+                className="flex-1 px-3 py-2 bg-white border border-[#E5E7EB] shadow-sm rounded-lg text-sm text-white placeholder-[#9CA3AF] focus:border-[#2A9D8F]/30 focus:outline-none"
               />
-              <button className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-500">
+              <button className="px-4 py-2 bg-[#1B2A4A] text-white rounded-lg text-sm font-medium hover:bg-blue-500">
                 Send
               </button>
             </div>
@@ -185,22 +185,22 @@ export default function AgentPage() {
   }, [agentId, router])
 
   if (loading) return (
-    <div className="min-h-screen bg-[#060910] flex items-center justify-center">
+    <div className="min-h-screen bg-[#F4F5F7] flex items-center justify-center">
       <div className="text-center">
         <div className="w-10 h-10 rounded-full border-[3px] mx-auto mb-4" style={{ borderColor: '#1a1a2e', borderTopColor: '#2A9D8F', animation: 'spin 0.8s linear infinite' }} />
-        <p className="text-sm text-gray-500">Loading agent...</p>
+        <p className="text-sm text-[#9CA3AF]">Loading agent...</p>
         <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
       </div>
     </div>
   )
 
   if (error || !agent) return (
-    <div className="min-h-screen bg-[#060910] flex items-center justify-center text-white">
+    <div className="min-h-screen bg-[#F4F5F7] flex items-center justify-center text-white">
       <div className="text-center">
         <p className="text-5xl mb-4">🔍</p>
         <p className="text-lg font-bold mb-2">Agent not found</p>
-        <p className="text-sm text-gray-500 mb-6">The agent &quot;{agentId}&quot; doesn&apos;t exist in the registry.</p>
-        <button onClick={() => router.push('/portal')} className="px-4 py-2 bg-white/10 rounded-lg text-sm hover:bg-white/20">
+        <p className="text-sm text-[#9CA3AF] mb-6">The agent &quot;{agentId}&quot; doesn&apos;t exist in the registry.</p>
+        <button onClick={() => router.push('/portal')} className="px-4 py-2 bg-gray-100 rounded-lg text-sm hover:bg-gray-200">
           ← Back to Portal
         </button>
       </div>
@@ -211,13 +211,13 @@ export default function AgentPage() {
 
   return (
     <TenantProvider user={user}>
-      <div className="min-h-screen bg-[#060910] text-white">
+      <div className="min-h-screen bg-[#F4F5F7] text-white">
         {/* Top bar */}
-        <div className="border-b border-white/5 bg-[#0A0E15]/80 backdrop-blur-xl sticky top-0 z-50">
+        <div className="border-b border-[#E5E7EB] bg-white/80 backdrop-blur-xl sticky top-0 z-50">
           <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <button onClick={() => router.push('/portal')}
-                className="text-xs text-gray-500 hover:text-white transition-all">
+                className="text-xs text-[#9CA3AF] hover:text-[#1B2A4A] transition-all">
                 ← Portal
               </button>
               <span className="text-gray-700">|</span>
@@ -225,14 +225,14 @@ export default function AgentPage() {
               <span className="text-sm font-semibold">{agent.display_name}</span>
               <div className="flex items-center gap-1.5 ml-2">
                 <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
-                <span className="text-[10px] text-emerald-400 font-medium uppercase">{agent.status}</span>
+                <span className="text-[10px] text-emerald-600 font-medium uppercase">{agent.status}</span>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <span className="text-[10px] text-gray-600">{user.companyName || ''}</span>
-              <span className="text-xs text-gray-600">{user.name}</span>
+              <span className="text-[10px] text-[#6B7280]">{user.companyName || ''}</span>
+              <span className="text-xs text-[#6B7280]">{user.name}</span>
               <button onClick={() => { localStorage.removeItem('woulfai_session'); router.push('/login') }}
-                className="text-xs text-gray-600 hover:text-rose-400 transition-all">Sign Out</button>
+                className="text-xs text-[#6B7280] hover:text-rose-400 transition-all">Sign Out</button>
             </div>
           </div>
         </div>

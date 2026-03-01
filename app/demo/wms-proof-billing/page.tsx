@@ -87,7 +87,7 @@ export default function WMSAgentDemo() {
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Link href="/demo" className="flex items-center gap-2 text-white/60 hover:text-white transition-colors">
+              <Link href="/demo" className="flex items-center gap-2 text-[#6B7280] hover:text-[#1B2A4A] transition-colors">
                 <ArrowLeft className="w-5 h-5" />
                 <span>Back</span>
               </Link>
@@ -101,7 +101,7 @@ export default function WMSAgentDemo() {
                     <h1 className="font-bold">WMS Employee</h1>
                     <img src="/images/woulf-logo.png" alt="Woulf" className="w-5 h-5 rounded" title="Powered by Woulf" />
                   </div>
-                  <p className="text-xs text-white/60">Warehouse Management System</p>
+                  <p className="text-xs text-[#6B7280]">Warehouse Management System</p>
                 </div>
               </div>
             </div>
@@ -177,8 +177,8 @@ export default function WMSAgentDemo() {
                 onClick={() => setShowModal('scanBol')}
                 className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl hover:border-[#2A9D8F]/40 transition-colors text-left group"
               >
-                <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <QrCode className="w-6 h-6 text-blue-400" />
+                <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <QrCode className="w-6 h-6 text-blue-600" />
                 </div>
                 <h3 className="font-semibold mb-1">Scan BOL</h3>
                 <p className="text-sm text-[#6B7280]">Scan inbound/outbound BOL</p>
@@ -188,8 +188,8 @@ export default function WMSAgentDemo() {
                 onClick={() => setShowModal('takePhoto')}
                 className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl hover:border-[#2A9D8F]/40 transition-colors text-left group"
               >
-                <div className="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <Camera className="w-6 h-6 text-purple-400" />
+                <div className="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Camera className="w-6 h-6 text-purple-600" />
                 </div>
                 <h3 className="font-semibold mb-1">Take Photo</h3>
                 <p className="text-sm text-[#6B7280]">Document receiving/shipping</p>
@@ -199,8 +199,8 @@ export default function WMSAgentDemo() {
                 onClick={() => setShowModal('generateInvoice')}
                 className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl hover:border-[#2A9D8F]/40 transition-colors text-left group"
               >
-                <div className="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <DollarSign className="w-6 h-6 text-emerald-400" />
+                <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <DollarSign className="w-6 h-6 text-emerald-600" />
                 </div>
                 <h3 className="font-semibold mb-1">Generate Invoice</h3>
                 <p className="text-sm text-[#6B7280]">Create monthly billing</p>
@@ -210,8 +210,8 @@ export default function WMSAgentDemo() {
                 onClick={() => setShowModal('inventoryCount')}
                 className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl hover:border-[#2A9D8F]/40 transition-colors text-left group"
               >
-                <div className="w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <Scale className="w-6 h-6 text-orange-400" />
+                <div className="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Scale className="w-6 h-6 text-orange-600" />
                 </div>
                 <h3 className="font-semibold mb-1">Cycle Count</h3>
                 <p className="text-sm text-[#6B7280]">Start inventory count</p>
@@ -257,8 +257,8 @@ export default function WMSAgentDemo() {
                         <div className="text-xs text-[#6B7280]">{invoice.id}</div>
                       </div>
                       <div className="text-right">
-                        <div className="text-lg font-bold text-emerald-400">${invoice.amount.toLocaleString()}</div>
-                        <div className={`text-xs ${invoice.status === 'sent' ? 'text-blue-400' : 'text-yellow-400'}`}>{invoice.status}</div>
+                        <div className="text-lg font-bold text-emerald-600">${invoice.amount.toLocaleString()}</div>
+                        <div className={`text-xs ${invoice.status === 'sent' ? 'text-blue-600' : 'text-yellow-600'}`}>{invoice.status}</div>
                       </div>
                     </div>
                   ))}
@@ -339,12 +339,12 @@ export default function WMSAgentDemo() {
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
                           <span className="font-medium">{bol.id}</span>
-                          {bol.hazmat && <span className="px-1.5 py-0.5 bg-orange-500/10 text-orange-400 text-xs rounded">HAZMAT</span>}
+                          {bol.hazmat && <span className="px-1.5 py-0.5 bg-orange-50 text-orange-600 text-xs rounded">HAZMAT</span>}
                         </div>
                       </td>
                       <td className="px-6 py-4">{bol.customer}</td>
                       <td className="px-6 py-4">
-                        <span className={`flex items-center gap-1 ${bol.type === 'Inbound' ? 'text-blue-400' : 'text-emerald-400'}`}>
+                        <span className={`flex items-center gap-1 ${bol.type === 'Inbound' ? 'text-blue-600' : 'text-emerald-600'}`}>
                           {bol.type === 'Inbound' ? <Truck className="w-4 h-4 rotate-180" /> : <Truck className="w-4 h-4" />}
                           {bol.type}
                         </span>
@@ -352,9 +352,9 @@ export default function WMSAgentDemo() {
                       <td className="px-6 py-4">{bol.pallets}</td>
                       <td className="px-6 py-4">
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          bol.status === 'received' ? 'bg-emerald-500/10 text-emerald-400' :
-                          bol.status === 'shipped' ? 'bg-blue-500/10 text-blue-400' :
-                          'bg-yellow-500/10 text-yellow-400'
+                          bol.status === 'received' ? 'bg-emerald-50 text-emerald-600' :
+                          bol.status === 'shipped' ? 'bg-blue-50 text-blue-600' :
+                          'bg-yellow-50 text-yellow-600'
                         }`}>
                           {bol.status}
                         </span>
@@ -422,11 +422,11 @@ export default function WMSAgentDemo() {
               </div>
               <div className="p-4 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                 <div className="text-sm text-[#6B7280] mb-1">Hazmat Pallets</div>
-                <div className="text-3xl font-bold text-orange-400">223</div>
+                <div className="text-3xl font-bold text-orange-600">223</div>
               </div>
               <div className="p-4 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                 <div className="text-sm text-[#6B7280] mb-1">Available Space</div>
-                <div className="text-3xl font-bold text-emerald-400">34%</div>
+                <div className="text-3xl font-bold text-emerald-600">34%</div>
               </div>
             </div>
 
@@ -449,7 +449,7 @@ export default function WMSAgentDemo() {
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
                           <span className="font-mono">{item.sku}</span>
-                          {item.hazmat && <span className="px-1.5 py-0.5 bg-orange-500/10 text-orange-400 text-xs rounded">HAZMAT</span>}
+                          {item.hazmat && <span className="px-1.5 py-0.5 bg-orange-50 text-orange-600 text-xs rounded">HAZMAT</span>}
                         </div>
                       </td>
                       <td className="px-6 py-4">{item.product}</td>
@@ -490,15 +490,15 @@ export default function WMSAgentDemo() {
             <div className="grid grid-cols-4 gap-4">
               <div className="p-4 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                 <div className="text-sm text-[#6B7280] mb-1">This Month</div>
-                <div className="text-3xl font-bold text-emerald-400">$29,050</div>
+                <div className="text-3xl font-bold text-emerald-600">$29,050</div>
               </div>
               <div className="p-4 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                 <div className="text-sm text-[#6B7280] mb-1">Outstanding</div>
-                <div className="text-3xl font-bold text-yellow-400">$12,400</div>
+                <div className="text-3xl font-bold text-yellow-600">$12,400</div>
               </div>
               <div className="p-4 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                 <div className="text-sm text-[#6B7280] mb-1">Overdue</div>
-                <div className="text-3xl font-bold text-red-400">$0</div>
+                <div className="text-3xl font-bold text-red-600">$0</div>
               </div>
               <div className="p-4 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                 <div className="text-sm text-[#6B7280] mb-1">Collected</div>
@@ -524,12 +524,12 @@ export default function WMSAgentDemo() {
                     <tr key={invoice.id} className="border-b border-[#E5E7EB] hover:bg-white shadow-sm">
                       <td className="px-6 py-4 font-medium">{invoice.id}</td>
                       <td className="px-6 py-4">{invoice.customer}</td>
-                      <td className="px-6 py-4 font-bold text-emerald-400">${invoice.amount.toLocaleString()}</td>
+                      <td className="px-6 py-4 font-bold text-emerald-600">${invoice.amount.toLocaleString()}</td>
                       <td className="px-6 py-4">
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          invoice.status === 'paid' ? 'bg-emerald-500/10 text-emerald-400' :
-                          invoice.status === 'sent' ? 'bg-blue-500/10 text-blue-400' :
-                          'bg-yellow-500/10 text-yellow-400'
+                          invoice.status === 'paid' ? 'bg-emerald-50 text-emerald-600' :
+                          invoice.status === 'sent' ? 'bg-blue-50 text-blue-600' :
+                          'bg-yellow-50 text-yellow-600'
                         }`}>
                           {invoice.status}
                         </span>
@@ -598,7 +598,7 @@ export default function WMSAgentDemo() {
                   ].map((system, i) => (
                     <div key={i} className="flex items-center justify-between p-3 bg-[#F4F5F7] rounded-lg">
                       <span>{system.name}</span>
-                      <button onClick={() => showNotification(system.connected ? `Disconnected ${system.name}` : `Connected ${system.name}`)} className={`px-3 py-1 rounded-lg text-sm font-medium ${system.connected ? 'bg-emerald-500/10 text-emerald-400' : 'bg-gray-100 text-[#6B7280] hover:bg-gray-200'}`}>
+                      <button onClick={() => showNotification(system.connected ? `Disconnected ${system.name}` : `Connected ${system.name}`)} className={`px-3 py-1 rounded-lg text-sm font-medium ${system.connected ? 'bg-emerald-50 text-emerald-600' : 'bg-gray-100 text-[#6B7280] hover:bg-gray-200'}`}>
                         {system.connected ? 'Connected' : 'Connect'}
                       </button>
                     </div>
@@ -647,7 +647,7 @@ export default function WMSAgentDemo() {
                   <div className="aspect-video bg-black rounded-xl flex items-center justify-center border-2 border-dashed border-[#E5E7EB]">
                     {scanning ? (
                       <div className="text-center">
-                        <Loader2 className="w-12 h-12 mx-auto mb-2 animate-spin text-blue-400" />
+                        <Loader2 className="w-12 h-12 mx-auto mb-2 animate-spin text-blue-600" />
                         <p className="text-[#6B7280]">Scanning...</p>
                       </div>
                     ) : (
@@ -839,7 +839,7 @@ export default function WMSAgentDemo() {
                     </div>
                   </div>
                   {selectedBol.hazmat && (
-                    <div className="p-3 bg-orange-500/10 border border-orange-500/30 rounded-lg text-orange-400 flex items-center gap-2">
+                    <div className="p-3 bg-orange-50 border border-orange-500/30 rounded-lg text-orange-600 flex items-center gap-2">
                       <AlertCircle className="w-5 h-5" />
                       Contains Hazardous Materials
                     </div>
@@ -873,7 +873,7 @@ export default function WMSAgentDemo() {
                     </div>
                     <div className="p-3 bg-[#F4F5F7] rounded-lg">
                       <div className="text-xs text-[#6B7280]">Amount</div>
-                      <div className="font-medium text-emerald-400">${selectedInvoice.amount.toLocaleString()}</div>
+                      <div className="font-medium text-emerald-600">${selectedInvoice.amount.toLocaleString()}</div>
                     </div>
                     <div className="p-3 bg-[#F4F5F7] rounded-lg">
                       <div className="text-xs text-[#6B7280]">Status</div>

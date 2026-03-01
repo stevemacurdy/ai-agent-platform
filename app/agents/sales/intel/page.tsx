@@ -50,7 +50,7 @@ export default function SalesIntel() {
             {loading ? <div className="text-[#9CA3AF] text-sm">Loading...</div> :
               profiles.map(p => (
                 <button key={p.id} onClick={() => loadDetail(p.id)}
-                  className={'w-full text-left p-3 rounded-lg mb-2 transition-all ' + (selected?.id === p.id ? 'bg-white/[0.05] border border-[#E5E7EB]' : 'hover:bg-white shadow-sm')}>
+                  className={'w-full text-left p-3 rounded-lg mb-2 transition-all ' + (selected?.id === p.id ? 'bg-white shadow-sm border border-[#E5E7EB]' : 'hover:bg-white shadow-sm')}>
                   <div className="flex justify-between items-start">
                     <div><div className="text-sm font-medium">{p.name}</div><div className="text-[10px] text-[#9CA3AF]">{p.company}</div></div>
                     <span className={'text-[9px] px-2 py-0.5 rounded border ' + (STYLE_COLORS[p.style] || '')}>{p.style}</span>

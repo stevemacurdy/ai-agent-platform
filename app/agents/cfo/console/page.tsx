@@ -340,7 +340,7 @@ export default function CFOConsoleV2() {
         <Modal wide>
           {cashflowLoading ? (
             <div className="flex flex-col items-center py-16">
-              <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mb-3" />
+              <div className="w-8 h-8 border-2 border-[#2A9D8F] border-t-transparent rounded-full animate-spin mb-3" />
               <div className="text-sm text-[#6B7280]">Building 90-day forecast...</div>
               <div className="text-[10px] text-[#6B7280] mt-1">Pulling Odoo receivables + HubSpot deals + vendor bills</div>
             </div>
@@ -436,7 +436,7 @@ export default function CFOConsoleV2() {
                 <span className="text-[10px] text-[#9CA3AF] self-center">{collections.debtorCount} debtors</span>
                 <span className="text-[10px] px-2 py-0.5 bg-blue-50 text-blue-600 rounded">Soft: {collections.summary?.gentle}</span>
                 <span className="text-[10px] px-2 py-0.5 bg-amber-50 text-amber-600 rounded">Firm: {collections.summary?.firm}</span>
-                <span className="text-[10px] px-2 py-0.5 bg-orange-500/10 text-orange-600 rounded">Escalated: {collections.summary?.escalated}</span>
+                <span className="text-[10px] px-2 py-0.5 bg-orange-50 text-orange-600 rounded">Escalated: {collections.summary?.escalated}</span>
                 <span className="text-[10px] px-2 py-0.5 bg-rose-500/10 text-rose-400 rounded">Critical: {collections.summary?.critical}</span>
               </div>
 

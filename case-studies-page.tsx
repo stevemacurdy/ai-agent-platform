@@ -82,14 +82,14 @@ export default function CaseStudiesPage() {
             </span>
           </Link>
           <div className="hidden md:flex items-center gap-8">
-            <Link href="/solutions" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] transition-colors">Solutions</Link>
-            <Link href="/pricing" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] transition-colors">Pricing</Link>
+            <Link href="/solutions" className="text-sm text-white/60 hover:text-white transition-colors">Solutions</Link>
+            <Link href="/pricing" className="text-sm text-white/60 hover:text-white transition-colors">Pricing</Link>
             <Link href="/case-studies" className="text-sm text-white font-medium">Case Studies</Link>
-            <Link href="/about" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] transition-colors">About</Link>
-            <Link href="/contact" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] transition-colors">Contact</Link>
+            <Link href="/about" className="text-sm text-white/60 hover:text-white transition-colors">About</Link>
+            <Link href="/contact" className="text-sm text-white/60 hover:text-white transition-colors">Contact</Link>
           </div>
           <div className="flex items-center gap-3">
-            <Link href="/login" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] px-4 py-2 transition-colors">Sign In</Link>
+            <Link href="/login" className="text-sm text-white/60 hover:text-white px-4 py-2 transition-colors">Sign In</Link>
             <Link href="/register" className="text-sm font-bold text-white px-5 py-2.5 rounded-xl transition-all hover:-translate-y-px"
               style={{ background: '#F5920B', boxShadow: '0 4px 16px rgba(245,146,11,0.3)' }}>
               Hire Your AI Team
@@ -106,7 +106,7 @@ export default function CaseStudiesPage() {
             Real Results from<br />
             <span style={{ color: '#F5920B' }}>Real Businesses</span>
           </h1>
-          <p className="mt-5 text-lg text-[#9CA3AF] max-w-3xl mx-auto">
+          <p className="mt-5 text-lg text-gray-500 max-w-3xl mx-auto">
             See how companies like yours are using WoulfAI to transform their operations, reduce costs, and scale faster.
           </p>
         </div>
@@ -126,7 +126,7 @@ export default function CaseStudiesPage() {
                   </div>
                   <div>
                     <h2 className="text-2xl font-extrabold" style={{ color: '#1B2A4A' }}>{study.company}</h2>
-                    <p className="text-sm text-[#9CA3AF]">{study.industry}</p>
+                    <p className="text-sm text-gray-500">{study.industry}</p>
                   </div>
                 </div>
 
@@ -134,11 +134,11 @@ export default function CaseStudiesPage() {
                 <div className="grid md:grid-cols-2 gap-8 mb-8">
                   <div>
                     <h3 className="text-xs font-bold uppercase tracking-[2px] mb-3" style={{ color: '#DC4F4F' }}>The Challenge</h3>
-                    <p className="text-[15px] text-[#6B7280] leading-relaxed">{study.challenge}</p>
+                    <p className="text-[15px] text-gray-600 leading-relaxed">{study.challenge}</p>
                   </div>
                   <div>
                     <h3 className="text-xs font-bold uppercase tracking-[2px] mb-3" style={{ color: '#2A9D8F' }}>The Solution</h3>
-                    <p className="text-[15px] text-[#6B7280] leading-relaxed">{study.solution}</p>
+                    <p className="text-[15px] text-gray-600 leading-relaxed">{study.solution}</p>
                   </div>
                 </div>
 
@@ -147,15 +147,15 @@ export default function CaseStudiesPage() {
                   {study.results.map((result, j) => (
                     <div key={j} className="text-center">
                       <div className="text-3xl font-extrabold" style={{ color: '#1B2A4A', fontFamily: "'Outfit', sans-serif" }}>{result.metric}</div>
-                      <div className="text-[12px] text-[#9CA3AF] mt-1">{result.label}</div>
+                      <div className="text-[12px] text-gray-500 mt-1">{result.label}</div>
                     </div>
                   ))}
                 </div>
 
                 {/* Quote */}
                 <div className="relative pl-6" style={{ borderLeft: `3px solid ${study.color}` }}>
-                  <p className="text-[16px] text-[#6B7280] italic leading-relaxed mb-2">&quot;{study.quote}&quot;</p>
-                  <p className="text-sm text-[#6B7280]">&mdash; {study.quotee}, {study.company}</p>
+                  <p className="text-[16px] text-gray-600 italic leading-relaxed mb-2">&quot;{study.quote}&quot;</p>
+                  <p className="text-sm text-gray-400">&mdash; {study.quotee}, {study.company}</p>
                 </div>
               </div>
             </div>
@@ -168,7 +168,7 @@ export default function CaseStudiesPage() {
         <div className="max-w-[1100px] mx-auto p-12 sm:p-16 rounded-3xl text-center"
           style={{ background: 'linear-gradient(135deg, #132038 0%, #1B2A4A 60%, #233756 100%)' }}>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white">Ready to Write Your Success Story?</h2>
-          <p className="mt-4 text-[#6B7280] text-lg max-w-xl mx-auto">
+          <p className="mt-4 text-white/50 text-lg max-w-xl mx-auto">
             Join companies transforming their operations with AI employees.
           </p>
           <div className="mt-9 flex flex-wrap gap-4 justify-center">
@@ -189,11 +189,11 @@ export default function CaseStudiesPage() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Image src="/woulf-badge.png" alt="Woulf Group" width={20} height={20} className="opacity-50" />
-            <span className="text-[11px] text-[#6B7280]">&copy; 2026 WoulfAI by Woulf Group</span>
+            <span className="text-[11px] text-gray-400">&copy; 2026 WoulfAI by Woulf Group</span>
           </div>
           <div className="flex gap-4">
-            <Link href="/privacy" className="text-[11px] text-[#6B7280] hover:text-[#6B7280]">Privacy</Link>
-            <Link href="/terms" className="text-[11px] text-[#6B7280] hover:text-[#6B7280]">Terms</Link>
+            <Link href="/privacy" className="text-[11px] text-gray-400 hover:text-gray-600">Privacy</Link>
+            <Link href="/terms" className="text-[11px] text-gray-400 hover:text-gray-600">Terms</Link>
           </div>
         </div>
       </footer>

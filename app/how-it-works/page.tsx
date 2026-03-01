@@ -9,8 +9,8 @@ export default function HowItWorksPage() {
     router.replace('/#how-it-works')
   }, [router])
   return (
-    <div className="min-h-screen bg-[#06080D] flex items-center justify-center">
-      <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+    <div className="min-h-screen bg-[#F4F5F7] flex items-center justify-center">
+      <div className="w-8 h-8 border-2 border-[#2A9D8F] border-t-transparent rounded-full animate-spin" />
     </div>
   )
 }

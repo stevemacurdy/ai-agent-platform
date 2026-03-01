@@ -106,13 +106,13 @@ export default function SolutionsPage() {
           </Link>
           <div className="hidden md:flex items-center gap-8">
             <Link href="/solutions" className="text-sm text-white font-medium">Solutions</Link>
-            <Link href="/pricing" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] transition-colors">Pricing</Link>
-            <Link href="/case-studies" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] transition-colors">Case Studies</Link>
-            <Link href="/about" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] transition-colors">About</Link>
-            <Link href="/contact" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] transition-colors">Contact</Link>
+            <Link href="/pricing" className="text-sm text-white/60 hover:text-white transition-colors">Pricing</Link>
+            <Link href="/case-studies" className="text-sm text-white/60 hover:text-white transition-colors">Case Studies</Link>
+            <Link href="/about" className="text-sm text-white/60 hover:text-white transition-colors">About</Link>
+            <Link href="/contact" className="text-sm text-white/60 hover:text-white transition-colors">Contact</Link>
           </div>
           <div className="flex items-center gap-3">
-            <Link href="/login" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] px-4 py-2 transition-colors">Sign In</Link>
+            <Link href="/login" className="text-sm text-white/60 hover:text-white px-4 py-2 transition-colors">Sign In</Link>
             <Link href="/register" className="text-sm font-bold text-white px-5 py-2.5 rounded-xl transition-all hover:-translate-y-px"
               style={{ background: '#F5920B', boxShadow: '0 4px 16px rgba(245,146,11,0.3)' }}>
               Hire Your AI Team
@@ -129,7 +129,7 @@ export default function SolutionsPage() {
             An AI Employee for<br />
             <span style={{ color: '#F5920B' }}>Every Department</span>
           </h1>
-          <p className="mt-5 text-lg text-[#9CA3AF] max-w-3xl mx-auto">
+          <p className="mt-5 text-lg text-gray-500 max-w-3xl mx-auto">
             Purpose-built AI employees that understand your industry, integrate with your tools, and deliver measurable ROI.
           </p>
         </div>
@@ -148,13 +148,13 @@ export default function SolutionsPage() {
                     </div>
                     <div>
                       <h2 className="text-2xl font-extrabold" style={{ color: '#1B2A4A' }}>{emp.name}</h2>
-                      <p className="text-[#9CA3AF] text-sm">{emp.tagline}</p>
+                      <p className="text-gray-500 text-sm">{emp.tagline}</p>
                     </div>
                   </div>
-                  <p className="text-[#6B7280] text-[15px] mb-6 leading-relaxed">{emp.description}</p>
+                  <p className="text-gray-600 text-[15px] mb-6 leading-relaxed">{emp.description}</p>
                   <div className="grid sm:grid-cols-2 gap-3">
                     {emp.features.map((feature, j) => (
-                      <div key={j} className="flex items-center gap-2 text-[14px] text-[#9CA3AF]">
+                      <div key={j} className="flex items-center gap-2 text-[14px] text-gray-500">
                         <CheckCircle2 className="w-4 h-4 flex-shrink-0" style={{ color: '#2A9D8F' }} />
                         <span>{feature}</span>
                       </div>
@@ -164,7 +164,7 @@ export default function SolutionsPage() {
                 <div className="flex flex-col items-center lg:items-end gap-4">
                   <div className="text-center lg:text-right">
                     <div className="text-4xl font-extrabold" style={{ color: '#1B2A4A', fontFamily: "'Outfit', sans-serif" }}>{emp.metrics.value}</div>
-                    <div className="text-sm text-[#9CA3AF]">{emp.metrics.label}</div>
+                    <div className="text-sm text-gray-500">{emp.metrics.label}</div>
                   </div>
                   <Link href={emp.href}
                     className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-[14px] text-white transition-all hover:-translate-y-px"
@@ -184,7 +184,7 @@ export default function SolutionsPage() {
           <div className="text-center mb-16">
             <p className="text-xs font-bold uppercase tracking-[3px] mb-3" style={{ color: '#F5920B' }}>Industry Solutions</p>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white">Built for Your Industry</h2>
-            <p className="mt-4 text-[#6B7280] text-lg">Pre-configured AI employees for specific verticals</p>
+            <p className="mt-4 text-white/50 text-lg">Pre-configured AI employees for specific verticals</p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -208,7 +208,7 @@ export default function SolutionsPage() {
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
               Not Sure Where to Start?
             </h2>
-            <p className="mt-4 text-[#6B7280] text-lg max-w-xl mx-auto">
+            <p className="mt-4 text-white/50 text-lg max-w-xl mx-auto">
               Book a free consultation. We&apos;ll analyze your workflows and recommend the best AI employees for your business.
             </p>
             <div className="mt-9 flex flex-wrap gap-4 justify-center">
@@ -230,11 +230,11 @@ export default function SolutionsPage() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Image src="/woulf-badge.png" alt="Woulf Group" width={20} height={20} className="opacity-50" />
-            <span className="text-[11px] text-[#6B7280]">© 2026 WoulfAI by Woulf Group</span>
+            <span className="text-[11px] text-gray-400">© 2026 WoulfAI by Woulf Group</span>
           </div>
           <div className="flex gap-4">
-            <Link href="/privacy" className="text-[11px] text-[#6B7280] hover:text-[#6B7280]">Privacy</Link>
-            <Link href="/terms" className="text-[11px] text-[#6B7280] hover:text-[#6B7280]">Terms</Link>
+            <Link href="/privacy" className="text-[11px] text-gray-400 hover:text-gray-600">Privacy</Link>
+            <Link href="/terms" className="text-[11px] text-gray-400 hover:text-gray-600">Terms</Link>
           </div>
         </div>
       </footer>

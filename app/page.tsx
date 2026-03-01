@@ -108,14 +108,14 @@ export default function LandingPage() {
 
           <div className="hidden lg:flex items-center gap-8">
             {NAV_LINKS.map(l => (
-              <Link key={l.href} href={l.href} className="text-sm font-medium text-white/65 hover:text-white transition-colors">
+              <Link key={l.href} href={l.href} className="text-sm font-medium text-white/65 hover:text-[#1B2A4A] transition-colors">
                 {l.label}
               </Link>
             ))}
           </div>
 
           <div className="hidden lg:flex items-center gap-3">
-            <Link href="/login" className="text-sm font-medium text-white/65 hover:text-white px-4 py-2 rounded-xl hover:bg-white/[0.08] transition-all">
+            <Link href="/login" className="text-sm font-medium text-white/65 hover:text-[#1B2A4A] px-4 py-2 rounded-xl hover:bg-white/[0.08] transition-all">
               Sign In
             </Link>
             <Link
@@ -137,12 +137,12 @@ export default function LandingPage() {
         {mobileMenu && (
           <div className="lg:hidden px-6 pb-4 space-y-2" style={{ background: 'rgba(27,42,74,0.98)' }}>
             {NAV_LINKS.map(l => (
-              <Link key={l.href} href={l.href} className="block text-white/70 hover:text-white text-sm py-2" onClick={() => setMobileMenu(false)}>
+              <Link key={l.href} href={l.href} className="block text-[#4B5563] hover:text-[#1B2A4A] text-sm py-2" onClick={() => setMobileMenu(false)}>
                 {l.label}
               </Link>
             ))}
             <div className="flex gap-3 pt-3">
-              <Link href="/login" className="text-sm text-white/60 px-4 py-2">Sign In</Link>
+              <Link href="/login" className="text-sm text-[#6B7280] px-4 py-2">Sign In</Link>
               <Link href="/register" className="text-sm font-bold text-white px-5 py-2 rounded-xl" style={{ background: '#F5920B' }}>Hire Your AI Team</Link>
             </div>
           </div>
@@ -224,7 +224,7 @@ export default function LandingPage() {
           <div className="text-center mb-16">
             <p className="text-xs font-bold uppercase tracking-[3px] mb-3" style={{ color: '#2A9D8F' }}>Your AI Workforce</p>
             <h2 className="text-3xl sm:text-4xl font-extrabold" style={{ color: '#1B2A4A' }}>An AI Employee for Every Department</h2>
-            <p className="mt-4 text-gray-500 max-w-2xl mx-auto">Each AI employee is purpose-built for its role — trained on industry best practices and integrated with your existing tools.</p>
+            <p className="mt-4 text-[#9CA3AF] max-w-2xl mx-auto">Each AI employee is purpose-built for its role — trained on industry best practices and integrated with your existing tools.</p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -241,7 +241,7 @@ export default function LandingPage() {
                       <h3 className="font-bold" style={{ color: '#1B2A4A' }}>{a.name}</h3>
                       <span className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full uppercase tracking-wider" style={{ background: 'rgba(42,157,143,0.08)', color: '#2A9D8F' }}>{a.cat}</span>
                     </div>
-                    <p className="text-[13px] text-gray-500 mt-2 leading-relaxed">{a.desc}</p>
+                    <p className="text-[13px] text-[#9CA3AF] mt-2 leading-relaxed">{a.desc}</p>
                   </div>
                 </div>
               </div>
@@ -262,7 +262,7 @@ export default function LandingPage() {
           <div className="text-center mb-16">
             <p className="text-xs font-bold uppercase tracking-[3px] mb-3" style={{ color: '#F5920B' }}>Built Different</p>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white">30+ Years of Warehouse Expertise, Now AI-Powered</h2>
-            <p className="mt-4 text-white/50 max-w-2xl mx-auto">We don&apos;t just build software — we&apos;ve integrated over 1,200 warehouse systems across six countries.</p>
+            <p className="mt-4 text-[#6B7280] max-w-2xl mx-auto">We don&apos;t just build software — we&apos;ve integrated over 1,200 warehouse systems across six countries.</p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -283,7 +283,7 @@ export default function LandingPage() {
           <div className="text-center mb-16">
             <p className="text-xs font-bold uppercase tracking-[3px] mb-3" style={{ color: '#2A9D8F' }}>Simple Setup</p>
             <h2 className="text-3xl sm:text-4xl font-extrabold" style={{ color: '#1B2A4A' }}>Up and Running in Minutes</h2>
-            <p className="mt-4 text-gray-500 max-w-xl mx-auto">No consultants, no months of implementation. Hire your AI employees and put them to work today.</p>
+            <p className="mt-4 text-[#9CA3AF] max-w-xl mx-auto">No consultants, no months of implementation. Hire your AI employees and put them to work today.</p>
           </div>
 
           <div className="relative grid grid-cols-2 lg:grid-cols-4 gap-6">
@@ -303,7 +303,7 @@ export default function LandingPage() {
                   {s.num}
                 </div>
                 <h3 className="text-base font-bold mb-1.5" style={{ color: '#1B2A4A' }}>{s.title}</h3>
-                <p className="text-[13px] text-gray-500 max-w-[220px] mx-auto leading-relaxed">{s.desc}</p>
+                <p className="text-[13px] text-[#9CA3AF] max-w-[220px] mx-auto leading-relaxed">{s.desc}</p>
               </div>
             ))}
           </div>
@@ -335,10 +335,10 @@ export default function LandingPage() {
                   </span>
                 )}
                 <h3 className="text-[22px] font-extrabold" style={{ fontFamily: "'Outfit', sans-serif" }}>{t.name}</h3>
-                <p className={`text-[13px] mt-1 ${t.featured ? 'text-white/50' : 'text-gray-500'}`}>{t.desc}</p>
+                <p className={`text-[13px] mt-1 ${t.featured ? 'text-[#6B7280]' : 'text-[#9CA3AF]'}`}>{t.desc}</p>
                 <p className="text-5xl font-black mt-5 tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
                 {t.price ? (
-                  <>{t.price}<span className={`text-sm font-normal ${t.featured ? 'text-white/40' : 'text-gray-400'}`}>/mo</span></>
+                  <>{t.price}<span className={`text-sm font-normal ${t.featured ? 'text-[#6B7280]' : 'text-[#6B7280]'}`}>/mo</span></>
                 ) : (
                   <span className="text-3xl">Contact Sales</span>
                 )}
@@ -350,7 +350,7 @@ export default function LandingPage() {
                       <span className="w-[18px] h-[18px] rounded-full flex items-center justify-center flex-shrink-0" style={{ background: t.featured ? 'rgba(245,146,11,0.2)' : 'rgba(42,157,143,0.1)' }}>
                         <Check color={t.featured ? '#F5920B' : '#2A9D8F'} />
                       </span>
-                      <span className={t.featured ? 'text-white/75' : 'text-gray-600'}>{f}</span>
+                      <span className={t.featured ? 'text-white/75' : 'text-[#6B7280]'}>{f}</span>
                     </li>
                   ))}
                 </ul>
@@ -371,7 +371,7 @@ export default function LandingPage() {
             ))}
           </div>
 
-          <p className="text-center text-sm text-gray-400 mt-8">
+          <p className="text-center text-sm text-[#6B7280] mt-8">
             Need something custom? <Link href="/contact" className="font-semibold" style={{ color: '#F5920B' }}>Contact our team</Link>
           </p>
         </div>
@@ -386,7 +386,7 @@ export default function LandingPage() {
             <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
               Ready to Build<br />Your AI Team?
             </h2>
-            <p className="mt-4 text-white/50 max-w-lg mx-auto leading-relaxed">
+            <p className="mt-4 text-[#6B7280] max-w-lg mx-auto leading-relaxed">
               Join forward-thinking companies using WoulfAI to hire AI employees that automate, optimize, and scale their warehouse and business operations.
             </p>
             <div className="mt-9 flex flex-wrap gap-4 justify-center">
@@ -412,7 +412,7 @@ export default function LandingPage() {
             <p className="text-[13px] text-white/35 leading-relaxed">
               AI employees built by Woulf Group. Warehouse systems integration meets artificial intelligence.
             </p>
-            <p className="text-[11px] text-white/20 mt-2">Grantsville, UT · woulfgroup.com</p>
+            <p className="text-[11px] text-[#9CA3AF] mt-2">Grantsville, UT · woulfgroup.com</p>
           </div>
 
           {[
@@ -421,11 +421,11 @@ export default function LandingPage() {
             { title: 'Legal', links: [{ href: '/terms', label: 'Terms of Service' }, { href: '/privacy', label: 'Privacy Policy' }, { href: '/security', label: 'Security' }] },
           ].map(col => (
             <div key={col.title}>
-              <h4 className="text-[13px] font-bold text-white/70 mb-4 uppercase tracking-wider">{col.title}</h4>
+              <h4 className="text-[13px] font-bold text-[#4B5563] mb-4 uppercase tracking-wider">{col.title}</h4>
               <ul className="flex flex-col gap-2.5">
                 {col.links.map(l => (
                   <li key={l.href}>
-                    <Link href={l.href} className="text-[13px] text-white/40 hover:text-white/80 transition-colors">{l.label}</Link>
+                    <Link href={l.href} className="text-[13px] text-[#6B7280] hover:text-[#4B5563] transition-colors">{l.label}</Link>
                   </li>
                 ))}
               </ul>
@@ -434,7 +434,7 @@ export default function LandingPage() {
         </div>
 
         <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-[11px] text-white/20">© 2026 WoulfAI by Woulf Group. All rights reserved.</p>
+          <p className="text-[11px] text-[#9CA3AF]">© 2026 WoulfAI by Woulf Group. All rights reserved.</p>
           <p className="text-[11px] text-white/15">21 AI Employees working · Built in Grantsville, UT</p>
         </div>
       </footer>

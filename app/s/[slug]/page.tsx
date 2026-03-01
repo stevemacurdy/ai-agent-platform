@@ -118,16 +118,16 @@ export default function SalesPortalPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center">
+      <div className="min-h-screen bg-[#F4F5F7] flex items-center justify-center">
         <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] text-white">
+    <div className="min-h-screen bg-[#F4F5F7] text-white">
       {/* Header */}
-      <header className="border-b border-white/10 bg-[#0a0a0f]/80 backdrop-blur-xl">
+      <header className="border-b border-[#E5E7EB] bg-[#F4F5F7]/80 backdrop-blur-xl">
         <div className="max-w-6xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -136,12 +136,12 @@ export default function SalesPortalPage() {
               </div>
               <div>
                 <h1 className="text-xl font-bold">{profile?.displayName}'s Portal</h1>
-                <p className="text-sm text-gray-400">woulfai.com/s/{slug}</p>
+                <p className="text-sm text-[#6B7280]">woulfai.com/s/{slug}</p>
               </div>
             </div>
             <Link
               href="/sales/settings"
-              className="flex items-center gap-2 px-4 py-2 bg-white/10 rounded-lg hover:bg-white/20"
+              className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200"
             >
               <Settings className="w-4 h-4" />
               Settings
@@ -153,9 +153,9 @@ export default function SalesPortalPage() {
       <main className="max-w-6xl mx-auto px-6 py-8">
         {/* CRM Status Banner */}
         {!connectedCRM ? (
-          <div className="mb-8 p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-xl flex items-center justify-between">
+          <div className="mb-8 p-4 bg-yellow-50 border border-yellow-500/30 rounded-xl flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <AlertTriangle className="w-5 h-5 text-yellow-400" />
+              <AlertTriangle className="w-5 h-5 text-yellow-600" />
               <span>Connect your CRM to push leads automatically</span>
             </div>
             <Link
@@ -166,28 +166,28 @@ export default function SalesPortalPage() {
             </Link>
           </div>
         ) : (
-          <div className="mb-8 p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-center gap-3">
-            <CheckCircle className="w-5 h-5 text-emerald-400" />
+          <div className="mb-8 p-4 bg-emerald-50 border border-emerald-500/30 rounded-xl flex items-center gap-3">
+            <CheckCircle className="w-5 h-5 text-emerald-600" />
             <span>Connected to <strong>{connectedCRM.accountLabel || connectedCRM.provider}</strong></span>
           </div>
         )}
 
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Quick Lead Capture */}
-          <div className="p-6 bg-white/5 border border-white/10 rounded-xl">
+          <div className="p-6 bg-white border border-[#E5E7EB] shadow-sm rounded-xl">
             <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-              <Plus className="w-5 h-5 text-blue-400" />
+              <Plus className="w-5 h-5 text-blue-600" />
               Quick Lead Capture
             </h2>
             
             <form onSubmit={handleSubmitLead} className="space-y-4">
               <div>
-                <label className="block text-sm text-gray-400 mb-1">Name *</label>
+                <label className="block text-sm text-[#6B7280] mb-1">Name *</label>
                 <input
                   type="text"
                   value={leadForm.name}
                   onChange={e => setLeadForm({ ...leadForm, name: e.target.value })}
-                  className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg focus:border-blue-500 focus:outline-none"
+                  className="w-full px-4 py-2 bg-white border border-[#E5E7EB] shadow-sm rounded-lg focus:border-[#2A9D8F] focus:outline-none"
                   placeholder="John Smith"
                   required
                 />
@@ -195,51 +195,51 @@ export default function SalesPortalPage() {
               
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm text-gray-400 mb-1">Email</label>
+                  <label className="block text-sm text-[#6B7280] mb-1">Email</label>
                   <input
                     type="email"
                     value={leadForm.email}
                     onChange={e => setLeadForm({ ...leadForm, email: e.target.value })}
-                    className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg focus:border-blue-500 focus:outline-none"
+                    className="w-full px-4 py-2 bg-white border border-[#E5E7EB] shadow-sm rounded-lg focus:border-[#2A9D8F] focus:outline-none"
                     placeholder="john@company.com"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm text-gray-400 mb-1">Phone</label>
+                  <label className="block text-sm text-[#6B7280] mb-1">Phone</label>
                   <input
                     type="tel"
                     value={leadForm.phone}
                     onChange={e => setLeadForm({ ...leadForm, phone: e.target.value })}
-                    className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg focus:border-blue-500 focus:outline-none"
+                    className="w-full px-4 py-2 bg-white border border-[#E5E7EB] shadow-sm rounded-lg focus:border-[#2A9D8F] focus:outline-none"
                     placeholder="(555) 123-4567"
                   />
                 </div>
               </div>
               
               <div>
-                <label className="block text-sm text-gray-400 mb-1">Company</label>
+                <label className="block text-sm text-[#6B7280] mb-1">Company</label>
                 <input
                   type="text"
                   value={leadForm.company}
                   onChange={e => setLeadForm({ ...leadForm, company: e.target.value })}
-                  className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg focus:border-blue-500 focus:outline-none"
+                  className="w-full px-4 py-2 bg-white border border-[#E5E7EB] shadow-sm rounded-lg focus:border-[#2A9D8F] focus:outline-none"
                   placeholder="Acme Corp"
                 />
               </div>
               
               <div>
-                <label className="block text-sm text-gray-400 mb-1">Notes</label>
+                <label className="block text-sm text-[#6B7280] mb-1">Notes</label>
                 <textarea
                   value={leadForm.notes}
                   onChange={e => setLeadForm({ ...leadForm, notes: e.target.value })}
-                  className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg focus:border-blue-500 focus:outline-none"
+                  className="w-full px-4 py-2 bg-white border border-[#E5E7EB] shadow-sm rounded-lg focus:border-[#2A9D8F] focus:outline-none"
                   rows={3}
                   placeholder="Met at trade show, interested in..."
                 />
               </div>
 
               {result && (
-                <div className={`p-3 rounded-lg ${result.success ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'}`}>
+                <div className={`p-3 rounded-lg ${result.success ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'}`}>
                   {result.message}
                 </div>
               )}
@@ -263,44 +263,44 @@ export default function SalesPortalPage() {
 
           {/* Quick Actions */}
           <div className="space-y-6">
-            <div className="p-6 bg-white/5 border border-white/10 rounded-xl">
+            <div className="p-6 bg-white border border-[#E5E7EB] shadow-sm rounded-xl">
               <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-purple-400" />
+                <Sparkles className="w-5 h-5 text-purple-600" />
                 AI Sales Assistant
               </h2>
-              <p className="text-gray-400 mb-4">
+              <p className="text-[#6B7280] mb-4">
                 Get AI-powered help with call prep, follow-ups, and lead scoring.
               </p>
               <Link
                 href="/agents/sales"
-                className="flex items-center justify-between p-4 bg-white/5 rounded-lg hover:bg-white/10"
+                className="flex items-center justify-between p-4 bg-white shadow-sm rounded-lg hover:bg-gray-100"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
-                    <Target className="w-5 h-5 text-blue-400" />
+                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <Target className="w-5 h-5 text-blue-600" />
                   </div>
                   <div>
                     <div className="font-medium">Open Sales Agent</div>
-                    <div className="text-sm text-gray-400">AI-powered sales coaching</div>
+                    <div className="text-sm text-[#6B7280]">AI-powered sales coaching</div>
                   </div>
                 </div>
-                <ArrowRight className="w-5 h-5 text-gray-400" />
+                <ArrowRight className="w-5 h-5 text-[#6B7280]" />
               </Link>
             </div>
 
-            <div className="p-6 bg-white/5 border border-white/10 rounded-xl">
+            <div className="p-6 bg-white border border-[#E5E7EB] shadow-sm rounded-xl">
               <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                <BarChart3 className="w-5 h-5 text-emerald-400" />
+                <BarChart3 className="w-5 h-5 text-emerald-600" />
                 Quick Stats
               </h2>
               <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 bg-white/5 rounded-lg text-center">
-                  <div className="text-2xl font-bold text-blue-400">—</div>
-                  <div className="text-sm text-gray-400">Leads This Week</div>
+                <div className="p-4 bg-white shadow-sm rounded-lg text-center">
+                  <div className="text-2xl font-bold text-blue-600">—</div>
+                  <div className="text-sm text-[#6B7280]">Leads This Week</div>
                 </div>
-                <div className="p-4 bg-white/5 rounded-lg text-center">
-                  <div className="text-2xl font-bold text-emerald-400">—</div>
-                  <div className="text-sm text-gray-400">Pipeline Value</div>
+                <div className="p-4 bg-white shadow-sm rounded-lg text-center">
+                  <div className="text-2xl font-bold text-emerald-600">—</div>
+                  <div className="text-sm text-[#6B7280]">Pipeline Value</div>
                 </div>
               </div>
             </div>

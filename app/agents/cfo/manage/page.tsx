@@ -86,13 +86,13 @@ export default function CFOManagePage() {
   };
 
   if (loading) return (
-    <div className="min-h-screen bg-[#06080D] text-white flex items-center justify-center">
-      <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+    <div className="min-h-screen bg-[#F4F5F7] text-white flex items-center justify-center">
+      <div className="w-6 h-6 border-2 border-[#2A9D8F] border-t-transparent rounded-full animate-spin" />
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-[#06080D] text-white">
+    <div className="min-h-screen bg-[#F4F5F7] text-white">
       <div className="max-w-[1200px] mx-auto px-6 py-8">
         {/* Toast */}
         {toast && (
@@ -153,7 +153,7 @@ export default function CFOManagePage() {
                       </span>
                     </td>
                     <td className="py-2.5 px-4 text-right">
-                      <button onClick={() => setEditInvoice(inv)} className="text-xs text-blue-600 hover:text-blue-300">Edit</button>
+                      <button onClick={() => setEditInvoice(inv)} className="text-xs text-blue-600 hover:text-blue-600">Edit</button>
                     </td>
                   </tr>
                 ))}
@@ -181,7 +181,7 @@ export default function CFOManagePage() {
                     <td className="py-2.5 px-4 text-[#6B7280] font-mono text-xs">{c.email || '-'}</td>
                     <td className="py-2.5 px-4 text-[#6B7280] text-xs">{c.phone || '-'}</td>
                     <td className="py-2.5 px-4 text-right">
-                      <button onClick={() => setEditContact(c)} className="text-xs text-blue-600 hover:text-blue-300">Edit</button>
+                      <button onClick={() => setEditContact(c)} className="text-xs text-blue-600 hover:text-blue-600">Edit</button>
                     </td>
                   </tr>
                 ))}
@@ -219,7 +219,7 @@ export default function CFOManagePage() {
                   </div>
                 ))}
                 <button onClick={() => setNewLines([...newLines, { name: '', quantity: 1, price_unit: 0 }])}
-                  className="text-xs text-blue-600 hover:text-blue-300 mt-1">+ Add line</button>
+                  className="text-xs text-blue-600 hover:text-blue-600 mt-1">+ Add line</button>
               </div>
               <div className="bg-white shadow-sm border border-[#E5E7EB] rounded-lg p-3 flex justify-between text-sm">
                 <span className="text-[#6B7280]">Total</span>

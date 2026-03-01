@@ -141,7 +141,7 @@ export default function ResearchIntelPage() {
                     <h1 className="font-bold text-lg">Research Employee</h1>
                     <img src="/images/woulf-logo.png" alt="Woulf" className="w-5 h-5 rounded" title="Powered by Woulf" />
                   </div>
-                  <p className="text-xs text-white/60">Company Intelligence & Pre-Call Research</p>
+                  <p className="text-xs text-[#6B7280]">Company Intelligence & Pre-Call Research</p>
                 </div>
               </div>
             </div>
@@ -196,7 +196,7 @@ export default function ResearchIntelPage() {
                         className="w-full flex items-center gap-3 p-4 hover:bg-[#F4F5F7] transition-colors text-left"
                       >
                         <div className="w-10 h-10 bg-indigo-500/20 rounded-lg flex items-center justify-center">
-                          <Building2 className="w-5 h-5 text-indigo-400" />
+                          <Building2 className="w-5 h-5 text-indigo-600" />
                         </div>
                         <div>
                           <div className="font-medium">{company.name}</div>
@@ -206,7 +206,7 @@ export default function ResearchIntelPage() {
                     ))}
                     <button
                       onClick={handleSearch}
-                      className="w-full flex items-center gap-2 p-4 bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 transition-colors"
+                      className="w-full flex items-center gap-2 p-4 bg-indigo-500/10 text-indigo-600 hover:bg-indigo-500/20 transition-colors"
                     >
                       <Sparkles className="w-4 h-4" />
                       Search for &quot;{searchQuery}&quot;
@@ -259,7 +259,7 @@ export default function ResearchIntelPage() {
             <div className="p-8 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
               <div className="flex items-center gap-4 mb-6">
                 <div className="w-12 h-12 bg-indigo-500/20 rounded-xl flex items-center justify-center">
-                  <Loader2 className="w-6 h-6 text-indigo-400 animate-spin" />
+                  <Loader2 className="w-6 h-6 text-indigo-600 animate-spin" />
                 </div>
                 <div>
                   <h3 className="font-semibold">Gathering Intelligence...</h3>
@@ -269,12 +269,12 @@ export default function ResearchIntelPage() {
               <div className="space-y-3">
                 {['Scanning company database...', 'Finding leadership profiles...', 'Analyzing news & updates...', 'Identifying pain points...'].map((step, i) => (
                   <div key={i} className="flex items-center gap-3 text-sm">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                     <span className="text-[#4B5563]">{step}</span>
                   </div>
                 ))}
                 <div className="flex items-center gap-3 text-sm">
-                  <Loader2 className="w-4 h-4 text-indigo-400 animate-spin" />
+                  <Loader2 className="w-4 h-4 text-indigo-600 animate-spin" />
                   <span className="text-[#6B7280]">Generating sales insights...</span>
                 </div>
               </div>
@@ -303,7 +303,7 @@ export default function ResearchIntelPage() {
               </div>
               <div className="flex items-center gap-2">
                 <button onClick={handleSaveReport} className="flex items-center gap-2 px-4 py-2 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg hover:bg-[#e0850a] transition-colors">
-                  <Bookmark className={`w-4 h-4 ${savedReports.includes(researchResults.company.name) ? 'fill-current text-yellow-400' : ''}`} />
+                  <Bookmark className={`w-4 h-4 ${savedReports.includes(researchResults.company.name) ? 'fill-current text-yellow-600' : ''}`} />
                   {savedReports.includes(researchResults.company.name) ? 'Saved' : 'Save'}
                 </button>
                 <button onClick={() => showNotification('Report exported as PDF')} className="flex items-center gap-2 px-4 py-2 bg-[#F4F5F7] border border-[#E5E7EB] rounded-lg hover:bg-[#e0850a] transition-colors">
@@ -351,7 +351,7 @@ export default function ResearchIntelPage() {
                           { label: 'Website', value: researchResults.company.website, icon: Globe },
                         ].map((item, i) => (
                           <div key={i} className="flex items-center gap-3 p-3 bg-white shadow-sm rounded-lg">
-                            <item.icon className="w-5 h-5 text-indigo-400" />
+                            <item.icon className="w-5 h-5 text-indigo-600" />
                             <div>
                               <div className="text-xs text-[#9CA3AF]">{item.label}</div>
                               <div className="font-medium">{item.value}</div>
@@ -396,7 +396,7 @@ export default function ResearchIntelPage() {
                           </div>
                           <div className="flex items-center gap-2">
                             <button onClick={() => showNotification(`Opening ${person.name}'s LinkedIn profile`)} className="p-2 bg-[#F4F5F7] rounded-lg hover:bg-[#e0850a] transition-colors" title="LinkedIn">
-                              <Linkedin className="w-4 h-4 text-blue-400" />
+                              <Linkedin className="w-4 h-4 text-blue-600" />
                             </button>
                             <button onClick={() => showNotification(`Composing email to ${person.email}`)} className="p-2 bg-[#F4F5F7] rounded-lg hover:bg-[#e0850a] transition-colors" title="Email">
                               <Mail className="w-4 h-4 text-[#6B7280]" />
@@ -416,7 +416,7 @@ export default function ResearchIntelPage() {
                     <h3 className="font-semibold mb-4">Financial Overview</h3>
                     <div className="grid sm:grid-cols-3 gap-4 mb-6">
                       <div className="p-4 bg-white shadow-sm rounded-lg text-center">
-                        <div className="text-2xl font-bold text-emerald-400">{researchResults.financials.growth}</div>
+                        <div className="text-2xl font-bold text-emerald-600">{researchResults.financials.growth}</div>
                         <div className="text-sm text-[#6B7280]">Revenue Growth</div>
                       </div>
                       <div className="p-4 bg-white shadow-sm rounded-lg text-center">
@@ -449,7 +449,7 @@ export default function ResearchIntelPage() {
                       {researchResults.news.map((item, i) => (
                         <div key={i} className="flex items-start gap-3 p-4 bg-white shadow-sm rounded-lg hover:bg-white/[0.04] transition-colors cursor-pointer">
                           <div className={`px-2 py-1 rounded text-xs font-medium ${
-                            item.sentiment === 'positive' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-gray-500/20 text-[#6B7280]'
+                            item.sentiment === 'positive' ? 'bg-emerald-100 text-emerald-600' : 'bg-gray-500/20 text-[#6B7280]'
                           }`}>
                             {item.sentiment}
                           </div>
@@ -488,7 +488,7 @@ export default function ResearchIntelPage() {
                   <>
                     <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                       <h3 className="font-semibold mb-4 flex items-center gap-2">
-                        <AlertCircle className="w-5 h-5 text-amber-400" />
+                        <AlertCircle className="w-5 h-5 text-amber-600" />
                         Identified Pain Points
                       </h3>
                       <div className="space-y-3">
@@ -496,7 +496,7 @@ export default function ResearchIntelPage() {
                           <div key={i} className="p-4 bg-white shadow-sm rounded-lg">
                             <div className="flex items-center justify-between mb-2">
                               <div className="font-medium">{point.issue}</div>
-                              <div className="text-sm text-emerald-400">{point.confidence}% confidence</div>
+                              <div className="text-sm text-emerald-600">{point.confidence}% confidence</div>
                             </div>
                             <div className="text-sm text-[#6B7280]">Source: {point.source}</div>
                           </div>
@@ -506,13 +506,13 @@ export default function ResearchIntelPage() {
 
                     <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                       <h3 className="font-semibold mb-4 flex items-center gap-2">
-                        <Zap className="w-5 h-5 text-emerald-400" />
+                        <Zap className="w-5 h-5 text-emerald-600" />
                         Opportunities
                       </h3>
                       <div className="space-y-2">
                         {researchResults.opportunities.map((opp, i) => (
-                          <div key={i} className="flex items-center gap-3 p-3 bg-emerald-500/10 rounded-lg">
-                            <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                          <div key={i} className="flex items-center gap-3 p-3 bg-emerald-50 rounded-lg">
+                            <CheckCircle2 className="w-5 h-5 text-emerald-600" />
                             <span>{opp}</span>
                           </div>
                         ))}
@@ -526,13 +526,13 @@ export default function ResearchIntelPage() {
               <div className="space-y-6">
                 <div className="p-6 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 rounded-xl">
                   <h3 className="font-semibold mb-4 flex items-center gap-2">
-                    <MessageSquare className="w-5 h-5 text-indigo-400" />
+                    <MessageSquare className="w-5 h-5 text-indigo-600" />
                     AI Talking Points
                   </h3>
                   <div className="space-y-3">
                     {researchResults.talkingPoints.map((point, i) => (
                       <div key={i} className="flex items-start gap-2 text-sm">
-                        <ChevronRight className="w-4 h-4 text-indigo-400 mt-0.5 flex-shrink-0" />
+                        <ChevronRight className="w-4 h-4 text-indigo-600 mt-0.5 flex-shrink-0" />
                         <span className="text-[#4B5563]">{point}</span>
                       </div>
                     ))}
@@ -547,19 +547,19 @@ export default function ResearchIntelPage() {
                   <h3 className="font-semibold mb-4">Quick Actions</h3>
                   <div className="space-y-2">
                     <button onClick={() => showNotification('Email draft generated')} className="w-full flex items-center gap-3 p-3 bg-[#F4F5F7] rounded-lg hover:bg-[#e0850a] transition-colors text-left">
-                      <Mail className="w-5 h-5 text-blue-400" />
+                      <Mail className="w-5 h-5 text-blue-600" />
                       <span>Draft Outreach Email</span>
                     </button>
                     <button onClick={() => showNotification('Call script ready')} className="w-full flex items-center gap-3 p-3 bg-[#F4F5F7] rounded-lg hover:bg-[#e0850a] transition-colors text-left">
-                      <FileText className="w-5 h-5 text-purple-400" />
+                      <FileText className="w-5 h-5 text-purple-600" />
                       <span>Generate Call Script</span>
                     </button>
                     <button onClick={() => showNotification('Added to CRM')} className="w-full flex items-center gap-3 p-3 bg-[#F4F5F7] rounded-lg hover:bg-[#e0850a] transition-colors text-left">
-                      <Target className="w-5 h-5 text-emerald-400" />
+                      <Target className="w-5 h-5 text-emerald-600" />
                       <span>Add to CRM</span>
                     </button>
                     <button onClick={() => showNotification('Follow-up scheduled')} className="w-full flex items-center gap-3 p-3 bg-[#F4F5F7] rounded-lg hover:bg-[#e0850a] transition-colors text-left">
-                      <Calendar className="w-5 h-5 text-amber-400" />
+                      <Calendar className="w-5 h-5 text-amber-600" />
                       <span>Schedule Follow-up</span>
                     </button>
                   </div>
@@ -579,7 +579,7 @@ export default function ResearchIntelPage() {
                 { icon: Target, title: 'Competitive Analysis', desc: 'Understand market positioning and identify key differentiators' },
               ].map((feature, i) => (
                 <div key={i} className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
-                  <feature.icon className="w-10 h-10 text-indigo-400 mb-4" />
+                  <feature.icon className="w-10 h-10 text-indigo-600 mb-4" />
                   <h3 className="font-semibold mb-2">{feature.title}</h3>
                   <p className="text-sm text-[#6B7280]">{feature.desc}</p>
                 </div>

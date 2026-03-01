@@ -80,12 +80,12 @@ function EnterpriseChat() {
           Enterprise Solutions<br />
           <span style={{ color: '#F5920B' }}>Consultation</span>
         </h1>
-        <p className="text-lg text-[#9CA3AF] mb-8 max-w-lg mx-auto">
+        <p className="text-lg text-gray-500 mb-8 max-w-lg mx-auto">
           Our AI Solutions Consultant will learn about your business, identify automation opportunities, and show you exactly how WoulfAI can transform your operations.
         </p>
         <div className="flex flex-wrap justify-center gap-3 mb-8">
           {['Personalized ROI Analysis', 'Industry-Specific Insights', 'Custom Employee Recommendations', 'Implementation Roadmap'].map(tag => (
-            <span key={tag} className="px-3.5 py-1.5 bg-white rounded-full text-xs font-medium text-[#9CA3AF] border border-gray-200">{tag}</span>
+            <span key={tag} className="px-3.5 py-1.5 bg-white rounded-full text-xs font-medium text-gray-500 border border-gray-200">{tag}</span>
           ))}
         </div>
         <button onClick={startChat}
@@ -94,7 +94,7 @@ function EnterpriseChat() {
           <Bot className="w-5 h-5" /> Start Your Consultation
         </button>
         <div className="mt-6">
-          <Link href="/contact" className="text-sm text-[#6B7280] hover:text-[#6B7280] transition flex items-center justify-center gap-1">
+          <Link href="/contact" className="text-sm text-gray-400 hover:text-gray-600 transition flex items-center justify-center gap-1">
             <ArrowLeft className="w-3 h-3" /> Or fill out the contact form instead
           </Link>
         </div>
@@ -117,7 +117,7 @@ function EnterpriseChat() {
               Enterprise Consultation
             </div>
           </div>
-          <Link href="/contact" className="ml-auto text-xs text-[#6B7280] hover:text-[#4B5563] transition">
+          <Link href="/contact" className="ml-auto text-xs text-white/40 hover:text-white/70 transition">
             Switch to Form
           </Link>
         </div>
@@ -140,7 +140,7 @@ function EnterpriseChat() {
               </div>
               {msg.role === 'user' && (
                 <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: '#E5E7EB' }}>
-                  <User className="w-4 h-4 text-[#9CA3AF]" />
+                  <User className="w-4 h-4 text-gray-500" />
                 </div>
               )}
             </div>
@@ -182,7 +182,7 @@ function EnterpriseChat() {
               <Send className="w-5 h-5" />
             </button>
           </div>
-          <div className="text-[10px] text-[#6B7280] mt-2 text-center">
+          <div className="text-[10px] text-gray-400 mt-2 text-center">
             Powered by WoulfAI &middot; Your data is kept confidential
           </div>
         </div>
@@ -252,13 +252,13 @@ export default function ContactPage() {
             </span>
           </Link>
           <div className="hidden md:flex items-center gap-8">
-            <Link href="/solutions" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] transition-colors">Solutions</Link>
-            <Link href="/pricing" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] transition-colors">Pricing</Link>
-            <Link href="/case-studies" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] transition-colors">Case Studies</Link>
-            <Link href="/about" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] transition-colors">About</Link>
+            <Link href="/solutions" className="text-sm text-white/60 hover:text-white transition-colors">Solutions</Link>
+            <Link href="/pricing" className="text-sm text-white/60 hover:text-white transition-colors">Pricing</Link>
+            <Link href="/case-studies" className="text-sm text-white/60 hover:text-white transition-colors">Case Studies</Link>
+            <Link href="/about" className="text-sm text-white/60 hover:text-white transition-colors">About</Link>
           </div>
           <div className="flex items-center gap-3">
-            <Link href="/login" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] px-4 py-2 transition-colors">Sign In</Link>
+            <Link href="/login" className="text-sm text-white/60 hover:text-white px-4 py-2 transition-colors">Sign In</Link>
             <Link href="/register" className="text-sm font-bold text-white px-5 py-2.5 rounded-xl transition-all hover:-translate-y-px"
               style={{ background: '#F5920B', boxShadow: '0 4px 16px rgba(245,146,11,0.3)' }}>
               Hire Your AI Team
@@ -279,7 +279,7 @@ export default function ContactPage() {
                 Let&apos;s Build Something<br />
                 <span style={{ color: '#F5920B' }}>Amazing Together</span>
               </h1>
-              <p className="mt-5 text-lg text-[#9CA3AF]">
+              <p className="mt-5 text-lg text-gray-500">
                 Ready to transform your operations with AI? We&apos;re here to help you get started.
               </p>
 
@@ -295,7 +295,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h3 className="font-bold text-[15px]" style={{ color: '#1B2A4A' }}>{item.label}</h3>
-                      <p className="text-[#9CA3AF] text-[14px]">{item.value}</p>
+                      <p className="text-gray-500 text-[14px]">{item.value}</p>
                     </div>
                   </div>
                 ))}
@@ -327,7 +327,7 @@ export default function ContactPage() {
                       <CheckCircle2 className="w-8 h-8" style={{ color: '#2A9D8F' }} />
                     </div>
                     <h2 className="text-2xl font-extrabold mb-2" style={{ color: '#1B2A4A' }}>Thank You!</h2>
-                    <p className="text-[#9CA3AF] mb-6">
+                    <p className="text-gray-500 mb-6">
                       We&apos;ve received your message and will get back to you within 24 hours.
                     </p>
                     <Link href="/" className="font-semibold" style={{ color: '#F5920B' }}>Return to Homepage</Link>
@@ -414,7 +414,7 @@ export default function ContactPage() {
                         style={{ background: '#F5920B', boxShadow: '0 4px 16px rgba(245,146,11,0.3)' }}>
                         {submitting ? 'Sending...' : <>Send Message <Send className="w-4 h-4" /></>}
                       </button>
-                      <p className="text-xs text-[#6B7280] text-center">
+                      <p className="text-xs text-gray-400 text-center">
                         By submitting, you agree to our <Link href="/privacy" className="underline">Privacy Policy</Link> and <Link href="/terms" className="underline">Terms of Service</Link>.
                       </p>
                     </form>
@@ -431,11 +431,11 @@ export default function ContactPage() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Image src="/woulf-badge.png" alt="Woulf Group" width={20} height={20} className="opacity-50" />
-            <span className="text-[11px] text-[#6B7280]">&copy; 2026 WoulfAI by Woulf Group</span>
+            <span className="text-[11px] text-gray-400">&copy; 2026 WoulfAI by Woulf Group</span>
           </div>
           <div className="flex gap-4">
-            <Link href="/privacy" className="text-[11px] text-[#6B7280] hover:text-[#6B7280]">Privacy</Link>
-            <Link href="/terms" className="text-[11px] text-[#6B7280] hover:text-[#6B7280]">Terms</Link>
+            <Link href="/privacy" className="text-[11px] text-gray-400 hover:text-gray-600">Privacy</Link>
+            <Link href="/terms" className="text-[11px] text-gray-400 hover:text-gray-600">Terms</Link>
           </div>
         </div>
       </footer>

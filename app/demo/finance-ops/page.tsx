@@ -82,7 +82,7 @@ export default function CFOAgentDemo() {
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Link href="/demo" className="flex items-center gap-2 text-white/60 hover:text-white transition-colors">
+              <Link href="/demo" className="flex items-center gap-2 text-[#6B7280] hover:text-[#1B2A4A] transition-colors">
                 <ArrowLeft className="w-5 h-5" />
                 <span>Back</span>
               </Link>
@@ -96,7 +96,7 @@ export default function CFOAgentDemo() {
                     <h1 className="font-bold">CFO Employee</h1>
                     <img src="/images/woulf-logo.png" alt="Woulf" className="w-5 h-5 rounded" title="Powered by Woulf" />
                   </div>
-                  <p className="text-xs text-white/60">Financial Intelligence</p>
+                  <p className="text-xs text-[#6B7280]">Financial Intelligence</p>
                 </div>
               </div>
             </div>
@@ -139,8 +139,8 @@ export default function CFOAgentDemo() {
               ].map((kpi, i) => (
                 <div key={i} className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                   <div className="flex items-center justify-between mb-4">
-                    <kpi.icon className={`w-5 h-5 ${kpi.up === true ? 'text-emerald-400' : kpi.up === false ? 'text-red-400' : 'text-amber-400'}`} />
-                    <span className={`text-xs ${kpi.up === true ? 'text-emerald-400' : kpi.up === false ? 'text-red-400' : 'text-[#6B7280]'}`}>{kpi.change}</span>
+                    <kpi.icon className={`w-5 h-5 ${kpi.up === true ? 'text-emerald-600' : kpi.up === false ? 'text-red-600' : 'text-amber-600'}`} />
+                    <span className={`text-xs ${kpi.up === true ? 'text-emerald-600' : kpi.up === false ? 'text-red-600' : 'text-[#6B7280]'}`}>{kpi.change}</span>
                   </div>
                   <div className="text-3xl font-bold mb-1">{kpi.value}</div>
                   <div className="text-sm text-[#6B7280]">{kpi.label}</div>
@@ -152,21 +152,21 @@ export default function CFOAgentDemo() {
             <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-bold flex items-center gap-2">
-                  <Bell className="w-5 h-5 text-amber-400" />
+                  <Bell className="w-5 h-5 text-amber-600" />
                   Alerts & Actions
                 </h2>
               </div>
               <div className="space-y-3">
                 {alerts.map((alert, i) => (
                   <div key={i} className={`flex items-center justify-between p-4 rounded-lg ${
-                    alert.type === 'warning' ? 'bg-yellow-500/10 border border-yellow-500/30' :
-                    alert.type === 'success' ? 'bg-emerald-500/10 border border-emerald-500/30' :
-                    'bg-blue-500/10 border border-blue-500/30'
+                    alert.type === 'warning' ? 'bg-yellow-50 border border-yellow-500/30' :
+                    alert.type === 'success' ? 'bg-emerald-50 border border-emerald-500/30' :
+                    'bg-blue-50 border border-blue-500/30'
                   }`}>
                     <div className="flex items-center gap-3">
-                      {alert.type === 'warning' && <AlertTriangle className="w-5 h-5 text-yellow-400" />}
-                      {alert.type === 'success' && <CheckCircle2 className="w-5 h-5 text-emerald-400" />}
-                      {alert.type === 'info' && <Clock className="w-5 h-5 text-blue-400" />}
+                      {alert.type === 'warning' && <AlertTriangle className="w-5 h-5 text-yellow-600" />}
+                      {alert.type === 'success' && <CheckCircle2 className="w-5 h-5 text-emerald-600" />}
+                      {alert.type === 'info' && <Clock className="w-5 h-5 text-blue-600" />}
                       <span className="text-sm">{alert.message}</span>
                     </div>
                     <button onClick={() => showNotification('Action completed')} className="px-3 py-1 bg-gray-100 rounded-lg text-sm hover:bg-gray-200">
@@ -180,22 +180,22 @@ export default function CFOAgentDemo() {
             {/* Quick Actions */}
             <div className="grid md:grid-cols-4 gap-4">
               <button onClick={() => setShowModal('sendReminder')} className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl hover:border-[#2A9D8F]/40 transition-colors text-left group">
-                <Send className="w-8 h-8 text-amber-400 mb-4" />
+                <Send className="w-8 h-8 text-amber-600 mb-4" />
                 <h3 className="font-semibold mb-1">Send AR Reminders</h3>
                 <p className="text-sm text-[#6B7280]">Auto-send payment reminders</p>
               </button>
               <button onClick={() => setShowModal('recordPayment')} className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl hover:border-[#2A9D8F]/40 transition-colors text-left group">
-                <Banknote className="w-8 h-8 text-emerald-400 mb-4" />
+                <Banknote className="w-8 h-8 text-emerald-600 mb-4" />
                 <h3 className="font-semibold mb-1">Record Payment</h3>
                 <p className="text-sm text-[#6B7280]">Log incoming/outgoing payment</p>
               </button>
               <button onClick={() => setActiveTab('cashflow')} className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl hover:border-[#2A9D8F]/40 transition-colors text-left group">
-                <TrendingUp className="w-8 h-8 text-blue-400 mb-4" />
+                <TrendingUp className="w-8 h-8 text-blue-600 mb-4" />
                 <h3 className="font-semibold mb-1">Cash Forecast</h3>
                 <p className="text-sm text-[#6B7280]">View 13-week projection</p>
               </button>
               <button onClick={() => showNotification('Report generated')} className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl hover:border-[#2A9D8F]/40 transition-colors text-left group">
-                <FileText className="w-8 h-8 text-purple-400 mb-4" />
+                <FileText className="w-8 h-8 text-purple-600 mb-4" />
                 <h3 className="font-semibold mb-1">Generate Report</h3>
                 <p className="text-sm text-[#6B7280]">Create financial summary</p>
               </button>
@@ -210,7 +210,7 @@ export default function CFOAgentDemo() {
               <div className="flex items-end justify-between gap-4 h-48">
                 {cashFlowData.map((week, i) => (
                   <div key={i} className="flex-1 flex flex-col items-center">
-                    <div className="text-xs text-emerald-400 mb-1">${(week.balance / 1000).toFixed(0)}K</div>
+                    <div className="text-xs text-emerald-600 mb-1">${(week.balance / 1000).toFixed(0)}K</div>
                     <div className="w-full flex flex-col gap-1">
                       <div className="bg-emerald-500/30 rounded-t" style={{ height: `${(week.inflow / 70000) * 100}px` }} title={`Inflow: $${week.inflow.toLocaleString()}`} />
                       <div className="bg-red-500/30 rounded-b" style={{ height: `${(week.outflow / 70000) * 100}px` }} title={`Outflow: $${week.outflow.toLocaleString()}`} />
@@ -247,8 +247,8 @@ export default function CFOAgentDemo() {
                     <tr className="text-left text-sm text-[#6B7280] border-b border-[#E5E7EB]">
                       <th className="pb-3 font-medium">Week</th>
                       <th className="pb-3 font-medium text-right">Opening</th>
-                      <th className="pb-3 font-medium text-right text-emerald-400">Inflows</th>
-                      <th className="pb-3 font-medium text-right text-red-400">Outflows</th>
+                      <th className="pb-3 font-medium text-right text-emerald-600">Inflows</th>
+                      <th className="pb-3 font-medium text-right text-red-600">Outflows</th>
                       <th className="pb-3 font-medium text-right">Closing</th>
                     </tr>
                   </thead>
@@ -257,8 +257,8 @@ export default function CFOAgentDemo() {
                       <tr key={i} className="border-b border-[#E5E7EB]">
                         <td className="py-3">{week.week}</td>
                         <td className="py-3 text-right">${(week.balance - week.inflow + week.outflow).toLocaleString()}</td>
-                        <td className="py-3 text-right text-emerald-400">+${week.inflow.toLocaleString()}</td>
-                        <td className="py-3 text-right text-red-400">-${week.outflow.toLocaleString()}</td>
+                        <td className="py-3 text-right text-emerald-600">+${week.inflow.toLocaleString()}</td>
+                        <td className="py-3 text-right text-red-600">-${week.outflow.toLocaleString()}</td>
                         <td className="py-3 text-right font-bold">${week.balance.toLocaleString()}</td>
                       </tr>
                     ))}
@@ -286,11 +286,11 @@ export default function CFOAgentDemo() {
               </div>
               <div className="p-4 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                 <div className="text-sm text-[#6B7280] mb-1">Current</div>
-                <div className="text-2xl font-bold text-emerald-400">$54,700</div>
+                <div className="text-2xl font-bold text-emerald-600">$54,700</div>
               </div>
-              <div className="p-4 bg-red-500/10 border border-red-500/30 rounded-xl">
-                <div className="text-sm text-red-400 mb-1">Overdue</div>
-                <div className="text-2xl font-bold text-red-400">$15,400</div>
+              <div className="p-4 bg-red-50 border border-red-500/30 rounded-xl">
+                <div className="text-sm text-red-600 mb-1">Overdue</div>
+                <div className="text-2xl font-bold text-red-600">$15,400</div>
               </div>
             </div>
             <div className="bg-white shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden">
@@ -313,7 +313,7 @@ export default function CFOAgentDemo() {
                       <td className="px-6 py-4 font-bold">${inv.amount.toLocaleString()}</td>
                       <td className="px-6 py-4">{inv.dueDate}</td>
                       <td className="px-6 py-4">
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${inv.status === 'current' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-red-500/10 text-red-400'}`}>
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${inv.status === 'current' ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'}`}>
                           {inv.status === 'overdue' ? `${Math.abs(inv.daysOut)} days overdue` : `Due in ${inv.daysOut} days`}
                         </span>
                       </td>
@@ -368,14 +368,14 @@ export default function CFOAgentDemo() {
                       <td className="px-6 py-4 font-bold">${bill.amount.toLocaleString()}</td>
                       <td className="px-6 py-4">{bill.dueDate}</td>
                       <td className="px-6 py-4">
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${bill.status === 'paid' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-yellow-500/10 text-yellow-400'}`}>
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${bill.status === 'paid' ? 'bg-emerald-50 text-emerald-600' : 'bg-yellow-50 text-yellow-600'}`}>
                           {bill.status}
                         </span>
                       </td>
                       <td className="px-6 py-4 text-right">
                         <div className="flex items-center justify-end gap-1">
                           {bill.status === 'pending' && (
-                            <button onClick={() => showNotification('Bill paid')} className="p-2 hover:bg-[#e0850a] rounded-lg text-emerald-400" title="Pay Now">
+                            <button onClick={() => showNotification('Bill paid')} className="p-2 hover:bg-[#e0850a] rounded-lg text-emerald-600" title="Pay Now">
                               <CheckCircle2 className="w-4 h-4" />
                             </button>
                           )}
@@ -405,7 +405,7 @@ export default function CFOAgentDemo() {
                 { name: 'Budget vs Actual', period: 'Monthly', icon: Target },
               ].map((report, i) => (
                 <button key={i} onClick={() => showNotification(`${report.name} generated`)} className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl hover:border-[#2A9D8F]/40 transition-colors text-left">
-                  <report.icon className="w-8 h-8 text-amber-400 mb-4" />
+                  <report.icon className="w-8 h-8 text-amber-600 mb-4" />
                   <h3 className="font-semibold mb-1">{report.name}</h3>
                   <p className="text-sm text-[#6B7280]">{report.period}</p>
                 </button>
@@ -429,7 +429,7 @@ export default function CFOAgentDemo() {
                   ].map((int, i) => (
                     <div key={i} className="flex items-center justify-between p-3 bg-[#F4F5F7] rounded-lg">
                       <span>{int.name}</span>
-                      <button onClick={() => showNotification(int.connected ? `Disconnected ${int.name}` : `Connected ${int.name}`)} className={`px-3 py-1 rounded-lg text-sm font-medium ${int.connected ? 'bg-emerald-500/10 text-emerald-400' : 'bg-gray-100 text-[#6B7280]'}`}>
+                      <button onClick={() => showNotification(int.connected ? `Disconnected ${int.name}` : `Connected ${int.name}`)} className={`px-3 py-1 rounded-lg text-sm font-medium ${int.connected ? 'bg-emerald-50 text-emerald-600' : 'bg-gray-100 text-[#6B7280]'}`}>
                         {int.connected ? 'Connected' : 'Connect'}
                       </button>
                     </div>
@@ -507,7 +507,7 @@ export default function CFOAgentDemo() {
                   <button onClick={() => setShowModal(null)} className="p-2 hover:bg-[#e0850a] rounded-lg"><X className="w-5 h-5" /></button>
                 </div>
                 <div className="space-y-4">
-                  <div className="p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
+                  <div className="p-4 bg-yellow-50 border border-yellow-500/30 rounded-lg">
                     <p className="text-sm">This will send payment reminders to {invoicesAR.filter(i => i.status === 'overdue').length} overdue customers.</p>
                   </div>
                   <div className="space-y-2">
@@ -517,7 +517,7 @@ export default function CFOAgentDemo() {
                           <div className="font-medium">{inv.customer}</div>
                           <div className="text-sm text-[#6B7280]">{inv.id} - ${inv.amount.toLocaleString()}</div>
                         </div>
-                        <span className="text-red-400 text-sm">{Math.abs(inv.daysOut)} days overdue</span>
+                        <span className="text-red-600 text-sm">{Math.abs(inv.daysOut)} days overdue</span>
                       </div>
                     ))}
                   </div>

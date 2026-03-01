@@ -43,9 +43,9 @@ const STEPS = [
 ];
 
 const TIERS = [
-  { name: 'Starter', price: '$499', desc: 'A small team to get started', features: ['5 AI Employees', 'Basic analytics', 'Email support', '2 team members'], featured: false },
-  { name: 'Professional', price: '$1,200', desc: 'Full coverage for growing companies', features: ['15 AI Employees', 'Advanced analytics', 'Priority support', '10 team members', 'Custom integrations'], featured: true },
-  { name: 'Enterprise', price: '$2,499', desc: 'Your full AI workforce with white-glove service', features: ['All 21 AI Employees', 'Dedicated success manager', 'Custom domain', 'Unlimited members', 'SLA guarantee', 'SOC 2 compliance docs'], featured: false },
+  { name: 'Starter', price: '$499', desc: 'A small team to get started', features: ['3 AI Employees', '2 Seats', 'Basic analytics', 'Email support'], featured: false },
+  { name: 'Professional', price: '$1,200', desc: 'Full coverage for growing companies', features: ['15 AI Employees', '10 Seats', 'Advanced analytics', 'Priority support', 'Custom integrations'], featured: true },
+  { name: 'Enterprise', price: null, desc: 'Your full AI workforce with white-glove service', features: ['Custom AI Employees', 'Unlimited Seats', 'Dedicated success manager', 'Custom domain', 'SLA guarantee', 'SOC 2 compliance docs'], featured: false },
 ];
 
 const NAV_LINKS = [
@@ -337,7 +337,11 @@ export default function LandingPage() {
                 <h3 className="text-[22px] font-extrabold" style={{ fontFamily: "'Outfit', sans-serif" }}>{t.name}</h3>
                 <p className={`text-[13px] mt-1 ${t.featured ? 'text-white/50' : 'text-gray-500'}`}>{t.desc}</p>
                 <p className="text-5xl font-black mt-5 tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
-                  {t.price}<span className={`text-sm font-normal ${t.featured ? 'text-white/40' : 'text-gray-400'}`}>/mo</span>
+                {t.price ? (
+                  <>{t.price}<span className={`text-sm font-normal ${t.featured ? 'text-white/40' : 'text-gray-400'}`}>/mo</span></>
+                ) : (
+                  <span className="text-3xl">Contact Sales</span>
+                )}
                 </p>
 
                 <ul className="mt-7 flex flex-col gap-3.5">
@@ -352,16 +356,16 @@ export default function LandingPage() {
                 </ul>
 
                 <Link
-                  href={t.featured ? '/register' : '/pricing'}
+                  href={t.featured ? '/register' : !t.price ? '/contact' : '/pricing'}
                   className="block text-center mt-8 py-3.5 rounded-2xl text-[15px] font-bold transition-all hover:-translate-y-px"
                   style={{
-                    background: t.featured ? '#F5920B' : 'transparent',
-                    color: t.featured ? '#fff' : '#1B2A4A',
-                    border: t.featured ? 'none' : '2px solid #1B2A4A',
+                    background: t.featured ? '#F5920B' : !t.price ? '#1B2A4A' : 'transparent',
+                    color: t.featured || !t.price ? '#fff' : '#1B2A4A',
+                    border: t.featured || !t.price ? 'none' : '2px solid #1B2A4A',
                     boxShadow: t.featured ? '0 4px 16px rgba(245,146,11,0.3)' : 'none',
                   }}
                 >
-                  {t.featured ? 'Start Free Trial' : 'View Details'}
+                  {t.featured ? 'Start Free Trial' : !t.price ? 'Contact Sales' : 'View Details'}
                 </Link>
               </div>
             ))}

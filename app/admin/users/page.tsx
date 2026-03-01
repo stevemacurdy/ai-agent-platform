@@ -244,7 +244,7 @@ export default function AdminUsersPage() {
                 <button key={agent.slug} onClick={() => toggleAgent(agent.slug)}
                   className={"flex items-center gap-2 px-3 py-2 rounded-lg text-xs transition border " +
                     (form.agent_slugs.includes(agent.slug)
-                      ? 'bg-blue-600/20 border-blue-500/30 text-blue-600'
+                      ? 'bg-blue-50 border-blue-500/30 text-blue-600'
                       : 'bg-white shadow-sm border-[#E5E7EB] text-[#9CA3AF] hover:border-[#E5E7EB]')}>
                   <span>{agent.icon}</span>
                   <span className="truncate">{agent.name}</span>
@@ -378,7 +378,7 @@ export default function AdminUsersPage() {
                         )}
                         className={"flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[11px] transition border " +
                           (editAgents.includes(a.slug)
-                            ? 'bg-blue-600/20 border-blue-500/30 text-blue-600'
+                            ? 'bg-blue-50 border-blue-500/30 text-blue-600'
                             : 'bg-white shadow-sm border-[#E5E7EB] text-[#6B7280] hover:border-[#E5E7EB] hover:text-[#6B7280]')}
                         title={a.name}
                       >

@@ -170,7 +170,7 @@ export default function SalesCoachPage() {
               { type: 'general' as const, icon: '🎯', label: 'Skill Building', desc: 'Work on sales skills' },
             ].map(s => (
               <button key={s.type} onClick={() => startSession(s.type)}
-                className="flex flex-col items-center gap-2 p-5 bg-white/[0.03] border border-[#E5E7EB] rounded-xl hover:border-blue-500/30 hover:bg-blue-500/5 transition text-center group">
+                className="flex flex-col items-center gap-2 p-5 bg-white shadow-sm border border-[#E5E7EB] rounded-xl hover:border-blue-500/30 hover:bg-blue-500/5 transition text-center group">
                 <span className="text-3xl">{s.icon}</span>
                 <span className="text-sm font-semibold text-white group-hover:text-blue-600 transition">{s.label}</span>
                 <span className="text-[10px] text-[#9CA3AF]">{s.desc}</span>

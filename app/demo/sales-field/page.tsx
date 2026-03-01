@@ -121,7 +121,7 @@ export default function SalesAgentDemo() {
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Link href="/demo" className="flex items-center gap-2 text-white/60 hover:text-white transition-colors">
+              <Link href="/demo" className="flex items-center gap-2 text-[#6B7280] hover:text-[#1B2A4A] transition-colors">
                 <ArrowLeft className="w-5 h-5" />
                 <span>Back</span>
               </Link>
@@ -135,7 +135,7 @@ export default function SalesAgentDemo() {
                     <h1 className="font-bold">Sales Employee</h1>
                     <img src="/images/woulf-logo.png" alt="Woulf" className="w-5 h-5 rounded" title="Powered by Woulf" />
                   </div>
-                  <p className="text-xs text-white/60">AI-Powered Sales Employee</p>
+                  <p className="text-xs text-[#6B7280]">AI-Powered Sales Employee</p>
                 </div>
               </div>
             </div>
@@ -178,8 +178,8 @@ export default function SalesAgentDemo() {
               ].map((kpi, i) => (
                 <div key={i} className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                   <div className="flex items-center justify-between mb-4">
-                    <kpi.icon className="w-5 h-5 text-emerald-400" />
-                    <span className={`text-xs ${kpi.up ? 'text-emerald-400' : 'text-red-400'}`}>{kpi.change}</span>
+                    <kpi.icon className="w-5 h-5 text-emerald-600" />
+                    <span className={`text-xs ${kpi.up ? 'text-emerald-600' : 'text-red-600'}`}>{kpi.change}</span>
                   </div>
                   <div className="text-3xl font-bold mb-1">{kpi.value}</div>
                   <div className="text-sm text-[#6B7280]">{kpi.label}</div>
@@ -189,24 +189,24 @@ export default function SalesAgentDemo() {
 
             <div className="grid md:grid-cols-3 gap-4">
               <button onClick={() => { setSelectedLead(leadsData[0]); handlePreCallResearch(leadsData[0]); }} className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl hover:border-[#2A9D8F]/40 transition-colors text-left group">
-                <div className="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <FileText className="w-6 h-6 text-emerald-400" />
+                <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <FileText className="w-6 h-6 text-emerald-600" />
                 </div>
                 <h3 className="font-semibold mb-1">Pre-Call Research</h3>
                 <p className="text-sm text-[#6B7280]">Get AI-powered intel on your next prospect</p>
               </button>
               
               <button onClick={handleStartCoaching} className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl hover:border-[#2A9D8F]/40 transition-colors text-left group">
-                <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <Brain className="w-6 h-6 text-blue-400" />
+                <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Brain className="w-6 h-6 text-blue-600" />
                 </div>
                 <h3 className="font-semibold mb-1">Call Coaching</h3>
                 <p className="text-sm text-[#6B7280]">Real-time AI coaching during calls</p>
               </button>
               
               <button onClick={() => setShowModal('scheduleMeeting')} className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl hover:border-[#2A9D8F]/40 transition-colors text-left group">
-                <div className="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <Calendar className="w-6 h-6 text-purple-400" />
+                <div className="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Calendar className="w-6 h-6 text-purple-600" />
                 </div>
                 <h3 className="font-semibold mb-1">Schedule Meeting</h3>
                 <p className="text-sm text-[#6B7280]">Book a call with smart scheduling</p>
@@ -223,8 +223,8 @@ export default function SalesAgentDemo() {
                   {meetingsData.slice(0, 3).map((meeting) => (
                     <div key={meeting.id} className="flex items-center justify-between p-3 bg-[#F4F5F7] rounded-lg hover:bg-[#e0850a] cursor-pointer" onClick={() => { setSelectedLead(leadsData.find(l => l.name === meeting.contact)); setShowModal('meetingDetail'); }}>
                       <div className="flex items-center gap-3">
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${meeting.type === 'call' ? 'bg-blue-500/10' : 'bg-purple-500/10'}`}>
-                          {meeting.type === 'call' ? <Phone className="w-5 h-5 text-blue-400" /> : <Video className="w-5 h-5 text-purple-400" />}
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${meeting.type === 'call' ? 'bg-blue-50' : 'bg-purple-50'}`}>
+                          {meeting.type === 'call' ? <Phone className="w-5 h-5 text-blue-600" /> : <Video className="w-5 h-5 text-purple-600" />}
                         </div>
                         <div>
                           <div className="font-medium">{meeting.title}</div>
@@ -258,9 +258,9 @@ export default function SalesAgentDemo() {
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="text-sm font-bold text-emerald-400">${(lead.value / 1000).toFixed(0)}K</div>
+                        <div className="text-sm font-bold text-emerald-600">${(lead.value / 1000).toFixed(0)}K</div>
                         <div className="flex items-center gap-1">
-                          <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
+                          <Star className="w-3 h-3 text-yellow-600 fill-yellow-400" />
                           <span className="text-xs">{lead.score}</span>
                         </div>
                       </div>
@@ -321,21 +321,21 @@ export default function SalesAgentDemo() {
                         </div>
                       </td>
                       <td className="px-6 py-4">{lead.company}</td>
-                      <td className="px-6 py-4 font-bold text-emerald-400">${lead.value.toLocaleString()}</td>
+                      <td className="px-6 py-4 font-bold text-emerald-600">${lead.value.toLocaleString()}</td>
                       <td className="px-6 py-4">
                         <span className={`px-2 py-1 rounded-full text-xs font-medium capitalize ${
-                          lead.stage === 'negotiation' ? 'bg-purple-500/10 text-purple-400' :
-                          lead.stage === 'proposal' ? 'bg-blue-500/10 text-blue-400' :
-                          lead.stage === 'qualified' ? 'bg-emerald-500/10 text-emerald-400' :
-                          'bg-yellow-500/10 text-yellow-400'
+                          lead.stage === 'negotiation' ? 'bg-purple-50 text-purple-600' :
+                          lead.stage === 'proposal' ? 'bg-blue-50 text-blue-600' :
+                          lead.stage === 'qualified' ? 'bg-emerald-50 text-emerald-600' :
+                          'bg-yellow-50 text-yellow-600'
                         }`}>
                           {lead.stage}
                         </span>
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-1">
-                          <Star className={`w-4 h-4 ${lead.score >= 80 ? 'text-yellow-400 fill-yellow-400' : 'text-[#9CA3AF]'}`} />
-                          <span className={lead.score >= 80 ? 'text-yellow-400' : ''}>{lead.score}</span>
+                          <Star className={`w-4 h-4 ${lead.score >= 80 ? 'text-yellow-600 fill-yellow-400' : 'text-[#9CA3AF]'}`} />
+                          <span className={lead.score >= 80 ? 'text-yellow-600' : ''}>{lead.score}</span>
                         </div>
                       </td>
                       <td className="px-6 py-4 text-[#6B7280]">{lead.lastContact}</td>
@@ -371,7 +371,7 @@ export default function SalesAgentDemo() {
                 <div key={i} className="p-4 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                   <div className="text-sm text-[#6B7280] mb-1">{stage.name}</div>
                   <div className="text-2xl font-bold">{stage.count}</div>
-                  <div className="text-sm text-emerald-400">${(stage.value / 1000).toFixed(0)}K</div>
+                  <div className="text-sm text-emerald-600">${(stage.value / 1000).toFixed(0)}K</div>
                 </div>
               ))}
             </div>
@@ -408,8 +408,8 @@ export default function SalesAgentDemo() {
                   {meetingsData.map((meeting) => (
                     <div key={meeting.id} className="flex items-center justify-between p-4 bg-[#F4F5F7] rounded-lg hover:bg-[#e0850a] cursor-pointer" onClick={() => setShowModal('meetingDetail')}>
                       <div className="flex items-center gap-3">
-                        <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${meeting.type === 'call' ? 'bg-blue-500/10' : 'bg-purple-500/10'}`}>
-                          {meeting.type === 'call' ? <Phone className="w-6 h-6 text-blue-400" /> : <Video className="w-6 h-6 text-purple-400" />}
+                        <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${meeting.type === 'call' ? 'bg-blue-50' : 'bg-purple-50'}`}>
+                          {meeting.type === 'call' ? <Phone className="w-6 h-6 text-blue-600" /> : <Video className="w-6 h-6 text-purple-600" />}
                         </div>
                         <div>
                           <div className="font-medium">{meeting.title}</div>
@@ -428,15 +428,15 @@ export default function SalesAgentDemo() {
                 <h3 className="font-bold mb-4">Quick Actions</h3>
                 <div className="space-y-3">
                   <button onClick={() => setShowModal('scheduleMeeting')} className="w-full p-4 bg-[#F4F5F7] rounded-lg hover:bg-[#e0850a] flex items-center gap-3">
-                    <Calendar className="w-5 h-5 text-purple-400" />
+                    <Calendar className="w-5 h-5 text-purple-600" />
                     <span>Schedule New Meeting</span>
                   </button>
                   <button onClick={() => showNotification('Calendar synced')} className="w-full p-4 bg-[#F4F5F7] rounded-lg hover:bg-[#e0850a] flex items-center gap-3">
-                    <RefreshCw className="w-5 h-5 text-blue-400" />
+                    <RefreshCw className="w-5 h-5 text-blue-600" />
                     <span>Sync with Google Calendar</span>
                   </button>
                   <button onClick={() => showNotification('Availability updated')} className="w-full p-4 bg-[#F4F5F7] rounded-lg hover:bg-[#e0850a] flex items-center gap-3">
-                    <Clock className="w-5 h-5 text-emerald-400" />
+                    <Clock className="w-5 h-5 text-emerald-600" />
                     <span>Set Availability</span>
                   </button>
                 </div>
@@ -450,17 +450,17 @@ export default function SalesAgentDemo() {
             <h2 className="text-xl font-bold">AI Sales Coaching</h2>
             <div className="grid md:grid-cols-3 gap-6">
               <button onClick={handleStartCoaching} className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl hover:border-[#2A9D8F]/40 transition-colors text-left">
-                <Brain className="w-8 h-8 text-emerald-400 mb-4" />
+                <Brain className="w-8 h-8 text-emerald-600 mb-4" />
                 <h3 className="font-bold mb-2">Live Call Coaching</h3>
                 <p className="text-sm text-[#6B7280]">Get real-time suggestions during your sales calls</p>
               </button>
               <button onClick={() => showNotification('Opening call recordings...')} className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl hover:border-[#2A9D8F]/40 transition-colors text-left">
-                <Mic className="w-8 h-8 text-blue-400 mb-4" />
+                <Mic className="w-8 h-8 text-blue-600 mb-4" />
                 <h3 className="font-bold mb-2">Call Analysis</h3>
                 <p className="text-sm text-[#6B7280]">Review past calls with AI insights</p>
               </button>
               <button onClick={() => showNotification('Loading training modules...')} className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl hover:border-[#2A9D8F]/40 transition-colors text-left">
-                <Award className="w-8 h-8 text-purple-400 mb-4" />
+                <Award className="w-8 h-8 text-purple-600 mb-4" />
                 <h3 className="font-bold mb-2">Skill Training</h3>
                 <p className="text-sm text-[#6B7280]">Practice objection handling and closing</p>
               </button>
@@ -476,7 +476,7 @@ export default function SalesAgentDemo() {
                 ].map((metric, i) => (
                   <div key={i} className="p-4 bg-[#F4F5F7] rounded-lg">
                     <div className="text-sm text-[#6B7280] mb-1">{metric.label}</div>
-                    <div className={`text-2xl font-bold ${metric.status === 'good' ? 'text-emerald-400' : 'text-yellow-400'}`}>{metric.value}</div>
+                    <div className={`text-2xl font-bold ${metric.status === 'good' ? 'text-emerald-600' : 'text-yellow-600'}`}>{metric.value}</div>
                     <div className="text-xs text-[#9CA3AF]">Target: {metric.target}</div>
                   </div>
                 ))}
@@ -507,7 +507,7 @@ export default function SalesAgentDemo() {
             {/* Document Categories */}
             <div className="grid grid-cols-5 gap-4">
               {['All', 'Sales Playbook', 'Training', 'Competitive Intel', 'Policies', 'Tools'].map((cat, i) => (
-                <button key={cat} className={`p-3 rounded-lg text-sm font-medium transition-colors ${i === 0 ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-[#F4F5F7] text-[#6B7280] hover:bg-[#e0850a]'}`}>
+                <button key={cat} className={`p-3 rounded-lg text-sm font-medium transition-colors ${i === 0 ? 'bg-emerald-100 text-emerald-600 border border-emerald-500/30' : 'bg-[#F4F5F7] text-[#6B7280] hover:bg-[#e0850a]'}`}>
                   {cat}
                 </button>
               ))}
@@ -531,8 +531,8 @@ export default function SalesAgentDemo() {
                     <tr key={doc.id} className="border-b border-[#E5E7EB] hover:bg-white shadow-sm">
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-red-500/20 rounded-lg flex items-center justify-center">
-                            <FileText className="w-5 h-5 text-red-400" />
+                          <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                            <FileText className="w-5 h-5 text-red-600" />
                           </div>
                           <div>
                             <div className="font-medium">{doc.name}</div>
@@ -568,8 +568,8 @@ export default function SalesAgentDemo() {
             {/* AI Coaching Integration */}
             <div className="p-6 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border border-emerald-500/20 rounded-xl">
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-emerald-500/20 rounded-lg flex items-center justify-center">
-                  <Bot className="w-5 h-5 text-emerald-400" />
+                <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center">
+                  <Bot className="w-5 h-5 text-emerald-600" />
                 </div>
                 <div>
                   <h3 className="font-semibold mb-2">AI Coaching Knowledge</h3>
@@ -599,7 +599,7 @@ export default function SalesAgentDemo() {
                   ].map((crm, i) => (
                     <div key={i} className="flex items-center justify-between p-3 bg-[#F4F5F7] rounded-lg">
                       <span>{crm.name}</span>
-                      <button onClick={() => showNotification(crm.connected ? `Disconnected ${crm.name}` : `Connected ${crm.name}`)} className={`px-3 py-1 rounded-lg text-sm font-medium ${crm.connected ? 'bg-emerald-500/10 text-emerald-400' : 'bg-gray-100 text-[#6B7280]'}`}>
+                      <button onClick={() => showNotification(crm.connected ? `Disconnected ${crm.name}` : `Connected ${crm.name}`)} className={`px-3 py-1 rounded-lg text-sm font-medium ${crm.connected ? 'bg-emerald-50 text-emerald-600' : 'bg-gray-100 text-[#6B7280]'}`}>
                         {crm.connected ? 'Connected' : 'Connect'}
                       </button>
                     </div>
@@ -648,7 +648,7 @@ export default function SalesAgentDemo() {
                 </div>
                 {researching ? (
                   <div className="py-12 text-center">
-                    <Loader2 className="w-12 h-12 mx-auto mb-4 animate-spin text-emerald-400" />
+                    <Loader2 className="w-12 h-12 mx-auto mb-4 animate-spin text-emerald-600" />
                     <p className="text-[#6B7280]">Researching {selectedLead?.company}...</p>
                     <p className="text-sm text-[#9CA3AF] mt-2">Scanning LinkedIn, news, company website...</p>
                   </div>
@@ -675,10 +675,10 @@ export default function SalesAgentDemo() {
                   <button onClick={() => setShowModal(null)} className="p-2 hover:bg-[#e0850a] rounded-lg"><X className="w-5 h-5" /></button>
                 </div>
                 <div className="space-y-4">
-                  <div className="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-lg">
+                  <div className="p-4 bg-emerald-50 border border-emerald-500/30 rounded-lg">
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-3 h-3 bg-emerald-400 rounded-full animate-pulse" />
-                      <span className="font-medium text-emerald-400">Listening...</span>
+                      <span className="font-medium text-emerald-600">Listening...</span>
                     </div>
                     <p className="text-sm text-[#4B5563]">AI coaching is ready. Start your call and I&apos;ll provide real-time suggestions.</p>
                   </div>
@@ -799,12 +799,12 @@ export default function SalesAgentDemo() {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="p-3 bg-[#F4F5F7] rounded-lg">
                       <div className="text-xs text-[#6B7280]">Deal Value</div>
-                      <div className="font-bold text-emerald-400">${selectedLead.value.toLocaleString()}</div>
+                      <div className="font-bold text-emerald-600">${selectedLead.value.toLocaleString()}</div>
                     </div>
                     <div className="p-3 bg-[#F4F5F7] rounded-lg">
                       <div className="text-xs text-[#6B7280]">Lead Score</div>
                       <div className="font-bold flex items-center gap-1">
-                        <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                        <Star className="w-4 h-4 text-yellow-600 fill-yellow-400" />
                         {selectedLead.score}
                       </div>
                     </div>

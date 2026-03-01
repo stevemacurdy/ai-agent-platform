@@ -79,7 +79,7 @@ export default function WarehouseLayout({ children }) {
           })}
         </nav>
         <div className="p-3 border-t border-[#E5E7EB]">
-          <Link href="/portal" className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-[#9CA3AF] hover:text-[#4B5563] hover:bg-white/5 transition-colors">
+          <Link href="/portal" className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs text-[#9CA3AF] hover:text-[#4B5563] hover:bg-white shadow-sm transition-colors">
             <span>\u2190</span>
             {sidebarOpen && <span>Back to WoulfAI Portal</span>}
           </Link>

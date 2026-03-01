@@ -178,7 +178,7 @@ export default function SupportAgent() {
                 </div>
                 <span className="text-[10px] text-[#9CA3AF]">Confidence: <span className="text-white font-mono">{r.confidence}%</span></span>
               </div>
-              <div className="bg-white/[0.03] rounded-lg p-3 mb-2">
+              <div className="bg-white shadow-sm rounded-lg p-3 mb-2">
                 <div className="text-[10px] text-[#9CA3AF] mb-1">Customer asked:</div>
                 <div className="text-sm text-[#4B5563]">{r.question}</div>
               </div>

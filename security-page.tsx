@@ -94,14 +94,14 @@ export default function SecurityPage() {
             </span>
           </Link>
           <div className="hidden md:flex items-center gap-8">
-            <Link href="/solutions" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] transition-colors">Solutions</Link>
-            <Link href="/pricing" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] transition-colors">Pricing</Link>
-            <Link href="/case-studies" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] transition-colors">Case Studies</Link>
-            <Link href="/about" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] transition-colors">About</Link>
-            <Link href="/contact" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] transition-colors">Contact</Link>
+            <Link href="/solutions" className="text-sm text-white/60 hover:text-white transition-colors">Solutions</Link>
+            <Link href="/pricing" className="text-sm text-white/60 hover:text-white transition-colors">Pricing</Link>
+            <Link href="/case-studies" className="text-sm text-white/60 hover:text-white transition-colors">Case Studies</Link>
+            <Link href="/about" className="text-sm text-white/60 hover:text-white transition-colors">About</Link>
+            <Link href="/contact" className="text-sm text-white/60 hover:text-white transition-colors">Contact</Link>
           </div>
           <div className="flex items-center gap-3">
-            <Link href="/login" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] px-4 py-2 transition-colors">Sign In</Link>
+            <Link href="/login" className="text-sm text-white/60 hover:text-white px-4 py-2 transition-colors">Sign In</Link>
             <Link href="/register" className="text-sm font-bold text-white px-5 py-2.5 rounded-xl transition-all hover:-translate-y-px"
               style={{ background: '#F5920B', boxShadow: '0 4px 16px rgba(245,146,11,0.3)' }}>
               Hire Your AI Team
@@ -121,7 +121,7 @@ export default function SecurityPage() {
           <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight" style={{ color: '#1B2A4A' }}>
             Security at WoulfAI
           </h1>
-          <p className="mt-5 text-lg text-[#9CA3AF] max-w-2xl mx-auto">
+          <p className="mt-5 text-lg text-gray-500 max-w-2xl mx-auto">
             Your data is the foundation of your business. We treat its protection as our highest engineering priority — not an afterthought.
           </p>
           <div className="flex flex-wrap justify-center gap-3 mt-8">
@@ -144,7 +144,7 @@ export default function SecurityPage() {
       {/* SECURITY PRACTICES */}
       <section id="practices" className="max-w-5xl mx-auto px-6 py-16">
         <h2 className="text-2xl font-extrabold mb-2" style={{ color: '#1B2A4A' }}>How We Protect Your Data</h2>
-        <p className="text-[#9CA3AF] text-[15px] mb-10">
+        <p className="text-gray-500 text-[15px] mb-10">
           Every layer of WoulfAI is built with defense in depth. Here is what that looks like in practice.
         </p>
         <div className="grid md:grid-cols-2 gap-6">
@@ -157,7 +157,7 @@ export default function SecurityPage() {
               </div>
               <ul className="space-y-2.5">
                 {section.items.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-[14px] text-[#6B7280]">
+                  <li key={i} className="flex items-start gap-2.5 text-[14px] text-gray-600">
                     <span className="mt-1 flex-shrink-0" style={{ color: '#2A9D8F' }}>&rsaquo;</span>
                     <span>{item}</span>
                   </li>
@@ -171,7 +171,7 @@ export default function SecurityPage() {
       {/* ARCHITECTURE */}
       <section className="max-w-5xl mx-auto px-6 pb-16">
         <h2 className="text-2xl font-extrabold mb-2" style={{ color: '#1B2A4A' }}>Architecture Overview</h2>
-        <p className="text-[#9CA3AF] text-[15px] mb-10">
+        <p className="text-gray-500 text-[15px] mb-10">
           WoulfAI runs on a modern, security-first infrastructure stack.
         </p>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -182,9 +182,9 @@ export default function SecurityPage() {
             { label: 'Auth', value: 'Supabase Auth', detail: 'JWT-based, short-lived tokens, MFA support' },
           ].map((item) => (
             <div key={item.label} className="bg-white rounded-2xl border border-gray-200/60 p-5" style={{ boxShadow: '0 1px 3px rgba(27,42,74,0.04)' }}>
-              <div className="text-[10px] font-bold uppercase tracking-[1.5px] text-[#6B7280] mb-1">{item.label}</div>
+              <div className="text-[10px] font-bold uppercase tracking-[1.5px] text-gray-400 mb-1">{item.label}</div>
               <div className="text-[14px] font-bold mb-1" style={{ color: '#1B2A4A' }}>{item.value}</div>
-              <div className="text-[12px] text-[#9CA3AF]">{item.detail}</div>
+              <div className="text-[12px] text-gray-500">{item.detail}</div>
             </div>
           ))}
         </div>
@@ -194,7 +194,7 @@ export default function SecurityPage() {
       <section id="compliance" className="py-16 px-6" style={{ background: '#1B2A4A' }}>
         <div className="max-w-5xl mx-auto">
           <h2 className="text-2xl font-extrabold text-white mb-2">Compliance</h2>
-          <p className="text-[#6B7280] text-[15px] mb-10">
+          <p className="text-white/50 text-[15px] mb-10">
             We are actively pursuing industry-standard certifications and comply with applicable privacy regulations.
           </p>
           <div className="space-y-3">
@@ -214,7 +214,7 @@ export default function SecurityPage() {
                 }}>
                   {item.status}
                 </span>
-                <span className="text-sm text-[#6B7280]">{item.detail}</span>
+                <span className="text-sm text-white/50">{item.detail}</span>
               </div>
             ))}
           </div>
@@ -224,7 +224,7 @@ export default function SecurityPage() {
       {/* DATA HANDLING */}
       <section className="max-w-5xl mx-auto px-6 py-16">
         <h2 className="text-2xl font-extrabold mb-2" style={{ color: '#1B2A4A' }}>Data Handling Commitments</h2>
-        <p className="text-[#9CA3AF] text-[15px] mb-10">
+        <p className="text-gray-500 text-[15px] mb-10">
           Clear, non-negotiable principles that govern how we handle your data.
         </p>
         <div className="grid sm:grid-cols-2 gap-4">
@@ -238,7 +238,7 @@ export default function SecurityPage() {
           ].map((item) => (
             <div key={item.title} className="bg-white rounded-2xl border border-gray-200/60 p-6" style={{ boxShadow: '0 1px 3px rgba(27,42,74,0.04)' }}>
               <h3 className="text-[15px] font-bold mb-1.5" style={{ color: '#1B2A4A' }}>{item.title}</h3>
-              <p className="text-[13px] text-[#9CA3AF] leading-relaxed">{item.desc}</p>
+              <p className="text-[13px] text-gray-500 leading-relaxed">{item.desc}</p>
             </div>
           ))}
         </div>
@@ -248,10 +248,10 @@ export default function SecurityPage() {
       <section id="disclosure" className="max-w-5xl mx-auto px-6 pb-16">
         <div className="bg-white rounded-[20px] border border-gray-200/60 p-8 sm:p-10" style={{ boxShadow: '0 4px 12px rgba(27,42,74,0.06)' }}>
           <h2 className="text-2xl font-extrabold mb-2" style={{ color: '#1B2A4A' }}>Responsible Disclosure</h2>
-          <p className="text-[#9CA3AF] text-[15px] mb-6">
+          <p className="text-gray-500 text-[15px] mb-6">
             We value the security research community and welcome responsible disclosure of vulnerabilities.
           </p>
-          <div className="space-y-5 text-[14px] text-[#6B7280]">
+          <div className="space-y-5 text-[14px] text-gray-600">
             <div>
               <h3 className="font-bold mb-1" style={{ color: '#1B2A4A' }}>Scope</h3>
               <p>All WoulfAI services at <span style={{ color: '#2A9D8F' }}>*.woulfai.com</span> and associated APIs are in scope. Third-party services (Supabase, Vercel, Stripe) are out of scope — report those to the respective vendors.</p>
@@ -283,7 +283,7 @@ export default function SecurityPage() {
         <div className="p-10 sm:p-12 rounded-3xl text-center"
           style={{ background: 'linear-gradient(135deg, #132038 0%, #1B2A4A 60%, #233756 100%)' }}>
           <h2 className="text-2xl font-extrabold text-white mb-3">Need More Detail?</h2>
-          <p className="text-[#6B7280] text-[15px] mb-8 max-w-lg mx-auto">
+          <p className="text-white/50 text-[15px] mb-8 max-w-lg mx-auto">
             Enterprise customers can request our full security documentation package including SOC 2 policies, penetration test results, data processing agreements, and custom security reviews.
           </p>
           <Link href="/contact"
@@ -299,11 +299,11 @@ export default function SecurityPage() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Image src="/woulf-badge.png" alt="Woulf Group" width={20} height={20} className="opacity-50" />
-            <span className="text-[11px] text-[#6B7280]">&copy; 2026 WoulfAI by Woulf Group</span>
+            <span className="text-[11px] text-gray-400">&copy; 2026 WoulfAI by Woulf Group</span>
           </div>
           <div className="flex gap-4">
-            <Link href="/privacy" className="text-[11px] text-[#6B7280] hover:text-[#6B7280]">Privacy</Link>
-            <Link href="/terms" className="text-[11px] text-[#6B7280] hover:text-[#6B7280]">Terms</Link>
+            <Link href="/privacy" className="text-[11px] text-gray-400 hover:text-gray-600">Privacy</Link>
+            <Link href="/terms" className="text-[11px] text-gray-400 hover:text-gray-600">Terms</Link>
           </div>
         </div>
       </footer>

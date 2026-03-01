@@ -176,7 +176,7 @@ export default function TrainingPage() {
                     <h1 className="font-bold text-lg">Training Employee</h1>
                     <img src="/images/woulf-logo.png" alt="Woulf" className="w-5 h-5 rounded" title="Powered by Woulf" />
                   </div>
-                  <p className="text-xs text-white/60">Staff Certification & Onboarding</p>
+                  <p className="text-xs text-[#6B7280]">Staff Certification & Onboarding</p>
                 </div>
               </div>
             </div>
@@ -223,20 +223,20 @@ export default function TrainingPage() {
                 <div key={i} className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                   <div className="flex items-center justify-between mb-4">
                     <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                      stat.color === 'blue' ? 'bg-blue-500/20' :
+                      stat.color === 'blue' ? 'bg-blue-100' :
                       stat.color === 'purple' ? 'bg-purple-500/20' :
-                      stat.color === 'amber' ? 'bg-amber-500/20' : 'bg-emerald-500/20'
+                      stat.color === 'amber' ? 'bg-amber-500/20' : 'bg-emerald-100'
                     }`}>
                       <stat.icon className={`w-6 h-6 ${
-                        stat.color === 'blue' ? 'text-blue-400' :
-                        stat.color === 'purple' ? 'text-purple-400' :
-                        stat.color === 'amber' ? 'text-amber-400' : 'text-emerald-400'
+                        stat.color === 'blue' ? 'text-blue-600' :
+                        stat.color === 'purple' ? 'text-purple-600' :
+                        stat.color === 'amber' ? 'text-amber-600' : 'text-emerald-600'
                       }`} />
                     </div>
                   </div>
                   <div className="text-3xl font-bold mb-1">{stat.value}</div>
                   <div className="text-sm text-[#6B7280]">{stat.label}</div>
-                  <div className="text-xs text-emerald-400 mt-2">{stat.change}</div>
+                  <div className="text-xs text-emerald-600 mt-2">{stat.change}</div>
                 </div>
               ))}
             </div>
@@ -255,7 +255,7 @@ export default function TrainingPage() {
                         <div>
                           <span className="font-medium">{activity.user}</span>
                           <span className="text-[#6B7280]"> {activity.action} </span>
-                          <span className="text-orange-400">{activity.item}</span>
+                          <span className="text-orange-600">{activity.item}</span>
                         </div>
                         <div className="text-sm text-[#9CA3AF]">{activity.time}</div>
                       </div>
@@ -267,17 +267,17 @@ export default function TrainingPage() {
               {/* Expiring Certifications */}
               <div className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl">
                 <h3 className="font-semibold mb-4 flex items-center gap-2">
-                  <AlertCircle className="w-5 h-5 text-amber-400" />
+                  <AlertCircle className="w-5 h-5 text-amber-600" />
                   Expiring Soon
                 </h3>
                 <div className="space-y-3">
                   {certificationsData.filter(c => c.status === 'expiring').map((cert, i) => (
-                    <div key={i} className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-lg">
+                    <div key={i} className="p-3 bg-amber-50 border border-amber-500/20 rounded-lg">
                       <div className="flex items-center gap-2 mb-1">
                         <span>{cert.icon}</span>
                         <span className="font-medium">{cert.name}</span>
                       </div>
-                      <div className="text-sm text-amber-400">Expires: {cert.expires}</div>
+                      <div className="text-sm text-amber-600">Expires: {cert.expires}</div>
                       <div className="text-sm text-[#6B7280]">{cert.holders} employees affected</div>
                     </div>
                   ))}
@@ -306,7 +306,7 @@ export default function TrainingPage() {
                     <div className="text-sm text-[#6B7280] mb-3">{course.duration} • {course.modules} modules</div>
                     <div className="flex items-center justify-between">
                       <div className="text-sm text-[#6B7280]">{course.enrolled} enrolled</div>
-                      <div className="text-sm text-emerald-400">{Math.round(course.completed / course.enrolled * 100)}% complete</div>
+                      <div className="text-sm text-emerald-600">{Math.round(course.completed / course.enrolled * 100)}% complete</div>
                     </div>
                   </div>
                 ))}
@@ -345,16 +345,16 @@ export default function TrainingPage() {
                   <div className="flex items-start justify-between mb-4">
                     <div className="text-4xl">{course.thumbnail}</div>
                     {course.required && (
-                      <span className="px-2 py-1 bg-red-500/20 text-red-400 text-xs rounded-full">Required</span>
+                      <span className="px-2 py-1 bg-red-100 text-red-600 text-xs rounded-full">Required</span>
                     )}
                   </div>
-                  <h3 className="font-semibold mb-2 group-hover:text-orange-400 transition-colors">{course.title}</h3>
+                  <h3 className="font-semibold mb-2 group-hover:text-orange-600 transition-colors">{course.title}</h3>
                   <div className="text-sm text-[#6B7280] mb-4">{course.category} • {course.duration}</div>
                   
                   <div className="mb-4">
                     <div className="flex items-center justify-between text-sm mb-1">
                       <span className="text-[#6B7280]">Completion</span>
-                      <span className="text-emerald-400">{Math.round(course.completed / course.enrolled * 100)}%</span>
+                      <span className="text-emerald-600">{Math.round(course.completed / course.enrolled * 100)}%</span>
                     </div>
                     <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
                       <div 
@@ -370,7 +370,7 @@ export default function TrainingPage() {
                   </div>
                   
                   {course.dueDate && (
-                    <div className="mt-3 pt-3 border-t border-[#E5E7EB] text-sm text-amber-400">
+                    <div className="mt-3 pt-3 border-t border-[#E5E7EB] text-sm text-amber-600">
                       Due: {course.dueDate}
                     </div>
                   )}
@@ -470,9 +470,9 @@ export default function TrainingPage() {
                     >
                       <div className="flex-shrink-0">
                         {module.completed ? (
-                          <CheckCircle className="w-5 h-5 text-emerald-400" />
+                          <CheckCircle className="w-5 h-5 text-emerald-600" />
                         ) : module.current ? (
-                          <PlayCircle className="w-5 h-5 text-orange-400" />
+                          <PlayCircle className="w-5 h-5 text-orange-600" />
                         ) : module.locked ? (
                           <Lock className="w-5 h-5 text-[#9CA3AF]" />
                         ) : (
@@ -547,7 +547,7 @@ export default function TrainingPage() {
                       <td className="p-4 text-[#4B5563]">{employee.role}</td>
                       <td className="p-4">
                         <div className="flex items-center gap-2">
-                          <span className="text-emerald-400">{employee.coursesCompleted}</span>
+                          <span className="text-emerald-600">{employee.coursesCompleted}</span>
                           <span className="text-[#9CA3AF]">/</span>
                           <span className="text-[#6B7280]">{employee.coursesCompleted + employee.coursesInProgress}</span>
                           <span className="text-sm text-[#9CA3AF]">courses</span>
@@ -555,7 +555,7 @@ export default function TrainingPage() {
                       </td>
                       <td className="p-4">
                         <div className="flex items-center gap-2">
-                          <Award className="w-4 h-4 text-amber-400" />
+                          <Award className="w-4 h-4 text-amber-600" />
                           <span>{employee.certifications}</span>
                         </div>
                       </td>
@@ -582,8 +582,8 @@ export default function TrainingPage() {
                   <div className="flex items-start justify-between mb-4">
                     <div className="text-4xl">{cert.icon}</div>
                     <span className={`px-2 py-1 text-xs rounded-full ${
-                      cert.status === 'active' ? 'bg-emerald-500/20 text-emerald-400' :
-                      'bg-amber-500/20 text-amber-400'
+                      cert.status === 'active' ? 'bg-emerald-100 text-emerald-600' :
+                      'bg-amber-500/20 text-amber-600'
                     }`}>
                       {cert.status}
                     </span>
@@ -622,8 +622,8 @@ export default function TrainingPage() {
                 { title: 'Assessment Results', desc: 'Quiz and test scores', icon: Target },
               ].map((report, i) => (
                 <div key={i} className="p-6 bg-white shadow-sm border border-[#E5E7EB] rounded-xl hover:border-[#2A9D8F]/40 transition-all cursor-pointer group">
-                  <report.icon className="w-10 h-10 text-orange-400 mb-4" />
-                  <h3 className="font-semibold mb-2 group-hover:text-orange-400 transition-colors">{report.title}</h3>
+                  <report.icon className="w-10 h-10 text-orange-600 mb-4" />
+                  <h3 className="font-semibold mb-2 group-hover:text-orange-600 transition-colors">{report.title}</h3>
                   <p className="text-sm text-[#6B7280] mb-4">{report.desc}</p>
                   <button onClick={() => showNotification(`Generating ${report.title}...`)} className="flex items-center gap-2 text-sm text-[#2A9D8F] hover:text-[#238577] transition-colors">
                     Generate Report <ChevronRight className="w-4 h-4" />
@@ -650,7 +650,7 @@ export default function TrainingPage() {
                   ].map((integration, i) => (
                     <div key={i} className="flex items-center justify-between p-3 bg-[#F4F5F7] rounded-lg">
                       <span>{integration.name}</span>
-                      <button onClick={() => showNotification(integration.connected ? `Disconnected ${integration.name}` : `Connected ${integration.name}`)} className={`px-3 py-1 rounded-lg text-sm font-medium ${integration.connected ? 'bg-emerald-500/10 text-emerald-400' : 'bg-gray-100 text-[#6B7280] hover:bg-gray-200'}`}>
+                      <button onClick={() => showNotification(integration.connected ? `Disconnected ${integration.name}` : `Connected ${integration.name}`)} className={`px-3 py-1 rounded-lg text-sm font-medium ${integration.connected ? 'bg-emerald-50 text-emerald-600' : 'bg-gray-100 text-[#6B7280] hover:bg-gray-200'}`}>
                         {integration.connected ? 'Connected' : 'Connect'}
                       </button>
                     </div>
