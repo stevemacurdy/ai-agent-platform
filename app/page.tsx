@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { getSupabaseBrowser } from '@/lib/supabase-browser';
 
 /* ═══════════════════════════════════════════════════════════
    WoulfAI Landing Page — Branded Design System
@@ -42,7 +43,7 @@ const STEPS = [
   { num: 4, title: 'Go Live', desc: 'Your AI employees start working immediately, learning and improving daily.', active: true },
 ];
 
-const TIERS = [
+const DEFAULT_TIERS = [
   { name: 'Starter', price: '$499', desc: 'A small team to get started', features: ['3 AI Employees', '2 Seats', 'Basic analytics', 'Email support'], featured: false },
   { name: 'Professional', price: '$1,200', desc: 'Full coverage for growing companies', features: ['15 AI Employees', '10 Seats', 'Advanced analytics', 'Priority support', 'Custom integrations'], featured: true },
   { name: 'Enterprise', price: null, desc: 'Your full AI workforce with white-glove service', features: ['Custom AI Employees', 'Unlimited Seats', 'Dedicated success manager', 'Custom domain', 'SLA guarantee', 'SOC 2 compliance docs'], featured: false },
@@ -66,6 +67,7 @@ const Star = () => (
 
 export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false);
+  const [tiers, setTiers] = useState(DEFAULT_TIERS);
   const [mobileMenu, setMobileMenu] = useState(false);
 
   useEffect(() => {
@@ -73,6 +75,7 @@ export default function LandingPage() {
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+  useEffect(() => {    const fetchBundles = async () => {      try {        const sb = getSupabaseBrowser();        const { data } = await sb.from('agent_bundles').select('slug,display_name,description,price_monthly_cents,is_featured,target_tier').eq('is_active', true).order('display_order');        if (data && data.length > 0) {          const mapped = data.filter(b => ['starter','professional','enterprise'].includes(b.target_tier)).map(b => ({            name: b.display_name,            price: b.target_tier === 'enterprise' ? null : '$' + (b.price_monthly_cents / 100).toLocaleString('en-US', { maximumFractionDigits: 0 }),            desc: b.description,            features: DEFAULT_TIERS.find(t => t.name.toLowerCase() === b.target_tier)?.features || [],            featured: b.is_featured,          }));          if (mapped.length > 0) setTiers(mapped);        }      } catch {}    };    fetchBundles();  }, []);
 
   return (
     <div className="min-h-screen" style={{ background: '#F4F5F7', color: '#1A1A2E' }}>
@@ -319,7 +322,7 @@ export default function LandingPage() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6 max-w-[1100px] mx-auto">
-            {TIERS.map((t, i) => (
+            {tiers.map((t, i) => (
               <div
                 key={i}
                 className={`p-10 rounded-3xl border-2 transition-all hover:shadow-xl ${t.featured ? 'lg:scale-[1.03] shadow-xl' : ''}`}
