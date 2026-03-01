@@ -337,7 +337,7 @@ export default function LandingPage() {
                     Most Popular
                   </span>
                 )}
-                <h3 className="text-[22px] font-extrabold" style={{ fontFamily: "'Outfit', sans-serif" }}>{t.name}</h3>
+                <h3 className="text-[22px] font-extrabold" style={{ fontFamily: "'Outfit', sans-serif", color: t.featured ? '#fff' : '#1B2A4A' }}>{t.name}</h3>
                 <p className={`text-[13px] mt-1 ${t.featured ? 'text-white/60' : 'text-[#9CA3AF]'}`}>{t.desc}</p>
                 <p className="text-5xl font-black mt-5 tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
                 {t.price ? (
