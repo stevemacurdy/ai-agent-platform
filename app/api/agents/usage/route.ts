@@ -4,7 +4,7 @@ import { getSupabaseClient } from '@/lib/supabase';
 
 export async function GET(request: NextRequest) {
   try {
-    const sb = getSupabaseClient();
+    const sb = getSupabaseClient() as any;
     const { searchParams } = new URL(request.url);
     const companyId = searchParams.get('companyId');
     const agentSlug = searchParams.get('agentSlug');
@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
 
     let resolvedAgentId = searchParams.get('agentId');
     if (!resolvedAgentId && agentSlug) {
-      const { data: agent } = await sb.from('agent_registry').select('id').eq('slug', agentSlug).single();
+      const { data: agent } = await sb.from('agent_registry').select('id').eq('slug', agentSlug).single() as any;
       resolvedAgentId = agent?.id || null;
     }
 
@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const sb = getSupabaseClient();
+    const sb = getSupabaseClient() as any;
     const { agentId, companyId, metric, value } = await request.json();
     if (!agentId || !companyId || !metric) return NextResponse.json({ error: 'agentId, companyId, metric required' }, { status: 400 });
 

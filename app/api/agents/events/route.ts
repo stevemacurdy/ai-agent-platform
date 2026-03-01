@@ -4,7 +4,7 @@ import { getSupabaseClient } from '@/lib/supabase';
 
 export async function GET(request: NextRequest) {
   try {
-    const sb = getSupabaseClient();
+    const sb = getSupabaseClient() as any;
     const { searchParams } = new URL(request.url);
     const agentId = searchParams.get('agentId');
     const agentSlug = searchParams.get('agentSlug');
@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
 
     let resolvedAgentId = agentId;
     if (!resolvedAgentId && agentSlug) {
-      const { data: agent } = await sb.from('agent_registry').select('id').eq('slug', agentSlug).single();
+      const { data: agent } = await sb.from('agent_registry').select('id').eq('slug', agentSlug).single() as any;
       resolvedAgentId = agent?.id;
     }
 

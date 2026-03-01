@@ -4,19 +4,19 @@ import { getSupabaseClient } from '@/lib/supabase';
 
 export async function GET(request: NextRequest) {
   try {
-    const sb = getSupabaseClient();
+    const sb = getSupabaseClient() as any;
     const { searchParams } = new URL(request.url);
     const agentSlug = searchParams.get('agentSlug');
     const companyId = searchParams.get('companyId');
 
     let agentId: string | null = null;
     if (agentSlug) {
-      const { data: agent } = await sb.from('agent_registry').select('id').eq('slug', agentSlug).single();
+      const { data: agent } = await sb.from('agent_registry').select('id').eq('slug', agentSlug).single() as any;
       agentId = agent?.id || null;
       if (!agentId) return NextResponse.json({ error: 'Agent not found' }, { status: 404 });
     }
 
-    let reqQuery = sb.from('agent_integration_requirements').select('*');
+    let reqQuery = sb.from('agent_integration_requirements').select('*') as any;
     if (agentId) reqQuery = reqQuery.eq('agent_id', agentId);
     const { data: requirements, error } = await reqQuery;
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    let ddQuery = sb.from('agent_data_domains').select('*');
+    let ddQuery = sb.from('agent_data_domains').select('*') as any;
     if (agentId) ddQuery = ddQuery.eq('agent_id', agentId);
     const { data: dataDomains } = await ddQuery;
 

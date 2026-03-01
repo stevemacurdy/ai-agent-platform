@@ -4,7 +4,7 @@ import { getSupabaseClient } from '@/lib/supabase';
 
 export async function GET(request: NextRequest) {
   try {
-    const sb = getSupabaseClient();
+    const sb = getSupabaseClient() as any;
     const { searchParams } = new URL(request.url);
     const slug = searchParams.get('slug');
     const companyId = searchParams.get('companyId');
@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
 
     if (slug) {
       const { data: bundle, error } = await sb
-        .from('agent_bundles').select('*').eq('slug', slug).single();
+        .from('agent_bundles').select('*').eq('slug', slug).single() as any;
       if (error || !bundle) return NextResponse.json({ error: 'Bundle not found' }, { status: 404 });
 
       const { data: bundleAgents } = await sb
@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
       let access = null;
       if (companyId) {
         const { data: ca } = await sb.from('company_bundle_access').select('*')
-          .eq('company_id', companyId).eq('bundle_id', bundle.id).single();
+          .eq('company_id', companyId).eq('bundle_id', bundle.id).single() as any;
         access = ca;
       }
 

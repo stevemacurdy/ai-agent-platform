@@ -4,7 +4,7 @@ import { getSupabaseClient } from '@/lib/supabase';
 
 export async function GET(request: NextRequest) {
   try {
-    const sb = getSupabaseClient();
+    const sb = getSupabaseClient() as any;
     const { searchParams } = new URL(request.url);
     const agentSlug = searchParams.get('agentSlug');
     const action = searchParams.get('action');
@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
 
     let resolvedAgentId = searchParams.get('agentId');
     if (!resolvedAgentId && agentSlug) {
-      const { data: agent } = await sb.from('agent_registry').select('id').eq('slug', agentSlug).single();
+      const { data: agent } = await sb.from('agent_registry').select('id').eq('slug', agentSlug).single() as any;
       resolvedAgentId = agent?.id || null;
     }
 
@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const sb = getSupabaseClient();
+    const sb = getSupabaseClient() as any;
     const { agentId, action, entityType, entityId, changedBy, oldValue, newValue, description } = await request.json();
     if (!action) return NextResponse.json({ error: 'action required' }, { status: 400 });
     const { data, error } = await sb.from('agent_audit_log').insert({

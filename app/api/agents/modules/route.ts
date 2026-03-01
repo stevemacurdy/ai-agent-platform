@@ -4,7 +4,7 @@ import { getSupabaseClient } from '@/lib/supabase';
 
 export async function GET(request: NextRequest) {
   try {
-    const sb = getSupabaseClient();
+    const sb = getSupabaseClient() as any;
     const { searchParams } = new URL(request.url);
     const agentId = searchParams.get('agentId');
     const companyId = searchParams.get('companyId');
@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
 
     let resolvedAgentId = agentId;
     if (!resolvedAgentId && slug) {
-      const { data: agent } = await sb.from('agent_registry').select('id').eq('slug', slug).single();
+      const { data: agent } = await sb.from('agent_registry').select('id').eq('slug', slug).single() as any;
       resolvedAgentId = agent?.id;
     }
     if (!resolvedAgentId) return NextResponse.json({ error: 'agentId or agentSlug required' }, { status: 400 });
@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const sb = getSupabaseClient();
+    const sb = getSupabaseClient() as any;
     const body = await request.json();
     const { companyId, agentId, moduleId, enabled, config, configuredBy } = body;
     if (!companyId || !agentId || !moduleId) return NextResponse.json({ error: 'companyId, agentId, moduleId required' }, { status: 400 });
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
       company_id: companyId, agent_id: agentId, module_id: moduleId,
       enabled: enabled !== undefined ? enabled : true, config: config || {},
       configured_by: configuredBy || null, updated_at: new Date().toISOString(),
-    }, { onConflict: 'company_id,agent_id,module_id' }).select().single();
+    }, { onConflict: 'company_id,agent_id,module_id' }).select().single() as any;
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
     await sb.from('agent_audit_log').insert({

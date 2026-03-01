@@ -4,7 +4,7 @@ import { getSupabaseClient } from '@/lib/supabase';
 
 export async function GET(request: NextRequest) {
   try {
-    const sb = getSupabaseClient();
+    const sb = getSupabaseClient() as any;
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get('userId');
     const companyId = searchParams.get('companyId');
@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const sb = getSupabaseClient();
+    const sb = getSupabaseClient() as any;
     const body = await request.json();
     const { userId, agentId, companyId, permissionLevel, grantedBy } = body;
     if (!userId || !agentId || !companyId) return NextResponse.json({ error: 'userId, agentId, companyId required' }, { status: 400 });
@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
     const { data, error } = await sb.from('agent_user_permissions').upsert({
       user_id: userId, agent_id: agentId, company_id: companyId,
       permission_level: permissionLevel || 'use', granted_by: grantedBy || null,
-    }, { onConflict: 'user_id,agent_id,company_id' }).select().single();
+    }, { onConflict: 'user_id,agent_id,company_id' }).select().single() as any;
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
     await sb.from('agent_audit_log').insert({
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    const sb = getSupabaseClient();
+    const sb = getSupabaseClient() as any;
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
     const userId = searchParams.get('userId');

@@ -4,13 +4,13 @@ import { getSupabaseClient } from '@/lib/supabase';
 
 export async function GET(request: NextRequest) {
   try {
-    const sb = getSupabaseClient();
+    const sb = getSupabaseClient() as any;
     const { searchParams } = new URL(request.url);
     const agentSlug = searchParams.get('agentSlug');
 
     let agentId: string | null = null;
     if (agentSlug) {
-      const { data: agent } = await sb.from('agent_registry').select('id').eq('slug', agentSlug).single();
+      const { data: agent } = await sb.from('agent_registry').select('id').eq('slug', agentSlug).single() as any;
       agentId = agent?.id || null;
       if (!agentId) return NextResponse.json({ error: 'Agent not found' }, { status: 404 });
     }
@@ -20,14 +20,14 @@ export async function GET(request: NextRequest) {
 
     const result: any = { depends_on: [], depended_by: [] };
 
-    let q1 = sb.from('agent_dependencies').select('*');
+    let q1 = sb.from('agent_dependencies').select('*') as any;
     if (agentId) q1 = q1.eq('agent_id', agentId);
     const { data: depsOut } = await q1;
     result.depends_on = (depsOut || []).map((d: any) => ({
       ...d, agent: agentMap.get(d.agent_id), depends_on: agentMap.get(d.depends_on_agent_id),
     }));
 
-    let q2 = sb.from('agent_dependencies').select('*');
+    let q2 = sb.from('agent_dependencies').select('*') as any;
     if (agentId) q2 = q2.eq('depends_on_agent_id', agentId);
     const { data: depsIn } = await q2;
     result.depended_by = (depsIn || []).map((d: any) => ({
