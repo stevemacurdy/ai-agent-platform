@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { getSupabaseBrowser } from '@/lib/supabase-browser';
 
 const STATUS_BADGE = {
-  pending: 'bg-gray-600/50 text-gray-300',
-  received: 'bg-blue-600/50 text-blue-300',
+  pending: 'bg-gray-600/50 text-[#4B5563]',
+  received: 'bg-blue-600/50 text-blue-600',
   staged: 'bg-purple-600/50 text-purple-300',
   picked: 'bg-amber-600/50 text-amber-300',
   shipped: 'bg-green-600/50 text-green-300',
@@ -98,7 +98,7 @@ export default function PalletsPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-white">Pallet Tracking</h1>
-          <p className="text-sm text-white/40 mt-1">
+          <p className="text-sm text-[#6B7280] mt-1">
             {filtered.length} pallets · {pallets.filter(p => !p.pallet_weight_confirmed).length} need weighing
           </p>
         </div>
@@ -112,11 +112,11 @@ export default function PalletsPage() {
       <div className="flex items-center gap-3 mb-4 flex-wrap">
         <input type="text" value={search} onChange={(e) => setSearch(e.target.value)}
           placeholder="Search pallet, product, lot, manufacturer..."
-          className="flex-1 min-w-[200px] max-w-md bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder-white/30 focus:outline-none focus:border-blue-500" />
+          className="flex-1 min-w-[200px] max-w-md bg-white border border-[#E5E7EB] shadow-sm rounded-lg px-4 py-2.5 text-sm text-white placeholder-[#9CA3AF] focus:outline-none focus:border-[#2A9D8F]" />
         <div className="flex gap-1">
           {['all', 'inbound', 'outbound'].map(d => (
             <button key={d} onClick={() => setDirectionFilter(d)}
-              className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors ${directionFilter === d ? 'bg-blue-600 text-white' : 'bg-white/5 text-white/50 hover:bg-white/10'}`}>
+              className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors ${directionFilter === d ? 'bg-[#1B2A4A] text-white' : 'bg-white shadow-sm text-[#6B7280] hover:bg-gray-100'}`}>
               {d === 'all' ? 'All' : d.charAt(0).toUpperCase() + d.slice(1)}
             </button>
           ))}
@@ -124,7 +124,7 @@ export default function PalletsPage() {
         <div className="flex gap-1">
           {['all', 'pending', 'received', 'staged', 'shipped'].map(s => (
             <button key={s} onClick={() => setStatusFilter(s)}
-              className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors ${statusFilter === s ? 'bg-blue-600 text-white' : 'bg-white/5 text-white/50 hover:bg-white/10'}`}>
+              className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors ${statusFilter === s ? 'bg-[#1B2A4A] text-white' : 'bg-white shadow-sm text-[#6B7280] hover:bg-gray-100'}`}>
               {s === 'all' ? 'All' : s.charAt(0).toUpperCase() + s.slice(1)}
             </button>
           ))}
@@ -132,60 +132,60 @@ export default function PalletsPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-white/5 border border-white/10 rounded-xl overflow-hidden">
+      <div className="bg-white border border-[#E5E7EB] shadow-sm rounded-xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-white/10">
-                <th className="text-left px-4 py-3 text-xs text-white/40 font-medium uppercase">Pallet #</th>
-                <th className="text-left px-4 py-3 text-xs text-white/40 font-medium uppercase">Product</th>
-                <th className="text-left px-4 py-3 text-xs text-white/40 font-medium uppercase">Form</th>
-                <th className="text-left px-4 py-3 text-xs text-white/40 font-medium uppercase">Lot #</th>
-                <th className="text-left px-4 py-3 text-xs text-white/40 font-medium uppercase">Expires</th>
-                <th className="text-left px-4 py-3 text-xs text-white/40 font-medium uppercase">MFG</th>
-                <th className="text-right px-4 py-3 text-xs text-white/40 font-medium uppercase">Cases</th>
-                <th className="text-right px-4 py-3 text-xs text-white/40 font-medium uppercase">Weight</th>
-                <th className="text-center px-4 py-3 text-xs text-white/40 font-medium uppercase">Status</th>
-                <th className="text-center px-4 py-3 text-xs text-white/40 font-medium uppercase">QR</th>
+              <tr className="border-b border-[#E5E7EB]">
+                <th className="text-left px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Pallet #</th>
+                <th className="text-left px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Product</th>
+                <th className="text-left px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Form</th>
+                <th className="text-left px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Lot #</th>
+                <th className="text-left px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Expires</th>
+                <th className="text-left px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">MFG</th>
+                <th className="text-right px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Cases</th>
+                <th className="text-right px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Weight</th>
+                <th className="text-center px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Status</th>
+                <th className="text-center px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">QR</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-[#E5E7EB]">
               {loading ? (
                 [...Array(5)].map((_, i) => (
-                  <tr key={i}><td colSpan={10} className="px-4 py-4"><div className="h-4 bg-white/5 rounded animate-pulse" /></td></tr>
+                  <tr key={i}><td colSpan={10} className="px-4 py-4"><div className="h-4 bg-white shadow-sm rounded animate-pulse" /></td></tr>
                 ))
               ) : filtered.length === 0 ? (
-                <tr><td colSpan={10} className="px-4 py-12 text-center text-white/30">
+                <tr><td colSpan={10} className="px-4 py-12 text-center text-[#9CA3AF]">
                   {search || statusFilter !== 'all' ? 'No matching pallets' : 'No pallets yet. Receive a shipment to get started.'}
                 </td></tr>
               ) : (
                 filtered.map(p => (
-                  <tr key={p.id} className="hover:bg-white/5 transition-colors">
-                    <td className="px-4 py-3 font-mono text-xs text-blue-400">{p.pallet_number}</td>
+                  <tr key={p.id} className="hover:bg-white shadow-sm transition-colors">
+                    <td className="px-4 py-3 font-mono text-xs text-blue-600">{p.pallet_number}</td>
                     <td className="px-4 py-3 text-white font-medium">{p.product_name}</td>
-                    <td className="px-4 py-3 text-white/60 text-xs">{p.product_form}</td>
-                    <td className="px-4 py-3 text-xs text-white/50">{p.lot_number || '\u2014'}</td>
-                    <td className="px-4 py-3 text-xs text-white/50">
+                    <td className="px-4 py-3 text-[#6B7280] text-xs">{p.product_form}</td>
+                    <td className="px-4 py-3 text-xs text-[#6B7280]">{p.lot_number || '\u2014'}</td>
+                    <td className="px-4 py-3 text-xs text-[#6B7280]">
                       {p.expiration_date ? new Date(p.expiration_date).toLocaleDateString() : '\u2014'}
                     </td>
-                    <td className="px-4 py-3 text-xs text-white/50 truncate max-w-[120px]">{p.manufacturer || '\u2014'}</td>
-                    <td className="px-4 py-3 text-right font-mono text-white/60">{p.case_qty || '\u2014'}</td>
+                    <td className="px-4 py-3 text-xs text-[#6B7280] truncate max-w-[120px]">{p.manufacturer || '\u2014'}</td>
+                    <td className="px-4 py-3 text-right font-mono text-[#6B7280]">{p.case_qty || '\u2014'}</td>
                     <td className="px-4 py-3 text-right">
                       {editWeightId === p.id ? (
                         <div className="flex items-center gap-1 justify-end">
                           <input type="number" min={0} step={0.1} value={weightInput}
                             onChange={(e) => setWeightInput(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && saveWeight(p.id)}
-                            className="w-20 bg-white/10 border border-blue-500 rounded px-2 py-1 text-xs text-white text-right focus:outline-none"
+                            className="w-20 bg-gray-100 border border-blue-500 rounded px-2 py-1 text-xs text-white text-right focus:outline-none"
                             autoFocus placeholder="lbs" />
-                          <button onClick={() => saveWeight(p.id)} className="text-emerald-400 text-xs">✓</button>
-                          <button onClick={() => setEditWeightId(null)} className="text-white/30 text-xs">✕</button>
+                          <button onClick={() => saveWeight(p.id)} className="text-emerald-600 text-xs">✓</button>
+                          <button onClick={() => setEditWeightId(null)} className="text-[#9CA3AF] text-xs">✕</button>
                         </div>
                       ) : p.pallet_weight ? (
                         <span className="font-mono text-white">{p.pallet_weight} lbs</span>
                       ) : (
                         <button onClick={() => { setEditWeightId(p.id); setWeightInput(''); }}
-                          className="text-xs text-amber-400 hover:text-amber-300 underline">
+                          className="text-xs text-amber-600 hover:text-amber-300 underline">
                           + Add weight
                         </button>
                       )}
@@ -197,7 +197,7 @@ export default function PalletsPage() {
                     </td>
                     <td className="px-4 py-3 text-center">
                       <button onClick={() => printQR(p)} title="Print QR label"
-                        className="text-white/40 hover:text-white transition-colors">
+                        className="text-[#6B7280] hover:text-[#1B2A4A] transition-colors">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" />
                           <rect x="3" y="14" width="7" height="7" /><rect x="14" y="14" width="3" height="3" />

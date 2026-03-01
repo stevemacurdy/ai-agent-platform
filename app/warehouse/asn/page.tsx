@@ -116,7 +116,7 @@ export default function AsnPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-white">ASN Documents</h1>
-          <p className="text-sm text-white/40 mt-1">Advanced Shipping Notices — {asns.length} documents</p>
+          <p className="text-sm text-[#6B7280] mt-1">Advanced Shipping Notices — {asns.length} documents</p>
         </div>
         <button onClick={() => setShowUpload(!showUpload)}
           className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-sm text-white font-medium transition-colors">
@@ -126,46 +126,46 @@ export default function AsnPage() {
 
       {/* Upload Form */}
       {showUpload && (
-        <div className="bg-white/5 border border-white/10 rounded-xl p-5 mb-6 space-y-4">
-          <h2 className="text-sm font-semibold text-white/80 uppercase tracking-wider">Upload ASN Document</h2>
+        <div className="bg-white border border-[#E5E7EB] shadow-sm rounded-xl p-5 mb-6 space-y-4">
+          <h2 className="text-sm font-semibold text-[#4B5563] uppercase tracking-wider">Upload ASN Document</h2>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs text-white/50 mb-1">Link to Order (optional)</label>
+              <label className="block text-xs text-[#6B7280] mb-1">Link to Order (optional)</label>
               <select value={uploadOrderId} onChange={(e) => setUploadOrderId(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
-                <option value="" className="bg-gray-900">No linked order</option>
+                className="w-full bg-white border border-[#E5E7EB] shadow-sm rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#2A9D8F]">
+                <option value="" className="bg-white">No linked order</option>
                 {orders.map(o => (
-                  <option key={o.id} value={o.id} className="bg-gray-900">
+                  <option key={o.id} value={o.id} className="bg-white">
                     {o.order_number} ({o.status})
                   </option>
                 ))}
               </select>
             </div>
             <div>
-              <label className="block text-xs text-white/50 mb-1">Notes</label>
+              <label className="block text-xs text-[#6B7280] mb-1">Notes</label>
               <input type="text" value={uploadNotes} onChange={(e) => setUploadNotes(e.target.value)}
                 placeholder="Optional notes about this ASN"
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-blue-500" />
+                className="w-full bg-white border border-[#E5E7EB] shadow-sm rounded-lg px-3 py-2 text-sm text-white placeholder-[#9CA3AF] focus:outline-none focus:border-[#2A9D8F]" />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs text-white/50 mb-1">File (PDF, CSV, Excel, or image)</label>
+            <label className="block text-xs text-[#6B7280] mb-1">File (PDF, CSV, Excel, or image)</label>
             <div className="flex items-center gap-3">
               <label className="flex-1 cursor-pointer">
                 <div className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
-                  selectedFile ? 'border-blue-500/50 bg-blue-500/5' : 'border-white/10 hover:border-white/20'
+                  selectedFile ? 'border-blue-500/50 bg-blue-500/5' : 'border-[#E5E7EB] hover:border-[#E5E7EB]'
                 }`}>
                   {selectedFile ? (
                     <div>
                       <p className="text-sm text-white font-medium">{selectedFile.name}</p>
-                      <p className="text-xs text-white/40 mt-1">{(selectedFile.size / 1024).toFixed(0)} KB</p>
+                      <p className="text-xs text-[#6B7280] mt-1">{(selectedFile.size / 1024).toFixed(0)} KB</p>
                     </div>
                   ) : (
                     <div>
-                      <p className="text-sm text-white/50">Click to select a file or drag and drop</p>
-                      <p className="text-xs text-white/30 mt-1">PDF, CSV, XLSX, PNG, JPG up to 10MB</p>
+                      <p className="text-sm text-[#6B7280]">Click to select a file or drag and drop</p>
+                      <p className="text-xs text-[#9CA3AF] mt-1">PDF, CSV, XLSX, PNG, JPG up to 10MB</p>
                     </div>
                   )}
                 </div>
@@ -178,7 +178,7 @@ export default function AsnPage() {
 
           <div className="flex items-center gap-3 justify-end">
             <button onClick={() => { setShowUpload(false); setSelectedFile(null); }}
-              className="px-4 py-2 rounded-lg text-sm text-white/50 hover:text-white/80 transition-colors">
+              className="px-4 py-2 rounded-lg text-sm text-[#6B7280] hover:text-[#4B5563] transition-colors">
               Cancel
             </button>
             <button onClick={uploadAsn} disabled={uploading || !selectedFile}
@@ -190,45 +190,45 @@ export default function AsnPage() {
       )}
 
       {/* ASN Table */}
-      <div className="bg-white/5 border border-white/10 rounded-xl overflow-hidden">
+      <div className="bg-white border border-[#E5E7EB] shadow-sm rounded-xl overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-white/10">
-              <th className="text-left px-4 py-3 text-xs text-white/40 font-medium uppercase">ASN #</th>
-              <th className="text-left px-4 py-3 text-xs text-white/40 font-medium uppercase">Order</th>
-              <th className="text-left px-4 py-3 text-xs text-white/40 font-medium uppercase">File</th>
-              <th className="text-right px-4 py-3 text-xs text-white/40 font-medium uppercase">Size</th>
-              <th className="text-left px-4 py-3 text-xs text-white/40 font-medium uppercase">Notes</th>
-              <th className="text-left px-4 py-3 text-xs text-white/40 font-medium uppercase">Uploaded</th>
+            <tr className="border-b border-[#E5E7EB]">
+              <th className="text-left px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">ASN #</th>
+              <th className="text-left px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Order</th>
+              <th className="text-left px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">File</th>
+              <th className="text-right px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Size</th>
+              <th className="text-left px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Notes</th>
+              <th className="text-left px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Uploaded</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-white/5">
+          <tbody className="divide-y divide-[#E5E7EB]">
             {loading ? (
               [...Array(3)].map((_, i) => (
-                <tr key={i}><td colSpan={6} className="px-4 py-4"><div className="h-4 bg-white/5 rounded animate-pulse" /></td></tr>
+                <tr key={i}><td colSpan={6} className="px-4 py-4"><div className="h-4 bg-white shadow-sm rounded animate-pulse" /></td></tr>
               ))
             ) : asns.length === 0 ? (
-              <tr><td colSpan={6} className="px-4 py-12 text-center text-white/30">No ASN documents yet. Upload your first ASN to get started.</td></tr>
+              <tr><td colSpan={6} className="px-4 py-12 text-center text-[#9CA3AF]">No ASN documents yet. Upload your first ASN to get started.</td></tr>
             ) : (
               asns.map(a => (
-                <tr key={a.id} className="hover:bg-white/5 transition-colors">
-                  <td className="px-4 py-3 font-mono text-xs text-blue-400">{a.asn_number}</td>
-                  <td className="px-4 py-3 text-xs text-white/60">{a.warehouse_orders?.order_number || '\u2014'}</td>
+                <tr key={a.id} className="hover:bg-white shadow-sm transition-colors">
+                  <td className="px-4 py-3 font-mono text-xs text-blue-600">{a.asn_number}</td>
+                  <td className="px-4 py-3 text-xs text-[#6B7280]">{a.warehouse_orders?.order_number || '\u2014'}</td>
                   <td className="px-4 py-3">
                     {a.file_url ? (
                       <a href={a.file_url} target="_blank" rel="noopener noreferrer"
-                        className="text-xs text-blue-400 hover:text-blue-300 underline truncate max-w-[200px] block">
+                        className="text-xs text-blue-600 hover:text-blue-600 underline truncate max-w-[200px] block">
                         {a.file_name}
                       </a>
                     ) : (
-                      <span className="text-xs text-white/50">{a.file_name || '\u2014'}</span>
+                      <span className="text-xs text-[#6B7280]">{a.file_name || '\u2014'}</span>
                     )}
                   </td>
-                  <td className="px-4 py-3 text-right text-xs text-white/40">
+                  <td className="px-4 py-3 text-right text-xs text-[#6B7280]">
                     {a.file_size ? `${(a.file_size / 1024).toFixed(0)} KB` : '\u2014'}
                   </td>
-                  <td className="px-4 py-3 text-xs text-white/50 truncate max-w-[200px]">{a.notes || '\u2014'}</td>
-                  <td className="px-4 py-3 text-xs text-white/50">{new Date(a.created_at).toLocaleDateString()}</td>
+                  <td className="px-4 py-3 text-xs text-[#6B7280] truncate max-w-[200px]">{a.notes || '\u2014'}</td>
+                  <td className="px-4 py-3 text-xs text-[#6B7280]">{new Date(a.created_at).toLocaleDateString()}</td>
                 </tr>
               ))
             )}

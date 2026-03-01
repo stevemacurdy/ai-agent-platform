@@ -182,119 +182,119 @@ export default function ReceivingPage() {
     <div className="p-6 max-w-4xl mx-auto">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-white">Receive Inbound Shipment</h1>
-        <p className="text-sm text-white/40 mt-1">Process incoming product into pallet records with QR codes</p>
+        <p className="text-sm text-[#6B7280] mt-1">Process incoming product into pallet records with QR codes</p>
       </div>
 
       <div className="space-y-6">
         {/* Link to ASN */}
-        <div className="bg-white/5 border border-white/10 rounded-xl p-5 space-y-4">
-          <h2 className="text-sm font-semibold text-white/80 uppercase tracking-wider">Link to ASN</h2>
+        <div className="bg-white border border-[#E5E7EB] shadow-sm rounded-xl p-5 space-y-4">
+          <h2 className="text-sm font-semibold text-[#4B5563] uppercase tracking-wider">Link to ASN</h2>
           <select value={asnId} onChange={(e) => setAsnId(e.target.value)}
-            className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
-            <option value="" className="bg-gray-900">No ASN (manual receiving)</option>
+            className="w-full bg-white border border-[#E5E7EB] shadow-sm rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#2A9D8F]">
+            <option value="" className="bg-white">No ASN (manual receiving)</option>
             {asns.map(a => (
-              <option key={a.id} value={a.id} className="bg-gray-900">{a.asn_number} — {a.file_name || 'No file'}</option>
+              <option key={a.id} value={a.id} className="bg-white">{a.asn_number} — {a.file_name || 'No file'}</option>
             ))}
           </select>
         </div>
 
         {/* Product Info — Priority Order */}
-        <div className="bg-white/5 border border-white/10 rounded-xl p-5 space-y-4">
-          <h2 className="text-sm font-semibold text-white/80 uppercase tracking-wider">Product Information</h2>
-          <p className="text-xs text-white/30">Fields in order of importance for pallet identification</p>
+        <div className="bg-white border border-[#E5E7EB] shadow-sm rounded-xl p-5 space-y-4">
+          <h2 className="text-sm font-semibold text-[#4B5563] uppercase tracking-wider">Product Information</h2>
+          <p className="text-xs text-[#9CA3AF]">Fields in order of importance for pallet identification</p>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
-              <label className="block text-xs text-white/50 mb-1">
+              <label className="block text-xs text-[#6B7280] mb-1">
                 <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-blue-600 text-[10px] text-white mr-1">1</span>
                 Product Name *
               </label>
               <input type="text" value={productName} onChange={(e) => setProductName(e.target.value)}
                 placeholder="e.g. Apple, Orange, Cherry, Blueberry"
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-blue-500" />
+                className="w-full bg-white border border-[#E5E7EB] shadow-sm rounded-lg px-3 py-2 text-sm text-white placeholder-[#9CA3AF] focus:outline-none focus:border-[#2A9D8F]" />
             </div>
 
             <div>
-              <label className="block text-xs text-white/50 mb-1">
+              <label className="block text-xs text-[#6B7280] mb-1">
                 <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-blue-600 text-[10px] text-white mr-1">2</span>
                 Product Form *
               </label>
               <select value={productForm} onChange={(e) => setProductForm(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                className="w-full bg-white border border-[#E5E7EB] shadow-sm rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#2A9D8F]">
                 {PRODUCT_FORMS.map(f => (
-                  <option key={f} value={f} className="bg-gray-900">{f}</option>
+                  <option key={f} value={f} className="bg-white">{f}</option>
                 ))}
               </select>
             </div>
 
             <div>
-              <label className="block text-xs text-white/50 mb-1">
+              <label className="block text-xs text-[#6B7280] mb-1">
                 <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-blue-600 text-[10px] text-white mr-1">3</span>
                 Expiration Date
               </label>
               <input type="date" value={expirationDate} onChange={(e) => setExpirationDate(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500" />
+                className="w-full bg-white border border-[#E5E7EB] shadow-sm rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#2A9D8F]" />
             </div>
 
             <div>
-              <label className="block text-xs text-white/50 mb-1">
+              <label className="block text-xs text-[#6B7280] mb-1">
                 <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-blue-600 text-[10px] text-white mr-1">4</span>
                 Manufacturer
               </label>
               <input type="text" value={manufacturer} onChange={(e) => setManufacturer(e.target.value)}
                 placeholder="Supplier / MFG name"
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-blue-500" />
+                className="w-full bg-white border border-[#E5E7EB] shadow-sm rounded-lg px-3 py-2 text-sm text-white placeholder-[#9CA3AF] focus:outline-none focus:border-[#2A9D8F]" />
             </div>
 
             <div>
-              <label className="block text-xs text-white/50 mb-1">
+              <label className="block text-xs text-[#6B7280] mb-1">
                 <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-blue-600 text-[10px] text-white mr-1">5</span>
                 Lot #
               </label>
               <input type="text" value={lotNumber} onChange={(e) => setLotNumber(e.target.value)}
                 placeholder="Manufacturer lot number"
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-blue-500" />
+                className="w-full bg-white border border-[#E5E7EB] shadow-sm rounded-lg px-3 py-2 text-sm text-white placeholder-[#9CA3AF] focus:outline-none focus:border-[#2A9D8F]" />
             </div>
 
             <div>
-              <label className="block text-xs text-white/50 mb-1">SKU</label>
+              <label className="block text-xs text-[#6B7280] mb-1">SKU</label>
               <input type="text" value={sku} onChange={(e) => setSku(e.target.value)}
                 placeholder="Your internal SKU"
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-blue-500" />
+                className="w-full bg-white border border-[#E5E7EB] shadow-sm rounded-lg px-3 py-2 text-sm text-white placeholder-[#9CA3AF] focus:outline-none focus:border-[#2A9D8F]" />
             </div>
 
             <div>
-              <label className="block text-xs text-white/50 mb-1">Supplier Barcode</label>
+              <label className="block text-xs text-[#6B7280] mb-1">Supplier Barcode</label>
               <input type="text" value={supplierBarcode} onChange={(e) => setSupplierBarcode(e.target.value)}
                 placeholder="Supplier's barcode value"
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-blue-500" />
+                className="w-full bg-white border border-[#E5E7EB] shadow-sm rounded-lg px-3 py-2 text-sm text-white placeholder-[#9CA3AF] focus:outline-none focus:border-[#2A9D8F]" />
             </div>
           </div>
         </div>
 
         {/* Pallet Details */}
-        <div className="bg-white/5 border border-white/10 rounded-xl p-5 space-y-4">
-          <h2 className="text-sm font-semibold text-white/80 uppercase tracking-wider">Pallet Details</h2>
+        <div className="bg-white border border-[#E5E7EB] shadow-sm rounded-xl p-5 space-y-4">
+          <h2 className="text-sm font-semibold text-[#4B5563] uppercase tracking-wider">Pallet Details</h2>
 
           <div className="grid grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs text-white/50 mb-1">Number of Pallets</label>
+              <label className="block text-xs text-[#6B7280] mb-1">Number of Pallets</label>
               <input type="number" min={1} max={100} value={palletCount} onChange={(e) => setPalletCount(parseInt(e.target.value) || 1)}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500" />
+                className="w-full bg-white border border-[#E5E7EB] shadow-sm rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#2A9D8F]" />
             </div>
             <div>
-              <label className="block text-xs text-white/50 mb-1">Cases per Pallet</label>
+              <label className="block text-xs text-[#6B7280] mb-1">Cases per Pallet</label>
               <input type="number" min={0} value={casesPerPallet} onChange={(e) => setCasesPerPallet(parseInt(e.target.value) || 0)}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500" />
+                className="w-full bg-white border border-[#E5E7EB] shadow-sm rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#2A9D8F]" />
             </div>
             <div>
-              <label className="block text-xs text-white/50 mb-1">Case Weight (lbs)</label>
+              <label className="block text-xs text-[#6B7280] mb-1">Case Weight (lbs)</label>
               <input type="number" min={0} step={0.1} value={caseWeight} onChange={(e) => setCaseWeight(parseFloat(e.target.value) || 0)}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500" />
+                className="w-full bg-white border border-[#E5E7EB] shadow-sm rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#2A9D8F]" />
             </div>
           </div>
 
-          <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-lg">
+          <div className="p-3 bg-amber-50 border border-amber-500/20 rounded-lg">
             <p className="text-xs text-amber-300">
               Pallet weight will be entered individually after receiving each pallet on the warehouse floor.
               {palletCount > 1 && ` All ${palletCount} pallets will share the same product/lot info — only weight will differ.`}
@@ -303,35 +303,35 @@ export default function ReceivingPage() {
         </div>
 
         {/* Notes */}
-        <div className="bg-white/5 border border-white/10 rounded-xl p-5">
-          <label className="block text-xs text-white/50 mb-1">Receiving Notes</label>
+        <div className="bg-white border border-[#E5E7EB] shadow-sm rounded-xl p-5">
+          <label className="block text-xs text-[#6B7280] mb-1">Receiving Notes</label>
           <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={2}
             placeholder="Condition notes, discrepancies, special handling..."
-            className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-blue-500 resize-none" />
+            className="w-full bg-white border border-[#E5E7EB] shadow-sm rounded-lg px-3 py-2 text-sm text-white placeholder-[#9CA3AF] focus:outline-none focus:border-[#2A9D8F] resize-none" />
         </div>
 
         {/* Preview */}
         {generatedPallets.length > 0 && (
-          <div className="bg-white/5 border border-white/10 rounded-xl p-5 space-y-3">
-            <h2 className="text-sm font-semibold text-white/80 uppercase tracking-wider">
+          <div className="bg-white border border-[#E5E7EB] shadow-sm rounded-xl p-5 space-y-3">
+            <h2 className="text-sm font-semibold text-[#4B5563] uppercase tracking-wider">
               Preview: {generatedPallets.length} Pallet{generatedPallets.length > 1 ? 's' : ''} to Create
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {generatedPallets.slice(0, 6).map((p, i) => (
-                <div key={i} className="p-3 bg-white/5 rounded-lg border border-white/10">
+                <div key={i} className="p-3 bg-white shadow-sm rounded-lg border border-[#E5E7EB]">
                   <div className="flex items-center justify-between">
-                    <span className="font-mono text-xs text-blue-400">{p.pallet_number}</span>
+                    <span className="font-mono text-xs text-blue-600">{p.pallet_number}</span>
                     <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-600/50 text-emerald-300">QR will be generated</span>
                   </div>
                   <p className="text-sm text-white mt-1">{p.product_name} — {p.product_form}</p>
-                  <p className="text-xs text-white/40 mt-0.5">
+                  <p className="text-xs text-[#6B7280] mt-0.5">
                     {[p.manufacturer, p.lot_number && `Lot: ${p.lot_number}`, p.case_qty > 0 && `${p.case_qty} cases`].filter(Boolean).join(' · ')}
                   </p>
                 </div>
               ))}
               {generatedPallets.length > 6 && (
-                <div className="p-3 bg-white/5 rounded-lg border border-white/10 flex items-center justify-center">
-                  <span className="text-sm text-white/40">+ {generatedPallets.length - 6} more pallets</span>
+                <div className="p-3 bg-white shadow-sm rounded-lg border border-[#E5E7EB] flex items-center justify-center">
+                  <span className="text-sm text-[#6B7280]">+ {generatedPallets.length - 6} more pallets</span>
                 </div>
               )}
             </div>
@@ -341,7 +341,7 @@ export default function ReceivingPage() {
         {/* Actions */}
         <div className="flex items-center gap-3 justify-end">
           <button onClick={() => router.push('/warehouse')}
-            className="px-4 py-2.5 rounded-lg text-sm text-white/50 hover:text-white/80 transition-colors">Cancel</button>
+            className="px-4 py-2.5 rounded-lg text-sm text-[#6B7280] hover:text-[#4B5563] transition-colors">Cancel</button>
           {generatedPallets.length === 0 ? (
             <button onClick={previewPallets} disabled={!productName.trim()}
               className="px-5 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 disabled:opacity-30 text-sm text-white font-medium transition-colors">
@@ -350,7 +350,7 @@ export default function ReceivingPage() {
           ) : (
             <>
               <button onClick={() => setGeneratedPallets([])}
-                className="px-4 py-2.5 rounded-lg bg-white/10 hover:bg-white/15 text-sm text-white/70 transition-colors">Edit</button>
+                className="px-4 py-2.5 rounded-lg bg-gray-100 hover:bg-white/15 text-sm text-[#4B5563] transition-colors">Edit</button>
               <button onClick={receive} disabled={saving}
                 className="px-5 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 disabled:opacity-30 text-sm text-white font-medium transition-colors">
                 {saving ? 'Receiving...' : `Receive ${generatedPallets.length} Pallet${generatedPallets.length > 1 ? 's' : ''}`}

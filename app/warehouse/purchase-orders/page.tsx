@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { getSupabaseBrowser } from '@/lib/supabase-browser';
 
 const STATUS_BADGE = {
-  draft: 'bg-gray-600/50 text-gray-300',
-  submitted: 'bg-blue-600/50 text-blue-300',
+  draft: 'bg-gray-600/50 text-[#4B5563]',
+  submitted: 'bg-blue-600/50 text-blue-600',
   approved: 'bg-green-600/50 text-green-300',
   received: 'bg-emerald-600/50 text-emerald-300',
   cancelled: 'bg-red-600/50 text-red-300',
@@ -37,47 +37,47 @@ export default function PurchaseOrdersPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-white">Purchase Orders</h1>
-          <p className="text-sm text-white/40 mt-1">{pos.length} purchase orders</p>
+          <p className="text-sm text-[#6B7280] mt-1">{pos.length} purchase orders</p>
         </div>
         <Link href="/warehouse/purchase-orders/new"
           className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-sm text-white font-medium transition-colors">
           + New PO
         </Link>
       </div>
-      <div className="bg-white/5 border border-white/10 rounded-xl overflow-hidden">
+      <div className="bg-white border border-[#E5E7EB] shadow-sm rounded-xl overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-white/10">
-              <th className="text-left px-4 py-3 text-xs text-white/40 font-medium uppercase">PO #</th>
-              <th className="text-left px-4 py-3 text-xs text-white/40 font-medium uppercase">Status</th>
-              <th className="text-left px-4 py-3 text-xs text-white/40 font-medium uppercase">Vendor</th>
-              <th className="text-left px-4 py-3 text-xs text-white/40 font-medium uppercase">Payment Terms</th>
-              <th className="text-left px-4 py-3 text-xs text-white/40 font-medium uppercase">Ship Via</th>
-              <th className="text-right px-4 py-3 text-xs text-white/40 font-medium uppercase">Total</th>
-              <th className="text-left px-4 py-3 text-xs text-white/40 font-medium uppercase">Created</th>
+            <tr className="border-b border-[#E5E7EB]">
+              <th className="text-left px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">PO #</th>
+              <th className="text-left px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Status</th>
+              <th className="text-left px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Vendor</th>
+              <th className="text-left px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Payment Terms</th>
+              <th className="text-left px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Ship Via</th>
+              <th className="text-right px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Total</th>
+              <th className="text-left px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Created</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-white/5">
+          <tbody className="divide-y divide-[#E5E7EB]">
             {loading ? (
               [...Array(3)].map((_, i) => (
-                <tr key={i}><td colSpan={7} className="px-4 py-4"><div className="h-4 bg-white/5 rounded animate-pulse" /></td></tr>
+                <tr key={i}><td colSpan={7} className="px-4 py-4"><div className="h-4 bg-white shadow-sm rounded animate-pulse" /></td></tr>
               ))
             ) : pos.length === 0 ? (
-              <tr><td colSpan={7} className="px-4 py-12 text-center text-white/30">No purchase orders yet. Create your first PO to get started.</td></tr>
+              <tr><td colSpan={7} className="px-4 py-12 text-center text-[#9CA3AF]">No purchase orders yet. Create your first PO to get started.</td></tr>
             ) : (
               pos.map(p => (
-                <tr key={p.id} className="hover:bg-white/5 transition-colors">
-                  <td className="px-4 py-3 font-mono text-xs text-blue-400">{p.po_number}</td>
+                <tr key={p.id} className="hover:bg-white shadow-sm transition-colors">
+                  <td className="px-4 py-3 font-mono text-xs text-blue-600">{p.po_number}</td>
                   <td className="px-4 py-3">
                     <span className={`text-[10px] px-2 py-0.5 rounded-full ${STATUS_BADGE[p.status] || STATUS_BADGE.draft}`}>{p.status}</span>
                   </td>
-                  <td className="px-4 py-3 text-white/70">{p.vendor_name}</td>
-                  <td className="px-4 py-3 text-white/50 text-xs">{p.payment_terms || '\u2014'}</td>
-                  <td className="px-4 py-3 text-white/50 text-xs">{p.ship_via || '\u2014'}</td>
+                  <td className="px-4 py-3 text-[#4B5563]">{p.vendor_name}</td>
+                  <td className="px-4 py-3 text-[#6B7280] text-xs">{p.payment_terms || '\u2014'}</td>
+                  <td className="px-4 py-3 text-[#6B7280] text-xs">{p.ship_via || '\u2014'}</td>
                   <td className="px-4 py-3 text-right font-mono text-white">
                     ${(p.total || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
                   </td>
-                  <td className="px-4 py-3 text-xs text-white/50">{new Date(p.created_at).toLocaleDateString()}</td>
+                  <td className="px-4 py-3 text-xs text-[#6B7280]">{new Date(p.created_at).toLocaleDateString()}</td>
                 </tr>
               ))
             )}

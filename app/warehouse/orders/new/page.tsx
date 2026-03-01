@@ -243,138 +243,138 @@ export default function NewOrderPage() {
     <div className="p-6 max-w-4xl mx-auto">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-white">New Order</h1>
-        <p className="text-sm text-white/40 mt-1">Create a warehouse order with line items</p>
+        <p className="text-sm text-[#6B7280] mt-1">Create a warehouse order with line items</p>
       </div>
 
       <div className="space-y-6">
         {/* Order Info */}
-        <div className="bg-white/5 border border-white/10 rounded-xl p-5 space-y-4">
-          <h2 className="text-sm font-semibold text-white/80 uppercase tracking-wider">Order Details</h2>
+        <div className="bg-white border border-[#E5E7EB] shadow-sm rounded-xl p-5 space-y-4">
+          <h2 className="text-sm font-semibold text-[#4B5563] uppercase tracking-wider">Order Details</h2>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs text-white/50 mb-1">Customer</label>
+              <label className="block text-xs text-[#6B7280] mb-1">Customer</label>
               <select
                 value={customerId}
                 onChange={(e) => setCustomerId(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500"
+                className="w-full bg-white border border-[#E5E7EB] shadow-sm rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#2A9D8F]"
               >
-                <option value="" className="bg-gray-900">Select customer...</option>
+                <option value="" className="bg-white">Select customer...</option>
                 {customers.map(c => (
-                  <option key={c.id} value={c.id} className="bg-gray-900">
+                  <option key={c.id} value={c.id} className="bg-white">
                     {c.customer_name} ({c.customer_code})
                   </option>
                 ))}
               </select>
             </div>
             <div>
-              <label className="block text-xs text-white/50 mb-1">Order Type</label>
+              <label className="block text-xs text-[#6B7280] mb-1">Order Type</label>
               <select
                 value={orderType}
                 onChange={(e) => setOrderType(e.target.value as any)}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500"
+                className="w-full bg-white border border-[#E5E7EB] shadow-sm rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#2A9D8F]"
               >
-                <option value="outbound" className="bg-gray-900">Outbound</option>
-                <option value="inbound" className="bg-gray-900">Inbound</option>
-                <option value="transfer" className="bg-gray-900">Transfer</option>
+                <option value="outbound" className="bg-white">Outbound</option>
+                <option value="inbound" className="bg-white">Inbound</option>
+                <option value="transfer" className="bg-white">Transfer</option>
               </select>
             </div>
             <div>
-              <label className="block text-xs text-white/50 mb-1">PO Number</label>
+              <label className="block text-xs text-[#6B7280] mb-1">PO Number</label>
               <input type="text" value={poNumber} onChange={(e) => setPoNumber(e.target.value)}
                 placeholder="Customer PO #"
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-blue-500"
+                className="w-full bg-white border border-[#E5E7EB] shadow-sm rounded-lg px-3 py-2 text-sm text-white placeholder-[#9CA3AF] focus:outline-none focus:border-[#2A9D8F]"
               />
             </div>
             <div>
-              <label className="block text-xs text-white/50 mb-1">Requested Ship Date</label>
+              <label className="block text-xs text-[#6B7280] mb-1">Requested Ship Date</label>
               <input type="date" value={requestedShipDate} onChange={(e) => setRequestedShipDate(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500"
+                className="w-full bg-white border border-[#E5E7EB] shadow-sm rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#2A9D8F]"
               />
             </div>
           </div>
         </div>
 
         {/* Ship To */}
-        <div className="bg-white/5 border border-white/10 rounded-xl p-5 space-y-4">
-          <h2 className="text-sm font-semibold text-white/80 uppercase tracking-wider">Ship To</h2>
+        <div className="bg-white border border-[#E5E7EB] shadow-sm rounded-xl p-5 space-y-4">
+          <h2 className="text-sm font-semibold text-[#4B5563] uppercase tracking-wider">Ship To</h2>
           <div className="grid grid-cols-2 gap-4">
             <div className="col-span-2">
-              <label className="block text-xs text-white/50 mb-1">Name / Company</label>
+              <label className="block text-xs text-[#6B7280] mb-1">Name / Company</label>
               <input type="text" value={shipToName} onChange={(e) => setShipToName(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-blue-500"
+                className="w-full bg-white border border-[#E5E7EB] shadow-sm rounded-lg px-3 py-2 text-sm text-white placeholder-[#9CA3AF] focus:outline-none focus:border-[#2A9D8F]"
               />
             </div>
             <div className="col-span-2">
-              <label className="block text-xs text-white/50 mb-1">Address</label>
+              <label className="block text-xs text-[#6B7280] mb-1">Address</label>
               <input type="text" value={shipToAddress} onChange={(e) => setShipToAddress(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-blue-500"
+                className="w-full bg-white border border-[#E5E7EB] shadow-sm rounded-lg px-3 py-2 text-sm text-white placeholder-[#9CA3AF] focus:outline-none focus:border-[#2A9D8F]"
               />
             </div>
             <div>
-              <label className="block text-xs text-white/50 mb-1">City</label>
+              <label className="block text-xs text-[#6B7280] mb-1">City</label>
               <input type="text" value={shipToCity} onChange={(e) => setShipToCity(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-blue-500"
+                className="w-full bg-white border border-[#E5E7EB] shadow-sm rounded-lg px-3 py-2 text-sm text-white placeholder-[#9CA3AF] focus:outline-none focus:border-[#2A9D8F]"
               />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs text-white/50 mb-1">State</label>
+                <label className="block text-xs text-[#6B7280] mb-1">State</label>
                 <input type="text" value={shipToState} onChange={(e) => setShipToState(e.target.value)} maxLength={2}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-blue-500"
+                  className="w-full bg-white border border-[#E5E7EB] shadow-sm rounded-lg px-3 py-2 text-sm text-white placeholder-[#9CA3AF] focus:outline-none focus:border-[#2A9D8F]"
                 />
               </div>
               <div>
-                <label className="block text-xs text-white/50 mb-1">ZIP</label>
+                <label className="block text-xs text-[#6B7280] mb-1">ZIP</label>
                 <input type="text" value={shipToZip} onChange={(e) => setShipToZip(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-blue-500"
+                  className="w-full bg-white border border-[#E5E7EB] shadow-sm rounded-lg px-3 py-2 text-sm text-white placeholder-[#9CA3AF] focus:outline-none focus:border-[#2A9D8F]"
                 />
               </div>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs text-white/50 mb-1">Carrier</label>
+              <label className="block text-xs text-[#6B7280] mb-1">Carrier</label>
               <input type="text" value={carrier} onChange={(e) => setCarrier(e.target.value)}
                 placeholder="e.g. FedEx, UPS, XPO"
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-blue-500"
+                className="w-full bg-white border border-[#E5E7EB] shadow-sm rounded-lg px-3 py-2 text-sm text-white placeholder-[#9CA3AF] focus:outline-none focus:border-[#2A9D8F]"
               />
             </div>
             <div>
-              <label className="block text-xs text-white/50 mb-1">Service Level</label>
+              <label className="block text-xs text-[#6B7280] mb-1">Service Level</label>
               <input type="text" value={serviceLevel} onChange={(e) => setServiceLevel(e.target.value)}
                 placeholder="e.g. Ground, 2-Day"
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-blue-500"
+                className="w-full bg-white border border-[#E5E7EB] shadow-sm rounded-lg px-3 py-2 text-sm text-white placeholder-[#9CA3AF] focus:outline-none focus:border-[#2A9D8F]"
               />
             </div>
           </div>
         </div>
 
         {/* Line Items */}
-        <div className="bg-white/5 border border-white/10 rounded-xl p-5 space-y-4">
-          <h2 className="text-sm font-semibold text-white/80 uppercase tracking-wider">Line Items</h2>
+        <div className="bg-white border border-[#E5E7EB] shadow-sm rounded-xl p-5 space-y-4">
+          <h2 className="text-sm font-semibold text-[#4B5563] uppercase tracking-wider">Line Items</h2>
 
           {/* Add line */}
-          <div className="flex items-end gap-3 p-3 bg-white/5 rounded-lg">
+          <div className="flex items-end gap-3 p-3 bg-white shadow-sm rounded-lg">
             <div className="flex-1">
-              <label className="block text-xs text-white/50 mb-1">Product</label>
+              <label className="block text-xs text-[#6B7280] mb-1">Product</label>
               <select
                 value={addSku}
                 onChange={(e) => setAddSku(e.target.value)}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500"
+                className="w-full bg-white border border-[#E5E7EB] shadow-sm rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#2A9D8F]"
               >
-                <option value="" className="bg-gray-900">Select product...</option>
+                <option value="" className="bg-white">Select product...</option>
                 {inventory.map(i => (
-                  <option key={i.id} value={i.id} className="bg-gray-900">
+                  <option key={i.id} value={i.id} className="bg-white">
                     {i.sku} — {i.product_name} ({i.qty_available} {i.unit_of_measure} avail)
                   </option>
                 ))}
               </select>
             </div>
             <div className="w-24">
-              <label className="block text-xs text-white/50 mb-1">Qty</label>
+              <label className="block text-xs text-[#6B7280] mb-1">Qty</label>
               <input type="number" min={1} value={addQty} onChange={(e) => setAddQty(parseInt(e.target.value) || 1)}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500"
+                className="w-full bg-white border border-[#E5E7EB] shadow-sm rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-[#2A9D8F]"
               />
             </div>
             <button
@@ -390,42 +390,42 @@ export default function NewOrderPage() {
           {lines.length > 0 && (
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-white/10">
-                  <th className="text-left py-2 text-xs text-white/40">SKU</th>
-                  <th className="text-left py-2 text-xs text-white/40">Product</th>
-                  <th className="text-right py-2 text-xs text-white/40">Qty</th>
-                  <th className="text-center py-2 text-xs text-white/40">UOM</th>
-                  <th className="text-right py-2 text-xs text-white/40">Weight</th>
-                  <th className="text-right py-2 text-xs text-white/40"></th>
+                <tr className="border-b border-[#E5E7EB]">
+                  <th className="text-left py-2 text-xs text-[#6B7280]">SKU</th>
+                  <th className="text-left py-2 text-xs text-[#6B7280]">Product</th>
+                  <th className="text-right py-2 text-xs text-[#6B7280]">Qty</th>
+                  <th className="text-center py-2 text-xs text-[#6B7280]">UOM</th>
+                  <th className="text-right py-2 text-xs text-[#6B7280]">Weight</th>
+                  <th className="text-right py-2 text-xs text-[#6B7280]"></th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5">
+              <tbody className="divide-y divide-[#E5E7EB]">
                 {lines.map((l, i) => (
                   <tr key={i}>
-                    <td className="py-2 font-mono text-xs text-blue-400">{l.sku}</td>
-                    <td className="py-2 text-white/70">{l.product_name}</td>
+                    <td className="py-2 font-mono text-xs text-blue-600">{l.sku}</td>
+                    <td className="py-2 text-[#4B5563]">{l.product_name}</td>
                     <td className="py-2 text-right">
                       <input
                         type="number"
                         min={1}
                         value={l.qty_ordered}
                         onChange={(e) => updateLineQty(i, parseInt(e.target.value) || 1)}
-                        className="w-20 bg-white/5 border border-white/10 rounded px-2 py-1 text-sm text-white text-right focus:outline-none focus:border-blue-500"
+                        className="w-20 bg-white border border-[#E5E7EB] shadow-sm rounded px-2 py-1 text-sm text-white text-right focus:outline-none focus:border-[#2A9D8F]"
                       />
                     </td>
-                    <td className="py-2 text-center text-xs text-white/50">{l.order_unit}</td>
-                    <td className="py-2 text-right font-mono text-xs text-white/50">
+                    <td className="py-2 text-center text-xs text-[#6B7280]">{l.order_unit}</td>
+                    <td className="py-2 text-right font-mono text-xs text-[#6B7280]">
                       {l.line_weight > 0 ? `${l.line_weight.toFixed(1)} lbs` : '—'}
                     </td>
                     <td className="py-2 text-right">
-                      <button onClick={() => removeLine(i)} className="text-red-400/60 hover:text-red-400 text-xs">✕</button>
+                      <button onClick={() => removeLine(i)} className="text-red-600/60 hover:text-red-600 text-xs">✕</button>
                     </td>
                   </tr>
                 ))}
               </tbody>
               <tfoot>
-                <tr className="border-t border-white/10">
-                  <td colSpan={2} className="py-2 text-xs text-white/40">Totals</td>
+                <tr className="border-t border-[#E5E7EB]">
+                  <td colSpan={2} className="py-2 text-xs text-[#6B7280]">Totals</td>
                   <td className="py-2 text-right font-bold text-white">{totalItems}</td>
                   <td></td>
                   <td className="py-2 text-right font-mono text-xs text-white">
@@ -439,36 +439,36 @@ export default function NewOrderPage() {
         </div>
 
         {/* Special Instructions */}
-        <div className="bg-white/5 border border-white/10 rounded-xl p-5 space-y-3">
-          <label className="block text-xs text-white/50">Special Instructions</label>
+        <div className="bg-white border border-[#E5E7EB] shadow-sm rounded-xl p-5 space-y-3">
+          <label className="block text-xs text-[#6B7280]">Special Instructions</label>
           <textarea
             value={specialInstructions}
             onChange={(e) => setSpecialInstructions(e.target.value)}
             rows={3}
             placeholder="Delivery notes, handling requirements..."
-            className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-blue-500 resize-none"
+            className="w-full bg-white border border-[#E5E7EB] shadow-sm rounded-lg px-3 py-2 text-sm text-white placeholder-[#9CA3AF] focus:outline-none focus:border-[#2A9D8F] resize-none"
           />
         </div>
 
         {/* Options */}
-        <div className="bg-white/5 border border-white/10 rounded-xl p-5 space-y-3">
+        <div className="bg-white border border-[#E5E7EB] shadow-sm rounded-xl p-5 space-y-3">
           <label className="flex items-center gap-3 cursor-pointer">
             <input
               type="checkbox"
               checked={generateBol}
               onChange={(e) => setGenerateBol(e.target.checked)}
-              className="w-4 h-4 rounded border-white/20 bg-white/5"
+              className="w-4 h-4 rounded border-[#E5E7EB] bg-white shadow-sm"
             />
-            <span className="text-sm text-white/70">Auto-generate Bill of Lading</span>
+            <span className="text-sm text-[#4B5563]">Auto-generate Bill of Lading</span>
           </label>
           <label className="flex items-center gap-3 cursor-pointer">
             <input
               type="checkbox"
               checked={notifyWarehouse}
               onChange={(e) => setNotifyWarehouse(e.target.checked)}
-              className="w-4 h-4 rounded border-white/20 bg-white/5"
+              className="w-4 h-4 rounded border-[#E5E7EB] bg-white shadow-sm"
             />
-            <span className="text-sm text-white/70">Email notification to warehouse</span>
+            <span className="text-sm text-[#4B5563]">Email notification to warehouse</span>
           </label>
         </div>
 
@@ -476,14 +476,14 @@ export default function NewOrderPage() {
         <div className="flex items-center gap-3 justify-end">
           <button
             onClick={() => router.push('/warehouse/orders')}
-            className="px-4 py-2.5 rounded-lg text-sm text-white/50 hover:text-white/80 transition-colors"
+            className="px-4 py-2.5 rounded-lg text-sm text-[#6B7280] hover:text-[#4B5563] transition-colors"
           >
             Cancel
           </button>
           <button
             onClick={() => submit(true)}
             disabled={saving || lines.length === 0}
-            className="px-5 py-2.5 rounded-lg bg-white/10 hover:bg-white/15 disabled:opacity-30 text-sm text-white font-medium transition-colors"
+            className="px-5 py-2.5 rounded-lg bg-gray-100 hover:bg-white/15 disabled:opacity-30 text-sm text-white font-medium transition-colors"
           >
             Save Draft
           </button>

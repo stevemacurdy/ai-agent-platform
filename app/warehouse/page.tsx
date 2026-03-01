@@ -77,8 +77,8 @@ export default function WarehouseDashboard() {
   ];
 
   const STATUS_BADGE: Record<string, string> = {
-    draft: 'bg-gray-600/50 text-gray-300',
-    submitted: 'bg-blue-600/50 text-blue-300',
+    draft: 'bg-gray-600/50 text-[#4B5563]',
+    submitted: 'bg-blue-600/50 text-blue-600',
     confirmed: 'bg-indigo-600/50 text-indigo-300',
     picking: 'bg-yellow-600/50 text-yellow-300',
     packed: 'bg-orange-600/50 text-orange-300',
@@ -93,7 +93,7 @@ export default function WarehouseDashboard() {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-2xl font-bold text-white">Warehouse Dashboard</h1>
-          <p className="text-sm text-white/40 mt-1">Inventory, orders, and logistics at a glance</p>
+          <p className="text-sm text-[#6B7280] mt-1">Inventory, orders, and logistics at a glance</p>
         </div>
         <Link
           href="/warehouse/orders/new"
@@ -106,7 +106,7 @@ export default function WarehouseDashboard() {
       {loading ? (
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="h-28 bg-white/5 rounded-xl animate-pulse" />
+            <div key={i} className="h-28 bg-white shadow-sm rounded-xl animate-pulse" />
           ))}
         </div>
       ) : (
@@ -114,12 +114,12 @@ export default function WarehouseDashboard() {
           {/* Stat Cards */}
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
             {statCards.map(card => (
-              <div key={card.label} className="bg-white/5 border border-white/10 rounded-xl p-4 hover:bg-white/[0.07] transition-colors">
+              <div key={card.label} className="bg-white border border-[#E5E7EB] shadow-sm rounded-xl p-4 hover:bg-white/[0.07] transition-colors">
                 <div className="flex items-center gap-3 mb-2">
                   <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${card.color} flex items-center justify-center text-lg`}>
                     {card.icon}
                   </div>
-                  <span className="text-xs text-white/40 uppercase tracking-wider">{card.label}</span>
+                  <span className="text-xs text-[#6B7280] uppercase tracking-wider">{card.label}</span>
                 </div>
                 <p className="text-2xl font-bold text-white">{card.value}</p>
               </div>
@@ -127,37 +127,37 @@ export default function WarehouseDashboard() {
           </div>
 
           {/* Recent Orders */}
-          <div className="bg-white/5 border border-white/10 rounded-xl">
-            <div className="flex items-center justify-between p-4 border-b border-white/10">
-              <h2 className="text-sm font-semibold text-white/80 uppercase tracking-wider">Recent Orders</h2>
-              <Link href="/warehouse/orders" className="text-xs text-blue-400 hover:text-blue-300">
+          <div className="bg-white border border-[#E5E7EB] shadow-sm rounded-xl">
+            <div className="flex items-center justify-between p-4 border-b border-[#E5E7EB]">
+              <h2 className="text-sm font-semibold text-[#4B5563] uppercase tracking-wider">Recent Orders</h2>
+              <Link href="/warehouse/orders" className="text-xs text-blue-600 hover:text-blue-600">
                 View All →
               </Link>
             </div>
             {recentOrders.length === 0 ? (
-              <div className="p-8 text-center text-white/30 text-sm">
+              <div className="p-8 text-center text-[#9CA3AF] text-sm">
                 No orders yet. Create your first order to get started.
               </div>
             ) : (
-              <div className="divide-y divide-white/5">
+              <div className="divide-y divide-[#E5E7EB]">
                 {recentOrders.map(order => (
                   <Link
                     key={order.id}
                     href={`/warehouse/orders/${order.id}`}
-                    className="flex items-center gap-4 p-4 hover:bg-white/5 transition-colors"
+                    className="flex items-center gap-4 p-4 hover:bg-white shadow-sm transition-colors"
                   >
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <span className="text-sm font-medium text-white">{order.order_number}</span>
-                        <span className={`text-[10px] px-2 py-0.5 rounded-full ${STATUS_BADGE[order.status] || 'bg-gray-600/50 text-gray-300'}`}>
+                        <span className={`text-[10px] px-2 py-0.5 rounded-full ${STATUS_BADGE[order.status] || 'bg-gray-600/50 text-[#4B5563]'}`}>
                           {order.status}
                         </span>
                       </div>
-                      <p className="text-xs text-white/40 mt-0.5 truncate">{order.ship_to_name || 'No destination'}</p>
+                      <p className="text-xs text-[#6B7280] mt-0.5 truncate">{order.ship_to_name || 'No destination'}</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm text-white/60">{order.total_items || 0} items</p>
-                      <p className="text-[10px] text-white/30">
+                      <p className="text-sm text-[#6B7280]">{order.total_items || 0} items</p>
+                      <p className="text-[10px] text-[#9CA3AF]">
                         {order.requested_ship_date ? new Date(order.requested_ship_date).toLocaleDateString() : '—'}
                       </p>
                     </div>
@@ -178,10 +178,10 @@ export default function WarehouseDashboard() {
               <Link
                 key={action.href}
                 href={action.href}
-                className="flex items-center gap-3 p-4 bg-white/5 border border-white/10 rounded-xl hover:bg-white/[0.07] hover:border-white/20 transition-colors"
+                className="flex items-center gap-3 p-4 bg-white border border-[#E5E7EB] shadow-sm rounded-xl hover:bg-white/[0.07] hover:border-[#E5E7EB] transition-colors"
               >
                 <span className="text-xl">{action.icon}</span>
-                <span className="text-sm text-white/70">{action.label}</span>
+                <span className="text-sm text-[#4B5563]">{action.label}</span>
               </Link>
             ))}
           </div>

@@ -68,7 +68,7 @@ export default function CustomersPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-white">Customers</h1>
-          <p className="text-sm text-white/40 mt-1">{customers.filter(c => c.is_active).length} active customers</p>
+          <p className="text-sm text-[#6B7280] mt-1">{customers.filter(c => c.is_active).length} active customers</p>
         </div>
         <button
           onClick={() => setShowAdd(!showAdd)}
@@ -79,8 +79,8 @@ export default function CustomersPage() {
       </div>
 
       {showAdd && (
-        <div className="bg-white/5 border border-white/10 rounded-xl p-5 mb-6 space-y-4">
-          <h2 className="text-sm font-semibold text-white/80 uppercase tracking-wider">New Customer</h2>
+        <div className="bg-white border border-[#E5E7EB] shadow-sm rounded-xl p-5 mb-6 space-y-4">
+          <h2 className="text-sm font-semibold text-[#4B5563] uppercase tracking-wider">New Customer</h2>
           <div className="grid grid-cols-2 gap-4">
             {[
               { key: 'customer_name', label: 'Company Name', required: true },
@@ -95,12 +95,12 @@ export default function CustomersPage() {
               { key: 'zip', label: 'ZIP' },
             ].map(f => (
               <div key={f.key}>
-                <label className="block text-xs text-white/50 mb-1">{f.label}{f.required && ' *'}</label>
+                <label className="block text-xs text-[#6B7280] mb-1">{f.label}{f.required && ' *'}</label>
                 <input
                   type="text"
                   value={(form as any)[f.key]}
                   onChange={(e) => setForm(p => ({ ...p, [f.key]: e.target.value }))}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:border-blue-500"
+                  className="w-full bg-white border border-[#E5E7EB] shadow-sm rounded-lg px-3 py-2 text-sm text-white placeholder-[#9CA3AF] focus:outline-none focus:border-[#2A9D8F]"
                 />
               </div>
             ))}
@@ -115,33 +115,33 @@ export default function CustomersPage() {
         </div>
       )}
 
-      <div className="bg-white/5 border border-white/10 rounded-xl overflow-hidden">
+      <div className="bg-white border border-[#E5E7EB] shadow-sm rounded-xl overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-white/10">
-              <th className="text-left px-4 py-3 text-xs text-white/40 font-medium uppercase">Code</th>
-              <th className="text-left px-4 py-3 text-xs text-white/40 font-medium uppercase">Name</th>
-              <th className="text-left px-4 py-3 text-xs text-white/40 font-medium uppercase">Contact</th>
-              <th className="text-left px-4 py-3 text-xs text-white/40 font-medium uppercase">Email</th>
-              <th className="text-left px-4 py-3 text-xs text-white/40 font-medium uppercase">Location</th>
-              <th className="text-center px-4 py-3 text-xs text-white/40 font-medium uppercase">Status</th>
+            <tr className="border-b border-[#E5E7EB]">
+              <th className="text-left px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Code</th>
+              <th className="text-left px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Name</th>
+              <th className="text-left px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Contact</th>
+              <th className="text-left px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Email</th>
+              <th className="text-left px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Location</th>
+              <th className="text-center px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Status</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-white/5">
+          <tbody className="divide-y divide-[#E5E7EB]">
             {loading ? (
               [...Array(3)].map((_, i) => (
-                <tr key={i}><td colSpan={6} className="px-4 py-4"><div className="h-4 bg-white/5 rounded animate-pulse" /></td></tr>
+                <tr key={i}><td colSpan={6} className="px-4 py-4"><div className="h-4 bg-white shadow-sm rounded animate-pulse" /></td></tr>
               ))
             ) : customers.length === 0 ? (
-              <tr><td colSpan={6} className="px-4 py-12 text-center text-white/30">No customers yet</td></tr>
+              <tr><td colSpan={6} className="px-4 py-12 text-center text-[#9CA3AF]">No customers yet</td></tr>
             ) : (
               customers.map(c => (
-                <tr key={c.id} className="hover:bg-white/5 transition-colors">
-                  <td className="px-4 py-3 font-mono text-xs text-blue-400">{c.customer_code}</td>
+                <tr key={c.id} className="hover:bg-white shadow-sm transition-colors">
+                  <td className="px-4 py-3 font-mono text-xs text-blue-600">{c.customer_code}</td>
                   <td className="px-4 py-3 text-white font-medium">{c.customer_name}</td>
-                  <td className="px-4 py-3 text-white/60 text-xs">{c.contact_name || '—'}</td>
-                  <td className="px-4 py-3 text-white/50 text-xs">{c.contact_email || '—'}</td>
-                  <td className="px-4 py-3 text-white/50 text-xs">
+                  <td className="px-4 py-3 text-[#6B7280] text-xs">{c.contact_name || '—'}</td>
+                  <td className="px-4 py-3 text-[#6B7280] text-xs">{c.contact_email || '—'}</td>
+                  <td className="px-4 py-3 text-[#6B7280] text-xs">
                     {[c.city, c.state].filter(Boolean).join(', ') || '—'}
                   </td>
                   <td className="px-4 py-3 text-center">

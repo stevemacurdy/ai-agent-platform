@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { getSupabaseBrowser } from '@/lib/supabase-browser';
 
 const STATUS_BADGE: Record<string, string> = {
-  draft: 'bg-gray-600/50 text-gray-300',
-  submitted: 'bg-blue-600/50 text-blue-300',
+  draft: 'bg-gray-600/50 text-[#4B5563]',
+  submitted: 'bg-blue-600/50 text-blue-600',
   confirmed: 'bg-indigo-600/50 text-indigo-300',
   picking: 'bg-yellow-600/50 text-yellow-300',
   packed: 'bg-orange-600/50 text-orange-300',
@@ -67,7 +67,7 @@ export default function OrdersPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-white">Orders</h1>
-          <p className="text-sm text-white/40 mt-1">{orders.length} orders</p>
+          <p className="text-sm text-[#6B7280] mt-1">{orders.length} orders</p>
         </div>
         <Link
           href="/warehouse/orders/new"
@@ -84,7 +84,7 @@ export default function OrdersPage() {
           placeholder="Search order #, ship to, PO..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="flex-1 max-w-md bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white placeholder-white/30 focus:outline-none focus:border-blue-500"
+          className="flex-1 max-w-md bg-white border border-[#E5E7EB] shadow-sm rounded-lg px-4 py-2.5 text-sm text-white placeholder-[#9CA3AF] focus:outline-none focus:border-[#2A9D8F]"
         />
         <div className="flex gap-1 overflow-x-auto">
           {STATUS_FILTERS.map(s => (
@@ -93,8 +93,8 @@ export default function OrdersPage() {
               onClick={() => setStatusFilter(s)}
               className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors whitespace-nowrap ${
                 statusFilter === s
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-white/5 text-white/50 hover:bg-white/10'
+                  ? 'bg-[#1B2A4A] text-white'
+                  : 'bg-white shadow-sm text-[#6B7280] hover:bg-gray-100'
               }`}
             >
               {s === 'all' ? 'All' : s.charAt(0).toUpperCase() + s.slice(1)}
@@ -104,57 +104,57 @@ export default function OrdersPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-white/5 border border-white/10 rounded-xl overflow-hidden">
+      <div className="bg-white border border-[#E5E7EB] shadow-sm rounded-xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-white/10">
-                <th className="text-left px-4 py-3 text-xs text-white/40 font-medium uppercase">Order #</th>
-                <th className="text-left px-4 py-3 text-xs text-white/40 font-medium uppercase">Type</th>
-                <th className="text-left px-4 py-3 text-xs text-white/40 font-medium uppercase">Status</th>
-                <th className="text-left px-4 py-3 text-xs text-white/40 font-medium uppercase">Customer</th>
-                <th className="text-left px-4 py-3 text-xs text-white/40 font-medium uppercase">Ship To</th>
-                <th className="text-left px-4 py-3 text-xs text-white/40 font-medium uppercase">PO #</th>
-                <th className="text-right px-4 py-3 text-xs text-white/40 font-medium uppercase">Items</th>
-                <th className="text-right px-4 py-3 text-xs text-white/40 font-medium uppercase">Weight</th>
-                <th className="text-left px-4 py-3 text-xs text-white/40 font-medium uppercase">Ship Date</th>
+              <tr className="border-b border-[#E5E7EB]">
+                <th className="text-left px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Order #</th>
+                <th className="text-left px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Type</th>
+                <th className="text-left px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Status</th>
+                <th className="text-left px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Customer</th>
+                <th className="text-left px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Ship To</th>
+                <th className="text-left px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">PO #</th>
+                <th className="text-right px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Items</th>
+                <th className="text-right px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Weight</th>
+                <th className="text-left px-4 py-3 text-xs text-[#6B7280] font-medium uppercase">Ship Date</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-[#E5E7EB]">
               {loading ? (
                 [...Array(5)].map((_, i) => (
                   <tr key={i}>
-                    <td colSpan={9} className="px-4 py-4"><div className="h-4 bg-white/5 rounded animate-pulse" /></td>
+                    <td colSpan={9} className="px-4 py-4"><div className="h-4 bg-white shadow-sm rounded animate-pulse" /></td>
                   </tr>
                 ))
               ) : orders.length === 0 ? (
                 <tr>
-                  <td colSpan={9} className="px-4 py-12 text-center text-white/30">
+                  <td colSpan={9} className="px-4 py-12 text-center text-[#9CA3AF]">
                     {search || statusFilter !== 'all' ? 'No matching orders found' : 'No orders yet'}
                   </td>
                 </tr>
               ) : (
                 orders.map(o => (
-                  <tr key={o.id} className="hover:bg-white/5 transition-colors cursor-pointer"
+                  <tr key={o.id} className="hover:bg-white shadow-sm transition-colors cursor-pointer"
                     onClick={() => window.location.href = `/warehouse/orders/${o.id}`}
                   >
-                    <td className="px-4 py-3 font-mono text-xs text-blue-400">{o.order_number}</td>
-                    <td className="px-4 py-3 text-xs text-white/50">{o.order_type}</td>
+                    <td className="px-4 py-3 font-mono text-xs text-blue-600">{o.order_number}</td>
+                    <td className="px-4 py-3 text-xs text-[#6B7280]">{o.order_type}</td>
                     <td className="px-4 py-3">
                       <span className={`text-[10px] px-2 py-0.5 rounded-full ${STATUS_BADGE[o.status] || STATUS_BADGE.draft}`}>
                         {o.status}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-xs text-white/60">
+                    <td className="px-4 py-3 text-xs text-[#6B7280]">
                       {(o as any).warehouse_customers?.customer_name || '—'}
                     </td>
-                    <td className="px-4 py-3 text-xs text-white/70 truncate max-w-[200px]">{o.ship_to_name || '—'}</td>
-                    <td className="px-4 py-3 text-xs text-white/50">{o.po_number || '—'}</td>
-                    <td className="px-4 py-3 text-right font-mono text-white/70">{o.total_items || 0}</td>
-                    <td className="px-4 py-3 text-right font-mono text-white/50">
+                    <td className="px-4 py-3 text-xs text-[#4B5563] truncate max-w-[200px]">{o.ship_to_name || '—'}</td>
+                    <td className="px-4 py-3 text-xs text-[#6B7280]">{o.po_number || '—'}</td>
+                    <td className="px-4 py-3 text-right font-mono text-[#4B5563]">{o.total_items || 0}</td>
+                    <td className="px-4 py-3 text-right font-mono text-[#6B7280]">
                       {o.total_weight ? `${o.total_weight.toLocaleString()} lbs` : '—'}
                     </td>
-                    <td className="px-4 py-3 text-xs text-white/50">
+                    <td className="px-4 py-3 text-xs text-[#6B7280]">
                       {o.requested_ship_date ? new Date(o.requested_ship_date).toLocaleDateString() : '—'}
                     </td>
                   </tr>
