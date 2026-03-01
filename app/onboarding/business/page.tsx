@@ -163,35 +163,35 @@ export default function BusinessOnboarding() {
   const progress = ((step + 1) / STEPS.length) * 100;
 
   return (
-    <div className="min-h-screen bg-[#060912] flex items-center justify-center p-6">
+    <div className="min-h-screen bg-[#F4F5F7] flex items-center justify-center p-6">
       <div className="w-full max-w-2xl">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-500/10 border border-blue-500/20 rounded-full text-xs text-blue-400 mb-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 border border-blue-200 rounded-full text-xs text-blue-600 mb-4">
             <Building2 className="w-3 h-3" />
             Business Onboarding
           </div>
-          <h1 className="text-2xl font-bold text-white mb-2">
+          <h1 className="text-2xl font-bold text-[#1B2A4A] mb-2">
             Let&apos;s get to know your business
           </h1>
-          <p className="text-sm text-gray-500">
-            Just a few questions so we can recommend the right AI agents for you.
+          <p className="text-sm text-[#9CA3AF]">
+            Just a few questions so we can recommend the right AI Employees for you.
           </p>
         </div>
 
         {/* Progress bar */}
         <div className="mb-8">
-          <div className="flex justify-between text-[10px] text-gray-600 mb-1.5">
+          <div className="flex justify-between text-[10px] text-[#6B7280] mb-1.5">
             <span>Question {step + 1} of {STEPS.length}</span>
             <span>{Math.round(progress)}%</span>
           </div>
-          <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
+          <div className="h-1.5 bg-white shadow-sm rounded-full overflow-hidden">
             <div className="h-full bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full transition-all duration-500" style={{ width: progress + '%' }} />
           </div>
         </div>
 
         {/* Question card */}
-        <div className="bg-[#0A0E15] border border-white/5 rounded-2xl p-8 mb-6">
+        <div className="bg-white border border-[#E5E7EB] rounded-2xl p-8 mb-6">
           <h2 className="text-lg font-semibold text-white mb-6">{STEPS[step].label}</h2>
 
           {/* Step 0: Industry */}
@@ -203,8 +203,8 @@ export default function BusinessOnboarding() {
                   onClick={() => setAnswers(a => ({ ...a, industry: opt }))}
                   className={"w-full text-left px-4 py-3 rounded-xl text-sm transition border " +
                     (answers.industry === opt
-                      ? 'bg-blue-600/20 border-blue-500/30 text-blue-300'
-                      : 'bg-white/[0.03] border-white/5 text-gray-400 hover:border-white/10 hover:text-white')}
+                      ? 'bg-blue-600/20 border-blue-300 text-blue-600'
+                      : 'bg-white/[0.03] border-[#E5E7EB] text-[#6B7280] hover:border-[#E5E7EB] hover:text-[#1B2A4A]')}
                 >
                   {opt}
                 </button>
@@ -215,7 +215,7 @@ export default function BusinessOnboarding() {
                   value={answers.industry_other}
                   onChange={e => setAnswers(a => ({ ...a, industry_other: e.target.value }))}
                   placeholder="Tell us your industry..."
-                  className="w-full px-4 py-3 mt-2 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder:text-gray-600 focus:border-blue-500 focus:outline-none"
+                  className="w-full px-4 py-3 mt-2 bg-white border border-[#E5E7EB] shadow-sm rounded-xl text-sm text-[#1B2A4A] placeholder:text-[#6B7280] focus:border-[#2A9D8F] focus:outline-none"
                   autoFocus
                 />
               )}
@@ -231,8 +231,8 @@ export default function BusinessOnboarding() {
                   onClick={() => setAnswers(a => ({ ...a, employees: opt }))}
                   className={"px-4 py-3 rounded-xl text-sm transition border " +
                     (answers.employees === opt
-                      ? 'bg-blue-600/20 border-blue-500/30 text-blue-300'
-                      : 'bg-white/[0.03] border-white/5 text-gray-400 hover:border-white/10 hover:text-white')}
+                      ? 'bg-blue-600/20 border-blue-300 text-blue-600'
+                      : 'bg-white/[0.03] border-[#E5E7EB] text-[#6B7280] hover:border-[#E5E7EB] hover:text-[#1B2A4A]')}
                 >
                   {opt}
                 </button>
@@ -243,15 +243,15 @@ export default function BusinessOnboarding() {
           {/* Step 2: Bottlenecks (multi-select) */}
           {step === 2 && (
             <div className="space-y-2">
-              <p className="text-xs text-gray-600 mb-3">Select all that apply</p>
+              <p className="text-xs text-[#6B7280] mb-3">Select all that apply</p>
               {BOTTLENECK_OPTIONS.map(opt => (
                 <button
                   key={opt}
                   onClick={() => toggleMulti('bottlenecks', opt)}
                   className={"w-full text-left px-4 py-3 rounded-xl text-sm transition border flex items-center gap-3 " +
                     (answers.bottlenecks.includes(opt)
-                      ? 'bg-blue-600/20 border-blue-500/30 text-blue-300'
-                      : 'bg-white/[0.03] border-white/5 text-gray-400 hover:border-white/10 hover:text-white')}
+                      ? 'bg-blue-600/20 border-blue-300 text-blue-600'
+                      : 'bg-white/[0.03] border-[#E5E7EB] text-[#6B7280] hover:border-[#E5E7EB] hover:text-[#1B2A4A]')}
                 >
                   <span className={"w-4 h-4 rounded border flex-shrink-0 flex items-center justify-center " +
                     (answers.bottlenecks.includes(opt) ? 'bg-blue-500 border-blue-500' : 'border-gray-600')}>
@@ -266,22 +266,22 @@ export default function BusinessOnboarding() {
           {/* Step 3: Automate (multi-select by category) */}
           {step === 3 && (
             <div className="space-y-2">
-              <p className="text-xs text-gray-600 mb-3">Select the areas you&apos;d like to automate</p>
+              <p className="text-xs text-[#6B7280] mb-3">Select the areas you&apos;d like to automate</p>
               {CATEGORIES.map(cat => (
                 <button
                   key={cat}
                   onClick={() => toggleMulti('automate', cat)}
                   className={"w-full text-left px-4 py-3 rounded-xl text-sm transition border flex items-center gap-3 " +
                     (answers.automate.includes(cat)
-                      ? 'bg-blue-600/20 border-blue-500/30 text-blue-300'
-                      : 'bg-white/[0.03] border-white/5 text-gray-400 hover:border-white/10 hover:text-white')}
+                      ? 'bg-blue-600/20 border-blue-300 text-blue-600'
+                      : 'bg-white/[0.03] border-[#E5E7EB] text-[#6B7280] hover:border-[#E5E7EB] hover:text-[#1B2A4A]')}
                 >
                   <span className={"w-4 h-4 rounded border flex-shrink-0 flex items-center justify-center " +
                     (answers.automate.includes(cat) ? 'bg-blue-500 border-blue-500' : 'border-gray-600')}>
                     {answers.automate.includes(cat) && <CheckCircle2 className="w-3 h-3 text-white" />}
                   </span>
                   <span className="capitalize">{cat}</span>
-                  <span className="text-[10px] text-gray-600 ml-auto">
+                  <span className="text-[10px] text-[#6B7280] ml-auto">
                     {LIVE_AGENTS.filter(a => a.category === cat).map(a => a.icon).join(' ')}
                   </span>
                 </button>
@@ -292,7 +292,7 @@ export default function BusinessOnboarding() {
           {/* Step 4: Tools (free text) */}
           {step === 4 && (
             <div>
-              <p className="text-xs text-gray-500 mb-3">
+              <p className="text-xs text-[#9CA3AF] mb-3">
                 E.g., QuickBooks, Salesforce, SAP, Excel, Odoo, HubSpot, custom software...
               </p>
               <textarea
@@ -300,7 +300,7 @@ export default function BusinessOnboarding() {
                 onChange={e => setAnswers(a => ({ ...a, tools: e.target.value }))}
                 placeholder="List the tools and software your team currently uses..."
                 rows={4}
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder:text-gray-600 focus:border-blue-500 focus:outline-none resize-none"
+                className="w-full px-4 py-3 bg-white border border-[#E5E7EB] shadow-sm rounded-xl text-sm text-[#1B2A4A] placeholder:text-[#6B7280] focus:border-[#2A9D8F] focus:outline-none resize-none"
                 autoFocus
               />
             </div>
@@ -315,8 +315,8 @@ export default function BusinessOnboarding() {
                   onClick={() => setAnswers(a => ({ ...a, timeline: opt }))}
                   className={"w-full text-left px-4 py-3 rounded-xl text-sm transition border " +
                     (answers.timeline === opt
-                      ? 'bg-blue-600/20 border-blue-500/30 text-blue-300'
-                      : 'bg-white/[0.03] border-white/5 text-gray-400 hover:border-white/10 hover:text-white')}
+                      ? 'bg-blue-600/20 border-blue-300 text-blue-600'
+                      : 'bg-white/[0.03] border-[#E5E7EB] text-[#6B7280] hover:border-[#E5E7EB] hover:text-[#1B2A4A]')}
                 >
                   {opt}
                 </button>
@@ -327,7 +327,7 @@ export default function BusinessOnboarding() {
           {/* Step 6: Anything else */}
           {step === 6 && (
             <div>
-              <p className="text-xs text-gray-500 mb-3">
+              <p className="text-xs text-[#9CA3AF] mb-3">
                 This is optional — share anything that would help us serve you better.
               </p>
               <textarea
@@ -335,7 +335,7 @@ export default function BusinessOnboarding() {
                 onChange={e => setAnswers(a => ({ ...a, anything_else: e.target.value }))}
                 placeholder="Any specific challenges, goals, or questions..."
                 rows={4}
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder:text-gray-600 focus:border-blue-500 focus:outline-none resize-none"
+                className="w-full px-4 py-3 bg-white border border-[#E5E7EB] shadow-sm rounded-xl text-sm text-[#1B2A4A] placeholder:text-[#6B7280] focus:border-[#2A9D8F] focus:outline-none resize-none"
                 autoFocus
               />
             </div>
@@ -347,7 +347,7 @@ export default function BusinessOnboarding() {
           <button
             onClick={() => setStep(s => s - 1)}
             disabled={step === 0}
-            className="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition disabled:opacity-30 disabled:hover:text-gray-500"
+            className="flex items-center gap-2 text-sm text-[#9CA3AF] hover:text-[#1B2A4A] transition disabled:opacity-30 disabled:hover:text-[#9CA3AF]"
           >
             <ArrowLeft className="w-4 h-4" /> Back
           </button>
@@ -356,7 +356,7 @@ export default function BusinessOnboarding() {
             <button
               onClick={() => setStep(s => s + 1)}
               disabled={!canProceed()}
-              className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl text-sm font-medium hover:bg-blue-500 transition disabled:opacity-40 disabled:hover:bg-blue-600"
+              className="flex items-center gap-2 px-6 py-3 bg-[#1B2A4A] text-white rounded-xl text-sm font-medium hover:bg-blue-500 transition disabled:opacity-40 disabled:hover:bg-blue-600"
             >
               Continue <ArrowRight className="w-4 h-4" />
             </button>
@@ -373,7 +373,7 @@ export default function BusinessOnboarding() {
 
         {/* Skip */}
         <div className="text-center mt-6">
-          <button onClick={() => router.push('/portal')} className="text-xs text-gray-600 hover:text-gray-400 transition">
+          <button onClick={() => router.push('/portal')} className="text-xs text-[#6B7280] hover:text-[#6B7280] transition">
             Skip for now — I&apos;ll explore on my own
           </button>
         </div>

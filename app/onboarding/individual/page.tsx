@@ -149,21 +149,21 @@ export default function IndividualOnboarding() {
   };
 
   return (
-    <div className="min-h-screen bg-[#060912] flex items-center justify-center p-6">
+    <div className="min-h-screen bg-[#F4F5F7] flex items-center justify-center p-6">
       <div className="w-full max-w-2xl">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-purple-500/10 border border-purple-500/20 rounded-full text-xs text-purple-400 mb-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-purple-50 border border-purple-500/20 rounded-full text-xs text-purple-600 mb-4">
             <User className="w-3 h-3" />
             Individual Onboarding
           </div>
-          <h1 className="text-2xl font-bold text-white mb-2">
+          <h1 className="text-2xl font-bold text-[#1B2A4A] mb-2">
             {phase === 'intro' && "Tell us what you're looking for"}
             {phase === 'followup' && "Just a couple follow-ups"}
             {phase === 'done' && "You're all set!"}
           </h1>
-          <p className="text-sm text-gray-500">
-            {phase === 'intro' && "The more detail you share, the better we can match you with the right AI agents."}
+          <p className="text-sm text-[#9CA3AF]">
+            {phase === 'intro' && "The more detail you share, the better we can match you with the right AI Employees."}
             {phase === 'followup' && "Based on what you shared, these will help us serve you better."}
             {phase === 'done' && "Taking you to your portal now..."}
           </p>
@@ -171,13 +171,13 @@ export default function IndividualOnboarding() {
 
         {/* Phase: Intro - Free text */}
         {phase === 'intro' && (
-          <div className="bg-[#0A0E15] border border-white/5 rounded-2xl p-8">
+          <div className="bg-white border border-[#E5E7EB] rounded-2xl p-8">
             <div className="flex items-start gap-3 mb-4">
               <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
                 <Sparkles className="w-4 h-4 text-white" />
               </div>
               <div>
-                <p className="text-sm text-gray-300 leading-relaxed">
+                <p className="text-sm text-[#4B5563] leading-relaxed">
                   Hi{userName ? ` ${userName.split(' ')[0]}` : ''}! I&apos;d love to learn about what brought you here.
                   Tell me about your work, the challenges you&apos;re facing, or what you&apos;d like AI to help you with.
                   There&apos;s no wrong answer — just speak freely.
@@ -190,12 +190,12 @@ export default function IndividualOnboarding() {
               onChange={e => setMainText(e.target.value)}
               placeholder="I'm looking for help with..."
               rows={6}
-              className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder:text-gray-600 focus:border-purple-500 focus:outline-none resize-none mt-4"
+              className="w-full px-4 py-3 bg-white border border-[#E5E7EB] shadow-sm rounded-xl text-sm text-[#1B2A4A] placeholder:text-[#6B7280] focus:border-purple-500 focus:outline-none resize-none mt-4"
               autoFocus
             />
 
             <div className="flex items-center justify-between mt-6">
-              <span className="text-[10px] text-gray-600">
+              <span className="text-[10px] text-[#6B7280]">
                 {mainText.length > 0 ? `${mainText.split(/\s+/).filter(Boolean).length} words` : 'Start typing...'}
               </span>
               <button
@@ -218,17 +218,17 @@ export default function IndividualOnboarding() {
                 <div
                   key={i}
                   className={"h-1.5 flex-1 rounded-full transition-all duration-300 " +
-                    (i < currentFollowUp ? 'bg-purple-500' : i === currentFollowUp ? 'bg-purple-400' : 'bg-white/10')}
+                    (i < currentFollowUp ? 'bg-purple-500' : i === currentFollowUp ? 'bg-purple-400' : 'bg-gray-100')}
                 />
               ))}
             </div>
 
-            <div className="bg-[#0A0E15] border border-white/5 rounded-2xl p-8">
+            <div className="bg-white border border-[#E5E7EB] rounded-2xl p-8">
               <div className="flex items-start gap-3 mb-4">
                 <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
                   <Sparkles className="w-4 h-4 text-white" />
                 </div>
-                <p className="text-sm text-gray-300 leading-relaxed">
+                <p className="text-sm text-[#4B5563] leading-relaxed">
                   {followUps[currentFollowUp]?.question}
                 </p>
               </div>
@@ -238,19 +238,19 @@ export default function IndividualOnboarding() {
                 onChange={e => updateFollowUpAnswer(currentFollowUp, e.target.value)}
                 placeholder="Your answer..."
                 rows={3}
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder:text-gray-600 focus:border-purple-500 focus:outline-none resize-none mt-2"
+                className="w-full px-4 py-3 bg-white border border-[#E5E7EB] shadow-sm rounded-xl text-sm text-[#1B2A4A] placeholder:text-[#6B7280] focus:border-purple-500 focus:outline-none resize-none mt-2"
                 autoFocus
                 key={currentFollowUp}
               />
 
               <div className="flex items-center justify-between mt-6">
-                <span className="text-[10px] text-gray-600">
+                <span className="text-[10px] text-[#6B7280]">
                   Question {currentFollowUp + 1} of {followUps.length}
                 </span>
                 <div className="flex gap-3">
                   <button
                     onClick={handleNextFollowUp}
-                    className="text-xs text-gray-500 hover:text-gray-300 transition"
+                    className="text-xs text-[#9CA3AF] hover:text-[#4B5563] transition"
                   >
                     {followUps[currentFollowUp]?.answer.trim() ? '' : 'Skip'}
                   </button>
@@ -272,12 +272,12 @@ export default function IndividualOnboarding() {
 
         {/* Phase: Done */}
         {phase === 'done' && (
-          <div className="bg-[#0A0E15] border border-white/5 rounded-2xl p-12 text-center">
-            <div className="w-16 h-16 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <CheckCircle2 className="w-8 h-8 text-emerald-400" />
+          <div className="bg-white border border-[#E5E7EB] rounded-2xl p-12 text-center">
+            <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4">
+              <CheckCircle2 className="w-8 h-8 text-emerald-600" />
             </div>
-            <h2 className="text-xl font-bold text-white mb-2">Welcome aboard!</h2>
-            <p className="text-sm text-gray-400">
+            <h2 className="text-xl font-bold text-[#1B2A4A] mb-2">Welcome aboard!</h2>
+            <p className="text-sm text-[#6B7280]">
               We&apos;ve got everything we need. Taking you to your portal now...
             </p>
           </div>
@@ -286,7 +286,7 @@ export default function IndividualOnboarding() {
         {/* Skip */}
         {phase !== 'done' && (
           <div className="text-center mt-6">
-            <button onClick={() => router.push('/portal')} className="text-xs text-gray-600 hover:text-gray-400 transition">
+            <button onClick={() => router.push('/portal')} className="text-xs text-[#6B7280] hover:text-[#6B7280] transition">
               Skip for now — I&apos;ll explore on my own
             </button>
           </div>
