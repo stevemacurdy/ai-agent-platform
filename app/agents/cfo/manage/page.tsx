@@ -96,15 +96,15 @@ export default function CFOManagePage() {
       <div className="max-w-[1200px] mx-auto px-6 py-8">
         {/* Toast */}
         {toast && (
-          <div className="fixed top-4 right-4 z-50 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm px-4 py-2 rounded-lg">{toast}</div>
+          <div className="fixed top-4 right-4 z-50 bg-emerald-50 border border-emerald-500/20 text-emerald-600 text-sm px-4 py-2 rounded-lg">{toast}</div>
         )}
 
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-4">
-            <Link href="/agents/cfo" className="text-gray-500 hover:text-white text-sm">\u2190 CFO Dashboard</Link>
+            <Link href="/agents/cfo" className="text-[#9CA3AF] hover:text-[#1B2A4A] text-sm">\u2190 CFO Dashboard</Link>
             <h1 className="text-xl font-bold">CFO Write-Back Console</h1>
-            <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-full">Live Odoo</span>
+            <span className="text-[10px] font-mono text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">Live Odoo</span>
           </div>
         </div>
 
@@ -117,7 +117,7 @@ export default function CFOManagePage() {
           ].map(t => (
             <button key={t.key} onClick={() => setTab(t.key)}
               className={'px-4 py-2 rounded-lg text-sm font-medium transition-all ' +
-                (tab === t.key ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' : 'text-gray-500 hover:text-white hover:bg-white/5')}>
+                (tab === t.key ? 'bg-blue-50 text-blue-600 border border-blue-500/20' : 'text-[#9CA3AF] hover:text-[#1B2A4A] hover:bg-white shadow-sm')}>
               {t.label}
             </button>
           ))}
@@ -125,10 +125,10 @@ export default function CFOManagePage() {
 
         {/* INVOICES TAB */}
         {tab === 'invoices' && (
-          <div className="bg-[#0A0E15] border border-white/5 rounded-xl overflow-hidden">
+          <div className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-[10px] text-gray-500 uppercase tracking-wider border-b border-white/5">
+                <tr className="text-[10px] text-[#9CA3AF] uppercase tracking-wider border-b border-[#E5E7EB]">
                   <th className="text-left py-3 px-4">Invoice</th>
                   <th className="text-left py-3 px-4">Customer</th>
                   <th className="text-right py-3 px-4">Total</th>
@@ -140,20 +140,20 @@ export default function CFOManagePage() {
               </thead>
               <tbody>
                 {invoices.map((inv, i) => (
-                  <tr key={inv.name || i} className="border-b border-white/[0.03] hover:bg-white/[0.02]">
+                  <tr key={inv.name || i} className="border-b border-white/[0.03] hover:bg-white shadow-sm">
                     <td className="py-2.5 px-4 font-mono text-xs">{inv.name}</td>
-                    <td className="py-2.5 px-4 text-gray-400">{inv.partner_id?.[1] || '-'}</td>
+                    <td className="py-2.5 px-4 text-[#6B7280]">{inv.partner_id?.[1] || '-'}</td>
                     <td className="py-2.5 px-4 text-right font-mono">${(inv.amount_total || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
                     <td className="py-2.5 px-4 text-right font-mono">${(inv.amount_residual || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
-                    <td className="py-2.5 px-4 text-xs text-gray-400">{inv.invoice_date_due || '-'}</td>
+                    <td className="py-2.5 px-4 text-xs text-[#6B7280]">{inv.invoice_date_due || '-'}</td>
                     <td className="py-2.5 px-4">
                       <span className={'text-[10px] font-mono px-2 py-0.5 rounded ' +
-                        (inv.payment_state === 'paid' ? 'text-emerald-400 bg-emerald-500/10' : 'text-amber-400 bg-amber-500/10')}>
+                        (inv.payment_state === 'paid' ? 'text-emerald-600 bg-emerald-50' : 'text-amber-600 bg-amber-50')}>
                         {inv.payment_state || 'draft'}
                       </span>
                     </td>
                     <td className="py-2.5 px-4 text-right">
-                      <button onClick={() => setEditInvoice(inv)} className="text-xs text-blue-400 hover:text-blue-300">Edit</button>
+                      <button onClick={() => setEditInvoice(inv)} className="text-xs text-blue-600 hover:text-blue-300">Edit</button>
                     </td>
                   </tr>
                 ))}
@@ -164,10 +164,10 @@ export default function CFOManagePage() {
 
         {/* CONTACTS TAB */}
         {tab === 'contacts' && (
-          <div className="bg-[#0A0E15] border border-white/5 rounded-xl overflow-hidden">
+          <div className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-[10px] text-gray-500 uppercase tracking-wider border-b border-white/5">
+                <tr className="text-[10px] text-[#9CA3AF] uppercase tracking-wider border-b border-[#E5E7EB]">
                   <th className="text-left py-3 px-4">Name</th>
                   <th className="text-left py-3 px-4">Email</th>
                   <th className="text-left py-3 px-4">Phone</th>
@@ -176,12 +176,12 @@ export default function CFOManagePage() {
               </thead>
               <tbody>
                 {customers.map((c, i) => (
-                  <tr key={c.id || i} className="border-b border-white/[0.03] hover:bg-white/[0.02]">
+                  <tr key={c.id || i} className="border-b border-white/[0.03] hover:bg-white shadow-sm">
                     <td className="py-2.5 px-4 font-medium">{c.name}</td>
-                    <td className="py-2.5 px-4 text-gray-400 font-mono text-xs">{c.email || '-'}</td>
-                    <td className="py-2.5 px-4 text-gray-400 text-xs">{c.phone || '-'}</td>
+                    <td className="py-2.5 px-4 text-[#6B7280] font-mono text-xs">{c.email || '-'}</td>
+                    <td className="py-2.5 px-4 text-[#6B7280] text-xs">{c.phone || '-'}</td>
                     <td className="py-2.5 px-4 text-right">
-                      <button onClick={() => setEditContact(c)} className="text-xs text-blue-400 hover:text-blue-300">Edit</button>
+                      <button onClick={() => setEditContact(c)} className="text-xs text-blue-600 hover:text-blue-300">Edit</button>
                     </td>
                   </tr>
                 ))}
@@ -192,37 +192,37 @@ export default function CFOManagePage() {
 
         {/* CREATE INVOICE TAB */}
         {tab === 'create' && (
-          <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-6 max-w-2xl">
+          <div className="bg-white border border-[#E5E7EB] rounded-xl p-6 max-w-2xl">
             <h3 className="font-semibold mb-4">Create Invoice in Odoo</h3>
             <div className="space-y-4">
               <div>
-                <label className="text-[10px] text-gray-500 uppercase tracking-wider">Customer</label>
+                <label className="text-[10px] text-[#9CA3AF] uppercase tracking-wider">Customer</label>
                 <select value={newPartnerId} onChange={e => setNewPartnerId(e.target.value)}
-                  className="w-full mt-1 px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm">
+                  className="w-full mt-1 px-3 py-2 bg-white border border-[#E5E7EB] shadow-sm rounded-lg text-sm">
                   <option value="">Select customer...</option>
                   {customers.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                 </select>
               </div>
               <div>
-                <label className="text-[10px] text-gray-500 uppercase tracking-wider mb-2 block">Invoice Lines</label>
+                <label className="text-[10px] text-[#9CA3AF] uppercase tracking-wider mb-2 block">Invoice Lines</label>
                 {newLines.map((line, i) => (
                   <div key={i} className="flex gap-2 mb-2">
                     <input value={line.name} onChange={e => { const l = [...newLines]; l[i].name = e.target.value; setNewLines(l) }}
-                      placeholder="Description" className="flex-1 px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm" />
+                      placeholder="Description" className="flex-1 px-3 py-2 bg-white border border-[#E5E7EB] shadow-sm rounded-lg text-sm" />
                     <input type="number" value={line.quantity} onChange={e => { const l = [...newLines]; l[i].quantity = parseInt(e.target.value) || 1; setNewLines(l) }}
-                      className="w-20 px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm" placeholder="Qty" />
+                      className="w-20 px-3 py-2 bg-white border border-[#E5E7EB] shadow-sm rounded-lg text-sm" placeholder="Qty" />
                     <input type="number" value={line.price_unit || ''} onChange={e => { const l = [...newLines]; l[i].price_unit = parseFloat(e.target.value) || 0; setNewLines(l) }}
-                      className="w-28 px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm" placeholder="Price" />
+                      className="w-28 px-3 py-2 bg-white border border-[#E5E7EB] shadow-sm rounded-lg text-sm" placeholder="Price" />
                     {newLines.length > 1 && (
                       <button onClick={() => setNewLines(newLines.filter((_, j) => j !== i))} className="text-rose-400 hover:text-rose-300 px-2">x</button>
                     )}
                   </div>
                 ))}
                 <button onClick={() => setNewLines([...newLines, { name: '', quantity: 1, price_unit: 0 }])}
-                  className="text-xs text-blue-400 hover:text-blue-300 mt-1">+ Add line</button>
+                  className="text-xs text-blue-600 hover:text-blue-300 mt-1">+ Add line</button>
               </div>
-              <div className="bg-white/[0.02] border border-white/5 rounded-lg p-3 flex justify-between text-sm">
-                <span className="text-gray-400">Total</span>
+              <div className="bg-white shadow-sm border border-[#E5E7EB] rounded-lg p-3 flex justify-between text-sm">
+                <span className="text-[#6B7280]">Total</span>
                 <span className="font-mono font-bold">${newLines.reduce((s, l) => s + (l.quantity * l.price_unit), 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
               </div>
               <button onClick={handleCreateInvoice} disabled={!newPartnerId || newLines.every(l => !l.name)}
@@ -236,18 +236,18 @@ export default function CFOManagePage() {
         {/* EDIT INVOICE MODAL */}
         {editInvoice && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setEditInvoice(null)}>
-            <div className="bg-[#0D1117] border border-white/10 rounded-2xl p-6 max-w-md w-full mx-4" onClick={e => e.stopPropagation()}>
+            <div className="bg-[#0D1117] border border-[#E5E7EB] rounded-2xl p-6 max-w-md w-full mx-4" onClick={e => e.stopPropagation()}>
               <h3 className="font-semibold mb-4">Edit {editInvoice.name}</h3>
               <div className="space-y-4">
                 <div>
-                  <label className="text-[10px] text-gray-500 uppercase tracking-wider">Reference / Notes</label>
+                  <label className="text-[10px] text-[#9CA3AF] uppercase tracking-wider">Reference / Notes</label>
                   <input id="inv-ref" defaultValue={editInvoice.ref || ''} placeholder="PO number, notes..."
-                    className="w-full mt-1 px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm" />
+                    className="w-full mt-1 px-3 py-2 bg-white border border-[#E5E7EB] shadow-sm rounded-lg text-sm" />
                 </div>
                 <div>
-                  <label className="text-[10px] text-gray-500 uppercase tracking-wider">Due Date</label>
+                  <label className="text-[10px] text-[#9CA3AF] uppercase tracking-wider">Due Date</label>
                   <input id="inv-due" type="date" defaultValue={editInvoice.invoice_date_due || ''}
-                    className="w-full mt-1 px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm" />
+                    className="w-full mt-1 px-3 py-2 bg-white border border-[#E5E7EB] shadow-sm rounded-lg text-sm" />
                 </div>
                 <button onClick={handleUpdateInvoice}
                   className="w-full py-2 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600">
@@ -261,23 +261,23 @@ export default function CFOManagePage() {
         {/* EDIT CONTACT MODAL */}
         {editContact && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setEditContact(null)}>
-            <div className="bg-[#0D1117] border border-white/10 rounded-2xl p-6 max-w-md w-full mx-4" onClick={e => e.stopPropagation()}>
+            <div className="bg-[#0D1117] border border-[#E5E7EB] rounded-2xl p-6 max-w-md w-full mx-4" onClick={e => e.stopPropagation()}>
               <h3 className="font-semibold mb-4">Edit Contact</h3>
               <div className="space-y-4">
                 <div>
-                  <label className="text-[10px] text-gray-500 uppercase tracking-wider">Name</label>
+                  <label className="text-[10px] text-[#9CA3AF] uppercase tracking-wider">Name</label>
                   <input id="contact-name" defaultValue={editContact.name || ''}
-                    className="w-full mt-1 px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm" />
+                    className="w-full mt-1 px-3 py-2 bg-white border border-[#E5E7EB] shadow-sm rounded-lg text-sm" />
                 </div>
                 <div>
-                  <label className="text-[10px] text-gray-500 uppercase tracking-wider">Email</label>
+                  <label className="text-[10px] text-[#9CA3AF] uppercase tracking-wider">Email</label>
                   <input id="contact-email" defaultValue={editContact.email || ''}
-                    className="w-full mt-1 px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm" />
+                    className="w-full mt-1 px-3 py-2 bg-white border border-[#E5E7EB] shadow-sm rounded-lg text-sm" />
                 </div>
                 <div>
-                  <label className="text-[10px] text-gray-500 uppercase tracking-wider">Phone</label>
+                  <label className="text-[10px] text-[#9CA3AF] uppercase tracking-wider">Phone</label>
                   <input id="contact-phone" defaultValue={editContact.phone || ''}
-                    className="w-full mt-1 px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm" />
+                    className="w-full mt-1 px-3 py-2 bg-white border border-[#E5E7EB] shadow-sm rounded-lg text-sm" />
                 </div>
                 <button onClick={handleUpdateContact}
                   className="w-full py-2 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600">

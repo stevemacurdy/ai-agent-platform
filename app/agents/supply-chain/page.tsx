@@ -5,7 +5,7 @@ import WarehouseAgentUI from '@/components/agents/warehouse-agent-ui';
 export default function SupplyChainAgent() {
   return (
     <WarehouseAgentUI
-      title="Supply Chain Agent"
+      title="Supply Chain Employee"
       icon="🔗"
       subtitle="Inventory health · Replenishment · Vendor management"
       apiPath="/api/agents/supply-chain"

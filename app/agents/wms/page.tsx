@@ -2,10 +2,10 @@
 'use client';
 import WarehouseAgentUI from '@/components/agents/warehouse-agent-ui';
 
-export default function WMSAgentPage() {
+export default function WMSEmployeePage() {
   return (
     <WarehouseAgentUI
-      title="WMS Agent"
+      title="WMS Employee"
       icon="🏭"
       subtitle="Live warehouse data · AI-powered queries"
       apiPath="/api/agents/wms"

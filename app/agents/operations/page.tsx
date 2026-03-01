@@ -5,7 +5,7 @@ import WarehouseAgentUI from '@/components/agents/warehouse-agent-ui';
 export default function OperationsAgent() {
   return (
     <WarehouseAgentUI
-      title="Operations Agent"
+      title="Operations Employee"
       icon="⚙️"
       subtitle="Order fulfillment · Shipping · Daily logistics"
       apiPath="/api/agents/operations"

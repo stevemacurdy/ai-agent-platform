@@ -36,11 +36,11 @@ const AI_RESPONSES = [
 ];
 
 const priorityColor = (p: string) => {
-  switch (p) { case 'high': return 'text-rose-400 bg-rose-500/10'; case 'medium': return 'text-amber-400 bg-amber-500/10'; default: return 'text-gray-400 bg-gray-500/10'; }
+  switch (p) { case 'high': return 'text-rose-400 bg-rose-500/10'; case 'medium': return 'text-amber-600 bg-amber-50'; default: return 'text-[#6B7280] bg-gray-500/10'; }
 };
 
 const statusColor = (s: string) => {
-  switch (s) { case 'open': return 'text-blue-400 bg-blue-500/10'; case 'in_progress': return 'text-amber-400 bg-amber-500/10'; case 'resolved': return 'text-emerald-400 bg-emerald-500/10'; default: return 'text-gray-400 bg-gray-500/10'; }
+  switch (s) { case 'open': return 'text-blue-600 bg-blue-50'; case 'in_progress': return 'text-amber-600 bg-amber-50'; case 'resolved': return 'text-emerald-600 bg-emerald-50'; default: return 'text-[#6B7280] bg-gray-500/10'; }
 };
 
 export default function SupportAgent() {
@@ -56,36 +56,36 @@ export default function SupportAgent() {
       <div className="flex items-center gap-4">
         <div className="text-4xl">🎧</div>
         <div>
-          <h1 className="text-2xl font-bold">Support Agent</h1>
-          <p className="text-sm text-gray-400">Customer support ticketing, knowledge base & AI responses</p>
+          <h1 className="text-2xl font-bold">Support Employee</h1>
+          <p className="text-sm text-[#6B7280]">Customer support ticketing, knowledge base & AI responses</p>
         </div>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-4 gap-3">
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-4">
-          <div className="text-[9px] text-gray-500 uppercase">Open Tickets</div>
-          <div className="text-2xl font-bold mt-1 text-blue-400">{openTickets}</div>
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-4">
+          <div className="text-[9px] text-[#9CA3AF] uppercase">Open Tickets</div>
+          <div className="text-2xl font-bold mt-1 text-blue-600">{openTickets}</div>
         </div>
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-4">
-          <div className="text-[9px] text-gray-500 uppercase">In Progress</div>
-          <div className="text-2xl font-bold mt-1 text-amber-400">{inProgress}</div>
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-4">
+          <div className="text-[9px] text-[#9CA3AF] uppercase">In Progress</div>
+          <div className="text-2xl font-bold mt-1 text-amber-600">{inProgress}</div>
         </div>
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-4">
-          <div className="text-[9px] text-gray-500 uppercase">Resolved</div>
-          <div className="text-2xl font-bold mt-1 text-emerald-400">{resolved}</div>
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-4">
+          <div className="text-[9px] text-[#9CA3AF] uppercase">Resolved</div>
+          <div className="text-2xl font-bold mt-1 text-emerald-600">{resolved}</div>
         </div>
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-4">
-          <div className="text-[9px] text-gray-500 uppercase">AI Handled</div>
-          <div className="text-2xl font-bold mt-1 text-purple-400">{Math.round((aiHandled / TICKETS.length) * 100)}%</div>
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-4">
+          <div className="text-[9px] text-[#9CA3AF] uppercase">AI Handled</div>
+          <div className="text-2xl font-bold mt-1 text-purple-600">{Math.round((aiHandled / TICKETS.length) * 100)}%</div>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 border-b border-white/5 pb-3">
+      <div className="flex gap-2 border-b border-[#E5E7EB] pb-3">
         {TABS.map(t => (
           <button key={t.id} onClick={() => setTab(t.id)}
-            className={'flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition ' + (tab === t.id ? 'bg-blue-600 text-white' : 'bg-white/5 text-gray-400 hover:bg-white/10')}>
+            className={'flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition ' + (tab === t.id ? 'bg-[#1B2A4A] text-white' : 'bg-white shadow-sm text-[#6B7280] hover:bg-gray-100')}>
             <span>{t.icon}</span> {t.name}
           </button>
         ))}
@@ -94,24 +94,24 @@ export default function SupportAgent() {
       {/* Overview */}
       {tab === 'overview' && (
         <div className="grid grid-cols-2 gap-4">
-          <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
+          <div className="bg-white border border-[#E5E7EB] rounded-xl p-5">
             <h3 className="text-sm font-semibold mb-3">Recent Tickets</h3>
             <div className="space-y-2">
               {TICKETS.slice(0, 4).map(t => (
                 <div key={t.id} className="flex justify-between items-center py-2 border-b border-white/[0.03] last:border-0">
-                  <div><div className="text-sm text-white">{t.subject}</div><div className="text-[10px] text-gray-500">{t.id} · {t.customer} · {t.created}</div></div>
+                  <div><div className="text-sm text-white">{t.subject}</div><div className="text-[10px] text-[#9CA3AF]">{t.id} · {t.customer} · {t.created}</div></div>
                   <span className={'text-[9px] px-2 py-0.5 rounded-full ' + statusColor(t.status)}>{t.status.replace('_', ' ')}</span>
                 </div>
               ))}
             </div>
           </div>
-          <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
+          <div className="bg-white border border-[#E5E7EB] rounded-xl p-5">
             <h3 className="text-sm font-semibold mb-3">Top KB Articles</h3>
             <div className="space-y-2">
               {KB_ARTICLES.slice(0, 5).map(a => (
                 <div key={a.title} className="flex justify-between items-center py-2 border-b border-white/[0.03] last:border-0">
-                  <div><div className="text-sm text-white">{a.title}</div><div className="text-[10px] text-gray-500">{a.category}</div></div>
-                  <div className="text-right"><div className="text-xs font-mono">{a.views}</div><div className="text-[10px] text-gray-500">views</div></div>
+                  <div><div className="text-sm text-white">{a.title}</div><div className="text-[10px] text-[#9CA3AF]">{a.category}</div></div>
+                  <div className="text-right"><div className="text-xs font-mono">{a.views}</div><div className="text-[10px] text-[#9CA3AF]">views</div></div>
                 </div>
               ))}
             </div>
@@ -121,20 +121,20 @@ export default function SupportAgent() {
 
       {/* Tickets */}
       {tab === 'tickets' && (
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl overflow-hidden">
+        <div className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden">
           <table className="w-full text-sm">
-            <thead><tr className="border-b border-white/5 text-[10px] text-gray-500 uppercase">
+            <thead><tr className="border-b border-[#E5E7EB] text-[10px] text-[#9CA3AF] uppercase">
               <th className="text-left px-4 py-3">ID</th><th className="text-left px-4 py-3">Subject</th><th className="text-left px-4 py-3">Customer</th><th className="text-left px-4 py-3">Priority</th><th className="text-left px-4 py-3">Status</th><th className="text-left px-4 py-3">Assignee</th>
             </tr></thead>
             <tbody>
               {TICKETS.map(t => (
-                <tr key={t.id} className="border-b border-white/[0.03] hover:bg-white/[0.02]">
-                  <td className="px-4 py-3 font-mono text-xs text-gray-500">{t.id}</td>
+                <tr key={t.id} className="border-b border-white/[0.03] hover:bg-white shadow-sm">
+                  <td className="px-4 py-3 font-mono text-xs text-[#9CA3AF]">{t.id}</td>
                   <td className="px-4 py-3 font-medium">{t.subject}</td>
-                  <td className="px-4 py-3 text-gray-400">{t.customer}</td>
+                  <td className="px-4 py-3 text-[#6B7280]">{t.customer}</td>
                   <td className="px-4 py-3"><span className={'text-[10px] px-2 py-0.5 rounded-full ' + priorityColor(t.priority)}>{t.priority}</span></td>
                   <td className="px-4 py-3"><span className={'text-[10px] px-2 py-0.5 rounded-full ' + statusColor(t.status)}>{t.status.replace('_', ' ')}</span></td>
-                  <td className="px-4 py-3 text-xs text-gray-400">{t.assignee}</td>
+                  <td className="px-4 py-3 text-xs text-[#6B7280]">{t.assignee}</td>
                 </tr>
               ))}
             </tbody>
@@ -144,19 +144,19 @@ export default function SupportAgent() {
 
       {/* Knowledge Base */}
       {tab === 'kb' && (
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl overflow-hidden">
+        <div className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden">
           <table className="w-full text-sm">
-            <thead><tr className="border-b border-white/5 text-[10px] text-gray-500 uppercase">
+            <thead><tr className="border-b border-[#E5E7EB] text-[10px] text-[#9CA3AF] uppercase">
               <th className="text-left px-4 py-3">Article</th><th className="text-left px-4 py-3">Category</th><th className="text-left px-4 py-3">Views</th><th className="text-left px-4 py-3">Helpful %</th><th className="text-left px-4 py-3">Updated</th>
             </tr></thead>
             <tbody>
               {KB_ARTICLES.map(a => (
-                <tr key={a.title} className="border-b border-white/[0.03] hover:bg-white/[0.02]">
+                <tr key={a.title} className="border-b border-white/[0.03] hover:bg-white shadow-sm">
                   <td className="px-4 py-3 font-medium">{a.title}</td>
-                  <td className="px-4 py-3 text-gray-400">{a.category}</td>
+                  <td className="px-4 py-3 text-[#6B7280]">{a.category}</td>
                   <td className="px-4 py-3 font-mono text-xs">{a.views}</td>
-                  <td className="px-4 py-3"><span className="text-emerald-400 text-xs">{a.helpful}%</span></td>
-                  <td className="px-4 py-3 text-xs text-gray-500">{a.updated}</td>
+                  <td className="px-4 py-3"><span className="text-emerald-600 text-xs">{a.helpful}%</span></td>
+                  <td className="px-4 py-3 text-xs text-[#9CA3AF]">{a.updated}</td>
                 </tr>
               ))}
             </tbody>
@@ -168,23 +168,23 @@ export default function SupportAgent() {
       {tab === 'ai' && (
         <div className="space-y-3">
           {AI_RESPONSES.map(r => (
-            <div key={r.ticket} className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
+            <div key={r.ticket} className="bg-white border border-[#E5E7EB] rounded-xl p-5">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-3">
-                  <span className="font-mono text-xs text-gray-500">{r.ticket}</span>
-                  <span className={'text-[9px] px-2 py-0.5 rounded-full ' + (r.used ? 'bg-emerald-500/10 text-emerald-400' : 'bg-gray-500/10 text-gray-400')}>
+                  <span className="font-mono text-xs text-[#9CA3AF]">{r.ticket}</span>
+                  <span className={'text-[9px] px-2 py-0.5 rounded-full ' + (r.used ? 'bg-emerald-50 text-emerald-600' : 'bg-gray-500/10 text-[#6B7280]')}>
                     {r.used ? 'Sent to customer' : 'Draft'}
                   </span>
                 </div>
-                <span className="text-[10px] text-gray-500">Confidence: <span className="text-white font-mono">{r.confidence}%</span></span>
+                <span className="text-[10px] text-[#9CA3AF]">Confidence: <span className="text-white font-mono">{r.confidence}%</span></span>
               </div>
               <div className="bg-white/[0.03] rounded-lg p-3 mb-2">
-                <div className="text-[10px] text-gray-500 mb-1">Customer asked:</div>
-                <div className="text-sm text-gray-300">{r.question}</div>
+                <div className="text-[10px] text-[#9CA3AF] mb-1">Customer asked:</div>
+                <div className="text-sm text-[#4B5563]">{r.question}</div>
               </div>
               <div className="bg-blue-500/5 border border-blue-500/10 rounded-lg p-3">
-                <div className="text-[10px] text-blue-400 mb-1">AI Response:</div>
-                <div className="text-sm text-gray-300 leading-relaxed">{r.response}</div>
+                <div className="text-[10px] text-blue-600 mb-1">AI Response:</div>
+                <div className="text-sm text-[#4B5563] leading-relaxed">{r.response}</div>
               </div>
             </div>
           ))}

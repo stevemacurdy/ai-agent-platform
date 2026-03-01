@@ -35,25 +35,25 @@ const TRENDS = [
 
 const sentimentColor = (s: string) => {
   switch (s) {
-    case 'positive': return 'text-emerald-400 bg-emerald-500/10';
+    case 'positive': return 'text-emerald-600 bg-emerald-50';
     case 'negative': return 'text-rose-400 bg-rose-500/10';
-    default: return 'text-gray-400 bg-gray-500/10';
+    default: return 'text-[#6B7280] bg-gray-500/10';
   }
 };
 
 const threatColor = (t: string) => {
   switch (t) {
     case 'high': return 'text-rose-400 bg-rose-500/10';
-    case 'medium': return 'text-amber-400 bg-amber-500/10';
-    default: return 'text-emerald-400 bg-emerald-500/10';
+    case 'medium': return 'text-amber-600 bg-amber-50';
+    default: return 'text-emerald-600 bg-emerald-50';
   }
 };
 
 const impactColor = (i: string) => {
   switch (i) {
-    case 'high': return 'text-blue-400 bg-blue-500/10';
-    case 'medium': return 'text-purple-400 bg-purple-500/10';
-    default: return 'text-gray-400 bg-gray-500/10';
+    case 'high': return 'text-blue-600 bg-blue-50';
+    case 'medium': return 'text-purple-600 bg-purple-50';
+    default: return 'text-[#6B7280] bg-gray-500/10';
   }
 };
 
@@ -65,36 +65,36 @@ export default function ResearchAgent() {
       <div className="flex items-center gap-4">
         <div className="text-4xl">📡</div>
         <div>
-          <h1 className="text-2xl font-bold">Research Agent</h1>
-          <p className="text-sm text-gray-400">Market research, competitive intelligence & trend analysis</p>
+          <h1 className="text-2xl font-bold">Research Employee</h1>
+          <p className="text-sm text-[#6B7280]">Market research, competitive intelligence & trend analysis</p>
         </div>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-4 gap-3">
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-4">
-          <div className="text-[9px] text-gray-500 uppercase">Market Signals</div>
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-4">
+          <div className="text-[9px] text-[#9CA3AF] uppercase">Market Signals</div>
           <div className="text-2xl font-bold mt-1">{MARKET_ITEMS.length}</div>
         </div>
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-4">
-          <div className="text-[9px] text-gray-500 uppercase">Competitors Tracked</div>
-          <div className="text-2xl font-bold mt-1 text-blue-400">{COMPETITORS.length}</div>
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-4">
+          <div className="text-[9px] text-[#9CA3AF] uppercase">Competitors Tracked</div>
+          <div className="text-2xl font-bold mt-1 text-blue-600">{COMPETITORS.length}</div>
         </div>
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-4">
-          <div className="text-[9px] text-gray-500 uppercase">Trend Alerts</div>
-          <div className="text-2xl font-bold mt-1 text-purple-400">{TRENDS.length}</div>
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-4">
+          <div className="text-[9px] text-[#9CA3AF] uppercase">Trend Alerts</div>
+          <div className="text-2xl font-bold mt-1 text-purple-600">{TRENDS.length}</div>
         </div>
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-4">
-          <div className="text-[9px] text-gray-500 uppercase">High Impact</div>
-          <div className="text-2xl font-bold mt-1 text-amber-400">{TRENDS.filter(t => t.impact === 'high').length}</div>
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-4">
+          <div className="text-[9px] text-[#9CA3AF] uppercase">High Impact</div>
+          <div className="text-2xl font-bold mt-1 text-amber-600">{TRENDS.filter(t => t.impact === 'high').length}</div>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 border-b border-white/5 pb-3">
+      <div className="flex gap-2 border-b border-[#E5E7EB] pb-3">
         {TABS.map(t => (
           <button key={t.id} onClick={() => setTab(t.id)}
-            className={'flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition ' + (tab === t.id ? 'bg-blue-600 text-white' : 'bg-white/5 text-gray-400 hover:bg-white/10')}>
+            className={'flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition ' + (tab === t.id ? 'bg-[#1B2A4A] text-white' : 'bg-white shadow-sm text-[#6B7280] hover:bg-gray-100')}>
             <span>{t.icon}</span> {t.name}
           </button>
         ))}
@@ -103,7 +103,7 @@ export default function ResearchAgent() {
       {/* Overview */}
       {tab === 'overview' && (
         <div className="grid grid-cols-2 gap-4">
-          <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
+          <div className="bg-white border border-[#E5E7EB] rounded-xl p-5">
             <h3 className="text-sm font-semibold mb-3">Latest Market Signals</h3>
             <div className="space-y-3">
               {MARKET_ITEMS.slice(0, 3).map(m => (
@@ -112,17 +112,17 @@ export default function ResearchAgent() {
                     <div className="text-sm font-medium text-white">{m.title}</div>
                     <span className={'text-[9px] px-2 py-0.5 rounded-full whitespace-nowrap ' + sentimentColor(m.sentiment)}>{m.sentiment}</span>
                   </div>
-                  <div className="text-[10px] text-gray-500 mt-1">{m.source} · {m.date}</div>
+                  <div className="text-[10px] text-[#9CA3AF] mt-1">{m.source} · {m.date}</div>
                 </div>
               ))}
             </div>
           </div>
-          <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
+          <div className="bg-white border border-[#E5E7EB] rounded-xl p-5">
             <h3 className="text-sm font-semibold mb-3">Top Threats</h3>
             <div className="space-y-3">
               {COMPETITORS.filter(c => c.threat === 'high').concat(COMPETITORS.filter(c => c.threat === 'medium')).slice(0, 4).map(c => (
                 <div key={c.name} className="flex justify-between items-center pb-3 border-b border-white/[0.03] last:border-0">
-                  <div><div className="text-sm font-medium">{c.name}</div><div className="text-[10px] text-gray-500">{c.strengths}</div></div>
+                  <div><div className="text-sm font-medium">{c.name}</div><div className="text-[10px] text-[#9CA3AF]">{c.strengths}</div></div>
                   <span className={'text-[9px] px-2 py-0.5 rounded-full ' + threatColor(c.threat)}>{c.threat}</span>
                 </div>
               ))}
@@ -135,13 +135,13 @@ export default function ResearchAgent() {
       {tab === 'market' && (
         <div className="space-y-3">
           {MARKET_ITEMS.map(m => (
-            <div key={m.title} className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
+            <div key={m.title} className="bg-white border border-[#E5E7EB] rounded-xl p-5">
               <div className="flex items-start justify-between gap-3 mb-2">
                 <h3 className="text-sm font-semibold text-white">{m.title}</h3>
                 <span className={'text-[9px] px-2 py-0.5 rounded-full whitespace-nowrap ' + sentimentColor(m.sentiment)}>{m.sentiment}</span>
               </div>
-              <p className="text-sm text-gray-400 leading-relaxed mb-2">{m.summary}</p>
-              <div className="text-[10px] text-gray-600">{m.source} · {m.date}</div>
+              <p className="text-sm text-[#6B7280] leading-relaxed mb-2">{m.summary}</p>
+              <div className="text-[10px] text-[#6B7280]">{m.source} · {m.date}</div>
             </div>
           ))}
         </div>
@@ -149,17 +149,17 @@ export default function ResearchAgent() {
 
       {/* Competitive Intel */}
       {tab === 'competitors' && (
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl overflow-hidden">
+        <div className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden">
           <table className="w-full text-sm">
-            <thead><tr className="border-b border-white/5 text-[10px] text-gray-500 uppercase">
+            <thead><tr className="border-b border-[#E5E7EB] text-[10px] text-[#9CA3AF] uppercase">
               <th className="text-left px-4 py-3">Competitor</th><th className="text-left px-4 py-3">Strengths</th><th className="text-left px-4 py-3">Weaknesses</th><th className="text-left px-4 py-3">Threat</th>
             </tr></thead>
             <tbody>
               {COMPETITORS.map(c => (
-                <tr key={c.name} className="border-b border-white/[0.03] hover:bg-white/[0.02]">
+                <tr key={c.name} className="border-b border-white/[0.03] hover:bg-white shadow-sm">
                   <td className="px-4 py-3 font-medium">{c.name}</td>
-                  <td className="px-4 py-3 text-gray-400 text-xs">{c.strengths}</td>
-                  <td className="px-4 py-3 text-gray-400 text-xs">{c.weaknesses}</td>
+                  <td className="px-4 py-3 text-[#6B7280] text-xs">{c.strengths}</td>
+                  <td className="px-4 py-3 text-[#6B7280] text-xs">{c.weaknesses}</td>
                   <td className="px-4 py-3"><span className={'text-[10px] px-2 py-0.5 rounded-full font-medium ' + threatColor(c.threat)}>{c.threat}</span></td>
                 </tr>
               ))}
@@ -172,15 +172,15 @@ export default function ResearchAgent() {
       {tab === 'trends' && (
         <div className="space-y-3">
           {TRENDS.map(t => (
-            <div key={t.trend} className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
+            <div key={t.trend} className="bg-white border border-[#E5E7EB] rounded-xl p-5">
               <div className="flex items-start justify-between gap-3 mb-2">
                 <h3 className="text-sm font-semibold text-white">{t.trend}</h3>
                 <div className="flex gap-2">
                   <span className={'text-[9px] px-2 py-0.5 rounded-full whitespace-nowrap ' + impactColor(t.impact)}>{t.impact} impact</span>
-                  <span className="text-[9px] px-2 py-0.5 rounded-full bg-white/5 text-gray-400">{t.timeframe}</span>
+                  <span className="text-[9px] px-2 py-0.5 rounded-full bg-white shadow-sm text-[#6B7280]">{t.timeframe}</span>
                 </div>
               </div>
-              <p className="text-sm text-gray-400 leading-relaxed">{t.description}</p>
+              <p className="text-sm text-[#6B7280] leading-relaxed">{t.description}</p>
             </div>
           ))}
         </div>

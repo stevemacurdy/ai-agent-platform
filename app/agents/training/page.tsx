@@ -38,12 +38,12 @@ const SKILLS = [
 
 const statusColor = (s: string) => {
   switch (s) {
-    case 'active': return 'bg-emerald-500/10 text-emerald-400';
-    case 'completed': return 'bg-blue-500/10 text-blue-400';
-    case 'draft': return 'bg-gray-500/10 text-gray-400';
-    case 'expiring': return 'bg-amber-500/10 text-amber-400';
+    case 'active': return 'bg-emerald-50 text-emerald-600';
+    case 'completed': return 'bg-blue-50 text-blue-600';
+    case 'draft': return 'bg-gray-500/10 text-[#6B7280]';
+    case 'expiring': return 'bg-amber-50 text-amber-600';
     case 'expired': return 'bg-rose-500/10 text-rose-400';
-    default: return 'bg-gray-500/10 text-gray-400';
+    default: return 'bg-gray-500/10 text-[#6B7280]';
   }
 };
 
@@ -60,36 +60,36 @@ export default function TrainingAgent() {
       <div className="flex items-center gap-4">
         <div className="text-4xl">🎓</div>
         <div>
-          <h1 className="text-2xl font-bold">Training Agent</h1>
-          <p className="text-sm text-gray-400">Team training programs, certifications & skills tracking</p>
+          <h1 className="text-2xl font-bold">Training Employee</h1>
+          <p className="text-sm text-[#6B7280]">Team training programs, certifications & skills tracking</p>
         </div>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-4 gap-3">
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-4">
-          <div className="text-[9px] text-gray-500 uppercase">Active Courses</div>
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-4">
+          <div className="text-[9px] text-[#9CA3AF] uppercase">Active Courses</div>
           <div className="text-2xl font-bold mt-1">{activeCourses}</div>
         </div>
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-4">
-          <div className="text-[9px] text-gray-500 uppercase">Enrolled</div>
-          <div className="text-2xl font-bold mt-1 text-blue-400">{totalEnrolled}</div>
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-4">
+          <div className="text-[9px] text-[#9CA3AF] uppercase">Enrolled</div>
+          <div className="text-2xl font-bold mt-1 text-blue-600">{totalEnrolled}</div>
         </div>
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-4">
-          <div className="text-[9px] text-gray-500 uppercase">Completions</div>
-          <div className="text-2xl font-bold mt-1 text-emerald-400">{totalCompleted}</div>
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-4">
+          <div className="text-[9px] text-[#9CA3AF] uppercase">Completions</div>
+          <div className="text-2xl font-bold mt-1 text-emerald-600">{totalCompleted}</div>
         </div>
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-4">
-          <div className="text-[9px] text-gray-500 uppercase">Certs Expiring</div>
-          <div className="text-2xl font-bold mt-1 text-amber-400">{expiringCerts}</div>
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-4">
+          <div className="text-[9px] text-[#9CA3AF] uppercase">Certs Expiring</div>
+          <div className="text-2xl font-bold mt-1 text-amber-600">{expiringCerts}</div>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 border-b border-white/5 pb-3">
+      <div className="flex gap-2 border-b border-[#E5E7EB] pb-3">
         {TABS.map(t => (
           <button key={t.id} onClick={() => setTab(t.id)}
-            className={'flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition ' + (tab === t.id ? 'bg-blue-600 text-white' : 'bg-white/5 text-gray-400 hover:bg-white/10')}>
+            className={'flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition ' + (tab === t.id ? 'bg-[#1B2A4A] text-white' : 'bg-white shadow-sm text-[#6B7280] hover:bg-gray-100')}>
             <span>{t.icon}</span> {t.name}
           </button>
         ))}
@@ -98,23 +98,23 @@ export default function TrainingAgent() {
       {/* Overview */}
       {tab === 'overview' && (
         <div className="grid grid-cols-2 gap-4">
-          <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
+          <div className="bg-white border border-[#E5E7EB] rounded-xl p-5">
             <h3 className="text-sm font-semibold mb-3">Active Courses</h3>
             <div className="space-y-2">
               {COURSES.filter(c => c.status === 'active').map(c => (
                 <div key={c.name} className="flex justify-between items-center py-2 border-b border-white/[0.03] last:border-0">
-                  <div><div className="text-sm text-white">{c.name}</div><div className="text-[10px] text-gray-500">{c.category} · {c.duration}</div></div>
-                  <div className="text-right"><div className="text-sm font-mono">{c.completed}/{c.enrolled}</div><div className="text-[10px] text-gray-500">completed</div></div>
+                  <div><div className="text-sm text-white">{c.name}</div><div className="text-[10px] text-[#9CA3AF]">{c.category} · {c.duration}</div></div>
+                  <div className="text-right"><div className="text-sm font-mono">{c.completed}/{c.enrolled}</div><div className="text-[10px] text-[#9CA3AF]">completed</div></div>
                 </div>
               ))}
             </div>
           </div>
-          <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
+          <div className="bg-white border border-[#E5E7EB] rounded-xl p-5">
             <h3 className="text-sm font-semibold mb-3">Certification Alerts</h3>
             <div className="space-y-2">
               {CERTS.filter(c => c.status !== 'active').map(c => (
                 <div key={c.name + c.holder} className="flex justify-between items-center py-2 border-b border-white/[0.03] last:border-0">
-                  <div><div className="text-sm text-white">{c.holder}</div><div className="text-[10px] text-gray-500">{c.name}</div></div>
+                  <div><div className="text-sm text-white">{c.holder}</div><div className="text-[10px] text-[#9CA3AF]">{c.name}</div></div>
                   <span className={'text-[10px] px-2 py-0.5 rounded-full font-medium ' + statusColor(c.status)}>{c.status}</span>
                 </div>
               ))}
@@ -125,21 +125,21 @@ export default function TrainingAgent() {
 
       {/* Courses */}
       {tab === 'courses' && (
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl overflow-hidden">
+        <div className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden">
           <table className="w-full text-sm">
-            <thead><tr className="border-b border-white/5 text-[10px] text-gray-500 uppercase">
+            <thead><tr className="border-b border-[#E5E7EB] text-[10px] text-[#9CA3AF] uppercase">
               <th className="text-left px-4 py-3">Course</th><th className="text-left px-4 py-3">Category</th><th className="text-left px-4 py-3">Duration</th><th className="text-left px-4 py-3">Progress</th><th className="text-left px-4 py-3">Status</th>
             </tr></thead>
             <tbody>
               {COURSES.map(c => (
-                <tr key={c.name} className="border-b border-white/[0.03] hover:bg-white/[0.02]">
+                <tr key={c.name} className="border-b border-white/[0.03] hover:bg-white shadow-sm">
                   <td className="px-4 py-3 font-medium">{c.name}</td>
-                  <td className="px-4 py-3 text-gray-400">{c.category}</td>
-                  <td className="px-4 py-3 text-gray-400">{c.duration}</td>
+                  <td className="px-4 py-3 text-[#6B7280]">{c.category}</td>
+                  <td className="px-4 py-3 text-[#6B7280]">{c.duration}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
-                      <div className="w-20 h-1.5 bg-white/5 rounded-full overflow-hidden"><div className="h-full bg-blue-500 rounded-full" style={{ width: (c.enrolled > 0 ? (c.completed / c.enrolled) * 100 : 0) + '%' }} /></div>
-                      <span className="text-[10px] text-gray-500">{c.completed}/{c.enrolled}</span>
+                      <div className="w-20 h-1.5 bg-white shadow-sm rounded-full overflow-hidden"><div className="h-full bg-blue-500 rounded-full" style={{ width: (c.enrolled > 0 ? (c.completed / c.enrolled) * 100 : 0) + '%' }} /></div>
+                      <span className="text-[10px] text-[#9CA3AF]">{c.completed}/{c.enrolled}</span>
                     </div>
                   </td>
                   <td className="px-4 py-3"><span className={'text-[10px] px-2 py-0.5 rounded-full font-medium ' + statusColor(c.status)}>{c.status}</span></td>
@@ -152,17 +152,17 @@ export default function TrainingAgent() {
 
       {/* Certifications */}
       {tab === 'certs' && (
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl overflow-hidden">
+        <div className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden">
           <table className="w-full text-sm">
-            <thead><tr className="border-b border-white/5 text-[10px] text-gray-500 uppercase">
+            <thead><tr className="border-b border-[#E5E7EB] text-[10px] text-[#9CA3AF] uppercase">
               <th className="text-left px-4 py-3">Certification</th><th className="text-left px-4 py-3">Holder</th><th className="text-left px-4 py-3">Expires</th><th className="text-left px-4 py-3">Status</th>
             </tr></thead>
             <tbody>
               {CERTS.map((c, i) => (
-                <tr key={i} className="border-b border-white/[0.03] hover:bg-white/[0.02]">
+                <tr key={i} className="border-b border-white/[0.03] hover:bg-white shadow-sm">
                   <td className="px-4 py-3 font-medium">{c.name}</td>
-                  <td className="px-4 py-3 text-gray-400">{c.holder}</td>
-                  <td className="px-4 py-3 text-gray-400">{c.expires}</td>
+                  <td className="px-4 py-3 text-[#6B7280]">{c.holder}</td>
+                  <td className="px-4 py-3 text-[#6B7280]">{c.expires}</td>
                   <td className="px-4 py-3"><span className={'text-[10px] px-2 py-0.5 rounded-full font-medium ' + statusColor(c.status)}>{c.status}</span></td>
                 </tr>
               ))}
@@ -173,16 +173,16 @@ export default function TrainingAgent() {
 
       {/* Skills Matrix */}
       {tab === 'skills' && (
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-5">
           <div className="space-y-4">
             {SKILLS.map(s => (
               <div key={s.name} className="border-b border-white/[0.03] pb-4 last:border-0">
-                <div className="flex justify-between mb-2"><div><div className="text-sm font-semibold">{s.name}</div><div className="text-[10px] text-gray-500">{s.role}</div></div></div>
+                <div className="flex justify-between mb-2"><div><div className="text-sm font-semibold">{s.name}</div><div className="text-[10px] text-[#9CA3AF]">{s.role}</div></div></div>
                 <div className="grid grid-cols-4 gap-3">
                   {Object.entries(s.skills).map(([skill, val]) => (
                     <div key={skill}>
-                      <div className="flex justify-between text-[10px] text-gray-500 mb-1"><span className="capitalize">{skill}</span><span>{val}%</span></div>
-                      <div className="h-2 bg-white/5 rounded-full overflow-hidden"><div className={'h-full rounded-full ' + (val >= 80 ? 'bg-emerald-500' : val >= 60 ? 'bg-blue-500' : 'bg-amber-500')} style={{ width: val + '%' }} /></div>
+                      <div className="flex justify-between text-[10px] text-[#9CA3AF] mb-1"><span className="capitalize">{skill}</span><span>{val}%</span></div>
+                      <div className="h-2 bg-white shadow-sm rounded-full overflow-hidden"><div className={'h-full rounded-full ' + (val >= 80 ? 'bg-emerald-500' : val >= 60 ? 'bg-blue-500' : 'bg-amber-500')} style={{ width: val + '%' }} /></div>
                     </div>
                   ))}
                 </div>

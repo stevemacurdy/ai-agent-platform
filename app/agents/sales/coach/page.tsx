@@ -139,28 +139,28 @@ export default function SalesCoachPage() {
           <div className="text-4xl">🏆</div>
           <div>
             <h1 className="text-2xl font-bold">Sales Coach</h1>
-            <p className="text-sm text-gray-400">AI-powered post-call coaching & skills development</p>
+            <p className="text-sm text-[#6B7280]">AI-powered post-call coaching & skills development</p>
           </div>
         </div>
 
         {/* Stats */}
         <div className="grid grid-cols-3 gap-3">
-          <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-4">
-            <div className="flex items-center gap-2 text-[9px] text-gray-500 uppercase"><Clock className="w-3 h-3" /> Sessions This Week</div>
+          <div className="bg-white border border-[#E5E7EB] rounded-xl p-4">
+            <div className="flex items-center gap-2 text-[9px] text-[#9CA3AF] uppercase"><Clock className="w-3 h-3" /> Sessions This Week</div>
             <div className="text-2xl font-bold mt-1">{sessions.length}</div>
           </div>
-          <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-4">
-            <div className="flex items-center gap-2 text-[9px] text-gray-500 uppercase"><Target className="w-3 h-3" /> Focus Areas</div>
-            <div className="text-2xl font-bold mt-1 text-blue-400">Discovery</div>
+          <div className="bg-white border border-[#E5E7EB] rounded-xl p-4">
+            <div className="flex items-center gap-2 text-[9px] text-[#9CA3AF] uppercase"><Target className="w-3 h-3" /> Focus Areas</div>
+            <div className="text-2xl font-bold mt-1 text-blue-600">Discovery</div>
           </div>
-          <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-4">
-            <div className="flex items-center gap-2 text-[9px] text-gray-500 uppercase"><TrendingUp className="w-3 h-3" /> Improvement</div>
-            <div className="text-2xl font-bold mt-1 text-emerald-400">+12%</div>
+          <div className="bg-white border border-[#E5E7EB] rounded-xl p-4">
+            <div className="flex items-center gap-2 text-[9px] text-[#9CA3AF] uppercase"><TrendingUp className="w-3 h-3" /> Improvement</div>
+            <div className="text-2xl font-bold mt-1 text-emerald-600">+12%</div>
           </div>
         </div>
 
         {/* Start New Session */}
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-6">
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-6">
           <h2 className="text-lg font-semibold mb-4">Start a Coaching Session</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
@@ -170,10 +170,10 @@ export default function SalesCoachPage() {
               { type: 'general' as const, icon: '🎯', label: 'Skill Building', desc: 'Work on sales skills' },
             ].map(s => (
               <button key={s.type} onClick={() => startSession(s.type)}
-                className="flex flex-col items-center gap-2 p-5 bg-white/[0.03] border border-white/5 rounded-xl hover:border-blue-500/30 hover:bg-blue-500/5 transition text-center group">
+                className="flex flex-col items-center gap-2 p-5 bg-white/[0.03] border border-[#E5E7EB] rounded-xl hover:border-blue-500/30 hover:bg-blue-500/5 transition text-center group">
                 <span className="text-3xl">{s.icon}</span>
-                <span className="text-sm font-semibold text-white group-hover:text-blue-400 transition">{s.label}</span>
-                <span className="text-[10px] text-gray-500">{s.desc}</span>
+                <span className="text-sm font-semibold text-white group-hover:text-blue-600 transition">{s.label}</span>
+                <span className="text-[10px] text-[#9CA3AF]">{s.desc}</span>
               </button>
             ))}
           </div>
@@ -181,14 +181,14 @@ export default function SalesCoachPage() {
 
         {/* Recent Sessions */}
         {sessions.length > 0 && (
-          <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
+          <div className="bg-white border border-[#E5E7EB] rounded-xl p-5">
             <h3 className="text-sm font-semibold mb-3">Recent Sessions</h3>
             <div className="space-y-2">
               {sessions.slice(-5).reverse().map((s, i) => (
                 <div key={i} className="flex justify-between items-center py-2 border-b border-white/[0.03] last:border-0">
                   <div>
                     <div className="text-sm text-white">{s.preview}...</div>
-                    <div className="text-[10px] text-gray-500">{s.date} · {s.messages.filter(m => m.role === 'user').length} exchanges</div>
+                    <div className="text-[10px] text-[#9CA3AF]">{s.date} · {s.messages.filter(m => m.role === 'user').length} exchanges</div>
                   </div>
                 </div>
               ))}
@@ -197,9 +197,9 @@ export default function SalesCoachPage() {
         )}
 
         {/* Tips */}
-        <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
+        <div className="bg-white border border-[#E5E7EB] rounded-xl p-5">
           <h3 className="text-sm font-semibold mb-3">💡 How to Get the Most from Your Coach</h3>
-          <div className="grid md:grid-cols-3 gap-4 text-sm text-gray-400">
+          <div className="grid md:grid-cols-3 gap-4 text-sm text-[#6B7280]">
             <div>
               <div className="text-white font-medium mb-1">Be Honest</div>
               <p className="text-xs">The coach can only help if you tell it what really happened — including the uncomfortable parts.</p>
@@ -221,20 +221,20 @@ export default function SalesCoachPage() {
   // Active coaching session
   return (
     <div className="max-w-4xl mx-auto p-6">
-      <div className="bg-[#0A0E15] border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
+      <div className="bg-white border border-[#E5E7EB] rounded-2xl overflow-hidden shadow-2xl">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-white/5 flex items-center gap-3">
+        <div className="px-6 py-4 border-b border-[#E5E7EB] flex items-center gap-3">
           <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl flex items-center justify-center">
             <span className="text-lg">🏆</span>
           </div>
           <div className="flex-1">
             <div className="text-sm font-semibold text-white">Sales Coach</div>
-            <div className="text-[10px] text-emerald-400 flex items-center gap-1">
+            <div className="text-[10px] text-emerald-600 flex items-center gap-1">
               <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
               Coaching Session Active
             </div>
           </div>
-          <button onClick={newSession} className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 rounded-lg text-xs text-gray-400 hover:bg-white/10 hover:text-white transition">
+          <button onClick={newSession} className="flex items-center gap-1.5 px-3 py-1.5 bg-white shadow-sm rounded-lg text-xs text-[#6B7280] hover:bg-gray-100 hover:text-[#1B2A4A] transition">
             <Plus className="w-3 h-3" /> New Session
           </button>
         </div>
@@ -250,13 +250,13 @@ export default function SalesCoachPage() {
               )}
               <div className={'max-w-[80%] px-4 py-3 rounded-2xl text-sm leading-relaxed ' +
                 (msg.role === 'user'
-                  ? 'bg-blue-600 text-white rounded-br-sm'
-                  : 'bg-white/[0.06] text-gray-300 rounded-bl-sm')}>
+                  ? 'bg-[#1B2A4A] text-white rounded-br-sm'
+                  : 'bg-white/[0.06] text-[#4B5563] rounded-bl-sm')}>
                 {msg.content}
               </div>
               {msg.role === 'user' && (
-                <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <User className="w-4 h-4 text-gray-400" />
+                <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <User className="w-4 h-4 text-[#6B7280]" />
                 </div>
               )}
             </div>
@@ -278,10 +278,10 @@ export default function SalesCoachPage() {
         </div>
 
         {/* Input */}
-        <div className="px-6 py-4 border-t border-white/5">
+        <div className="px-6 py-4 border-t border-[#E5E7EB]">
           <div className="flex gap-3">
             <button onClick={toggleRecording}
-              className={'p-3 rounded-xl transition ' + (recording ? 'bg-rose-500 text-white animate-pulse' : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white')}>
+              className={'p-3 rounded-xl transition ' + (recording ? 'bg-rose-500 text-white animate-pulse' : 'bg-white shadow-sm text-[#6B7280] hover:bg-gray-100 hover:text-[#1B2A4A]')}>
               {recording ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
             </button>
             <textarea
@@ -290,7 +290,7 @@ export default function SalesCoachPage() {
               onKeyDown={handleKeyDown}
               placeholder={recording ? 'Recording... click mic to stop' : 'Tell me about your call...'}
               rows={1}
-              className="flex-1 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder:text-gray-600 focus:border-amber-500 focus:outline-none resize-none"
+              className="flex-1 px-4 py-3 bg-white border border-[#E5E7EB] shadow-sm rounded-xl text-sm text-white placeholder:text-[#6B7280] focus:border-amber-500 focus:outline-none resize-none"
               disabled={sending}
             />
             <button onClick={sendMessage} disabled={!input.trim() || sending}
@@ -298,7 +298,7 @@ export default function SalesCoachPage() {
               <Send className="w-5 h-5" />
             </button>
           </div>
-          <div className="text-[10px] text-gray-600 mt-2 text-center">
+          <div className="text-[10px] text-[#6B7280] mt-2 text-center">
             Your coaching sessions are confidential • Personality profiled after 5+ messages
           </div>
         </div>

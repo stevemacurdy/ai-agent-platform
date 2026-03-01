@@ -80,16 +80,16 @@ export default function STRAgent() {
 
   const statusColor = (s: string) => {
     const colors: Record<string, string> = {
-      active: 'text-emerald-400 bg-emerald-400/10',
-      pending: 'text-amber-400 bg-amber-400/10',
-      occupied: 'text-blue-400 bg-blue-400/10',
-      available: 'text-emerald-400 bg-emerald-400/10',
-      checked_in: 'text-blue-400 bg-blue-400/10',
-      confirmed: 'text-emerald-400 bg-emerald-400/10',
-      scheduled: 'text-amber-400 bg-amber-400/10',
-      recurring: 'text-purple-400 bg-purple-400/10',
+      active: 'text-emerald-600 bg-emerald-400/10',
+      pending: 'text-amber-600 bg-amber-400/10',
+      occupied: 'text-blue-600 bg-blue-400/10',
+      available: 'text-emerald-600 bg-emerald-400/10',
+      checked_in: 'text-blue-600 bg-blue-400/10',
+      confirmed: 'text-emerald-600 bg-emerald-400/10',
+      scheduled: 'text-amber-600 bg-amber-400/10',
+      recurring: 'text-purple-600 bg-purple-400/10',
     };
-    return colors[s] || 'text-gray-400 bg-gray-400/10';
+    return colors[s] || 'text-[#6B7280] bg-gray-400/10';
   };
 
   return (
@@ -99,16 +99,16 @@ export default function STRAgent() {
         <div className="text-4xl">🏔️</div>
         <div>
           <h1 className="text-2xl font-bold">Short-Term Rental Agent</h1>
-          <p className="text-sm text-gray-400">Multi-platform listing, guest automation, cleaning & concierge</p>
+          <p className="text-sm text-[#6B7280]">Multi-platform listing, guest automation, cleaning & concierge</p>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 bg-[#0A0E15] p-1 rounded-xl border border-white/5 overflow-x-auto">
+      <div className="flex gap-1 bg-white p-1 rounded-xl border border-[#E5E7EB] overflow-x-auto">
         {TABS.map(t => (
           <button key={t.id} onClick={() => setTab(t.id)}
             className={'flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-medium transition whitespace-nowrap ' +
-              (tab === t.id ? 'bg-blue-600 text-white' : 'text-gray-400 hover:bg-white/5')}>
+              (tab === t.id ? 'bg-[#1B2A4A] text-white' : 'text-[#6B7280] hover:bg-white shadow-sm')}>
             <span>{t.icon}</span> {t.name}
           </button>
         ))}
@@ -118,38 +118,38 @@ export default function STRAgent() {
       {tab === 'dashboard' && (
         <div className="space-y-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-4">
-              <div className="text-[9px] text-gray-500 uppercase">Properties</div>
+            <div className="bg-white border border-[#E5E7EB] rounded-xl p-4">
+              <div className="text-[9px] text-[#9CA3AF] uppercase">Properties</div>
               <div className="text-2xl font-bold mt-1">{PROPERTIES.length}</div>
             </div>
-            <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-4">
-              <div className="text-[9px] text-gray-500 uppercase">Platforms Active</div>
-              <div className="text-2xl font-bold mt-1 text-blue-400">{PLATFORMS.filter(p => p.status === 'active').length}</div>
+            <div className="bg-white border border-[#E5E7EB] rounded-xl p-4">
+              <div className="text-[9px] text-[#9CA3AF] uppercase">Platforms Active</div>
+              <div className="text-2xl font-bold mt-1 text-blue-600">{PLATFORMS.filter(p => p.status === 'active').length}</div>
             </div>
-            <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-4">
-              <div className="text-[9px] text-gray-500 uppercase">Avg Occupancy</div>
-              <div className="text-2xl font-bold mt-1 text-emerald-400">{Math.round(PROPERTIES.reduce((s, p) => s + p.occupancy, 0) / PROPERTIES.length)}%</div>
+            <div className="bg-white border border-[#E5E7EB] rounded-xl p-4">
+              <div className="text-[9px] text-[#9CA3AF] uppercase">Avg Occupancy</div>
+              <div className="text-2xl font-bold mt-1 text-emerald-600">{Math.round(PROPERTIES.reduce((s, p) => s + p.occupancy, 0) / PROPERTIES.length)}%</div>
             </div>
-            <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-4">
-              <div className="text-[9px] text-gray-500 uppercase">Avg Rating</div>
-              <div className="text-2xl font-bold mt-1 text-amber-400">⭐ {(PROPERTIES.reduce((s, p) => s + p.rating, 0) / PROPERTIES.length).toFixed(1)}</div>
+            <div className="bg-white border border-[#E5E7EB] rounded-xl p-4">
+              <div className="text-[9px] text-[#9CA3AF] uppercase">Avg Rating</div>
+              <div className="text-2xl font-bold mt-1 text-amber-600">⭐ {(PROPERTIES.reduce((s, p) => s + p.rating, 0) / PROPERTIES.length).toFixed(1)}</div>
             </div>
           </div>
 
           {/* Properties */}
-          <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
+          <div className="bg-white border border-[#E5E7EB] rounded-xl p-5">
             <h3 className="text-sm font-semibold mb-3">Properties</h3>
             <div className="space-y-3">
               {PROPERTIES.map((p, i) => (
-                <div key={i} className="flex items-center justify-between p-3 bg-white/[0.02] rounded-lg border border-white/5">
+                <div key={i} className="flex items-center justify-between p-3 bg-white shadow-sm rounded-lg border border-[#E5E7EB]">
                   <div>
                     <div className="font-medium text-sm">{p.name}</div>
-                    <div className="text-[10px] text-gray-500">{p.beds} bed · {p.baths} bath · Up to {p.guests} guests</div>
+                    <div className="text-[10px] text-[#9CA3AF]">{p.beds} bed · {p.baths} bath · Up to {p.guests} guests</div>
                   </div>
                   <div className="flex items-center gap-4 text-right">
                     <div>
                       <div className="text-sm font-mono">${p.rate}/night</div>
-                      <div className="text-[10px] text-gray-500">{p.occupancy}% occ</div>
+                      <div className="text-[10px] text-[#9CA3AF]">{p.occupancy}% occ</div>
                     </div>
                     <span className={'px-2 py-1 rounded-md text-[10px] font-medium ' + statusColor(p.status)}>{p.status}</span>
                   </div>
@@ -159,7 +159,7 @@ export default function STRAgent() {
           </div>
 
           {/* Automation Pipeline */}
-          <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
+          <div className="bg-white border border-[#E5E7EB] rounded-xl p-5">
             <h3 className="text-sm font-semibold mb-3">🤖 Automation Pipeline</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {[
@@ -168,10 +168,10 @@ export default function STRAgent() {
                 { step: 'Door Code Used', desc: 'Send WiFi info, house guide, ask about their trip', icon: '📱', color: 'border-purple-500/20' },
                 { step: 'Checkout 10AM', desc: 'Deactivate code, request review, trigger cleaning at 11AM', icon: '👋', color: 'border-amber-500/20' },
               ].map((s, i) => (
-                <div key={i} className={'p-3 bg-white/[0.02] rounded-lg border ' + s.color}>
+                <div key={i} className={'p-3 bg-white shadow-sm rounded-lg border ' + s.color}>
                   <div className="text-lg mb-1">{s.icon}</div>
                   <div className="text-xs font-semibold text-white">{s.step}</div>
-                  <div className="text-[10px] text-gray-500 mt-1">{s.desc}</div>
+                  <div className="text-[10px] text-[#9CA3AF] mt-1">{s.desc}</div>
                 </div>
               ))}
             </div>
@@ -182,18 +182,18 @@ export default function STRAgent() {
       {/* LISTINGS */}
       {tab === 'listings' && (
         <div className="space-y-4">
-          <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
+          <div className="bg-white border border-[#E5E7EB] rounded-xl p-5">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-sm font-semibold">{PLATFORMS.length} Platforms ({PLATFORMS.filter(p => p.status === 'active').length} active)</h3>
               <button className="px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-xs hover:bg-emerald-500 transition">+ Add Platform</button>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
               {PLATFORMS.map((p, i) => (
-                <div key={i} className="flex items-center gap-2 p-3 bg-white/[0.02] rounded-lg border border-white/5">
+                <div key={i} className="flex items-center gap-2 p-3 bg-white shadow-sm rounded-lg border border-[#E5E7EB]">
                   <span className="text-lg">{p.icon}</span>
                   <div className="flex-1 min-w-0">
                     <div className="text-xs font-medium truncate">{p.name}</div>
-                    <div className="text-[10px] text-gray-500">{p.listings} listings</div>
+                    <div className="text-[10px] text-[#9CA3AF]">{p.listings} listings</div>
                   </div>
                   <span className={'px-1.5 py-0.5 rounded text-[9px] font-medium ' + statusColor(p.status)}>{p.status}</span>
                 </div>
@@ -201,14 +201,14 @@ export default function STRAgent() {
             </div>
           </div>
 
-          <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
+          <div className="bg-white border border-[#E5E7EB] rounded-xl p-5">
             <h3 className="text-sm font-semibold mb-3">📡 Cross-Platform Sync</h3>
-            <div className="space-y-2 text-sm text-gray-400">
-              <div className="flex items-center gap-2"><span className="text-emerald-400">✓</span> New booking → instantly blocks dates on ALL platforms</div>
-              <div className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Cancellation → instantly opens dates on ALL platforms</div>
-              <div className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Price change → syncs to ALL platforms within 5 minutes</div>
-              <div className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Photos & descriptions synced across all active listings</div>
-              <div className="flex items-center gap-2"><span className="text-amber-400">⚡</span> Last sync: 3 minutes ago</div>
+            <div className="space-y-2 text-sm text-[#6B7280]">
+              <div className="flex items-center gap-2"><span className="text-emerald-600">✓</span> New booking → instantly blocks dates on ALL platforms</div>
+              <div className="flex items-center gap-2"><span className="text-emerald-600">✓</span> Cancellation → instantly opens dates on ALL platforms</div>
+              <div className="flex items-center gap-2"><span className="text-emerald-600">✓</span> Price change → syncs to ALL platforms within 5 minutes</div>
+              <div className="flex items-center gap-2"><span className="text-emerald-600">✓</span> Photos & descriptions synced across all active listings</div>
+              <div className="flex items-center gap-2"><span className="text-amber-600">⚡</span> Last sync: 3 minutes ago</div>
             </div>
           </div>
         </div>
@@ -217,42 +217,42 @@ export default function STRAgent() {
       {/* BOOKINGS */}
       {tab === 'bookings' && (
         <div className="space-y-4">
-          <div className="bg-[#0A0E15] border border-white/5 rounded-xl overflow-hidden">
+          <div className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-white/5 text-left">
-                  <th className="px-4 py-3 text-[10px] text-gray-500 uppercase">Guest</th>
-                  <th className="px-4 py-3 text-[10px] text-gray-500 uppercase">Property</th>
-                  <th className="px-4 py-3 text-[10px] text-gray-500 uppercase">Dates</th>
-                  <th className="px-4 py-3 text-[10px] text-gray-500 uppercase">Platform</th>
-                  <th className="px-4 py-3 text-[10px] text-gray-500 uppercase">Door Code</th>
-                  <th className="px-4 py-3 text-[10px] text-gray-500 uppercase">Status</th>
-                  <th className="px-4 py-3 text-[10px] text-gray-500 uppercase">Automations</th>
+                <tr className="border-b border-[#E5E7EB] text-left">
+                  <th className="px-4 py-3 text-[10px] text-[#9CA3AF] uppercase">Guest</th>
+                  <th className="px-4 py-3 text-[10px] text-[#9CA3AF] uppercase">Property</th>
+                  <th className="px-4 py-3 text-[10px] text-[#9CA3AF] uppercase">Dates</th>
+                  <th className="px-4 py-3 text-[10px] text-[#9CA3AF] uppercase">Platform</th>
+                  <th className="px-4 py-3 text-[10px] text-[#9CA3AF] uppercase">Door Code</th>
+                  <th className="px-4 py-3 text-[10px] text-[#9CA3AF] uppercase">Status</th>
+                  <th className="px-4 py-3 text-[10px] text-[#9CA3AF] uppercase">Automations</th>
                 </tr>
               </thead>
               <tbody>
                 {BOOKINGS.map(b => (
-                  <tr key={b.id} className="border-b border-white/[0.03] hover:bg-white/[0.02]">
+                  <tr key={b.id} className="border-b border-white/[0.03] hover:bg-white shadow-sm">
                     <td className="px-4 py-3">
                       <div className="font-medium">{b.guest}</div>
-                      <div className="text-[10px] text-gray-500">{b.phone} · {b.guests} guests</div>
+                      <div className="text-[10px] text-[#9CA3AF]">{b.phone} · {b.guests} guests</div>
                     </td>
-                    <td className="px-4 py-3 text-gray-400">{b.property}</td>
+                    <td className="px-4 py-3 text-[#6B7280]">{b.property}</td>
                     <td className="px-4 py-3">
                       <div className="text-xs">{b.checkin}</div>
-                      <div className="text-[10px] text-gray-500">→ {b.checkout}</div>
+                      <div className="text-[10px] text-[#9CA3AF]">→ {b.checkout}</div>
                     </td>
-                    <td className="px-4 py-3 text-gray-400 text-xs">{b.platform}</td>
-                    <td className="px-4 py-3 font-mono text-blue-400">{b.doorCode}</td>
+                    <td className="px-4 py-3 text-[#6B7280] text-xs">{b.platform}</td>
+                    <td className="px-4 py-3 font-mono text-blue-600">{b.doorCode}</td>
                     <td className="px-4 py-3">
                       <span className={'px-2 py-1 rounded-md text-[10px] font-medium ' + statusColor(b.status)}>{b.status.replace('_', ' ')}</span>
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex gap-1">
-                        <span title="Welcome text" className={b.automations.welcomeText ? 'text-emerald-400' : 'text-gray-700'}>💬</span>
-                        <span title="Door code set" className={b.automations.doorCode ? 'text-emerald-400' : 'text-gray-700'}>🔑</span>
-                        <span title="WiFi sent" className={b.automations.wifiSent ? 'text-emerald-400' : 'text-gray-700'}>📶</span>
-                        <span title="Cleaner notified" className={b.automations.cleanerNotified ? 'text-emerald-400' : 'text-gray-700'}>🧹</span>
+                        <span title="Welcome text" className={b.automations.welcomeText ? 'text-emerald-600' : 'text-gray-700'}>💬</span>
+                        <span title="Door code set" className={b.automations.doorCode ? 'text-emerald-600' : 'text-gray-700'}>🔑</span>
+                        <span title="WiFi sent" className={b.automations.wifiSent ? 'text-emerald-600' : 'text-gray-700'}>📶</span>
+                        <span title="Cleaner notified" className={b.automations.cleanerNotified ? 'text-emerald-600' : 'text-gray-700'}>🧹</span>
                       </div>
                     </td>
                   </tr>
@@ -266,19 +266,19 @@ export default function STRAgent() {
       {/* GUEST FLOW */}
       {tab === 'guests' && (
         <div className="space-y-4">
-          <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
+          <div className="bg-white border border-[#E5E7EB] rounded-xl p-5">
             <h3 className="text-sm font-semibold mb-4">🤖 Automated Guest Journey</h3>
             <div className="space-y-3">
               {GUEST_MESSAGES.map((m, i) => (
-                <div key={i} className="p-4 bg-white/[0.02] rounded-lg border border-white/5">
+                <div key={i} className="p-4 bg-white shadow-sm rounded-lg border border-[#E5E7EB]">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
                       <span className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-white text-[10px] font-bold">{i + 1}</span>
                       <span className="text-sm font-semibold text-white">{m.type}</span>
                     </div>
-                    <span className="text-[10px] text-gray-500 bg-white/5 px-2 py-1 rounded">Trigger: {m.trigger}</span>
+                    <span className="text-[10px] text-[#9CA3AF] bg-white shadow-sm px-2 py-1 rounded">Trigger: {m.trigger}</span>
                   </div>
-                  <div className="bg-blue-600/5 border border-blue-500/10 rounded-lg p-3 text-sm text-gray-300 leading-relaxed">
+                  <div className="bg-blue-600/5 border border-blue-500/10 rounded-lg p-3 text-sm text-[#4B5563] leading-relaxed">
                     {m.message}
                   </div>
                 </div>
@@ -286,19 +286,19 @@ export default function STRAgent() {
             </div>
           </div>
 
-          <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
+          <div className="bg-white border border-[#E5E7EB] rounded-xl p-5">
             <h3 className="text-sm font-semibold mb-3">🔑 Door Code Logic</h3>
-            <div className="space-y-2 text-sm text-gray-400">
-              <div className="flex items-center gap-2"><span className="text-blue-400">→</span> Code = last 4 digits of guest&apos;s phone number</div>
-              <div className="flex items-center gap-2"><span className="text-emerald-400">→</span> Activates at <strong className="text-white">4:00 PM</strong> on check-in day</div>
+            <div className="space-y-2 text-sm text-[#6B7280]">
+              <div className="flex items-center gap-2"><span className="text-blue-600">→</span> Code = last 4 digits of guest&apos;s phone number</div>
+              <div className="flex items-center gap-2"><span className="text-emerald-600">→</span> Activates at <strong className="text-white">4:00 PM</strong> on check-in day</div>
               <div className="flex items-center gap-2"><span className="text-rose-400">→</span> Deactivates at <strong className="text-white">10:00 AM</strong> on checkout day</div>
-              <div className="flex items-center gap-2"><span className="text-purple-400">→</span> Smart lock API integration (Yale/August/Schlage)</div>
+              <div className="flex items-center gap-2"><span className="text-purple-600">→</span> Smart lock API integration (Yale/August/Schlage)</div>
             </div>
           </div>
 
-          <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
+          <div className="bg-white border border-[#E5E7EB] rounded-xl p-5">
             <h3 className="text-sm font-semibold mb-3">🗑️ Trash Day Rules</h3>
-            <div className="text-sm text-gray-400">
+            <div className="text-sm text-[#6B7280]">
               If checkout falls on <strong className="text-white">Thursday</strong> or <strong className="text-white">Friday</strong>, the pre-checkout message includes:
               <div className="mt-2 bg-amber-500/5 border border-amber-500/10 rounded-lg p-3 text-amber-300">
                 &ldquo;One quick favor — since tomorrow is trash day, could you please roll the trash cans to the street before you head out? Thank you so much! 🙏&rdquo;
@@ -311,30 +311,30 @@ export default function STRAgent() {
       {/* CLEANING & MAINTENANCE */}
       {tab === 'cleaning' && (
         <div className="space-y-4">
-          <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
+          <div className="bg-white border border-[#E5E7EB] rounded-xl p-5">
             <h3 className="text-sm font-semibold mb-3">🧹 Cleaning Schedule (Auto-Generated)</h3>
-            <div className="text-[10px] text-gray-500 mb-3">Cleaners auto-notified when booking confirmed. Cleaning at 11 AM after each checkout.</div>
+            <div className="text-[10px] text-[#9CA3AF] mb-3">Cleaners auto-notified when booking confirmed. Cleaning at 11 AM after each checkout.</div>
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-white/5 text-left">
-                  <th className="px-3 py-2 text-[10px] text-gray-500 uppercase">Date</th>
-                  <th className="px-3 py-2 text-[10px] text-gray-500 uppercase">Time</th>
-                  <th className="px-3 py-2 text-[10px] text-gray-500 uppercase">Property</th>
-                  <th className="px-3 py-2 text-[10px] text-gray-500 uppercase">Cleaner</th>
-                  <th className="px-3 py-2 text-[10px] text-gray-500 uppercase">Trigger</th>
-                  <th className="px-3 py-2 text-[10px] text-gray-500 uppercase">Photos</th>
-                  <th className="px-3 py-2 text-[10px] text-gray-500 uppercase">Status</th>
+                <tr className="border-b border-[#E5E7EB] text-left">
+                  <th className="px-3 py-2 text-[10px] text-[#9CA3AF] uppercase">Date</th>
+                  <th className="px-3 py-2 text-[10px] text-[#9CA3AF] uppercase">Time</th>
+                  <th className="px-3 py-2 text-[10px] text-[#9CA3AF] uppercase">Property</th>
+                  <th className="px-3 py-2 text-[10px] text-[#9CA3AF] uppercase">Cleaner</th>
+                  <th className="px-3 py-2 text-[10px] text-[#9CA3AF] uppercase">Trigger</th>
+                  <th className="px-3 py-2 text-[10px] text-[#9CA3AF] uppercase">Photos</th>
+                  <th className="px-3 py-2 text-[10px] text-[#9CA3AF] uppercase">Status</th>
                 </tr>
               </thead>
               <tbody>
                 {CLEANING_SCHEDULE.map((c, i) => (
                   <tr key={i} className="border-b border-white/[0.03]">
                     <td className="px-3 py-2">{c.date}</td>
-                    <td className="px-3 py-2 text-gray-400">{c.time}</td>
+                    <td className="px-3 py-2 text-[#6B7280]">{c.time}</td>
                     <td className="px-3 py-2">{c.property}</td>
-                    <td className="px-3 py-2 text-gray-400">{c.cleaner}</td>
-                    <td className="px-3 py-2 text-[10px] text-gray-500">{c.trigger}</td>
-                    <td className="px-3 py-2">{c.photosUploaded ? <span className="text-emerald-400">✓ Uploaded</span> : <span className="text-gray-600">Pending</span>}</td>
+                    <td className="px-3 py-2 text-[#6B7280]">{c.cleaner}</td>
+                    <td className="px-3 py-2 text-[10px] text-[#9CA3AF]">{c.trigger}</td>
+                    <td className="px-3 py-2">{c.photosUploaded ? <span className="text-emerald-600">✓ Uploaded</span> : <span className="text-[#6B7280]">Pending</span>}</td>
                     <td className="px-3 py-2"><span className={'px-2 py-1 rounded text-[10px] ' + statusColor(c.status)}>{c.status}</span></td>
                   </tr>
                 ))}
@@ -342,13 +342,13 @@ export default function STRAgent() {
             </table>
           </div>
 
-          <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
+          <div className="bg-white border border-[#E5E7EB] rounded-xl p-5">
             <h3 className="text-sm font-semibold mb-3">📸 Cleaning Photo Requirements</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm">
               {['Kitchen', 'Living Room', 'Master Bedroom', 'Guest Bedrooms', 'Bathrooms', 'Exterior', 'Patio/Deck', 'Garage'].map(room => (
-                <div key={room} className="p-3 bg-white/[0.02] rounded-lg border border-white/5 text-center">
-                  <div className="text-gray-400">{room}</div>
-                  <div className="text-[10px] text-gray-600 mt-1">📷 Required</div>
+                <div key={room} className="p-3 bg-white shadow-sm rounded-lg border border-[#E5E7EB] text-center">
+                  <div className="text-[#6B7280]">{room}</div>
+                  <div className="text-[10px] text-[#6B7280] mt-1">📷 Required</div>
                 </div>
               ))}
             </div>
@@ -357,25 +357,25 @@ export default function STRAgent() {
             </div>
           </div>
 
-          <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
+          <div className="bg-white border border-[#E5E7EB] rounded-xl p-5">
             <h3 className="text-sm font-semibold mb-3">🌿 Lawn Care Schedule</h3>
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-white/5 text-left">
-                  <th className="px-3 py-2 text-[10px] text-gray-500 uppercase">Day</th>
-                  <th className="px-3 py-2 text-[10px] text-gray-500 uppercase">Time</th>
-                  <th className="px-3 py-2 text-[10px] text-gray-500 uppercase">Provider</th>
-                  <th className="px-3 py-2 text-[10px] text-gray-500 uppercase">Properties</th>
-                  <th className="px-3 py-2 text-[10px] text-gray-500 uppercase">Status</th>
+                <tr className="border-b border-[#E5E7EB] text-left">
+                  <th className="px-3 py-2 text-[10px] text-[#9CA3AF] uppercase">Day</th>
+                  <th className="px-3 py-2 text-[10px] text-[#9CA3AF] uppercase">Time</th>
+                  <th className="px-3 py-2 text-[10px] text-[#9CA3AF] uppercase">Provider</th>
+                  <th className="px-3 py-2 text-[10px] text-[#9CA3AF] uppercase">Properties</th>
+                  <th className="px-3 py-2 text-[10px] text-[#9CA3AF] uppercase">Status</th>
                 </tr>
               </thead>
               <tbody>
                 {LAWN_SCHEDULE.map((l, i) => (
                   <tr key={i} className="border-b border-white/[0.03]">
                     <td className="px-3 py-2">{l.day}</td>
-                    <td className="px-3 py-2 text-gray-400">{l.time}</td>
+                    <td className="px-3 py-2 text-[#6B7280]">{l.time}</td>
                     <td className="px-3 py-2">{l.provider}</td>
-                    <td className="px-3 py-2 text-gray-400">{l.properties}</td>
+                    <td className="px-3 py-2 text-[#6B7280]">{l.properties}</td>
                     <td className="px-3 py-2"><span className={'px-2 py-1 rounded text-[10px] ' + statusColor(l.status)}>{l.status}</span></td>
                   </tr>
                 ))}
@@ -388,32 +388,32 @@ export default function STRAgent() {
       {/* AI CONCIERGE */}
       {tab === 'concierge' && (
         <div className="space-y-4">
-          <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
+          <div className="bg-white border border-[#E5E7EB] rounded-xl p-5">
             <h3 className="text-sm font-semibold mb-2">💬 AI Concierge — Call & Text Handler</h3>
-            <p className="text-[10px] text-gray-500 mb-4">AI answers guest calls and texts 24/7. Handles questions, restaurant recommendations, activity suggestions, and issue resolution.</p>
+            <p className="text-[10px] text-[#9CA3AF] mb-4">AI answers guest calls and texts 24/7. Handles questions, restaurant recommendations, activity suggestions, and issue resolution.</p>
             <div className="grid grid-cols-3 gap-3 mb-4">
-              <div className="bg-white/[0.02] rounded-lg p-3 text-center">
-                <div className="text-xl font-bold text-emerald-400">97%</div>
-                <div className="text-[10px] text-gray-500">AI Resolution Rate</div>
+              <div className="bg-white shadow-sm rounded-lg p-3 text-center">
+                <div className="text-xl font-bold text-emerald-600">97%</div>
+                <div className="text-[10px] text-[#9CA3AF]">AI Resolution Rate</div>
               </div>
-              <div className="bg-white/[0.02] rounded-lg p-3 text-center">
-                <div className="text-xl font-bold text-blue-400">12s</div>
-                <div className="text-[10px] text-gray-500">Avg Response Time</div>
+              <div className="bg-white shadow-sm rounded-lg p-3 text-center">
+                <div className="text-xl font-bold text-blue-600">12s</div>
+                <div className="text-[10px] text-[#9CA3AF]">Avg Response Time</div>
               </div>
-              <div className="bg-white/[0.02] rounded-lg p-3 text-center">
-                <div className="text-xl font-bold text-amber-400">4.9</div>
-                <div className="text-[10px] text-gray-500">Guest Satisfaction</div>
+              <div className="bg-white shadow-sm rounded-lg p-3 text-center">
+                <div className="text-xl font-bold text-amber-600">4.9</div>
+                <div className="text-[10px] text-[#9CA3AF]">Guest Satisfaction</div>
               </div>
             </div>
           </div>
 
-          <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
+          <div className="bg-white border border-[#E5E7EB] rounded-xl p-5">
             <h3 className="text-sm font-semibold mb-3">Recent Conversations</h3>
             <div className="space-y-2">
               {CONCIERGE_LOGS.map((l, i) => (
                 <div key={i} className={'flex gap-3 ' + (l.direction === 'out' ? 'justify-end' : '')}>
                   {l.direction === 'in' && (
-                    <div className="w-7 h-7 bg-white/10 rounded-lg flex items-center justify-center flex-shrink-0 text-[10px]">
+                    <div className="w-7 h-7 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0 text-[10px]">
                       {l.channel === 'Call' ? '📞' : '💬'}
                     </div>
                   )}
@@ -421,9 +421,9 @@ export default function STRAgent() {
                     (l.direction === 'out'
                       ? 'bg-blue-600/20 text-blue-100 rounded-br-sm'
                       : l.channel === 'Call'
-                        ? 'bg-purple-500/10 text-purple-200 rounded-bl-sm italic'
-                        : 'bg-white/[0.06] text-gray-300 rounded-bl-sm')}>
-                    <div className="text-[10px] text-gray-500 mb-0.5">{l.guest} · {l.time} · {l.channel}</div>
+                        ? 'bg-purple-50 text-purple-200 rounded-bl-sm italic'
+                        : 'bg-white/[0.06] text-[#4B5563] rounded-bl-sm')}>
+                    <div className="text-[10px] text-[#9CA3AF] mb-0.5">{l.guest} · {l.time} · {l.channel}</div>
                     {l.message}
                   </div>
                   {l.direction === 'out' && (
@@ -434,7 +434,7 @@ export default function STRAgent() {
             </div>
           </div>
 
-          <div className="bg-[#0A0E15] border border-white/5 rounded-xl p-5">
+          <div className="bg-white border border-[#E5E7EB] rounded-xl p-5">
             <h3 className="text-sm font-semibold mb-3">🎯 Concierge Capabilities</h3>
             <div className="grid grid-cols-2 gap-2 text-sm">
               {[
@@ -447,7 +447,7 @@ export default function STRAgent() {
                 '🗺️ Send directions, maps, and local tips',
                 '🚨 Emergency escalation to property owner',
               ].map((cap, i) => (
-                <div key={i} className="p-2 bg-white/[0.02] rounded-lg text-gray-400 text-xs">{cap}</div>
+                <div key={i} className="p-2 bg-white shadow-sm rounded-lg text-[#6B7280] text-xs">{cap}</div>
               ))}
             </div>
           </div>
