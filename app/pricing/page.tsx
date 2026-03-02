@@ -25,27 +25,46 @@ interface Bundle {
   discount_pct: number;
   target_tier: string;
   is_featured: boolean;
+  display_order: number;
   agents: BundleAgent[];
   agent_count: number;
 }
 
-const TIER_CONFIG: Record<string, { users: string; workspaces: string; features: string[]; cta: string }> = {
-  starter: {
+const TIER_META: Record<string, { users: string; workspaces: string; extras: string[]; cta: string }> = {
+  'starter-pack': {
     users: '2 Team members',
-    workspaces: '1 Company workspace',
-    features: ['Email support', 'Basic analytics dashboard', '14-day free trial'],
+    workspaces: '1 Workspace',
+    extras: ['Pick any 3 AI Employees', 'Email support', 'Basic analytics', '14-day free trial'],
     cta: 'Start with Starter',
   },
-  professional: {
+  'finance-suite': {
     users: '10 Team members',
-    workspaces: '3 Company workspaces',
-    features: ['Priority support', 'Advanced analytics', 'API access', 'Custom onboarding session'],
-    cta: 'Go Professional',
+    workspaces: '3 Workspaces',
+    extras: ['All finance AI Employees', 'Priority support', 'Advanced analytics', 'API access'],
+    cta: 'Hire Finance Team',
   },
-  enterprise: {
-    users: 'Unlimited team members',
+  'sales-suite': {
+    users: '10 Team members',
+    workspaces: '3 Workspaces',
+    extras: ['All sales AI Employees', 'CRM integrations', 'Lead scoring', 'Pipeline analytics'],
+    cta: 'Hire Sales Team',
+  },
+  'operations-suite': {
+    users: '10 Team members',
+    workspaces: '3 Workspaces',
+    extras: ['All ops AI Employees', 'WMS integrations', 'Supply chain analytics', 'Route optimization'],
+    cta: 'Hire Ops Team',
+  },
+  'full-platform': {
+    users: '25 Team members',
+    workspaces: '10 Workspaces',
+    extras: ['All 14+ AI Employees', 'Dedicated support', 'Full analytics suite', 'API + Webhooks', 'Custom onboarding'],
+    cta: 'Get Full Platform',
+  },
+  'enterprise': {
+    users: 'Unlimited members',
     workspaces: 'Unlimited workspaces',
-    features: ['Dedicated account manager', 'Full analytics suite', 'API + Webhooks', 'Custom integrations', 'SLA guarantee', 'On-site training available'],
+    extras: ['Everything in Platform', 'Dedicated account manager', 'Custom integrations', 'SLA guarantee', 'On-site training'],
     cta: 'Contact Sales',
   },
 };
@@ -59,7 +78,6 @@ export default function PricingPage() {
   const [bundlesLoading, setBundlesLoading] = useState(true);
   const [annual, setAnnual] = useState(false);
   const [loading, setLoading] = useState<string | null>(null);
-  const [selectedSuite, setSelectedSuite] = useState<string>('');
   const params = useSearchParams();
   const canceled = params.get('canceled');
 
@@ -73,51 +91,36 @@ export default function PricingPage() {
       .catch(() => setBundlesLoading(false));
   }, []);
 
-  // Map bundles to display cards
-  const starterBundle = bundles.find(b => b.slug === 'starter-pack');
-  const enterpriseBundle = bundles.find(b => b.slug === 'full-platform');
-  const suites = bundles.filter(b => b.target_tier === 'professional');
-
-  useEffect(() => {
-    if (suites.length > 0 && !selectedSuite) {
-      setSelectedSuite(suites[0].slug);
-    }
-  }, [suites, selectedSuite]);
-
-  const activePro = bundles.find(b => b.slug === selectedSuite) || suites[0];
-
-  const cards = [
-    { tier: 'starter', bundle: starterBundle },
-    { tier: 'professional', bundle: activePro },
-    { tier: 'enterprise', bundle: enterpriseBundle },
-  ];
+  // Sort by display_order
+  const sortedBundles = [...bundles].sort((a, b) => (a.display_order || 0) - (b.display_order || 0));
 
   const formatPrice = (cents: number) => {
     return (cents / 100).toLocaleString('en-US', { maximumFractionDigits: 0 });
   };
 
-  const handleSubscribe = async (tier: string, bundleSlug?: string) => {
-    if (tier === 'enterprise') {
+  const handleSubscribe = async (bundle: Bundle) => {
+    if (bundle.slug === 'enterprise') {
       window.location.href = '/contact?interest=enterprise';
       return;
     }
-
-    setLoading(tier);
+    setLoading(bundle.slug);
     try {
       const sb = getSupabaseBrowser();
       const { data: { session } } = await sb.auth.getSession();
-
       if (!session) {
         window.location.href = '/login?redirect=/pricing';
         return;
       }
-
       const res = await fetch('/api/stripe/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.access_token },
-        body: JSON.stringify({ plan: tier, bundle: bundleSlug, userId: session.user.id, email: session.user.email }),
+        body: JSON.stringify({
+          bundle: bundle.slug,
+          billingPeriod: annual ? 'annual' : 'monthly',
+          userId: session.user.id,
+          email: session.user.email,
+        }),
       });
-
       const data = await res.json();
       if (data.url) window.location.href = data.url;
       else alert(data.error || 'Something went wrong');
@@ -162,10 +165,10 @@ export default function PricingPage() {
         <div className="max-w-3xl mx-auto">
           <p className="text-xs font-bold uppercase tracking-[3px] mb-3" style={{ color: '#2A9D8F' }}>Simple Pricing</p>
           <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight" style={{ color: '#1B2A4A' }}>
-            Choose Your Team Size
+            Choose Your AI Workforce
           </h1>
           <p className="mt-4 text-[#6B7280] text-lg">
-            Hire AI Employees that work for your business. Scale up or down anytime.
+            Hire AI Employees that work for your business. Start with a team or go all-in.
           </p>
 
           {/* Billing Toggle */}
@@ -199,17 +202,17 @@ export default function PricingPage() {
           <div className="text-center py-20 text-[#9CA3AF]">Loading plans...</div>
         ) : (
           <>
-            <div className="max-w-[1100px] mx-auto grid md:grid-cols-3 gap-6">
-              {cards.map(({ tier, bundle }) => {
-                const config = TIER_CONFIG[tier];
-                const isPopular = tier === 'professional';
-                const isEnterprise = tier === 'enterprise';
-                const priceCents = bundle ? (annual ? Math.round(bundle.price_annual_cents / 12) : bundle.price_monthly_cents) : 0;
+            {/* Top row: Starter + 3 Suites */}
+            <div className="max-w-[1280px] mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {sortedBundles.filter(b => b.slug !== 'full-platform' && b.slug !== 'enterprise').map((bundle) => {
+                const meta = TIER_META[bundle.slug] || TIER_META['starter-pack'];
+                const isPopular = bundle.is_featured;
+                const priceCents = annual ? Math.round((bundle.price_annual_cents || 0) / 12) : (bundle.price_monthly_cents || 0);
 
                 return (
                   <div
-                    key={tier}
-                    className={`relative p-10 rounded-3xl border-2 transition-all hover:shadow-xl flex flex-col ${isPopular ? 'lg:scale-[1.03] shadow-xl' : ''}`}
+                    key={bundle.slug}
+                    className={`relative p-7 rounded-2xl border-2 transition-all hover:shadow-xl flex flex-col ${isPopular ? 'shadow-xl ring-1 ring-[#F5920B]/20' : ''}`}
                     style={{
                       background: isPopular ? '#1B2A4A' : '#FFFFFF',
                       borderColor: isPopular ? '#F5920B' : '#E5E7EB',
@@ -217,85 +220,62 @@ export default function PricingPage() {
                     }}
                   >
                     {isPopular && (
-                      <span className="inline-block text-[10px] font-bold uppercase tracking-[1.5px] px-3.5 py-1 rounded-full mb-4 self-start"
+                      <span className="inline-block text-[10px] font-bold uppercase tracking-[1.5px] px-3 py-1 rounded-full mb-3 self-start"
                         style={{ background: 'rgba(245,146,11,0.15)', color: '#F5920B' }}>
                         Most Popular
                       </span>
                     )}
 
-                    <h2 className="text-[22px] font-extrabold" style={{ fontFamily: "'Outfit', sans-serif" }}>
-                      {bundle?.display_name || config.cta}
+                    <h2 className="text-lg font-extrabold" style={{ fontFamily: "'Outfit', sans-serif", color: isPopular ? '#fff' : '#1B2A4A' }}>
+                      {bundle.icon} {bundle.display_name}
                     </h2>
 
-                    {/* Suite Selector for Professional */}
-                    {tier === 'professional' && suites.length > 1 && (
-                      <div className="mt-3 flex flex-wrap gap-1.5">
-                        {suites.map(s => (
-                          <button
-                            key={s.slug}
-                            onClick={() => setSelectedSuite(s.slug)}
-                            className="text-[11px] px-2.5 py-1 rounded-full transition-all font-medium"
-                            style={{
-                              background: selectedSuite === s.slug ? 'rgba(245,146,11,0.2)' : 'rgba(255,255,255,0.08)',
-                              color: selectedSuite === s.slug ? '#F5920B' : 'rgba(255,255,255,0.5)',
-                              border: selectedSuite === s.slug ? '1px solid rgba(245,146,11,0.3)' : '1px solid rgba(255,255,255,0.1)',
-                            }}
-                          >
-                            {s.icon} {s.display_name.replace(' Suite', '')}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-
-                    {isEnterprise ? (
-                      <div className="mt-2">
-                        <p className="text-2xl font-bold" style={{ color: '#6B7280' }}>Custom Pricing</p>
-                        <p className="text-xs mt-1 text-[#6B7280]">Tailored to your organization</p>
-                      </div>
-                    ) : (
-                      <div className="mt-2">
-                        <p className="text-5xl font-black tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
-                          ${formatPrice(priceCents)}
-                          <span className="text-sm font-normal text-[#6B7280]">/mo</span>
-                        </p>
-                        {annual && bundle && (
-                          <p className="text-xs mt-0.5" style={{ color: '#2A9D8F' }}>
-                            ${formatPrice(bundle.price_annual_cents)}/yr · Save {bundle.discount_pct}%
-                          </p>
-                        )}
-                        <p className="text-xs mt-1 text-[#6B7280]">
-                          {bundle?.agent_count || 0} employees · {config.workspaces} · {config.users}
-                        </p>
-                      </div>
-                    )}
-
-                    {/* Bundle description */}
-                    {bundle?.description && (
-                      <p className={`text-xs mt-3 ${isPopular ? 'text-white/50' : 'text-[#9CA3AF]'}`}>
-                        {bundle.description}
+                    <div className="mt-2">
+                      <p className="text-3xl font-black tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                        ${formatPrice(priceCents)}
+                        <span className="text-sm font-normal" style={{ color: isPopular ? 'rgba(255,255,255,0.5)' : '#6B7280' }}>/mo</span>
                       </p>
-                    )}
+                      {annual && bundle.price_annual_cents > 0 && (
+                        <p className="text-xs mt-0.5" style={{ color: '#2A9D8F' }}>
+                          ${formatPrice(bundle.price_annual_cents)}/yr &middot; Save {bundle.discount_pct || 20}%
+                        </p>
+                      )}
+                    </div>
+
+                    <p className={`text-xs mt-3 leading-relaxed ${isPopular ? 'text-white/50' : 'text-[#9CA3AF]'}`}>
+                      {bundle.description}
+                    </p>
+
+                    {/* Features */}
+                    <div className="mt-4 flex-1">
+                      <ul className="space-y-1.5">
+                        <li className={`flex items-center gap-2 text-xs ${isPopular ? 'text-white/70' : 'text-[#4B5563]'}`}>
+                          <Check color={isPopular ? '#F5920B' : '#2A9D8F'} /> {meta.users}
+                        </li>
+                        <li className={`flex items-center gap-2 text-xs ${isPopular ? 'text-white/70' : 'text-[#4B5563]'}`}>
+                          <Check color={isPopular ? '#F5920B' : '#2A9D8F'} /> {meta.workspaces}
+                        </li>
+                        {meta.extras.map((f) => (
+                          <li key={f} className={`flex items-center gap-2 text-xs ${isPopular ? 'text-white/70' : 'text-[#4B5563]'}`}>
+                            <Check color={isPopular ? '#F5920B' : '#2A9D8F'} /> {f}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
 
                     {/* Included agents */}
-                    {bundle && bundle.agents && bundle.agents.length > 0 && !isEnterprise && (
+                    {bundle.agents && bundle.agents.length > 0 && (
                       <div className="mt-4">
                         <p className={`text-[10px] font-bold uppercase tracking-wider mb-2 ${isPopular ? 'text-white/40' : 'text-[#9CA3AF]'}`}>
-                          Included Employees
+                          AI Employees
                         </p>
-                        <div className="flex flex-wrap gap-1.5">
+                        <div className="flex flex-wrap gap-1">
                           {bundle.agents.map((agent: BundleAgent) => (
-                            <span
-                              key={agent.slug}
-                              className="text-[11px] px-2 py-0.5 rounded-full font-medium"
+                            <span key={agent.slug} className="text-[10px] px-2 py-0.5 rounded-full font-medium"
                               style={{
-                                background: agent.is_highlighted
-                                  ? (isPopular ? 'rgba(245,146,11,0.2)' : 'rgba(42,157,143,0.1)')
-                                  : (isPopular ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.04)'),
-                                color: agent.is_highlighted
-                                  ? (isPopular ? '#F5920B' : '#2A9D8F')
-                                  : (isPopular ? 'rgba(255,255,255,0.6)' : '#6B7280'),
-                              }}
-                            >
+                                background: isPopular ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.04)',
+                                color: isPopular ? 'rgba(255,255,255,0.6)' : '#6B7280',
+                              }}>
                               {agent.icon} {agent.display_name}
                             </span>
                           ))}
@@ -303,124 +283,177 @@ export default function PricingPage() {
                       </div>
                     )}
 
-                    {/* Tier features */}
-                    <ul className="mt-6 flex flex-col gap-3 flex-1">
-                      {tier === 'starter' && (
-                        <li className="flex items-center gap-2.5 text-sm">
-                          <span className="w-[18px] h-[18px] rounded-full flex items-center justify-center flex-shrink-0"
-                            style={{ background: 'rgba(42,157,143,0.1)' }}>
-                            <Check color="#2A9D8F" />
-                          </span>
-                          <span className="text-[#6B7280]">Pick any 3 AI Employees</span>
-                        </li>
-                      )}
-                      {isEnterprise && (
-                        <li className="flex items-center gap-2.5 text-sm">
-                          <span className="w-[18px] h-[18px] rounded-full flex items-center justify-center flex-shrink-0"
-                            style={{ background: 'rgba(42,157,143,0.1)' }}>
-                            <Check color="#2A9D8F" />
-                          </span>
-                          <span className="text-[#6B7280]">All {enterpriseBundle?.agent_count || 21} AI Employees</span>
-                        </li>
-                      )}
-                      {[config.workspaces, config.users, ...config.features].map((f) => (
-                        <li key={f} className="flex items-center gap-2.5 text-sm">
-                          <span className="w-[18px] h-[18px] rounded-full flex items-center justify-center flex-shrink-0"
-                            style={{ background: isPopular ? 'rgba(245,146,11,0.2)' : 'rgba(42,157,143,0.1)' }}>
-                            <Check color={isPopular ? '#F5920B' : '#2A9D8F'} />
-                          </span>
-                          <span className={isPopular ? 'text-white/75' : 'text-[#6B7280]'}>{f}</span>
-                        </li>
-                      ))}
-                    </ul>
-
                     <button
-                      onClick={() => handleSubscribe(tier, bundle?.slug)}
-                      disabled={loading !== null && !isEnterprise}
-                      className="w-full mt-8 py-3.5 rounded-2xl text-[15px] font-bold transition-all hover:-translate-y-px disabled:opacity-50 disabled:cursor-wait"
+                      onClick={() => handleSubscribe(bundle)}
+                      disabled={loading === bundle.slug}
+                      className="mt-5 w-full py-2.5 rounded-xl text-sm font-bold transition-all hover:-translate-y-px disabled:opacity-50"
                       style={{
-                        background: isPopular ? '#F5920B' : isEnterprise ? '#1B2A4A' : 'transparent',
-                        color: isPopular ? '#fff' : isEnterprise ? '#fff' : '#1B2A4A',
-                        border: !isPopular && !isEnterprise ? '2px solid #1B2A4A' : 'none',
+                        background: isPopular ? '#F5920B' : '#1B2A4A',
+                        color: '#fff',
                         boxShadow: isPopular ? '0 4px 16px rgba(245,146,11,0.3)' : 'none',
                       }}
                     >
-                      {loading === tier ? 'Redirecting to Stripe...' : config.cta}
+                      {loading === bundle.slug ? 'Loading...' : meta.cta}
                     </button>
                   </div>
                 );
               })}
             </div>
 
-            {/* All Suites Comparison */}
-            {suites.length > 1 && (
-              <div className="max-w-[1100px] mx-auto mt-16">
-                <h3 className="text-2xl font-extrabold text-center mb-8" style={{ color: '#1B2A4A', fontFamily: "'Outfit', sans-serif" }}>
-                  Compare Professional Suites
-                </h3>
-                <div className="grid sm:grid-cols-3 gap-4">
-                  {suites.map(suite => (
-                    <div key={suite.slug} className="p-6 rounded-2xl border-2 transition-all hover:shadow-lg"
-                      style={{
-                        background: '#fff',
-                        borderColor: selectedSuite === suite.slug ? '#F5920B' : '#E5E7EB',
-                      }}>
-                      <div className="flex items-center gap-2 mb-3">
-                        <span className="text-2xl">{suite.icon}</span>
-                        <h4 className="text-lg font-bold" style={{ color: '#1B2A4A' }}>{suite.display_name}</h4>
+            {/* Bottom row: Full Platform + Enterprise — wider cards */}
+            <div className="max-w-[1280px] mx-auto grid md:grid-cols-2 gap-5 mt-5">
+              {sortedBundles.filter(b => b.slug === 'full-platform' || b.slug === 'enterprise').map((bundle) => {
+                const meta = TIER_META[bundle.slug] || TIER_META['full-platform'];
+                const isEnterprise = bundle.slug === 'enterprise';
+                const priceCents = annual ? Math.round((bundle.price_annual_cents || 0) / 12) : (bundle.price_monthly_cents || 0);
+
+                return (
+                  <div
+                    key={bundle.slug}
+                    className="relative p-8 rounded-2xl border-2 transition-all hover:shadow-xl flex flex-col"
+                    style={{
+                      background: 'linear-gradient(135deg, #1B2A4A 0%, #0f1b33 100%)',
+                      borderColor: isEnterprise ? '#2A9D8F' : '#F5920B',
+                      color: '#fff',
+                    }}
+                  >
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <h2 className="text-xl font-extrabold" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                          {bundle.icon} {bundle.display_name}
+                        </h2>
+                        <p className="text-white/50 text-xs mt-1 max-w-sm">{bundle.description}</p>
                       </div>
-                      <p className="text-xs text-[#9CA3AF] mb-4">{suite.description}</p>
-                      <p className="text-2xl font-black mb-3" style={{ color: '#1B2A4A', fontFamily: "'Outfit', sans-serif" }}>
-                        ${formatPrice(annual ? Math.round(suite.price_annual_cents / 12) : suite.price_monthly_cents)}
-                        <span className="text-xs font-normal text-[#6B7280]">/mo</span>
-                      </p>
-                      <div className="flex flex-wrap gap-1">
-                        {suite.agents?.map((a: BundleAgent) => (
-                          <span key={a.slug} className="text-[10px] px-2 py-0.5 rounded-full"
-                            style={{
-                              background: a.is_highlighted ? 'rgba(42,157,143,0.1)' : 'rgba(0,0,0,0.03)',
-                              color: a.is_highlighted ? '#2A9D8F' : '#6B7280',
-                            }}>
-                            {a.icon} {a.display_name}
-                          </span>
-                        ))}
+                      <div className="text-right">
+                        {isEnterprise ? (
+                          <p className="text-lg font-bold text-white/70">Custom Pricing</p>
+                        ) : (
+                          <>
+                            <p className="text-3xl font-black tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                              ${formatPrice(priceCents)}
+                              <span className="text-sm font-normal text-white/50">/mo</span>
+                            </p>
+                            {annual && bundle.price_annual_cents > 0 && (
+                              <p className="text-xs mt-0.5" style={{ color: '#2A9D8F' }}>
+                                ${formatPrice(bundle.price_annual_cents)}/yr
+                              </p>
+                            )}
+                          </>
+                        )}
                       </div>
-                      <button
-                        onClick={() => setSelectedSuite(suite.slug)}
-                        className="w-full mt-4 py-2 rounded-xl text-xs font-bold transition-all"
-                        style={{
-                          background: selectedSuite === suite.slug ? '#F5920B' : 'transparent',
-                          color: selectedSuite === suite.slug ? '#fff' : '#1B2A4A',
-                          border: selectedSuite === suite.slug ? 'none' : '1.5px solid #E5E7EB',
-                        }}
-                      >
-                        {selectedSuite === suite.slug ? 'Selected' : 'Select Suite'}
-                      </button>
                     </div>
-                  ))}
-                </div>
-              </div>
-            )}
+
+                    <div className="mt-5 grid sm:grid-cols-2 gap-4 flex-1">
+                      {/* Features */}
+                      <div>
+                        <p className="text-[10px] font-bold uppercase tracking-wider mb-2 text-white/40">What&apos;s Included</p>
+                        <ul className="space-y-1.5">
+                          <li className="flex items-center gap-2 text-xs text-white/70">
+                            <Check color="#F5920B" /> {meta.users}
+                          </li>
+                          <li className="flex items-center gap-2 text-xs text-white/70">
+                            <Check color="#F5920B" /> {meta.workspaces}
+                          </li>
+                          {meta.extras.map((f) => (
+                            <li key={f} className="flex items-center gap-2 text-xs text-white/70">
+                              <Check color="#F5920B" /> {f}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* Agents */}
+                      {bundle.agents && bundle.agents.length > 0 && (
+                        <div>
+                          <p className="text-[10px] font-bold uppercase tracking-wider mb-2 text-white/40">
+                            {isEnterprise ? 'Everything + Custom' : 'All AI Employees'}
+                          </p>
+                          <div className="flex flex-wrap gap-1">
+                            {bundle.agents.map((agent: BundleAgent) => (
+                              <span key={agent.slug} className="text-[10px] px-2 py-0.5 rounded-full font-medium"
+                                style={{ background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.6)' }}>
+                                {agent.icon} {agent.display_name}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    <button
+                      onClick={() => handleSubscribe(bundle)}
+                      disabled={loading === bundle.slug}
+                      className="mt-6 w-full py-3 rounded-xl text-sm font-bold transition-all hover:-translate-y-px disabled:opacity-50"
+                      style={{
+                        background: isEnterprise ? '#2A9D8F' : '#F5920B',
+                        color: '#fff',
+                        boxShadow: isEnterprise ? '0 4px 16px rgba(42,157,143,0.3)' : '0 4px 16px rgba(245,146,11,0.3)',
+                      }}
+                    >
+                      {loading === bundle.slug ? 'Loading...' : meta.cta}
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
           </>
         )}
+      </section>
 
-        <div className="text-center mt-10 space-y-1">
-          <p className="text-sm text-[#6B7280]">Starter and Professional plans include a 14-day free trial. No credit card required.</p>
-          <p className="text-xs text-[#6B7280]">Powered by Stripe · PCI compliant · Cancel anytime</p>
-          <p className="text-sm text-[#9CA3AF] mt-4">
-            Need something custom? <Link href="/contact" className="font-semibold" style={{ color: '#F5920B' }}>Contact our team</Link>
-          </p>
+      {/* FAQ */}
+      <section className="py-16 px-6" style={{ background: '#fff' }}>
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-2xl font-extrabold text-center mb-10" style={{ color: '#1B2A4A' }}>
+            Frequently Asked Questions
+          </h2>
+          {[
+            { q: 'What are AI Employees?', a: 'AI Employees are intelligent agents that handle real business tasks — from financial analysis and collections to sales outreach and warehouse operations. They connect to your existing tools and work 24/7.' },
+            { q: 'Can I switch plans later?', a: 'Absolutely. Upgrade or downgrade anytime. When you upgrade, you only pay the prorated difference. When you downgrade, credit is applied to your next billing cycle.' },
+            { q: 'How do integrations work?', a: 'After subscribing, our onboarding wizard helps you connect your tools (QuickBooks, HubSpot, Odoo, etc.) in minutes. Your AI Employees start pulling real data immediately.' },
+            { q: 'What if I need custom agents?', a: 'Our Enterprise plan includes custom AI Employee development tailored to your specific workflows. Contact our team to discuss your needs.' },
+            { q: 'Is there a free trial?', a: 'Yes! Every plan includes a 14-day free trial. No credit card required to explore.' },
+            { q: 'How is billing handled?', a: 'We use Stripe for secure billing. Choose monthly or annual billing (save 20% annually). Cancel anytime with no penalties.' },
+          ].map(({ q, a }) => (
+            <details key={q} className="group border-b border-[#E5E7EB] py-4">
+              <summary className="flex items-center justify-between cursor-pointer text-sm font-semibold text-[#1B2A4A] hover:text-[#F5920B] transition-colors">
+                {q}
+                <svg className="w-4 h-4 text-[#9CA3AF] group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <p className="mt-2 text-sm text-[#6B7280] leading-relaxed">{a}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-16 px-6 text-center" style={{ background: '#1B2A4A' }}>
+        <div className="max-w-2xl mx-auto">
+          <h2 className="text-3xl font-extrabold text-white mb-4">Ready to Hire Your AI Team?</h2>
+          <p className="text-white/60 mb-8">Start your 14-day free trial. No credit card required.</p>
+          <Link href="/register" className="inline-block text-sm font-bold text-white px-8 py-3.5 rounded-xl transition-all hover:-translate-y-px"
+            style={{ background: '#F5920B', boxShadow: '0 4px 16px rgba(245,146,11,0.3)' }}>
+            Get Started Free
+          </Link>
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="py-8 px-6 border-t" style={{ borderColor: '#E5E7EB' }}>
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <span className="text-[11px] text-[#6B7280]">© 2026 WoulfAI by Woulf Group</span>
-          <div className="flex gap-4">
-            <Link href="/privacy" className="text-[11px] text-[#6B7280] hover:text-[#1B2A4A]">Privacy</Link>
-            <Link href="/terms" className="text-[11px] text-[#6B7280] hover:text-[#1B2A4A]">Terms</Link>
+      <footer className="py-10 px-6" style={{ background: '#0f1b33', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <Image src="/woulf-badge.png" alt="Woulf" width={24} height={24} />
+            <span className="text-sm font-bold text-white/60">
+              Woulf<span style={{ color: '#F5920B' }}>AI</span>
+            </span>
           </div>
+          <div className="flex items-center gap-6">
+            <Link href="/privacy" className="text-xs text-white/30 hover:text-white/60 transition-colors">Privacy</Link>
+            <Link href="/terms" className="text-xs text-white/30 hover:text-white/60 transition-colors">Terms</Link>
+            <Link href="/contact" className="text-xs text-white/30 hover:text-white/60 transition-colors">Contact</Link>
+          </div>
+          <p className="text-xs text-white/20">&copy; 2026 Woulf Group. All rights reserved.</p>
         </div>
       </footer>
     </div>
