@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   if (!user) return unauthorized();
 
   try {
-    const sb = getSupabaseClient();
+    const sb = getSupabaseClient() as any;
     const { searchParams } = new URL(request.url);
     const companyId = searchParams.get('companyId') || user.company_id;
 
@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
   if (!auth.authorized) return NextResponse.json({ error: auth.error }, { status: auth.status });
 
   try {
-    const sb = getSupabaseClient();
+    const sb = getSupabaseClient() as any;
     const body = await request.json();
     const { companyId, agentId, url, secret, events, description } = body;
 
@@ -67,7 +67,7 @@ export async function PATCH(request: NextRequest) {
   if (!auth.authorized) return NextResponse.json({ error: auth.error }, { status: auth.status });
 
   try {
-    const sb = getSupabaseClient();
+    const sb = getSupabaseClient() as any;
     const body = await request.json();
     const { id, ...updates } = body;
     if (!id) return NextResponse.json({ error: 'id required' }, { status: 400 });
@@ -94,7 +94,7 @@ export async function DELETE(request: NextRequest) {
   if (!auth.authorized) return NextResponse.json({ error: auth.error }, { status: auth.status });
 
   try {
-    const sb = getSupabaseClient();
+    const sb = getSupabaseClient() as any;
     const id = new URL(request.url).searchParams.get('id');
     if (!id) return NextResponse.json({ error: 'id required' }, { status: 400 });
 

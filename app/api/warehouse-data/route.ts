@@ -18,11 +18,11 @@ export async function GET(req: NextRequest) {
   const view = req.nextUrl.searchParams.get('view') || 'dashboard';
 
   try {
-    const data = await getWarehouseData(companyId);
+    const data = await getWarehouseData(companyId as any);
 
     // Safety: never serve live data to unauthenticated requests
     if (!authenticated && data.source === 'live') {
-      const demoData = await getWarehouseData(undefined);
+      const demoData = await getWarehouseData(undefined as any);
       return buildWarehouseResponse(view, demoData, req);
     }
 

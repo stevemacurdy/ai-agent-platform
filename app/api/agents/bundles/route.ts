@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
   // NOTE: Intentionally public — pricing page fetches bundles without auth.
   // No sensitive data is exposed (just names, prices, agent lists).
   try {
-    const sb = getSupabaseClient();
+    const sb = getSupabaseClient() as any;
     const { searchParams } = new URL(request.url);
     const slug = searchParams.get('slug');
     const companyId = searchParams.get('companyId');
@@ -108,7 +108,7 @@ export async function POST(request: NextRequest) {
   if (!auth.authorized) return NextResponse.json({ error: auth.error }, { status: auth.status });
 
   try {
-    const sb = getSupabaseClient();
+    const sb = getSupabaseClient() as any;
     const body = await request.json();
 
     const { data, error } = await sb

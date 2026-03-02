@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   if (!user) return unauthorized();
 
   try {
-    const sb = getSupabaseClient();
+    const sb = getSupabaseClient() as any;
     const { searchParams } = new URL(request.url);
     const agentSlug = searchParams.get('agentSlug');
     const direction = searchParams.get('direction') || 'both';

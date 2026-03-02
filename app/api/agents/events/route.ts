@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   if (!user) return unauthorized();
 
   try {
-    const sb = getSupabaseClient();
+    const sb = getSupabaseClient() as any;
     const { searchParams } = new URL(request.url);
     const agentId = searchParams.get('agentId');
     const agentSlug = searchParams.get('agentSlug');
@@ -65,7 +65,7 @@ export async function GET(request: NextRequest) {
     });
 
     const categories = [...new Set(enriched.map((e: any) => e.category))];
-    const grouped = categories.reduce((acc: any, cat: string) => {
+    const grouped = categories.reduce((acc: any, cat: any) => {
       acc[cat] = enriched.filter((e: any) => e.category === cat);
       return acc;
     }, {} as Record<string, any[]>);

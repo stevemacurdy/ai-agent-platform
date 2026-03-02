@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   if (!user) return unauthorized();
 
   try {
-    const sb = getSupabaseClient();
+    const sb = getSupabaseClient() as any;
     const { searchParams } = new URL(request.url);
     const companyId = searchParams.get('companyId') || user.company_id;
     const agentId = searchParams.get('agentId');
@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
   if (!auth.authorized) return NextResponse.json({ error: auth.error }, { status: auth.status });
 
   try {
-    const sb = getSupabaseClient();
+    const sb = getSupabaseClient() as any;
     const body = await request.json();
     const { agentId, companyId, metric, value } = body;
 

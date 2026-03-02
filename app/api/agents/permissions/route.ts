@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
   if (!auth.authorized) return NextResponse.json({ error: auth.error }, { status: auth.status });
 
   try {
-    const sb = getSupabaseClient();
+    const sb = getSupabaseClient() as any;
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get('userId');
     const companyId = searchParams.get('companyId');
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
   if (!auth.authorized) return NextResponse.json({ error: auth.error }, { status: auth.status });
 
   try {
-    const sb = getSupabaseClient();
+    const sb = getSupabaseClient() as any;
     const body = await request.json();
     const { userId, agentId, companyId, permissionLevel } = body;
 
@@ -87,7 +87,7 @@ export async function DELETE(request: NextRequest) {
   if (!auth.authorized) return NextResponse.json({ error: auth.error }, { status: auth.status });
 
   try {
-    const sb = getSupabaseClient();
+    const sb = getSupabaseClient() as any;
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
     const userId = searchParams.get('userId');
