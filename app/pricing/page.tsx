@@ -30,42 +30,38 @@ interface Bundle {
   agent_count: number;
 }
 
-const TIER_META: Record<string, { users: string; workspaces: string; extras: string[]; cta: string }> = {
-  'starter-pack': {
-    users: '2 Team members',
-    workspaces: '1 Workspace',
-    extras: ['Pick any 3 AI Employees', 'Email support', 'Basic analytics', '14-day free trial'],
-    cta: 'Start with Starter',
+const TIER_META: Record<string, { seats: string; actions: string; storage: string; extras: string[]; cta: string; comparison: string }> = {
+  'starter': {
+    seats: '2 seats',
+    actions: '5,000 AI actions/mo',
+    storage: '10 GB storage',
+    extras: ['Pick any 3 AI Employees', '1 core integration', 'Email support', '14-day free trial'],
+    cta: 'Start Free Trial',
+    comparison: 'vs. $3,500–$4,500/mo for one warehouse worker',
   },
-  'finance-suite': {
-    users: '10 Team members',
-    workspaces: '3 Workspaces',
-    extras: ['All finance AI Employees', 'Priority support', 'Advanced analytics', 'API access'],
-    cta: 'Hire Finance Team',
+  'growth': {
+    seats: '5 seats',
+    actions: '25,000 AI actions/mo',
+    storage: '50 GB storage',
+    extras: ['Pick any 10 AI Employees', '3 core integrations', 'Priority email + chat support', 'Advanced analytics', 'API access'],
+    cta: 'Start Free Trial',
+    comparison: 'vs. $15,000+/mo for a 3-person back-office team',
   },
-  'sales-suite': {
-    users: '10 Team members',
-    workspaces: '3 Workspaces',
-    extras: ['All sales AI Employees', 'CRM integrations', 'Lead scoring', 'Pipeline analytics'],
-    cta: 'Hire Sales Team',
+  'professional': {
+    seats: 'Unlimited seats',
+    actions: '100,000 AI actions/mo',
+    storage: '200 GB storage',
+    extras: ['All 21 AI Employees', 'Unlimited integrations', 'Dedicated support', 'Full analytics suite', 'API + Webhooks', 'Custom onboarding'],
+    cta: 'Start Free Trial',
+    comparison: 'vs. $50,000+/mo for a full operations team',
   },
-  'operations-suite': {
-    users: '10 Team members',
-    workspaces: '3 Workspaces',
-    extras: ['All ops AI Employees', 'WMS integrations', 'Supply chain analytics', 'Route optimization'],
-    cta: 'Hire Ops Team',
-  },
-  'full-platform': {
-    users: '25 Team members',
-    workspaces: '10 Workspaces',
-    extras: ['All 14+ AI Employees', 'Dedicated support', 'Full analytics suite', 'API + Webhooks', 'Custom onboarding'],
-    cta: 'Get Full Platform',
-  },
-  'enterprise': {
-    users: 'Unlimited members',
-    workspaces: 'Unlimited workspaces',
-    extras: ['Everything in Platform', 'Dedicated account manager', 'Custom integrations', 'SLA guarantee', 'On-site training'],
+  'enterprise-custom': {
+    seats: 'Unlimited seats',
+    actions: 'Unlimited AI actions',
+    storage: 'Unlimited storage',
+    extras: ['All 21 + custom AI Employees', 'Unlimited integrations', 'Dedicated account manager', 'Custom SLA guarantee', 'On-site training', 'White-label available'],
     cta: 'Contact Sales',
+    comparison: 'Custom-built for your enterprise',
   },
 };
 
@@ -99,7 +95,7 @@ export default function PricingPage() {
   };
 
   const handleSubscribe = async (bundle: Bundle) => {
-    if (bundle.slug === 'enterprise') {
+    if (bundle.slug === 'enterprise-custom') {
       window.location.href = '/contact?interest=enterprise';
       return;
     }
@@ -202,11 +198,12 @@ export default function PricingPage() {
           <div className="text-center py-20 text-[#9CA3AF]">Loading plans...</div>
         ) : (
           <>
-            {/* Top row: Starter + 3 Suites */}
+            {/* 4-tier grid */}
             <div className="max-w-[1280px] mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {sortedBundles.filter(b => b.slug !== 'full-platform' && b.slug !== 'enterprise').map((bundle) => {
-                const meta = TIER_META[bundle.slug] || TIER_META['starter-pack'];
+              {sortedBundles.map((bundle) => {
+                const meta = TIER_META[bundle.slug] || TIER_META['starter'];
                 const isPopular = bundle.is_featured;
+                const isEnterprise = bundle.slug === 'enterprise-custom';
                 const priceCents = annual ? Math.round((bundle.price_annual_cents || 0) / 12) : (bundle.price_monthly_cents || 0);
 
                 return (
@@ -231,14 +228,23 @@ export default function PricingPage() {
                     </h2>
 
                     <div className="mt-2">
-                      <p className="text-3xl font-black tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
-                        ${formatPrice(priceCents)}
-                        <span className="text-sm font-normal" style={{ color: isPopular ? 'rgba(255,255,255,0.5)' : '#6B7280' }}>/mo</span>
-                      </p>
-                      {annual && bundle.price_annual_cents > 0 && (
-                        <p className="text-xs mt-0.5" style={{ color: '#2A9D8F' }}>
-                          ${formatPrice(bundle.price_annual_cents)}/yr &middot; Save {bundle.discount_pct || 20}%
+                      {isEnterprise ? (
+                        <p className="text-2xl font-black tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                          Custom
+                          <span className="text-sm font-normal" style={{ color: '#6B7280' }}> pricing</span>
                         </p>
+                      ) : (
+                        <>
+                          <p className="text-3xl font-black tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                            ${formatPrice(priceCents)}
+                            <span className="text-sm font-normal" style={{ color: isPopular ? 'rgba(255,255,255,0.5)' : '#6B7280' }}>/mo</span>
+                          </p>
+                          {annual && bundle.price_annual_cents > 0 && (
+                            <p className="text-xs mt-0.5" style={{ color: '#2A9D8F' }}>
+                              ${formatPrice(bundle.price_annual_cents)}/yr &middot; Save {bundle.discount_pct || 20}%
+                            </p>
+                          )}
+                        </>
                       )}
                     </div>
 
@@ -246,14 +252,17 @@ export default function PricingPage() {
                       {bundle.description}
                     </p>
 
-                    {/* Features */}
+                    {/* Capacity */}
                     <div className="mt-4 flex-1">
                       <ul className="space-y-1.5">
-                        <li className={`flex items-center gap-2 text-xs ${isPopular ? 'text-white/70' : 'text-[#4B5563]'}`}>
-                          <Check color={isPopular ? '#F5920B' : '#2A9D8F'} /> {meta.users}
+                        <li className={`flex items-center gap-2 text-xs font-semibold ${isPopular ? 'text-white/90' : 'text-[#1B2A4A]'}`}>
+                          <Check color={isPopular ? '#F5920B' : '#2A9D8F'} /> {meta.seats}
                         </li>
-                        <li className={`flex items-center gap-2 text-xs ${isPopular ? 'text-white/70' : 'text-[#4B5563]'}`}>
-                          <Check color={isPopular ? '#F5920B' : '#2A9D8F'} /> {meta.workspaces}
+                        <li className={`flex items-center gap-2 text-xs font-semibold ${isPopular ? 'text-white/90' : 'text-[#1B2A4A]'}`}>
+                          <Check color={isPopular ? '#F5920B' : '#2A9D8F'} /> {meta.actions}
+                        </li>
+                        <li className={`flex items-center gap-2 text-xs font-semibold ${isPopular ? 'text-white/90' : 'text-[#1B2A4A]'}`}>
+                          <Check color={isPopular ? '#F5920B' : '#2A9D8F'} /> {meta.storage}
                         </li>
                         {meta.extras.map((f) => (
                           <li key={f} className={`flex items-center gap-2 text-xs ${isPopular ? 'text-white/70' : 'text-[#4B5563]'}`}>
@@ -261,6 +270,11 @@ export default function PricingPage() {
                           </li>
                         ))}
                       </ul>
+
+                      {/* Headcount comparison */}
+                      <p className={`text-[10px] mt-3 italic ${isPopular ? 'text-white/30' : 'text-[#9CA3AF]'}`}>
+                        {meta.comparison}
+                      </p>
                     </div>
 
                     {/* Included agents */}
@@ -288,106 +302,9 @@ export default function PricingPage() {
                       disabled={loading === bundle.slug}
                       className="mt-5 w-full py-2.5 rounded-xl text-sm font-bold transition-all hover:-translate-y-px disabled:opacity-50"
                       style={{
-                        background: isPopular ? '#F5920B' : '#1B2A4A',
+                        background: isPopular ? '#F5920B' : isEnterprise ? '#2A9D8F' : '#1B2A4A',
                         color: '#fff',
                         boxShadow: isPopular ? '0 4px 16px rgba(245,146,11,0.3)' : 'none',
-                      }}
-                    >
-                      {loading === bundle.slug ? 'Loading...' : meta.cta}
-                    </button>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Bottom row: Full Platform + Enterprise — wider cards */}
-            <div className="max-w-[1280px] mx-auto grid md:grid-cols-2 gap-5 mt-5">
-              {sortedBundles.filter(b => b.slug === 'full-platform' || b.slug === 'enterprise').map((bundle) => {
-                const meta = TIER_META[bundle.slug] || TIER_META['full-platform'];
-                const isEnterprise = bundle.slug === 'enterprise';
-                const priceCents = annual ? Math.round((bundle.price_annual_cents || 0) / 12) : (bundle.price_monthly_cents || 0);
-
-                return (
-                  <div
-                    key={bundle.slug}
-                    className="relative p-8 rounded-2xl border-2 transition-all hover:shadow-xl flex flex-col"
-                    style={{
-                      background: 'linear-gradient(135deg, #1B2A4A 0%, #0f1b33 100%)',
-                      borderColor: isEnterprise ? '#2A9D8F' : '#F5920B',
-                      color: '#fff',
-                    }}
-                  >
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <h2 className="text-xl font-extrabold" style={{ fontFamily: "'Outfit', sans-serif" }}>
-                          {bundle.icon} {bundle.display_name}
-                        </h2>
-                        <p className="text-white/50 text-xs mt-1 max-w-sm">{bundle.description}</p>
-                      </div>
-                      <div className="text-right">
-                        {isEnterprise ? (
-                          <p className="text-lg font-bold text-white/70">Custom Pricing</p>
-                        ) : (
-                          <>
-                            <p className="text-3xl font-black tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
-                              ${formatPrice(priceCents)}
-                              <span className="text-sm font-normal text-white/50">/mo</span>
-                            </p>
-                            {annual && bundle.price_annual_cents > 0 && (
-                              <p className="text-xs mt-0.5" style={{ color: '#2A9D8F' }}>
-                                ${formatPrice(bundle.price_annual_cents)}/yr
-                              </p>
-                            )}
-                          </>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="mt-5 grid sm:grid-cols-2 gap-4 flex-1">
-                      {/* Features */}
-                      <div>
-                        <p className="text-[10px] font-bold uppercase tracking-wider mb-2 text-white/40">What&apos;s Included</p>
-                        <ul className="space-y-1.5">
-                          <li className="flex items-center gap-2 text-xs text-white/70">
-                            <Check color="#F5920B" /> {meta.users}
-                          </li>
-                          <li className="flex items-center gap-2 text-xs text-white/70">
-                            <Check color="#F5920B" /> {meta.workspaces}
-                          </li>
-                          {meta.extras.map((f) => (
-                            <li key={f} className="flex items-center gap-2 text-xs text-white/70">
-                              <Check color="#F5920B" /> {f}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      {/* Agents */}
-                      {bundle.agents && bundle.agents.length > 0 && (
-                        <div>
-                          <p className="text-[10px] font-bold uppercase tracking-wider mb-2 text-white/40">
-                            {isEnterprise ? 'Everything + Custom' : 'All AI Employees'}
-                          </p>
-                          <div className="flex flex-wrap gap-1">
-                            {bundle.agents.map((agent: BundleAgent) => (
-                              <span key={agent.slug} className="text-[10px] px-2 py-0.5 rounded-full font-medium"
-                                style={{ background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.6)' }}>
-                                {agent.icon} {agent.display_name}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-
-                    <button
-                      onClick={() => handleSubscribe(bundle)}
-                      disabled={loading === bundle.slug}
-                      className="mt-6 w-full py-3 rounded-xl text-sm font-bold transition-all hover:-translate-y-px disabled:opacity-50"
-                      style={{
-                        background: isEnterprise ? '#2A9D8F' : '#F5920B',
-                        color: '#fff',
-                        boxShadow: isEnterprise ? '0 4px 16px rgba(42,157,143,0.3)' : '0 4px 16px rgba(245,146,11,0.3)',
                       }}
                     >
                       {loading === bundle.slug ? 'Loading...' : meta.cta}
