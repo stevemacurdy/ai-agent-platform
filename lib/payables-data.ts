@@ -100,7 +100,7 @@ function calcPriority(daysTilDue: number, amount: number): 'low' | 'medium' | 'h
 async function fetchLiveBills(connId: string): Promise<Bill[]> {
   try {
     // Unified.to accounting API for bills/payments
-    const raw = await accounting.listPayments(connId, { limit: '200' });
+    const raw = await accounting.listInvoices(connId, { limit: '200' });
     const payments = Array.isArray(raw) ? raw : raw?.results || raw?.data || [];
 
     return payments.map((p: any, idx: number) => {
