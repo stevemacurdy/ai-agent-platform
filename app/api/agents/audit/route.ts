@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
   if (!auth.authorized) return NextResponse.json({ error: auth.error }, { status: auth.status });
 
   try {
-    const sb = getSupabaseClient();
+    const sb = getSupabaseClient() as any;
     const { searchParams } = new URL(request.url);
     const agentId = searchParams.get('agentId');
     const agentSlug = searchParams.get('agentSlug');
@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
   if (!auth.authorized) return NextResponse.json({ error: auth.error }, { status: auth.status });
 
   try {
-    const sb = getSupabaseClient();
+    const sb = getSupabaseClient() as any;
     const body = await request.json();
     const { agentId, action, entityType, entityId, oldValue, newValue, description } = body;
 
