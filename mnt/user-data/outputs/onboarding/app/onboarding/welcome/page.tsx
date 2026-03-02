@@ -214,107 +214,40 @@ function CompanyStep({ companyName, setCompanyName, industry, setIndustry, size,
 }
 
 function ConnectStep({ onNext, onBack }: { onNext: () => void; onBack: () => void }) {
-  const [connected, setConnected] = useState<Record<string, boolean>>({});
-  const [connecting, setConnecting] = useState<string | null>(null);
-
-  const categories = [
-    { id: 'accounting', name: 'Accounting', icon: '💰', providers: 'QuickBooks, Xero, Odoo, Sage, NetSuite', agents: 'CFO, FinOps, Payables' },
-    { id: 'crm', name: 'CRM', icon: '🤝', providers: 'HubSpot, Salesforce, Pipedrive, Zoho', agents: 'Sales, Sales Coach' },
-    { id: 'hris', name: 'HR & Payroll', icon: '👥', providers: 'BambooHR, Gusto, ADP, Rippling', agents: 'HR Agent' },
-    { id: 'commerce', name: 'E-Commerce', icon: '🛒', providers: 'Shopify, WooCommerce, BigCommerce', agents: 'Operations, Supply Chain' },
-    { id: 'martech', name: 'Marketing', icon: '📣', providers: 'Mailchimp, Klaviyo, ActiveCampaign', agents: 'Marketing, SEO' },
-    { id: 'ticketing', name: 'Support', icon: '🎫', providers: 'Zendesk, Freshdesk, Intercom', agents: 'Support Agent' },
+  const integrations = [
+    { name: 'QuickBooks', icon: '📗', cat: 'Accounting' },
+    { name: 'Xero', icon: '📘', cat: 'Accounting' },
+    { name: 'Odoo', icon: '🟣', cat: 'ERP / Accounting' },
+    { name: 'HubSpot', icon: '🟠', cat: 'CRM' },
+    { name: 'Salesforce', icon: '☁️', cat: 'CRM' },
+    { name: 'Shopify', icon: '🛒', cat: 'E-Commerce' },
   ];
-
-  const handleConnect = async (categoryId: string) => {
-    setConnecting(categoryId);
-    try {
-      const session = JSON.parse(localStorage.getItem('woulfai_session') || '{}');
-      const companyId = session?.company_id || session?.user?.user_metadata?.company_id || 'onboarding';
-      const r = await fetch('/api/integrations/connect', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          companyId,
-          categories: [categoryId],
-          successRedirect: window.location.origin + '/api/integrations/callback?onboarding=true',
-        }),
-      });
-      const data = await r.json();
-      if (data.embedUrl) {
-        const w = 600, h = 700;
-        const left = (screen.width - w) / 2, top = (screen.height - h) / 2;
-        const popup = window.open(data.embedUrl, 'unified_connect', 'width=' + w + ',height=' + h + ',left=' + left + ',top=' + top + ',scrollbars=yes');
-        const interval = setInterval(() => {
-          if (!popup || popup.closed) {
-            clearInterval(interval);
-            setConnected(prev => ({ ...prev, [categoryId]: true }));
-            setConnecting(null);
-          }
-        }, 500);
-      }
-    } catch {
-      setConnecting(null);
-    }
-  };
-
-  const connectedCount = Object.values(connected).filter(Boolean).length;
 
   return (
     <div className="max-w-lg mx-auto">
       <h2 className="text-2xl font-extrabold mb-1" style={{ fontFamily: "'Outfit', sans-serif", color: '#1B2A4A' }}>Connect Your Software</h2>
-      <p className="text-sm text-[#9CA3AF] mb-2">Your AI Employees work best with real data. Connect your tools now or add them later in Settings.</p>
-      {connectedCount > 0 && (
-        <p className="text-xs font-medium px-3 py-1.5 rounded-lg inline-block mb-4" style={{ background: 'rgba(42,157,143,0.08)', color: '#2A9D8F' }}>
-          {connectedCount} connected \u2014 your AI Employees are ready to pull real data!
-        </p>
-      )}
-      <div className="space-y-3 mt-4">
-        {categories.map(cat => {
-          const isConnected = connected[cat.id];
-          const isConnecting = connecting === cat.id;
-          return (
-            <div key={cat.id} className="flex items-center justify-between p-4 rounded-xl border-2 transition-all"
-              style={{ background: isConnected ? 'rgba(42,157,143,0.04)' : '#fff', borderColor: isConnected ? 'rgba(42,157,143,0.3)' : '#E5E7EB' }}>
-              <div className="flex items-center gap-3">
-                <span className="text-2xl">{cat.icon}</span>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold" style={{ color: '#1B2A4A' }}>{cat.name}</span>
-                    {isConnected && (
-                      <span className="flex items-center gap-1 text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-emerald-50 text-emerald-600">
-                        <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" /> Connected
-                      </span>
-                    )}
-                  </div>
-                  <div className="text-[10px] text-[#9CA3AF] mt-0.5">{cat.providers}</div>
-                  <div className="text-[10px] text-[#6B7280] mt-0.5">Powers: {cat.agents}</div>
-                </div>
-              </div>
-              {isConnected ? (
-                <span className="text-lg">\u2705</span>
-              ) : (
-                <button onClick={() => handleConnect(cat.id)} disabled={isConnecting}
-                  className="px-4 py-2 rounded-xl text-xs font-bold text-white transition-all hover:-translate-y-px disabled:opacity-50"
-                  style={{ background: '#1B2A4A' }}>
-                  {isConnecting ? (
-                    <span className="flex items-center gap-1.5">
-                      <span className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      Connecting...
-                    </span>
-                  ) : 'Connect'}
-                </button>
-              )}
+      <p className="text-sm text-[#9CA3AF] mb-8">Your AI employees work best when connected to your tools. You can always add more later.</p>
+
+      <div className="grid grid-cols-2 gap-3">
+        {integrations.map(int => (
+          <button
+            key={int.name}
+            className="flex items-center gap-3 p-4 bg-white border-2 border-[#E5E7EB] rounded-xl text-left hover:border-[#2A9D8F] hover:shadow-md transition-all group"
+          >
+            <span className="text-2xl">{int.icon}</span>
+            <div>
+              <div className="text-sm font-semibold text-[#1B2A4A] group-hover:text-[#2A9D8F] transition">{int.name}</div>
+              <div className="text-[10px] text-[#9CA3AF]">{int.cat}</div>
             </div>
-          );
-        })}
+          </button>
+        ))}
       </div>
-      <p className="text-xs text-center text-[#9CA3AF] mt-4">\uD83D\uDD12 Bank-grade OAuth \u2014 we never see your credentials. Disconnect anytime in Settings.</p>
-      <div className="flex gap-3 mt-8">
+
+      <p className="text-xs text-center text-[#9CA3AF] mt-4">🔒 Connections are encrypted and you can disconnect anytime.</p>
+
+      <div className="flex gap-3 mt-10">
         <button onClick={onBack} className="px-6 py-3 rounded-2xl text-sm font-semibold text-[#6B7280] border-2 border-[#E5E7EB] hover:border-[#9CA3AF] transition">Back</button>
-        <button onClick={onNext} className="flex-1 py-3 rounded-2xl text-white font-bold text-[15px] transition-all hover:-translate-y-px" style={{ background: connectedCount > 0 ? '#2A9D8F' : '#1B2A4A' }}>
-          Continue \u2192
-        </button>
+        <button onClick={onNext} className="flex-1 py-3 rounded-2xl text-white font-bold text-[15px] transition-all hover:-translate-y-px" style={{ background: '#1B2A4A' }}>Continue →</button>
       </div>
       <button onClick={onNext} className="block mx-auto mt-3 text-xs text-[#9CA3AF] hover:text-[#6B7280] transition">Skip for now</button>
     </div>
@@ -453,7 +386,7 @@ export default function PostPurchaseWizard() {
             setMaxPicks(3);
 
             const sb = getSupabaseBrowser();
-            const { data: agents } = await ((sb as any).from('agent_registry')
+            const { data: agents } = await (sb.from('agent_registry' as any)
               .select('id,slug,display_name,short_description,icon,color')
               .eq('status', 'live')
               .order('display_order') as any);
@@ -476,9 +409,9 @@ export default function PostPurchaseWizard() {
       const sb = getSupabaseBrowser();
       const { data: { session } } = await sb.auth.getSession();
       if (session) {
-        const { data: sub } = await ((sb as any).from('subscriptions').select('company_id').eq('user_id', session.user.id).single() as any);
+        const { data: sub } = await sb.from('subscriptions').select('company_id').eq('user_id', session.user.id).single();
         if (sub?.company_id) {
-          await ((sb as any).from('companies').update({
+          await (sb.from('companies' as any).update({
             name: companyName,
             metadata: { industry, company_size: companySize },
           }).eq('id', sub.company_id) as any);
@@ -498,9 +431,9 @@ export default function PostPurchaseWizard() {
       const sb = getSupabaseBrowser();
       const { data: { session } } = await sb.auth.getSession();
       if (session) {
-        const { data: sub } = await ((sb as any).from('subscriptions').select('company_id').eq('user_id', session.user.id).single() as any);
+        const { data: sub } = await sb.from('subscriptions').select('company_id').eq('user_id', session.user.id).single();
         if (sub?.company_id) {
-          const { data: bundle } = await ((sb as any).from('agent_bundles').select('id').eq('slug', 'starter-pack').single() as any);
+          const { data: bundle } = await (sb.from('agent_bundles' as any).select('id').eq('slug', 'starter-pack').single() as any);
           if (bundle) {
             const accessRows = selectedAgents.map(agentId => ({
               company_id: sub.company_id,
@@ -509,7 +442,7 @@ export default function PostPurchaseWizard() {
               granted_by: 'onboarding-picker',
               status: 'active',
             }));
-            await ((sb as any).from('company_agent_access').upsert(accessRows, { onConflict: 'company_id,agent_id' }) as any);
+            await (sb.from('company_agent_access' as any).upsert(accessRows, { onConflict: 'company_id,agent_id' }) as any);
           }
         }
       }
