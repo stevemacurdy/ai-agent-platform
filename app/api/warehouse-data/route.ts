@@ -1,44 +1,112 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { getWarehouseData } from '@/lib/warehouse-data'
+import { NextRequest, NextResponse } from 'next/server';
+import { getWarehouseData } from '@/lib/warehouse-data';
+import { verifyToken, getCompanyId } from '@/lib/api-auth';
 
 export async function GET(req: NextRequest) {
-  try {
-    const companyId = req.headers.get('x-company-id') || 'demo'
-    const view = req.nextUrl.searchParams.get('view') || 'dashboard'
-    const data = await getWarehouseData(companyId)
+  // Resolve auth + company
+  const user = await verifyToken(req);
+  let companyId: string | undefined;
+  let authenticated = false;
 
-    switch (view) {
-      case 'dashboard':
-        return NextResponse.json({
-          source: data.source, provider: data.provider,
-          summary: data.summary,
-          recommendations: data.recommendations,
-          topOrders: data.orders.filter(o => o.status !== 'delivered' && o.status !== 'cancelled').sort((a,b) => b.totalValue - a.totalValue).slice(0, 5),
-          lowStock: data.invAnalysis.lowStock.slice(0, 5),
-        })
-      case 'inventory': {
-        const cat = req.nextUrl.searchParams.get('category')
-        let items = data.inventory
-        if (cat) items = items.filter(i => i.category.toLowerCase() === cat.toLowerCase())
-        return NextResponse.json({ source: data.source, items, analysis: data.invAnalysis })
-      }
-      case 'orders': {
-        const status = req.nextUrl.searchParams.get('status')
-        let ords = data.orders
-        if (status) ords = ords.filter(o => o.status === status)
-        return NextResponse.json({ source: data.source, orders: ords, analysis: data.ordAnalysis })
-      }
-      case 'zones':
-        return NextResponse.json({ source: data.source, zones: data.zones, analysis: data.zoneAnalysis })
-      case 'fulfillment': {
-        const open = data.orders.filter(o => o.status !== 'delivered' && o.status !== 'cancelled')
-        const byPriority = { rush: open.filter(o => o.priority === 'rush'), express: open.filter(o => o.priority === 'express'), standard: open.filter(o => o.priority === 'standard') }
-        return NextResponse.json({ source: data.source, queue: open, byPriority, analysis: data.ordAnalysis })
-      }
-      default:
-        return NextResponse.json({ error: 'Unknown view. Use: dashboard, inventory, orders, zones, fulfillment' }, { status: 400 })
+  if (user) {
+    companyId = getCompanyId(req, user) || undefined;
+    authenticated = true;
+  } else {
+    companyId = undefined; // getWarehouseData will use demo when no companyId
+  }
+
+  const view = req.nextUrl.searchParams.get('view') || 'dashboard';
+
+  try {
+    const data = await getWarehouseData(companyId);
+
+    // Safety: never serve live data to unauthenticated requests
+    if (!authenticated && data.source === 'live') {
+      const demoData = await getWarehouseData(undefined);
+      return buildWarehouseResponse(view, demoData, req);
     }
+
+    return buildWarehouseResponse(view, data, req);
   } catch (e: any) {
-    return NextResponse.json({ error: e.message }, { status: 500 })
+    console.error('Warehouse API error:', e);
+    return NextResponse.json({ error: e.message }, { status: 500 });
+  }
+}
+
+function buildWarehouseResponse(view: string, data: any, req: NextRequest): NextResponse {
+  switch (view) {
+    case 'dashboard': {
+      return NextResponse.json({
+        source: data.source,
+        provider: data.provider,
+        summary: data.summary,
+        alerts: data.alerts?.slice(0, 5) || [],
+        recentOrders: data.orders
+          ?.sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+          .slice(0, 5) || [],
+        inventoryHealth: data.inventoryHealth,
+      });
+    }
+
+    case 'inventory':
+      return NextResponse.json({
+        source: data.source,
+        provider: data.provider,
+        inventory: data.inventory,
+        summary: data.summary,
+      });
+
+    case 'orders': {
+      const status = req.nextUrl.searchParams.get('status');
+      let filtered = data.orders || [];
+      if (status) filtered = filtered.filter((o: any) => o.status?.toLowerCase() === status.toLowerCase());
+      return NextResponse.json({
+        source: data.source,
+        provider: data.provider,
+        orders: filtered,
+        summary: data.summary,
+      });
+    }
+
+    case 'order-detail': {
+      const orderId = req.nextUrl.searchParams.get('id');
+      const order = (data.orders || []).find((o: any) => o.id === orderId);
+      if (!order) return NextResponse.json({ error: 'Order not found' }, { status: 404 });
+      return NextResponse.json({ source: data.source, order });
+    }
+
+    case 'receiving':
+      return NextResponse.json({
+        source: data.source,
+        provider: data.provider,
+        receiving: data.receiving || [],
+        summary: data.summary,
+      });
+
+    case 'shipping':
+      return NextResponse.json({
+        source: data.source,
+        provider: data.provider,
+        shipping: data.shipping || [],
+        summary: data.summary,
+      });
+
+    case 'locations':
+      return NextResponse.json({
+        source: data.source,
+        provider: data.provider,
+        locations: data.locations || [],
+      });
+
+    case 'alerts':
+      return NextResponse.json({
+        source: data.source,
+        alerts: data.alerts || [],
+        totalAlerts: (data.alerts || []).length,
+        critical: (data.alerts || []).filter((a: any) => a.severity === 'critical').length,
+      });
+
+    default:
+      return NextResponse.json({ error: 'Invalid view. Use: dashboard, inventory, orders, order-detail, receiving, shipping, locations, alerts' }, { status: 400 });
   }
 }

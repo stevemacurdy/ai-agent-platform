@@ -1,10 +1,15 @@
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import { getSupabaseClient } from '@/lib/supabase';
+import { verifyAdmin } from '@/lib/api-auth';
 
+// GET /api/agents/bundles — PUBLIC (pricing page needs this without auth)
+// POST /api/agents/bundles — admin only (create/update bundles)
 export async function GET(request: NextRequest) {
+  // NOTE: Intentionally public — pricing page fetches bundles without auth.
+  // No sensitive data is exposed (just names, prices, agent lists).
   try {
-    const sb = getSupabaseClient() as any;
+    const sb = getSupabaseClient();
     const { searchParams } = new URL(request.url);
     const slug = searchParams.get('slug');
     const companyId = searchParams.get('companyId');
@@ -12,16 +17,25 @@ export async function GET(request: NextRequest) {
 
     if (slug) {
       const { data: bundle, error } = await sb
-        .from('agent_bundles').select('*').eq('slug', slug).single() as any;
-      if (error || !bundle) return NextResponse.json({ error: 'Bundle not found' }, { status: 404 });
+        .from('agent_bundles')
+        .select('*')
+        .eq('slug', slug)
+        .single();
+
+      if (error || !bundle) {
+        return NextResponse.json({ error: 'Bundle not found' }, { status: 404 });
+      }
 
       const { data: bundleAgents } = await sb
-        .from('bundle_agents').select('display_order, is_highlighted, agent_id')
-        .eq('bundle_id', bundle.id).order('display_order');
+        .from('bundle_agents')
+        .select('display_order, is_highlighted, agent_id')
+        .eq('bundle_id', bundle.id)
+        .order('display_order');
 
       const agentIds = (bundleAgents || []).map((ba: any) => ba.agent_id);
       const { data: agents } = await sb
-        .from('agent_registry').select('id, slug, display_name, icon, color, status, short_description')
+        .from('agent_registry')
+        .select('id, slug, display_name, icon, color, status, short_description')
         .in('id', agentIds.length ? agentIds : ['none']);
 
       const enrichedAgents = (bundleAgents || []).map((ba: any) => {
@@ -31,8 +45,12 @@ export async function GET(request: NextRequest) {
 
       let access = null;
       if (companyId) {
-        const { data: ca } = await sb.from('company_bundle_access').select('*')
-          .eq('company_id', companyId).eq('bundle_id', bundle.id).single() as any;
+        const { data: ca } = await sb
+          .from('company_bundle_access')
+          .select('*')
+          .eq('company_id', companyId)
+          .eq('bundle_id', bundle.id)
+          .single();
         access = ca;
       }
 
@@ -41,23 +59,29 @@ export async function GET(request: NextRequest) {
 
     let query = sb.from('agent_bundles').select('*').order('display_order');
     if (activeOnly) query = query.eq('is_active', true);
+
     const { data: bundles, error } = await query;
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
     const bundleIds = (bundles || []).map((b: any) => b.id);
-    const { data: allBundleAgents } = await sb.from('bundle_agents')
+    const { data: allBundleAgents } = await sb
+      .from('bundle_agents')
       .select('bundle_id, agent_id, display_order, is_highlighted')
       .in('bundle_id', bundleIds.length ? bundleIds : ['none']);
 
     const agentIds = [...new Set((allBundleAgents || []).map((ba: any) => ba.agent_id))];
-    const { data: agents } = await sb.from('agent_registry')
+    const { data: agents } = await sb
+      .from('agent_registry')
       .select('id, slug, display_name, icon, color, status')
       .in('id', agentIds.length ? agentIds : ['none']);
 
     let companyAccess: any[] = [];
     if (companyId) {
-      const { data: ca } = await sb.from('company_bundle_access').select('*')
-        .eq('company_id', companyId).in('bundle_id', bundleIds.length ? bundleIds : ['none']);
+      const { data: ca } = await sb
+        .from('company_bundle_access')
+        .select('*')
+        .eq('company_id', companyId)
+        .in('bundle_id', bundleIds.length ? bundleIds : ['none']);
       companyAccess = ca || [];
     }
 
@@ -67,11 +91,34 @@ export async function GET(request: NextRequest) {
         const agent = (agents || []).find((a: any) => a.id === ba.agent_id);
         return { ...agent, display_order: ba.display_order, is_highlighted: ba.is_highlighted };
       }).sort((a: any, b: any) => a.display_order - b.display_order);
+
       const access = companyAccess.find((ca: any) => ca.bundle_id === bundle.id);
       return { ...bundle, agents: bundleAgentList, agent_count: bundleAgentList.length, access: access || null };
     });
 
     return NextResponse.json({ bundles: enriched, total: enriched.length });
+  } catch (e: any) {
+    return NextResponse.json({ error: e.message }, { status: 500 });
+  }
+}
+
+// POST — admin only
+export async function POST(request: NextRequest) {
+  const auth = await verifyAdmin(request);
+  if (!auth.authorized) return NextResponse.json({ error: auth.error }, { status: auth.status });
+
+  try {
+    const sb = getSupabaseClient();
+    const body = await request.json();
+
+    const { data, error } = await sb
+      .from('agent_bundles')
+      .insert(body)
+      .select()
+      .single();
+
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ bundle: data });
   } catch (e: any) {
     return NextResponse.json({ error: e.message }, { status: 500 });
   }
