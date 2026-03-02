@@ -76,7 +76,7 @@ export async function POST(req: NextRequest) {
       customer: stripeCustomerId,
       mode: 'subscription',
       line_items: [{ price: priceId, quantity: 1 }],
-      success_url: `${origin}/onboarding?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${origin}/onboarding/welcome?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/pricing?canceled=true`,
       allow_promotion_codes: true,
       metadata: {
