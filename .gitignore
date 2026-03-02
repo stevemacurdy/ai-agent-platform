@@ -35,3 +35,19 @@ PRICING_PAGE_PATCH.ts
 README-CHECKOUT-UPGRADE.md
 MIGRATION-RUN-GUIDE.md
 mnt/
+
+# Stray working files
+mnt/
+*.sql
+cfo-data.ts
+cfo-route.ts
+stripe.ts
+unified.ts
+route.ts
+globals.css
+fix-connect.js
+p3-demo-transform.py
+schema-audit.md
+PRICING_PAGE_PATCH.ts
+README-CHECKOUT-UPGRADE.md
+MIGRATION-RUN-GUIDE.md
