@@ -26,7 +26,7 @@ cfo-data.ts
 cfo-route.ts
 stripe.ts
 unified.ts
-route.ts
+/route.ts
 globals.css
 fix-connect.js
 p3-demo-transform.py
@@ -43,7 +43,7 @@ cfo-data.ts
 cfo-route.ts
 stripe.ts
 unified.ts
-route.ts
+/route.ts
 globals.css
 fix-connect.js
 p3-demo-transform.py
