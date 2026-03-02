@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
         .select('id')
         .eq('slug', agentSlug)
         .single();
-      resolvedAgentId = agent?.id;
+      resolvedAgentId = (agent as any)?.id;
     }
 
     let query = sb
