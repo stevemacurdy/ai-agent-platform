@@ -111,14 +111,14 @@ export default function LandingPage() {
 
           <div className="hidden lg:flex items-center gap-8">
             {NAV_LINKS.map(l => (
-              <Link key={l.href} href={l.href} className="text-sm font-medium text-white/65 hover:text-[#1B2A4A] transition-colors">
+              <Link key={l.href} href={l.href} className="text-sm font-medium text-white/65 hover:text-white transition-colors">
                 {l.label}
               </Link>
             ))}
           </div>
 
           <div className="hidden lg:flex items-center gap-3">
-            <Link href="/login" className="text-sm font-medium text-white/65 hover:text-[#1B2A4A] px-4 py-2 rounded-xl hover:bg-white/[0.08] transition-all">
+            <Link href="/login" className="text-sm font-medium text-white/65 hover:text-white px-4 py-2 rounded-xl hover:bg-white/[0.08] transition-all">
               Sign In
             </Link>
             <Link
@@ -140,12 +140,12 @@ export default function LandingPage() {
         {mobileMenu && (
           <div className="lg:hidden px-6 pb-4 space-y-2" style={{ background: 'rgba(27,42,74,0.98)' }}>
             {NAV_LINKS.map(l => (
-              <Link key={l.href} href={l.href} className="block text-[#4B5563] hover:text-[#1B2A4A] text-sm py-2" onClick={() => setMobileMenu(false)}>
+              <Link key={l.href} href={l.href} className="block text-white/65 hover:text-white text-sm py-2" onClick={() => setMobileMenu(false)}>
                 {l.label}
               </Link>
             ))}
             <div className="flex gap-3 pt-3">
-              <Link href="/login" className="text-sm text-[#6B7280] px-4 py-2">Sign In</Link>
+              <Link href="/login" className="text-sm text-white/65 px-4 py-2">Sign In</Link>
               <Link href="/register" className="text-sm font-bold text-white px-5 py-2 rounded-xl" style={{ background: '#F5920B' }}>Hire Your AI Team</Link>
             </div>
           </div>
@@ -424,11 +424,11 @@ export default function LandingPage() {
             { title: 'Legal', links: [{ href: '/terms', label: 'Terms of Service' }, { href: '/privacy', label: 'Privacy Policy' }, { href: '/security', label: 'Security' }] },
           ].map(col => (
             <div key={col.title}>
-              <h4 className="text-[13px] font-bold text-[#4B5563] mb-4 uppercase tracking-wider">{col.title}</h4>
+              <h4 className="text-[13px] font-bold text-white/40 mb-4 uppercase tracking-wider">{col.title}</h4>
               <ul className="flex flex-col gap-2.5">
                 {col.links.map(l => (
                   <li key={l.href}>
-                    <Link href={l.href} className="text-[13px] text-[#6B7280] hover:text-[#4B5563] transition-colors">{l.label}</Link>
+                    <Link href={l.href} className="text-[13px] text-white/35 hover:text-white/60 transition-colors">{l.label}</Link>
                   </li>
                 ))}
               </ul>
