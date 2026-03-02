@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
     // ── Look up bundle from database ──────────────────────────
     const { data: bundleRow, error: bundleErr } = await sb
       .from('agent_bundles')
-      .select('id, slug, display_name, stripe_product_id, stripe_price_monthly, stripe_price_annual')
+      .select('id, slug, display_name, stripe_product_id, stripe_price_id_monthly, stripe_price_id_annual')
       .eq('slug', bundle)
       .single();
 
@@ -34,8 +34,8 @@ export async function POST(req: NextRequest) {
     }
 
     const priceId = period === 'annual'
-      ? bundleRow.stripe_price_annual
-      : bundleRow.stripe_price_monthly;
+      ? bundleRow.stripe_price_id_annual
+      : bundleRow.stripe_price_id_monthly;
 
     if (!priceId) {
       return NextResponse.json(
