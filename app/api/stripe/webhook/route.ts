@@ -109,7 +109,7 @@ export async function POST(req: NextRequest) {
         if (bundleId && companyId) {
           // Look up which agents are in this bundle
           const { data: bundleLinks } = await sb
-            .from('agent_bundle_links')
+            .from('bundle_agents')
             .select('agent_id')
             .eq('bundle_id', bundleId);
 
@@ -123,7 +123,7 @@ export async function POST(req: NextRequest) {
             }));
 
             await sb
-              .from('company_agent_access')
+              .from('company_bundle_access')
               .upsert(accessRows, { onConflict: 'company_id,agent_id' });
 
             console.log(`[webhook] Granted access to ${bundleLinks.length} agents for company ${companyId}`);
@@ -176,7 +176,7 @@ export async function POST(req: NextRequest) {
 
           if (userSub?.company_id) {
             await sb
-              .from('company_agent_access')
+              .from('company_bundle_access')
               .update({ status: 'revoked' })
               .eq('company_id', userSub.company_id);
 
