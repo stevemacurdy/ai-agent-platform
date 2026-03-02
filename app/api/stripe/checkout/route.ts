@@ -86,6 +86,7 @@ export async function POST(req: NextRequest) {
         userId: userId || '',
       },
       subscription_data: {
+        trial_period_days: 14,
         metadata: {
           bundle_id: bundleRow.id,
           bundle_slug: bundleRow.slug,
