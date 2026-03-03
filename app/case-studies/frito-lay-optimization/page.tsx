@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-export default function AboutPage() {
+export default function FritoLayCasePage() {
   return (
     <div className="min-h-screen" style={{ background: '#F4F5F7', fontFamily: "'DM Sans', sans-serif" }}>
       
@@ -26,53 +26,51 @@ export default function AboutPage() {
   </nav>
       
       <section className="py-20 px-6">
-        <div className="max-w-4xl mx-auto">
-          <p className="text-xs font-bold uppercase tracking-[3px] mb-3" style={{ color: '#2A9D8F' }}>About Us</p>
-          <h1 className="text-4xl font-extrabold mb-6" style={{ fontFamily: "'Outfit', sans-serif", color: '#1B2A4A' }}>
-            Built by Warehouse People, for Warehouse People
-          </h1>
-          <p className="text-lg mb-8" style={{ color: '#6B7280' }}>
-            Woulf Group is a warehouse systems integration firm headquartered in Grantsville, Utah. With over 30 team members operating across 6 countries, we have completed more than 1,200 projects covering 4+ million square feet of warehouse and distribution space.
-          </p>
+        <div className="max-w-3xl mx-auto">
+          <Link href="/case-studies" className="text-xs font-medium mb-4 inline-block" style={{ color: '#F5920B' }}>\u2190 All Case Studies</Link>
+          <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: '#F5920B' }}>Frito-Lay</p>
+          <h1 className="text-3xl font-extrabold mb-4" style={{ fontFamily: "'Outfit', sans-serif", color: '#1B2A4A' }}>Distribution Optimization</h1>
+          <p className="text-lg mb-8" style={{ color: '#6B7280' }}>Real-time inventory visibility across 12 distribution points reduced stockouts by 25%.</p>
 
-          <div className="grid md:grid-cols-4 gap-6 mb-12">
-            {[
-              { value: '1,200+', label: 'Projects Completed' },
-              { value: '4M+', label: 'Square Feet' },
-              { value: '30+', label: 'Team Members' },
-              { value: '6', label: 'Countries' },
-            ].map((s, i) => (
-              <div key={i} className="p-6 rounded-xl bg-white border text-center" style={{ borderColor: '#E5E7EB' }}>
-                <p className="text-3xl font-extrabold" style={{ fontFamily: "'Outfit', sans-serif", color: '#F5920B' }}>{s.value}</p>
-                <p className="text-xs mt-1" style={{ color: '#9CA3AF' }}>{s.label}</p>
-              </div>
-            ))}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+            
+            <div className="p-4 rounded-xl bg-white border text-center" style={{ borderColor: '#E5E7EB' }}>
+              <p className="text-2xl font-extrabold" style={{ fontFamily: "'Outfit', sans-serif", color: '#F5920B' }}>25%</p>
+              <p className="text-[10px] mt-1 uppercase tracking-wider" style={{ color: '#9CA3AF' }}>Fewer Stockouts</p>
+            </div>
+            <div className="p-4 rounded-xl bg-white border text-center" style={{ borderColor: '#E5E7EB' }}>
+              <p className="text-2xl font-extrabold" style={{ fontFamily: "'Outfit', sans-serif", color: '#F5920B' }}>$1.5M</p>
+              <p className="text-[10px] mt-1 uppercase tracking-wider" style={{ color: '#9CA3AF' }}>Annual Savings</p>
+            </div>
+            <div className="p-4 rounded-xl bg-white border text-center" style={{ borderColor: '#E5E7EB' }}>
+              <p className="text-2xl font-extrabold" style={{ fontFamily: "'Outfit', sans-serif", color: '#F5920B' }}>15%</p>
+              <p className="text-[10px] mt-1 uppercase tracking-wider" style={{ color: '#9CA3AF' }}>Lower Carrying Costs</p>
+            </div>
+            <div className="p-4 rounded-xl bg-white border text-center" style={{ borderColor: '#E5E7EB' }}>
+              <p className="text-2xl font-extrabold" style={{ fontFamily: "'Outfit', sans-serif", color: '#F5920B' }}>12</p>
+              <p className="text-[10px] mt-1 uppercase tracking-wider" style={{ color: '#9CA3AF' }}>Sites Connected</p>
+            </div>
           </div>
 
-          <div className="prose max-w-none">
-            <div className="bg-white rounded-xl border p-8 mb-8" style={{ borderColor: '#E5E7EB' }}>
-              <h2 className="text-xl font-extrabold mb-4" style={{ fontFamily: "'Outfit', sans-serif", color: '#1B2A4A' }}>Our Story</h2>
-              <p className="text-sm leading-relaxed mb-4" style={{ color: '#6B7280' }}>
-                Founded by Steve Macurdy, Woulf Group has grown from a small warehouse consulting practice into a full-service systems integration company. We have partnered with industry leaders including Cabela&apos;s, Sportsman&apos;s Warehouse, and Frito-Lay to design, install, and optimize warehouse operations at scale.
-              </p>
-              <p className="text-sm leading-relaxed mb-4" style={{ color: '#6B7280' }}>
-                WoulfAI is the next evolution of our business — bringing the operational expertise we have built over 1,200+ projects into an AI-powered platform that gives every warehouse and logistics company access to the same intelligence that powers the industry&apos;s best operations.
-              </p>
-              <p className="text-sm leading-relaxed" style={{ color: '#6B7280' }}>
-                Our 21 AI Employees cover everything from financial management and sales intelligence to warehouse operations, HR, legal compliance, and strategic planning — all built on real-world warehouse and logistics expertise.
-              </p>
+          <div className="space-y-8">
+            <div className="bg-white rounded-xl border p-6" style={{ borderColor: '#E5E7EB' }}>
+              <h2 className="text-sm font-bold uppercase tracking-wider mb-3" style={{ color: '#DC2626' }}>The Challenge</h2>
+              <p className="text-sm leading-relaxed" style={{ color: '#6B7280' }}>Frito-Lay\'s route-to-market distribution model lacked real-time inventory visibility. With 12 distribution points operating independently, stockouts were common and carrying costs were high due to over-ordering at some locations.</p>
             </div>
+            <div className="bg-white rounded-xl border p-6" style={{ borderColor: '#E5E7EB' }}>
+              <h2 className="text-sm font-bold uppercase tracking-wider mb-3" style={{ color: '#2A9D8F' }}>The Solution</h2>
+              <p className="text-sm leading-relaxed" style={{ color: '#6B7280' }}>Woulf Group implemented a real-time inventory tracking system across all 12 distribution points, with automated reorder points calibrated to historical demand patterns. We added predictive demand modeling that accounts for seasonality and promotions.</p>
+            </div>
+            <div className="rounded-xl p-6" style={{ background: '#1B2A4A' }}>
+              <p className="text-sm italic text-white/80 mb-3">&ldquo;The visibility alone was transformative. But the predictive modeling took our inventory management to a completely different level.&rdquo;</p>
+              <p className="text-xs text-white/50">\u2014 Supply Chain Manager, Frito-Lay</p>
+            </div>
+          </div>
 
-            <div className="bg-white rounded-xl border p-8" style={{ borderColor: '#E5E7EB' }}>
-              <h2 className="text-xl font-extrabold mb-4" style={{ fontFamily: "'Outfit', sans-serif", color: '#1B2A4A' }}>Major Clients</h2>
-              <div className="grid grid-cols-3 gap-4">
-                {["Cabela's", "Sportsman's Warehouse", "Frito-Lay"].map(c => (
-                  <div key={c} className="p-4 rounded-lg text-center" style={{ background: '#F4F5F7' }}>
-                    <p className="text-sm font-semibold" style={{ color: '#1B2A4A' }}>{c}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
+          <div className="mt-10 rounded-xl p-8 text-center" style={{ background: 'rgba(245,146,11,0.06)', border: '1px solid rgba(245,146,11,0.15)' }}>
+            <h3 className="text-lg font-extrabold mb-2" style={{ color: '#1B2A4A' }}>Ready for similar results?</h3>
+            <p className="text-sm mb-4" style={{ color: '#6B7280' }}>See how WoulfAI can transform your operations.</p>
+            <Link href="/contact" className="text-sm font-bold text-white px-6 py-2.5 rounded-xl inline-block" style={{ background: '#F5920B' }}>Contact Sales</Link>
           </div>
         </div>
       </section>

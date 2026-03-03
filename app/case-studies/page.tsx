@@ -1,202 +1,160 @@
 'use client';
-
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight } from 'lucide-react';
-
-const caseStudies = [
-  {
-    company: 'Clutch 3PL',
-    industry: 'Logistics & Warehousing',
-    logo: 'C',
-    color: '#2A9D8F',
-    challenge: 'Manual billing taking 8+ hours per month, inventory discrepancies, and customer communication delays.',
-    solution: 'Hired the AI WMS Employee for automated billing, photo verification, and customer portal.',
-    results: [
-      { metric: '94%', label: 'Reduction in billing time' },
-      { metric: '$15K', label: 'Monthly labor savings' },
-      { metric: '0', label: 'Billing disputes' },
-    ],
-    quote: "The AI WMS Employee transformed our operations. What used to take all day now happens automatically with zero errors.",
-    quotee: 'Operations Manager',
-  },
-  {
-    company: 'TechFlow Solutions',
-    industry: 'B2B SaaS',
-    logo: 'T',
-    color: '#1B2A4A',
-    challenge: 'Sales team spending too much time on research and admin, not enough time selling.',
-    solution: 'Hired the AI Sales Employee for pre-call intelligence, CRM automation, and call coaching.',
-    results: [
-      { metric: '34%', label: 'Increase in close rate' },
-      { metric: '2.5hrs', label: 'Saved per rep per day' },
-      { metric: '47%', label: 'More meetings booked' },
-    ],
-    quote: "Our reps now walk into every call prepared. The AI coaching has made our entire team perform like our best closer.",
-    quotee: 'VP of Sales',
-  },
-  {
-    company: 'GrowthStack Inc',
-    industry: 'Marketing Agency',
-    logo: 'G',
-    color: '#F5920B',
-    challenge: 'Cash flow visibility issues, late payments from clients, and manual invoicing.',
-    solution: 'Hired the AI Financial Employee for cash forecasting, automated AR, and payment reminders.',
-    results: [
-      { metric: '23 days', label: 'Reduction in DSO' },
-      { metric: '100%', label: 'Cash flow visibility' },
-      { metric: '$200K', label: 'Collected faster' },
-    ],
-    quote: "We finally see where our cash is going. The AI Financial Employee caught a potential crisis two months before it would have hit.",
-    quotee: 'CFO',
-  },
-  {
-    company: 'Pacific Logistics',
-    industry: '3PL Provider',
-    logo: 'P',
-    color: '#2A9D8F',
-    challenge: 'Customer service team overwhelmed with calls, long hold times, and inconsistent information.',
-    solution: 'Hired the AI Support Employee for AI phone answering, intelligent routing, and knowledge base.',
-    results: [
-      { metric: '78%', label: 'AI resolution rate' },
-      { metric: '< 10s', label: 'Average answer time' },
-      { metric: '4.8/5', label: 'Customer satisfaction' },
-    ],
-    quote: "Our customers get answers instantly, 24/7. The AI handles routine questions perfectly and routes complex issues to the right person.",
-    quotee: 'Customer Success Director',
-  },
-];
 
 export default function CaseStudiesPage() {
   return (
-    <div className="min-h-screen" style={{ background: '#F4F5F7', color: '#1A1A2E', fontFamily: "'DM Sans', -apple-system, sans-serif" }}>
-      <style>{`h1, h2, h3, h4 { font-family: 'Outfit', 'DM Sans', sans-serif; }`}</style>
-
-      {/* NAV */}
-      <nav className="sticky top-0 z-50" style={{ background: 'rgba(27,42,74,0.97)', backdropFilter: 'blur(16px) saturate(1.6)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 flex items-center justify-between h-[64px]">
-          <Link href="/" className="flex items-center gap-3 group">
-            <Image src="/woulf-badge.png" alt="Woulf Group" width={36} height={36} className="drop-shadow-lg group-hover:scale-105 transition-transform" />
-            <span className="text-lg font-extrabold text-white tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
-              Woulf<span style={{ color: '#F5920B' }}>AI</span>
-            </span>
-          </Link>
-          <div className="hidden md:flex items-center gap-8">
-            <Link href="/solutions" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] transition-colors">Solutions</Link>
-            <Link href="/pricing" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] transition-colors">Pricing</Link>
-            <Link href="/case-studies" className="text-sm text-white font-medium">Case Studies</Link>
-            <Link href="/about" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] transition-colors">About</Link>
-            <Link href="/contact" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] transition-colors">Contact</Link>
-          </div>
-          <div className="flex items-center gap-3">
-            <Link href="/login" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] px-4 py-2 transition-colors">Sign In</Link>
-            <Link href="/register" className="text-sm font-bold text-white px-5 py-2.5 rounded-xl transition-all hover:-translate-y-px"
-              style={{ background: '#F5920B', boxShadow: '0 4px 16px rgba(245,146,11,0.3)' }}>
-              Hire Your AI Team
-            </Link>
-          </div>
-        </div>
-      </nav>
-
-      {/* HERO */}
-      <section className="pt-20 pb-8 px-6 text-center">
+    <div className="min-h-screen" style={{ background: '#F4F5F7', fontFamily: "'DM Sans', sans-serif" }}>
+      
+  <nav className="sticky top-0 z-50" style={{ background: 'rgba(27,42,74,0.97)', backdropFilter: 'blur(16px)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+    <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+      <Link href="/" className="flex items-center gap-2">
+        <Image src="/woulf-badge.png" alt="WoulfAI" width={32} height={32} />
+        <span className="text-lg font-extrabold text-white" style={{ fontFamily: "'Outfit', sans-serif" }}>Woulf<span style={{ color: '#F5920B' }}>AI</span></span>
+      </Link>
+      <div className="hidden md:flex items-center gap-6">
+        <Link href="/solutions" className="text-sm text-gray-400 hover:text-white transition-colors">Solutions</Link>
+        <Link href="/pricing" className="text-sm text-gray-400 hover:text-white transition-colors">Pricing</Link>
+        <Link href="/case-studies" className="text-sm text-gray-400 hover:text-white transition-colors">Case Studies</Link>
+        <Link href="/about" className="text-sm text-gray-400 hover:text-white transition-colors">About</Link>
+      </div>
+      <div className="flex items-center gap-3">
+        <Link href="/login" className="text-sm text-gray-400 hover:text-white px-3 py-2">Sign In</Link>
+        <Link href="/register" className="text-sm font-bold text-white px-5 py-2.5 rounded-xl" style={{ background: '#F5920B' }}>Get Started</Link>
+      </div>
+    </div>
+  </nav>
+      
+      <section className="py-20 px-6">
         <div className="max-w-4xl mx-auto">
-          <p className="text-xs font-bold uppercase tracking-[3px] mb-3" style={{ color: '#2A9D8F' }}>Proof of Impact</p>
-          <h1 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold tracking-tight" style={{ color: '#1B2A4A' }}>
-            Real Results from<br />
-            <span style={{ color: '#F5920B' }}>Real Businesses</span>
+          <p className="text-xs font-bold uppercase tracking-[3px] mb-3 text-center" style={{ color: '#2A9D8F' }}>Case Studies</p>
+          <h1 className="text-4xl font-extrabold mb-4 text-center" style={{ fontFamily: "'Outfit', sans-serif", color: '#1B2A4A' }}>
+            Real Results from Real Projects
           </h1>
-          <p className="mt-5 text-lg text-[#9CA3AF] max-w-3xl mx-auto">
-            See how companies like yours are using WoulfAI to transform their operations, reduce costs, and scale faster.
+          <p className="text-center text-lg mb-12" style={{ color: '#6B7280' }}>
+            See how Woulf Group has helped industry leaders transform their warehouse and logistics operations.
           </p>
-        </div>
-      </section>
-
-      {/* CASE STUDIES */}
-      <section className="py-16 px-6">
-        <div className="max-w-5xl mx-auto space-y-10">
-          {caseStudies.map((study, i) => (
-            <div key={i} className="bg-white rounded-[20px] border border-gray-200/60 overflow-hidden" style={{ boxShadow: '0 4px 12px rgba(27,42,74,0.06)' }}>
-              <div className="h-[4px]" style={{ background: study.color }} />
-              <div className="p-8 sm:p-10">
-                {/* Header */}
-                <div className="flex items-center gap-4 mb-8">
-                  <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-xl font-bold text-white" style={{ background: study.color }}>
-                    {study.logo}
-                  </div>
-                  <div>
-                    <h2 className="text-2xl font-extrabold" style={{ color: '#1B2A4A' }}>{study.company}</h2>
-                    <p className="text-sm text-[#9CA3AF]">{study.industry}</p>
-                  </div>
+          <div className="space-y-6">
+            
+            <Link href="/case-studies/cabelas-distribution" className="block bg-white rounded-xl border p-8 hover:shadow-lg transition-shadow" style={{ borderColor: '#E5E7EB' }}>
+              <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: '#F5920B' }}>Cabela's</p>
+              <h2 className="text-xl font-extrabold mb-2" style={{ fontFamily: "'Outfit', sans-serif", color: '#1B2A4A' }}>Distribution Center Expansion</h2>
+              <p className="text-sm mb-4" style={{ color: '#6B7280' }}>How Woulf Group helped Cabela's achieve 40% higher throughput in their 200K sq ft distribution center.</p>
+              <div className="grid grid-cols-4 gap-4">
+                
+                <div className="text-center">
+                  <p className="text-lg font-extrabold" style={{ color: '#F5920B' }}>40%</p>
+                  <p className="text-[10px] uppercase tracking-wider" style={{ color: '#9CA3AF' }}>Throughput Increase</p>
                 </div>
-
-                {/* Challenge / Solution */}
-                <div className="grid md:grid-cols-2 gap-8 mb-8">
-                  <div>
-                    <h3 className="text-xs font-bold uppercase tracking-[2px] mb-3" style={{ color: '#DC4F4F' }}>The Challenge</h3>
-                    <p className="text-[15px] text-[#6B7280] leading-relaxed">{study.challenge}</p>
-                  </div>
-                  <div>
-                    <h3 className="text-xs font-bold uppercase tracking-[2px] mb-3" style={{ color: '#2A9D8F' }}>The Solution</h3>
-                    <p className="text-[15px] text-[#6B7280] leading-relaxed">{study.solution}</p>
-                  </div>
+                <div className="text-center">
+                  <p className="text-lg font-extrabold" style={{ color: '#F5920B' }}>6 weeks</p>
+                  <p className="text-[10px] uppercase tracking-wider" style={{ color: '#9CA3AF' }}>Implementation Time</p>
                 </div>
-
-                {/* Results */}
-                <div className="grid grid-cols-3 gap-4 mb-8 p-6 rounded-2xl" style={{ background: '#FAFBFC', border: '1px solid #E5E7EB' }}>
-                  {study.results.map((result, j) => (
-                    <div key={j} className="text-center">
-                      <div className="text-3xl font-extrabold" style={{ color: '#1B2A4A', fontFamily: "'Outfit', sans-serif" }}>{result.metric}</div>
-                      <div className="text-[12px] text-[#9CA3AF] mt-1">{result.label}</div>
-                    </div>
-                  ))}
+                <div className="text-center">
+                  <p className="text-lg font-extrabold" style={{ color: '#F5920B' }}>$2.1M</p>
+                  <p className="text-[10px] uppercase tracking-wider" style={{ color: '#9CA3AF' }}>Project Value</p>
                 </div>
-
-                {/* Quote */}
-                <div className="relative pl-6" style={{ borderLeft: `3px solid ${study.color}` }}>
-                  <p className="text-[16px] text-[#6B7280] italic leading-relaxed mb-2">&quot;{study.quote}&quot;</p>
-                  <p className="text-sm text-[#6B7280]">&mdash; {study.quotee}, {study.company}</p>
+                <div className="text-center">
+                  <p className="text-lg font-extrabold" style={{ color: '#F5920B' }}>99.2%</p>
+                  <p className="text-[10px] uppercase tracking-wider" style={{ color: '#9CA3AF' }}>Pick Accuracy</p>
                 </div>
               </div>
-            </div>
-          ))}
+            </Link>
+            <Link href="/case-studies/sportsmans-automation" className="block bg-white rounded-xl border p-8 hover:shadow-lg transition-shadow" style={{ borderColor: '#E5E7EB' }}>
+              <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: '#F5920B' }}>Sportsman's Warehouse</p>
+              <h2 className="text-xl font-extrabold mb-2" style={{ fontFamily: "'Outfit', sans-serif", color: '#1B2A4A' }}>Automation Retrofit</h2>
+              <p className="text-sm mb-4" style={{ color: '#6B7280' }}>Transforming manual pick-and-pack operations into a 3x faster automated fulfillment system.</p>
+              <div className="grid grid-cols-4 gap-4">
+                
+                <div className="text-center">
+                  <p className="text-lg font-extrabold" style={{ color: '#F5920B' }}>3x</p>
+                  <p className="text-[10px] uppercase tracking-wider" style={{ color: '#9CA3AF' }}>Faster Fulfillment</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-lg font-extrabold" style={{ color: '#F5920B' }}>99.7%</p>
+                  <p className="text-[10px] uppercase tracking-wider" style={{ color: '#9CA3AF' }}>Pick Accuracy</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-lg font-extrabold" style={{ color: '#F5920B' }}>$890K</p>
+                  <p className="text-[10px] uppercase tracking-wider" style={{ color: '#9CA3AF' }}>Project Value</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-lg font-extrabold" style={{ color: '#F5920B' }}>8 months</p>
+                  <p className="text-[10px] uppercase tracking-wider" style={{ color: '#9CA3AF' }}>ROI Payback</p>
+                </div>
+              </div>
+            </Link>
+            <Link href="/case-studies/frito-lay-optimization" className="block bg-white rounded-xl border p-8 hover:shadow-lg transition-shadow" style={{ borderColor: '#E5E7EB' }}>
+              <p className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: '#F5920B' }}>Frito-Lay</p>
+              <h2 className="text-xl font-extrabold mb-2" style={{ fontFamily: "'Outfit', sans-serif", color: '#1B2A4A' }}>Distribution Optimization</h2>
+              <p className="text-sm mb-4" style={{ color: '#6B7280' }}>Real-time inventory visibility across 12 distribution points reduced stockouts by 25%.</p>
+              <div className="grid grid-cols-4 gap-4">
+                
+                <div className="text-center">
+                  <p className="text-lg font-extrabold" style={{ color: '#F5920B' }}>25%</p>
+                  <p className="text-[10px] uppercase tracking-wider" style={{ color: '#9CA3AF' }}>Fewer Stockouts</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-lg font-extrabold" style={{ color: '#F5920B' }}>$1.5M</p>
+                  <p className="text-[10px] uppercase tracking-wider" style={{ color: '#9CA3AF' }}>Annual Savings</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-lg font-extrabold" style={{ color: '#F5920B' }}>15%</p>
+                  <p className="text-[10px] uppercase tracking-wider" style={{ color: '#9CA3AF' }}>Lower Carrying Costs</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-lg font-extrabold" style={{ color: '#F5920B' }}>12</p>
+                  <p className="text-[10px] uppercase tracking-wider" style={{ color: '#9CA3AF' }}>Sites Connected</p>
+                </div>
+              </div>
+            </Link>
+          </div>
         </div>
       </section>
-
-      {/* CTA */}
-      <section className="py-24 px-6">
-        <div className="max-w-[1100px] mx-auto p-12 sm:p-16 rounded-3xl text-center"
-          style={{ background: 'linear-gradient(135deg, #132038 0%, #1B2A4A 60%, #233756 100%)' }}>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white">Ready to Write Your Success Story?</h2>
-          <p className="mt-4 text-[#6B7280] text-lg max-w-xl mx-auto">
-            Join companies transforming their operations with AI employees.
-          </p>
-          <div className="mt-9 flex flex-wrap gap-4 justify-center">
-            <Link href="/register"
-              className="inline-flex items-center gap-2 px-9 py-4 rounded-2xl text-[15px] font-bold text-white transition-all hover:-translate-y-0.5"
-              style={{ background: '#F5920B', boxShadow: '0 8px 32px rgba(245,146,11,0.35)' }}>
-              Start Free Trial <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link href="/demo/marketing" className="px-9 py-4 rounded-2xl text-[15px] font-semibold text-white border border-white/15 hover:bg-white/[0.08] transition-all">
-              See Demo
-            </Link>
+      
+  <footer className="py-10 px-6" style={{ background: '#0f1b33', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+    <div className="max-w-7xl mx-auto">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-wider text-white/40 mb-3">Product</p>
+          <div className="space-y-2">
+            <Link href="/solutions" className="block text-sm text-white/50 hover:text-white/80">Solutions</Link>
+            <Link href="/pricing" className="block text-sm text-white/50 hover:text-white/80">Pricing</Link>
+            <Link href="/case-studies" className="block text-sm text-white/50 hover:text-white/80">Case Studies</Link>
           </div>
         </div>
-      </section>
-
-      {/* FOOTER */}
-      <footer className="py-8 px-6 border-t" style={{ borderColor: '#E5E7EB' }}>
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Image src="/woulf-badge.png" alt="Woulf Group" width={20} height={20} className="opacity-50" />
-            <span className="text-[11px] text-[#6B7280]">&copy; 2026 WoulfAI by Woulf Group</span>
-          </div>
-          <div className="flex gap-4">
-            <Link href="/privacy" className="text-[11px] text-[#6B7280] hover:text-[#6B7280]">Privacy</Link>
-            <Link href="/terms" className="text-[11px] text-[#6B7280] hover:text-[#6B7280]">Terms</Link>
+        <div>
+          <p className="text-xs font-bold uppercase tracking-wider text-white/40 mb-3">Company</p>
+          <div className="space-y-2">
+            <Link href="/about" className="block text-sm text-white/50 hover:text-white/80">About</Link>
+            <Link href="/contact" className="block text-sm text-white/50 hover:text-white/80">Contact</Link>
+            <Link href="/security" className="block text-sm text-white/50 hover:text-white/80">Security</Link>
           </div>
         </div>
-      </footer>
+        <div>
+          <p className="text-xs font-bold uppercase tracking-wider text-white/40 mb-3">Legal</p>
+          <div className="space-y-2">
+            <Link href="/privacy" className="block text-sm text-white/50 hover:text-white/80">Privacy Policy</Link>
+            <Link href="/terms" className="block text-sm text-white/50 hover:text-white/80">Terms of Service</Link>
+          </div>
+        </div>
+        <div>
+          <p className="text-xs font-bold uppercase tracking-wider text-white/40 mb-3">Get Started</p>
+          <div className="space-y-2">
+            <Link href="/register" className="block text-sm text-white/50 hover:text-white/80">Create Account</Link>
+            <Link href="/login" className="block text-sm text-white/50 hover:text-white/80">Sign In</Link>
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-6 border-t border-white/5">
+        <div className="flex items-center gap-2">
+          <Image src="/woulf-badge.png" alt="Woulf" width={20} height={20} />
+          <span className="text-xs font-bold text-white/40">WoulfAI</span>
+        </div>
+        <p className="text-xs text-white/20">&copy; 2026 Woulf Group LLC. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
     </div>
   );
 }

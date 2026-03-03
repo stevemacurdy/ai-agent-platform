@@ -1,109 +1,101 @@
-import Link from 'next/link'
-import { Sparkles, ArrowLeft } from 'lucide-react'
+'use client';
+import Link from 'next/link';
+import Image from 'next/image';
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen bg-[#F4F5F7] text-white">
-      <nav className="sticky top-0 z-50 bg-[#F4F5F7]/90 backdrop-blur-xl border-b border-[#E5E7EB]">
-        <div className="max-w-4xl mx-auto px-6 py-4">
-          <div className="flex items-center gap-4">
-            <Link href="/" className="p-2 hover:bg-white shadow-sm rounded-lg transition-colors">
-              <ArrowLeft className="w-5 h-5" />
-            </Link>
-            <Link href="/" className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-                <Sparkles className="w-5 h-5 text-white" />
+    <div className="min-h-screen" style={{ background: '#F4F5F7', fontFamily: "'DM Sans', sans-serif" }}>
+      
+  <nav className="sticky top-0 z-50" style={{ background: 'rgba(27,42,74,0.97)', backdropFilter: 'blur(16px)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+    <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+      <Link href="/" className="flex items-center gap-2">
+        <Image src="/woulf-badge.png" alt="WoulfAI" width={32} height={32} />
+        <span className="text-lg font-extrabold text-white" style={{ fontFamily: "'Outfit', sans-serif" }}>Woulf<span style={{ color: '#F5920B' }}>AI</span></span>
+      </Link>
+      <div className="hidden md:flex items-center gap-6">
+        <Link href="/solutions" className="text-sm text-gray-400 hover:text-white transition-colors">Solutions</Link>
+        <Link href="/pricing" className="text-sm text-gray-400 hover:text-white transition-colors">Pricing</Link>
+        <Link href="/case-studies" className="text-sm text-gray-400 hover:text-white transition-colors">Case Studies</Link>
+        <Link href="/about" className="text-sm text-gray-400 hover:text-white transition-colors">About</Link>
+      </div>
+      <div className="flex items-center gap-3">
+        <Link href="/login" className="text-sm text-gray-400 hover:text-white px-3 py-2">Sign In</Link>
+        <Link href="/register" className="text-sm font-bold text-white px-5 py-2.5 rounded-xl" style={{ background: '#F5920B' }}>Get Started</Link>
+      </div>
+    </div>
+  </nav>
+      
+      <section className="py-20 px-6">
+        <div className="max-w-3xl mx-auto">
+          <h1 className="text-3xl font-extrabold mb-2" style={{ fontFamily: "'Outfit', sans-serif", color: '#1B2A4A' }}>Terms of Service</h1>
+          <p className="text-sm mb-8" style={{ color: '#9CA3AF' }}>Last updated: March 3, 2026</p>
+          <div className="bg-white rounded-xl border p-8 space-y-6" style={{ borderColor: '#E5E7EB' }}>
+            {[
+              { t: '1. Acceptance of Terms', c: 'By accessing or using WoulfAI, you agree to be bound by these Terms of Service. If you are using WoulfAI on behalf of an organization, you represent that you have authority to bind that organization.' },
+              { t: '2. Service Description', c: 'WoulfAI provides AI-powered business intelligence tools ("AI Employees") for warehouse and logistics operations. The service includes data analytics, recommendations, and integrations with third-party business tools.' },
+              { t: '3. Account Registration', c: 'You must provide accurate information when creating an account. You are responsible for maintaining the security of your account credentials. Notify us immediately of any unauthorized access.' },
+              { t: '4. Subscription & Billing', c: 'Paid plans are billed monthly or annually via Stripe. Prices are listed on our pricing page. We offer a 14-day free trial. You may cancel at any time; access continues until the end of the billing period. Refunds are handled on a case-by-case basis.' },
+              { t: '5. Usage Limits', c: 'Each subscription tier includes specific limits on AI actions, team seats, and storage. Usage beyond your tier limits may result in service throttling or overage charges (for eligible plans). Current limits are displayed in your dashboard.' },
+              { t: '6. Data Ownership', c: 'You retain ownership of all data you input into WoulfAI. We do not claim ownership of your business data. We use your data solely to provide and improve the service as described in our Privacy Policy.' },
+              { t: '7. Acceptable Use', c: 'You agree not to: reverse engineer the service, use it for illegal purposes, attempt to access other customers data, or resell access without authorization. We reserve the right to suspend accounts that violate these terms.' },
+              { t: '8. Intellectual Property', c: 'WoulfAI, its AI models, algorithms, and interface designs are the intellectual property of Woulf Group LLC. Your subscription grants a limited, non-exclusive license to use the service.' },
+              { t: '9. Limitation of Liability', c: 'WoulfAI is provided "as is." We do not guarantee that AI recommendations will be accurate or complete. Our total liability is limited to the amount you paid in the 12 months preceding the claim. We are not liable for indirect, incidental, or consequential damages.' },
+              { t: '10. Termination', c: 'Either party may terminate at any time. Upon termination, your access to WoulfAI ceases at the end of the billing period. We will retain your data for 30 days post-termination for export purposes, then delete it.' },
+              { t: '11. Governing Law', c: 'These terms are governed by the laws of the State of Utah. Any disputes shall be resolved in the courts of Tooele County, Utah.' },
+              { t: '12. Contact', c: 'Questions about these terms: legal@woulfai.com. Woulf Group LLC, Grantsville, UT 84029.' },
+            ].map((s, i) => (
+              <div key={i}>
+                <h3 className="text-sm font-bold mb-1" style={{ color: '#1B2A4A' }}>{s.t}</h3>
+                <p className="text-sm" style={{ color: '#6B7280' }}>{s.c}</p>
               </div>
-              <span className="text-xl font-bold tracking-tight">WoulfAI</span>
-            </Link>
+            ))}
           </div>
         </div>
-      </nav>
-
-      <div className="max-w-4xl mx-auto px-6 py-16">
-        <h1 className="text-4xl font-bold mb-4">Terms of Service</h1>
-        <p className="text-[#6B7280] mb-12">Last updated: February 9, 2026</p>
-
-        <div className="prose prose-invert prose-lg max-w-none">
-          <section className="mb-12">
-            <h2 className="text-2xl font-semibold mb-4">1. Acceptance of Terms</h2>
-            <p className="text-[#4B5563]">
-              By accessing or using WoulfAI&apos;s services, you agree to be bound by these Terms of Service. 
-              If you do not agree to these terms, please do not use our services.
-            </p>
-          </section>
-
-          <section className="mb-12">
-            <h2 className="text-2xl font-semibold mb-4">2. Description of Service</h2>
-            <p className="text-[#4B5563]">
-              WoulfAI provides AI-powered business automation agents including warehouse management, 
-              sales assistance, financial operations, marketing automation, and customer support solutions. 
-              Our services are provided &quot;as is&quot; and we continuously work to improve them.
-            </p>
-          </section>
-
-          <section className="mb-12">
-            <h2 className="text-2xl font-semibold mb-4">3. User Accounts</h2>
-            <ul className="list-disc list-inside text-[#4B5563] space-y-2">
-              <li>You must provide accurate and complete information when creating an account</li>
-              <li>You are responsible for maintaining the security of your account credentials</li>
-              <li>You must notify us immediately of any unauthorized access to your account</li>
-              <li>You are responsible for all activities that occur under your account</li>
-            </ul>
-          </section>
-
-          <section className="mb-12">
-            <h2 className="text-2xl font-semibold mb-4">4. Acceptable Use</h2>
-            <p className="text-[#4B5563] mb-4">You agree not to:</p>
-            <ul className="list-disc list-inside text-[#4B5563] space-y-2">
-              <li>Use the service for any illegal purpose</li>
-              <li>Attempt to gain unauthorized access to any part of the service</li>
-              <li>Interfere with or disrupt the service</li>
-              <li>Use the service to transmit malware or viruses</li>
-              <li>Resell or redistribute the service without authorization</li>
-            </ul>
-          </section>
-
-          <section className="mb-12">
-            <h2 className="text-2xl font-semibold mb-4">5. Payment Terms</h2>
-            <p className="text-[#4B5563]">
-              Subscription fees are billed in advance on a monthly or annual basis. All fees are non-refundable 
-              except as required by law. We reserve the right to change our pricing with 30 days notice.
-            </p>
-          </section>
-
-          <section className="mb-12">
-            <h2 className="text-2xl font-semibold mb-4">6. Intellectual Property</h2>
-            <p className="text-[#4B5563]">
-              The service and its original content, features, and functionality are owned by WoulfAI and are 
-              protected by international copyright, trademark, and other intellectual property laws.
-            </p>
-          </section>
-
-          <section className="mb-12">
-            <h2 className="text-2xl font-semibold mb-4">7. Limitation of Liability</h2>
-            <p className="text-[#4B5563]">
-              WoulfAI shall not be liable for any indirect, incidental, special, consequential, or punitive damages 
-              resulting from your use of the service. Our total liability shall not exceed the amount paid by you 
-              in the twelve months preceding the claim.
-            </p>
-          </section>
-
-          <section className="mb-12">
-            <h2 className="text-2xl font-semibold mb-4">8. Contact Us</h2>
-            <p className="text-[#4B5563]">
-              If you have any questions about these Terms, please contact us at:<br />
-              <a href="mailto:legal@woulfgroup.com" className="text-blue-600 hover:text-blue-600">legal@woulfgroup.com</a>
-            </p>
-          </section>
+      </section>
+      
+  <footer className="py-10 px-6" style={{ background: '#0f1b33', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+    <div className="max-w-7xl mx-auto">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-wider text-white/40 mb-3">Product</p>
+          <div className="space-y-2">
+            <Link href="/solutions" className="block text-sm text-white/50 hover:text-white/80">Solutions</Link>
+            <Link href="/pricing" className="block text-sm text-white/50 hover:text-white/80">Pricing</Link>
+            <Link href="/case-studies" className="block text-sm text-white/50 hover:text-white/80">Case Studies</Link>
+          </div>
+        </div>
+        <div>
+          <p className="text-xs font-bold uppercase tracking-wider text-white/40 mb-3">Company</p>
+          <div className="space-y-2">
+            <Link href="/about" className="block text-sm text-white/50 hover:text-white/80">About</Link>
+            <Link href="/contact" className="block text-sm text-white/50 hover:text-white/80">Contact</Link>
+            <Link href="/security" className="block text-sm text-white/50 hover:text-white/80">Security</Link>
+          </div>
+        </div>
+        <div>
+          <p className="text-xs font-bold uppercase tracking-wider text-white/40 mb-3">Legal</p>
+          <div className="space-y-2">
+            <Link href="/privacy" className="block text-sm text-white/50 hover:text-white/80">Privacy Policy</Link>
+            <Link href="/terms" className="block text-sm text-white/50 hover:text-white/80">Terms of Service</Link>
+          </div>
+        </div>
+        <div>
+          <p className="text-xs font-bold uppercase tracking-wider text-white/40 mb-3">Get Started</p>
+          <div className="space-y-2">
+            <Link href="/register" className="block text-sm text-white/50 hover:text-white/80">Create Account</Link>
+            <Link href="/login" className="block text-sm text-white/50 hover:text-white/80">Sign In</Link>
+          </div>
         </div>
       </div>
-
-      <footer className="py-12 px-6 border-t border-[#E5E7EB]">
-        <div className="max-w-4xl mx-auto text-center text-sm text-[#9CA3AF]">
-          © 2026 WoulfAI. All rights reserved.
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-6 border-t border-white/5">
+        <div className="flex items-center gap-2">
+          <Image src="/woulf-badge.png" alt="Woulf" width={20} height={20} />
+          <span className="text-xs font-bold text-white/40">WoulfAI</span>
         </div>
-      </footer>
+        <p className="text-xs text-white/20">&copy; 2026 Woulf Group LLC. All rights reserved.</p>
+      </div>
     </div>
-  )
+  </footer>
+    </div>
+  );
 }

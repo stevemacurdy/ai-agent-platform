@@ -1,553 +1,469 @@
 'use client';
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getSupabaseBrowser } from '@/lib/supabase-browser';
+import { useState } from 'react';
 
-/* ═══════════════════════════════════════════════════════════
-   WoulfAI Landing Page — Branded Design System
-   Navy #1B2A4A · Teal #2A9D8F · Orange #F5920B
-   BG #F4F5F7 · Surface #FFFFFF · Text #1A1A2E
-   Language: "AI Employees" — never "agents", "bots", "tools"
-   ═══════════════════════════════════════════════════════════ */
-
-const DEPARTMENTS = [
-  {
-    name: 'Finance',
-    icon: '💰',
-    color: '#2A9D8F',
-    employees: ['CFO', 'Collections', 'FinOps', 'Payables'],
-    desc: 'Financial intelligence, cash flow management, automated invoicing, and real-time reporting across all your accounts.',
-  },
-  {
-    name: 'Sales & Revenue',
-    icon: '🎯',
-    color: '#F5920B',
-    employees: ['Sales Intel', 'Sales Coach', 'Marketing', 'SEO'],
-    desc: 'Pipeline intelligence, deal coaching, campaign strategy, content generation, and competitive analysis.',
-  },
-  {
-    name: 'Operations',
-    icon: '⚙️',
-    color: '#1B2A4A',
-    employees: ['WMS', 'Warehouse', 'Supply Chain', 'Operations', 'Logistics'],
-    desc: 'Warehouse management, inventory tracking, order fulfillment, and daily logistics at scale.',
-  },
-  {
-    name: 'People',
-    icon: '👥',
-    color: '#6366F1',
-    employees: ['HR', 'Support', 'Training', 'Onboarding'],
-    desc: 'Employee management, compliance tracking, support automation, and workforce analytics.',
-  },
-  {
-    name: 'Strategy',
-    icon: '🧠',
-    color: '#EC4899',
-    employees: ['Research', 'Legal', 'Compliance', 'STR', 'Org Lead'],
-    desc: 'Market research, legal document analysis, regulatory compliance, and strategic planning.',
-  },
-];
-
-const STATS = [
-  { value: '21', label: 'AI Employees', sub: 'Across 5 departments', featured: true },
-  { value: '1,200+', label: 'Projects', sub: '4M+ sq ft integrated', featured: false },
-  { value: '6', label: 'Countries', sub: 'Global operations', featured: false },
-  { value: '24/7', label: 'Always On', sub: 'Zero downtime', featured: false },
-];
-
-const FEATURES = [
-  { icon: '🛡️', title: 'Enterprise Security', desc: 'SOC 2 ready infrastructure with row-level tenant isolation, encrypted data, and role-based access controls.' },
-  { icon: '⚡', title: 'Instant Onboarding', desc: 'Go from signup to production in minutes. No complex setup, lengthy onboarding, or consultants required.' },
-  { icon: '📊', title: 'Real-Time Analytics', desc: 'Track employee performance, ROI, and operational metrics from a unified dashboard with live data feeds.' },
-  { icon: '🔗', title: 'Deep Integrations', desc: 'Connect with QuickBooks, HubSpot, NetSuite, and your existing ERP — your AI employees work with your tools.' },
-  { icon: '🏢', title: 'Multi-Tenant Ready', desc: 'Built for organizations managing multiple brands, locations, or client accounts with total data isolation.' },
-  { icon: '🧠', title: 'Continuous Learning', desc: 'Your AI employees improve over time, adapting to your business patterns, preferences, and industry specifics.' },
-];
-
-const STEPS = [
-  { num: 1, title: 'Sign Up', desc: 'Create your secure workspace in under 60 seconds.', active: false },
-  { num: 2, title: 'Choose Your Team', desc: 'Select the AI employees your business needs from 21 roles.', active: false },
-  { num: 3, title: 'Connect Tools', desc: 'Link your existing systems — ERP, CRM, accounting, email.', active: false },
-  { num: 4, title: 'Go Live', desc: 'Your AI employees start working immediately, learning and improving daily.', active: true },
-];
-
-const DEFAULT_TIERS = [
-  {
-    name: 'Starter',
-    price: '$497',
-    annual: '$4,764',
-    desc: 'A small team to get started',
-    features: ['3 AI Employees (you pick)', '2 team seats', '5,000 AI actions / month', '1 integration', 'Email support', '14-day free trial'],
-    featured: false,
-    cta: 'Start Free Trial',
-    href: '/pricing',
-  },
-  {
-    name: 'Growth',
-    price: '$1,997',
-    annual: '$19,164',
-    desc: 'Scale across departments with more power',
-    features: ['10 AI Employees (you pick)', '5 team seats', '25,000 AI actions / month', '3 integrations', 'Email + chat support', 'Overage billing available', '14-day free trial'],
-    featured: true,
-    cta: 'Start Free Trial',
-    href: '/register',
-  },
-  {
-    name: 'Professional',
-    price: '$4,997',
-    annual: '$47,964',
-    desc: 'Full platform with all 21 AI Employees',
-    features: ['All 21 AI Employees', 'Unlimited seats', '100,000 AI actions / month', 'Unlimited integrations', 'Phone + Slack support', 'API access', 'Custom agent training', '14-day free trial'],
-    featured: false,
-    cta: 'Start Free Trial',
-    href: '/pricing',
-  },
-  {
-    name: 'Enterprise',
-    price: null,
-    annual: null,
-    desc: 'Custom AI solutions with dedicated support',
-    features: ['All 21 AI Employees', 'Unlimited everything', 'Dedicated CSM', 'White-label eligible', 'Custom SLA (99.99%)', 'White-glove onboarding'],
-    featured: false,
-    cta: 'Contact Sales',
-    href: '/contact',
-  },
-];
-
-const NAV_LINKS = [
-  { href: '/solutions', label: 'Solutions' },
-  { href: '/pricing', label: 'Pricing' },
-  { href: '/case-studies', label: 'Case Studies' },
-  { href: '/about', label: 'About' },
-  { href: '/contact', label: 'Contact' },
-];
-
-const Check = ({ color = '#2A9D8F' }: { color?: string }) => (
-  <svg width="12" height="12" viewBox="0 0 16 16" fill={color}><path d="M6.5 11.5L3 8l1-1 2.5 2.5L12 4l1 1z" /></svg>
-);
-
-const Star = () => (
-  <svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 1L10 5.5L15 6.5L11.5 10L12.5 15L8 12.5L3.5 15L4.5 10L1 6.5L6 5.5L8 1Z" fill="#2A9D8F" /></svg>
-);
-
-export default function LandingPage() {
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileMenu, setMobileMenu] = useState(false);
-  const [annual, setAnnual] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+export default function HomePage() {
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
-    <div className="min-h-screen" style={{ background: '#F4F5F7', color: '#1A1A2E' }}>
-
-      {/* eslint-disable-next-line @next/next/no-css-tags */}
-      <style>{`
-        h1, h2, h3, h4 { font-family: 'Outfit', 'DM Sans', sans-serif; }
-        body { font-family: 'DM Sans', -apple-system, sans-serif; }
-        @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-      `}</style>
-
-      {/* ── NAVBAR ──────────────────────────────────────── */}
-      <nav
-        className="fixed top-0 w-full z-50 transition-all duration-300"
-        style={{
-          background: scrolled ? 'rgba(27,42,74,0.97)' : 'rgba(27,42,74,0.92)',
-          backdropFilter: 'blur(16px) saturate(1.6)',
-          borderBottom: '1px solid rgba(255,255,255,0.06)',
-          boxShadow: scrolled ? '0 4px 24px rgba(0,0,0,0.2)' : 'none',
-        }}
-      >
-        <div className={`max-w-7xl mx-auto px-6 sm:px-8 flex items-center justify-between transition-all ${scrolled ? 'h-[60px]' : 'h-[72px]'}`}>
-          <Link href="/" className="flex items-center gap-3 group">
-            <Image src="/woulf-badge.png" alt="Woulf Group" width={42} height={42} className="drop-shadow-lg group-hover:scale-105 transition-transform" />
-            <div className="flex flex-col">
-              <span className="text-[22px] font-extrabold text-white tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
-                Woulf<span style={{ color: '#F5920B' }}>AI</span>
-              </span>
-              <span className="hidden sm:block text-[9px] text-white/35 uppercase tracking-[2.5px] -mt-0.5">by Woulf Group</span>
-            </div>
+    <div className="min-h-screen" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+      {/* NAV */}
+      <nav className="sticky top-0 z-50" style={{ background: 'rgba(27,42,74,0.97)', backdropFilter: 'blur(16px)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+          <Link href="/" className="flex items-center gap-2">
+            <Image src="/woulf-badge.png" alt="WoulfAI" width={32} height={32} />
+            <span className="text-lg font-extrabold text-white" style={{ fontFamily: "'Outfit', sans-serif" }}>Woulf<span style={{ color: '#F5920B' }}>AI</span></span>
           </Link>
-
-          <div className="hidden lg:flex items-center gap-8">
-            {NAV_LINKS.map(l => (
-              <Link key={l.href} href={l.href} className="text-sm font-medium text-white/65 hover:text-white transition-colors">
-                {l.label}
-              </Link>
-            ))}
+          <div className="hidden md:flex items-center gap-6">
+            <Link href="/solutions" className="text-sm text-gray-400 hover:text-white transition-colors">Solutions</Link>
+            <Link href="/pricing" className="text-sm text-gray-400 hover:text-white transition-colors">Pricing</Link>
+            <Link href="/case-studies" className="text-sm text-gray-400 hover:text-white transition-colors">Case Studies</Link>
+            <Link href="/about" className="text-sm text-gray-400 hover:text-white transition-colors">About</Link>
           </div>
-
-          <div className="hidden lg:flex items-center gap-3">
-            <Link href="/login" className="text-sm font-medium text-white/65 hover:text-white px-4 py-2 rounded-xl hover:bg-white/[0.08] transition-all">
-              Sign In
-            </Link>
-            <Link
-              href="/register"
-              className="text-sm font-bold text-white px-6 py-2.5 rounded-xl transition-all hover:-translate-y-px"
-              style={{ background: '#F5920B', boxShadow: '0 4px 16px rgba(245,146,11,0.3)' }}
-            >
-              Hire Your AI Team
-            </Link>
+          <div className="flex items-center gap-3">
+            <Link href="/login" className="text-sm text-gray-400 hover:text-white px-3 py-2">Sign In</Link>
+            <Link href="/register" className="text-sm font-bold text-white px-5 py-2.5 rounded-xl" style={{ background: '#F5920B' }}>Get Started Free</Link>
           </div>
-
-          <button onClick={() => setMobileMenu(!mobileMenu)} className="lg:hidden text-white p-2">
-            <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2">
-              {mobileMenu ? <path d="M6 6l12 12M6 18L18 6" /> : <path d="M4 6h16M4 12h16M4 18h16" />}
-            </svg>
-          </button>
         </div>
-
-        {mobileMenu && (
-          <div className="lg:hidden px-6 pb-4 space-y-2" style={{ background: 'rgba(27,42,74,0.98)' }}>
-            {NAV_LINKS.map(l => (
-              <Link key={l.href} href={l.href} className="block text-white/65 hover:text-white text-sm py-2" onClick={() => setMobileMenu(false)}>
-                {l.label}
-              </Link>
-            ))}
-            <div className="flex gap-3 pt-3">
-              <Link href="/login" className="text-sm text-white/65 px-4 py-2">Sign In</Link>
-              <Link href="/register" className="text-sm font-bold text-white px-5 py-2 rounded-xl" style={{ background: '#F5920B' }}>Hire Your AI Team</Link>
-            </div>
-          </div>
-        )}
       </nav>
 
-      {/* ── HERO ────────────────────────────────────────── */}
-      <section className="relative pt-36 pb-20 overflow-hidden" style={{ background: 'linear-gradient(165deg, #132038 0%, #1B2A4A 40%, #233756 100%)' }}>
-        <div className="absolute inset-0 opacity-[0.025]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 0L46.2 13.8L60 20L46.2 26.2L40 40L33.8 26.2L20 20L33.8 13.8L40 0z' fill='%23ffffff' fill-opacity='1'/%3E%3C/svg%3E")` }} />
-        <div className="absolute -top-48 -right-48 w-[600px] h-[600px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(42,157,143,0.08) 0%, transparent 70%)' }} />
-        <div className="absolute -bottom-24 -left-24 w-[400px] h-[400px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(245,146,11,0.06) 0%, transparent 70%)' }} />
-        <div className="absolute -bottom-px left-0 right-0 h-24" style={{ background: '#F4F5F7', clipPath: 'polygon(0 40%, 100% 0%, 100% 100%, 0% 100%)' }} />
-
-        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 grid lg:grid-cols-2 gap-16 items-center">
-          <div>
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6" style={{ background: 'rgba(42,157,143,0.12)', color: '#3BB5A6', border: '1px solid rgba(42,157,143,0.25)' }}>
-              <span className="w-2 h-2 rounded-full" style={{ background: '#2A9D8F', animation: 'pulse-dot 2s infinite' }} />
-              21 AI Employees · 5 Departments · 14-Day Free Trial
-            </div>
-
-            <h1 className="text-4xl sm:text-5xl lg:text-[56px] font-black text-white leading-[1.08] tracking-tight">
-              AI Employees That<br />
-              <span style={{ color: '#F5920B' }}>Run Your Business</span>
-            </h1>
-
-            <p className="mt-6 text-lg text-white/55 max-w-lg leading-relaxed">
-              Hire purpose-built AI employees for warehouse operations, finance, sales, and more.
-              Each one integrates with your tools and works 24/7 — built by the warehouse experts at Woulf Group.
-            </p>
-
-            <div className="mt-9 flex flex-wrap gap-4">
-              <Link
-                href="/register"
-                className="px-9 py-4 rounded-2xl text-[15px] font-bold text-white transition-all hover:-translate-y-0.5"
-                style={{ background: '#F5920B', boxShadow: '0 8px 32px rgba(245,146,11,0.35)' }}
-              >
-                Start 14-Day Free Trial
-              </Link>
-              <Link
-                href="/demo"
-                className="px-9 py-4 rounded-2xl text-[15px] font-semibold text-white border border-white/15 hover:bg-white/[0.08] transition-all"
-              >
-                Explore Demos
-              </Link>
-            </div>
-
-            <div className="mt-10 flex flex-wrap gap-6">
-              {['SOC 2 Ready', 'No Credit Card Required', '14-Day Free Trial'].map(b => (
-                <div key={b} className="flex items-center gap-2">
-                  <Star />
-                  <span className="text-xs text-white/45 font-medium">{b}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            {STATS.map((s, i) => (
-              <div
-                key={i}
-                className="p-7 rounded-[20px] backdrop-blur-sm border transition-all hover:-translate-y-0.5"
-                style={{
-                  background: s.featured ? 'rgba(245,146,11,0.06)' : 'rgba(255,255,255,0.05)',
-                  borderColor: s.featured ? 'rgba(245,146,11,0.18)' : 'rgba(255,255,255,0.08)',
-                }}
-              >
-                <p className="text-4xl font-extrabold text-white tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>{s.value}</p>
-                <p className="text-sm font-semibold text-white/75 mt-1">{s.label}</p>
-                <p className="text-[11px] text-white/35 mt-0.5">{s.sub}</p>
-              </div>
-            ))}
-
-            {/* Client Trust Bar */}
-            <div className="col-span-2 mt-6 pt-6 border-t border-white/[0.06]">
-              <p className="text-[10px] text-white/25 uppercase tracking-[3px] text-center mb-4">Trusted by warehouse &amp; logistics leaders</p>
-              <div className="flex flex-wrap justify-center gap-x-10 gap-y-3">
-                {["Cabela\u2019s", "Sportsman\u2019s Warehouse", "Frito-Lay", "US Military", "Amazon"].map(c => (
-                  <span key={c} className="text-sm font-semibold text-white/20">{c}</span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── DEPARTMENTS (replaces 6-card employees) ─────── */}
-      <section className="py-24 px-6 sm:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <p className="text-xs font-bold uppercase tracking-[3px] mb-3" style={{ color: '#2A9D8F' }}>Your AI Workforce</p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold" style={{ color: '#1B2A4A' }}>21 AI Employees Across 5 Departments</h2>
-            <p className="mt-4 text-[#9CA3AF] max-w-2xl mx-auto">Each AI employee is purpose-built for its role — trained on industry best practices and integrated with your existing tools.</p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {DEPARTMENTS.map((d, i) => (
-              <div
-                key={i}
-                className={`group p-7 rounded-[20px] bg-white border border-gray-200/60 hover:shadow-xl transition-all duration-300 hover:-translate-y-[3px] relative overflow-hidden ${i >= 3 ? 'lg:col-span-1' : ''}`}
-                style={{ borderTopColor: d.color, borderTopWidth: '3px' }}
-              >
-                <div className="flex items-start gap-4">
-                  <span className="text-[32px]">{d.icon}</span>
-                  <div className="flex-1">
-                    <h3 className="font-bold text-lg" style={{ color: '#1B2A4A' }}>{d.name}</h3>
-                    <p className="text-[13px] text-[#9CA3AF] mt-2 leading-relaxed">{d.desc}</p>
-                    <div className="flex flex-wrap gap-1.5 mt-4">
-                      {d.employees.map(e => (
-                        <span key={e} className="text-[10px] font-semibold px-2.5 py-1 rounded-full" style={{ background: 'rgba(42,157,143,0.08)', color: '#2A9D8F' }}>
-                          {e}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center mt-10">
-            <Link href="/demo" className="inline-flex items-center gap-1.5 text-sm font-bold hover:gap-2.5 transition-all" style={{ color: '#F5920B' }}>
-              Explore all 21 AI Employees →
+      {/* HERO */}
+      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #1B2A4A 0%, #0f1b33 100%)' }}>
+        <div className="max-w-5xl mx-auto px-6 py-24 text-center relative z-10">
+          <p className="text-xs font-bold uppercase tracking-[4px] mb-4" style={{ color: '#2A9D8F' }}>21 AI Employees. 6 Departments. One Platform.</p>
+          <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6" style={{ fontFamily: "'Outfit', sans-serif" }}>
+            Hire AI Employees That<br />
+            <span style={{ color: '#F5920B' }}>Actually Work</span>
+          </h1>
+          <p className="text-lg text-white/60 max-w-2xl mx-auto mb-8">
+            Replace manual processes with AI-powered specialists for finance, sales, warehouse operations, HR, legal, and strategy. Built by warehouse people who've completed 1,200+ projects.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+            <Link href="/register" className="text-sm font-bold text-white px-8 py-3.5 rounded-xl" style={{ background: '#F5920B', boxShadow: '0 4px 24px rgba(245,146,11,0.35)' }}>
+              Start 14-Day Free Trial
+            </Link>
+            <Link href="#agents" className="text-sm font-medium text-white/50 hover:text-white px-6 py-3.5 border border-white/10 rounded-xl hover:border-white/20 transition-all">
+              Try a Demo ↓
             </Link>
           </div>
+          <div className="flex items-center justify-center gap-8 text-white/30 text-xs">
+            <span>✓ No credit card required</span>
+            <span>✓ 14-day free trial</span>
+            <span>✓ Cancel anytime</span>
+          </div>
         </div>
       </section>
 
-      {/* ── FEATURES (dark) ────────────────────────────── */}
-      <section className="py-24 px-6 sm:px-8" style={{ background: '#1B2A4A' }}>
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <p className="text-xs font-bold uppercase tracking-[3px] mb-3" style={{ color: '#F5920B' }}>Built Different</p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white">30+ Years of Warehouse Expertise, Now AI-Powered</h2>
-            <p className="mt-4 text-[#6B7280] max-w-2xl mx-auto">We don&apos;t just build software — we&apos;ve integrated over 1,200 warehouse systems across six countries.</p>
+      {/* ROI */}
+      <section className="py-16 px-6" style={{ background: '#F4F5F7' }}>
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="inline-block rounded-2xl p-8 mb-6 bg-white border" style={{ borderColor: '#E5E7EB' }}>
+            <p className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: '#F5920B' }}>The Math is Simple</p>
+            <div className="flex items-center gap-4 flex-wrap justify-center">
+              <div className="text-center">
+                <p className="text-3xl font-extrabold line-through" style={{ fontFamily: "'Outfit', sans-serif", color: '#DC2626' }}>$4,500<span className="text-sm font-normal">/mo</span></p>
+                <p className="text-xs" style={{ color: '#9CA3AF' }}>Average employee cost</p>
+              </div>
+              <span className="text-2xl" style={{ color: '#9CA3AF' }}>→</span>
+              <div className="text-center">
+                <p className="text-3xl font-extrabold" style={{ fontFamily: "'Outfit', sans-serif", color: '#2A9D8F' }}>$497<span className="text-sm font-normal">/mo</span></p>
+                <p className="text-xs" style={{ color: '#9CA3AF' }}>WoulfAI Starter (3 AI Employees)</p>
+              </div>
+            </div>
+            <p className="text-sm mt-4 font-medium" style={{ color: '#2A9D8F' }}>Save up to 89% while getting 24/7 coverage</p>
           </div>
+        </div>
+      </section>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {FEATURES.map((f, i) => (
-              <div key={i} className="p-8 rounded-[20px] border border-white/[0.08] hover:border-white/15 hover:bg-white/[0.04] hover:-translate-y-0.5 transition-all" style={{ background: 'rgba(255,255,255,0.03)' }}>
-                <span className="text-[28px]">{f.icon}</span>
-                <h3 className="mt-4 text-[17px] font-bold text-white">{f.title}</h3>
-                <p className="mt-2 text-[13px] text-white/45 leading-relaxed">{f.desc}</p>
+      {/* CLIENT LOGOS */}
+      <section className="py-10 px-6 bg-white border-y" style={{ borderColor: '#E5E7EB' }}>
+        <div className="max-w-4xl mx-auto">
+          <p className="text-center text-xs font-bold uppercase tracking-wider mb-6" style={{ color: '#9CA3AF' }}>Trusted by industry leaders</p>
+          <div className="flex items-center justify-center gap-12 flex-wrap">
+            {["Cabela's", "Sportsman's Warehouse", "Frito-Lay"].map(c => (
+              <div key={c} className="px-6 py-3 rounded-lg" style={{ background: '#F4F5F7' }}>
+                <p className="text-sm font-semibold" style={{ color: '#6B7280' }}>{c}</p>
               </div>
             ))}
+            <p className="text-xs" style={{ color: '#9CA3AF' }}>+ 1,200 more projects</p>
           </div>
         </div>
       </section>
 
-      {/* ── HOW IT WORKS ───────────────────────────────── */}
-      <section className="py-24 px-6 sm:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <p className="text-xs font-bold uppercase tracking-[3px] mb-3" style={{ color: '#2A9D8F' }}>Simple Setup</p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold" style={{ color: '#1B2A4A' }}>Up and Running in Minutes</h2>
-            <p className="mt-4 text-[#9CA3AF] max-w-xl mx-auto">No consultants, no months of implementation. Hire your AI employees and put them to work today.</p>
+      {/* ALL 21 AGENTS */}
+      <section id="agents" className="py-20 px-6" style={{ background: '#1B2A4A' }}>
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <p className="text-xs font-bold uppercase tracking-[3px] mb-3" style={{ color: '#F5920B' }}>Your AI Workforce</p>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-white" style={{ fontFamily: "'Outfit', sans-serif" }}>
+              21 Specialists. Click Any to Try.
+            </h2>
+            <p className="text-sm text-white/40 mt-3 max-w-xl mx-auto">Each AI Employee has a live demo with real KPIs, data tables, and AI recommendations. No sign-up required.</p>
           </div>
-
-          <div className="relative grid grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="hidden lg:block absolute top-9 left-[12.5%] right-[12.5%] h-0.5 opacity-25" style={{ background: 'linear-gradient(90deg, #2A9D8F, #F5920B)' }} />
-
-            {STEPS.map((s) => (
-              <div key={s.num} className="text-center relative z-10">
-                <div
-                  className="w-[72px] h-[72px] rounded-full mx-auto mb-5 flex items-center justify-center text-[28px] font-extrabold text-white border-[3px]"
-                  style={{
-                    fontFamily: "'Outfit', sans-serif",
-                    background: s.active ? 'linear-gradient(135deg, #F5920B 0%, #FFa72e 100%)' : 'linear-gradient(135deg, #1B2A4A 0%, #233756 100%)',
-                    borderColor: s.active ? 'rgba(245,146,11,0.3)' : '#E5E7EB',
-                    boxShadow: '0 4px 12px rgba(27,42,74,0.08)',
-                  }}
-                >
-                  {s.num}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-[2px] mb-3" style={{ color: '#9CA3AF' }}>Finance</h3>
+                <div className="space-y-2">
+                  
+                  <a href="/demo/cfo" className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 transition-all group">
+                    <span className="text-xl">💰</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-white">CFO</p>
+                      <p className="text-[11px] text-white/40 truncate">Financial intelligence</p>
+                    </div>
+                    <span className="text-xs text-white/20 group-hover:text-orange-400 transition-colors">Try Demo →</span>
+                  </a>
+                  <a href="/demo/collections" className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 transition-all group">
+                    <span className="text-xl">💳</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-white">Collections</p>
+                      <p className="text-[11px] text-white/40 truncate">Automated AR tracking</p>
+                    </div>
+                    <span className="text-xs text-white/20 group-hover:text-orange-400 transition-colors">Try Demo →</span>
+                  </a>
+                  <a href="/demo/finops" className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 transition-all group">
+                    <span className="text-xl">📊</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-white">FinOps</p>
+                      <p className="text-[11px] text-white/40 truncate">Budget vs actual tracking</p>
+                    </div>
+                    <span className="text-xs text-white/20 group-hover:text-orange-400 transition-colors">Try Demo →</span>
+                  </a>
+                  <a href="/demo/payables" className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 transition-all group">
+                    <span className="text-xl">🧾</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-white">Payables</p>
+                      <p className="text-[11px] text-white/40 truncate">Invoice processing</p>
+                    </div>
+                    <span className="text-xs text-white/20 group-hover:text-orange-400 transition-colors">Try Demo →</span>
+                  </a>
                 </div>
-                <h3 className="text-base font-bold mb-1.5" style={{ color: '#1B2A4A' }}>{s.title}</h3>
-                <p className="text-[13px] text-[#9CA3AF] max-w-[220px] mx-auto leading-relaxed">{s.desc}</p>
               </div>
+
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-[2px] mb-3" style={{ color: '#9CA3AF' }}>Sales</h3>
+                <div className="space-y-2">
+                  
+                  <a href="/demo/sales" className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 transition-all group">
+                    <span className="text-xl">📈</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-white">Sales Data</p>
+                      <p className="text-[11px] text-white/40 truncate">Pipeline analytics</p>
+                    </div>
+                    <span className="text-xs text-white/20 group-hover:text-orange-400 transition-colors">Try Demo →</span>
+                  </a>
+                  <a href="/demo/sales-intel" className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 transition-all group">
+                    <span className="text-xl">🔍</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-white">Sales Intel</p>
+                      <p className="text-[11px] text-white/40 truncate">Prospect research</p>
+                    </div>
+                    <span className="text-xs text-white/20 group-hover:text-orange-400 transition-colors">Try Demo →</span>
+                  </a>
+                  <a href="/demo/sales-coach" className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 transition-all group">
+                    <span className="text-xl">🏆</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-white">Sales Coach</p>
+                      <p className="text-[11px] text-white/40 truncate">Rep performance</p>
+                    </div>
+                    <span className="text-xs text-white/20 group-hover:text-orange-400 transition-colors">Try Demo →</span>
+                  </a>
+                  <a href="/demo/marketing" className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 transition-all group">
+                    <span className="text-xl">📣</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-white">Marketing</p>
+                      <p className="text-[11px] text-white/40 truncate">Campaign analytics</p>
+                    </div>
+                    <span className="text-xs text-white/20 group-hover:text-orange-400 transition-colors">Try Demo →</span>
+                  </a>
+                  <a href="/demo/seo" className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 transition-all group">
+                    <span className="text-xl">🔎</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-white">SEO</p>
+                      <p className="text-[11px] text-white/40 truncate">Keyword rankings</p>
+                    </div>
+                    <span className="text-xs text-white/20 group-hover:text-orange-400 transition-colors">Try Demo →</span>
+                  </a>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-[2px] mb-3" style={{ color: '#9CA3AF' }}>Operations</h3>
+                <div className="space-y-2">
+                  
+                  <a href="/demo/warehouse" className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 transition-all group">
+                    <span className="text-xl">🏭</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-white">Warehouse</p>
+                      <p className="text-[11px] text-white/40 truncate">Inventory management</p>
+                    </div>
+                    <span className="text-xs text-white/20 group-hover:text-orange-400 transition-colors">Try Demo →</span>
+                  </a>
+                  <a href="/demo/supply-chain" className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 transition-all group">
+                    <span className="text-xl">🔗</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-white">Supply Chain</p>
+                      <p className="text-[11px] text-white/40 truncate">Vendor performance</p>
+                    </div>
+                    <span className="text-xs text-white/20 group-hover:text-orange-400 transition-colors">Try Demo →</span>
+                  </a>
+                  <a href="/demo/wms" className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 transition-all group">
+                    <span className="text-xl">📦</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-white">WMS</p>
+                      <p className="text-[11px] text-white/40 truncate">Pick accuracy</p>
+                    </div>
+                    <span className="text-xs text-white/20 group-hover:text-orange-400 transition-colors">Try Demo →</span>
+                  </a>
+                  <a href="/demo/operations" className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 transition-all group">
+                    <span className="text-xl">⚙</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-white">Operations</p>
+                      <p className="text-[11px] text-white/40 truncate">Project management</p>
+                    </div>
+                    <span className="text-xs text-white/20 group-hover:text-orange-400 transition-colors">Try Demo →</span>
+                  </a>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-[2px] mb-3" style={{ color: '#9CA3AF' }}>People</h3>
+                <div className="space-y-2">
+                  
+                  <a href="/demo/hr" className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 transition-all group">
+                    <span className="text-xl">👥</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-white">HR</p>
+                      <p className="text-[11px] text-white/40 truncate">Hiring pipeline</p>
+                    </div>
+                    <span className="text-xs text-white/20 group-hover:text-orange-400 transition-colors">Try Demo →</span>
+                  </a>
+                  <a href="/demo/support" className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 transition-all group">
+                    <span className="text-xl">🎧</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-white">Support</p>
+                      <p className="text-[11px] text-white/40 truncate">Ticket management</p>
+                    </div>
+                    <span className="text-xs text-white/20 group-hover:text-orange-400 transition-colors">Try Demo →</span>
+                  </a>
+                  <a href="/demo/training" className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 transition-all group">
+                    <span className="text-xl">🎓</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-white">Training</p>
+                      <p className="text-[11px] text-white/40 truncate">Course management</p>
+                    </div>
+                    <span className="text-xs text-white/20 group-hover:text-orange-400 transition-colors">Try Demo →</span>
+                  </a>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-[2px] mb-3" style={{ color: '#9CA3AF' }}>Legal</h3>
+                <div className="space-y-2">
+                  
+                  <a href="/demo/legal" className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 transition-all group">
+                    <span className="text-xl">⚖</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-white">Legal</p>
+                      <p className="text-[11px] text-white/40 truncate">Contract management</p>
+                    </div>
+                    <span className="text-xs text-white/20 group-hover:text-orange-400 transition-colors">Try Demo →</span>
+                  </a>
+                  <a href="/demo/compliance" className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 transition-all group">
+                    <span className="text-xl">🛡</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-white">Compliance</p>
+                      <p className="text-[11px] text-white/40 truncate">Regulatory tracking</p>
+                    </div>
+                    <span className="text-xs text-white/20 group-hover:text-orange-400 transition-colors">Try Demo →</span>
+                  </a>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-[2px] mb-3" style={{ color: '#9CA3AF' }}>Strategy</h3>
+                <div className="space-y-2">
+                  
+                  <a href="/demo/research" className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 transition-all group">
+                    <span className="text-xl">🔬</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-white">Research</p>
+                      <p className="text-[11px] text-white/40 truncate">Market analysis</p>
+                    </div>
+                    <span className="text-xs text-white/20 group-hover:text-orange-400 transition-colors">Try Demo →</span>
+                  </a>
+                  <a href="/demo/org-lead" className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 transition-all group">
+                    <span className="text-xl">🧭</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-white">Org Lead</p>
+                      <p className="text-[11px] text-white/40 truncate">OKR tracking</p>
+                    </div>
+                    <span className="text-xs text-white/20 group-hover:text-orange-400 transition-colors">Try Demo →</span>
+                  </a>
+                  <a href="/demo/str" className="flex items-center gap-3 p-3 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/10 transition-all group">
+                    <span className="text-xl">🏠</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-white">STR Analyst</p>
+                      <p className="text-[11px] text-white/40 truncate">Short-term rental analytics</p>
+                    </div>
+                    <span className="text-xs text-white/20 group-hover:text-orange-400 transition-colors">Try Demo →</span>
+                  </a>
+                </div>
+              </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CASE STUDIES PREVIEW */}
+      <section className="py-20 px-6" style={{ background: '#F4F5F7' }}>
+        <div className="max-w-5xl mx-auto">
+          <p className="text-xs font-bold uppercase tracking-[3px] mb-3 text-center" style={{ color: '#2A9D8F' }}>Case Studies</p>
+          <h2 className="text-3xl font-extrabold text-center mb-10" style={{ fontFamily: "'Outfit', sans-serif", color: '#1B2A4A' }}>
+            Real Results from Real Projects
+          </h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              { slug: 'cabelas-distribution', client: "Cabela's", title: 'Distribution Center Expansion', metric: '40% throughput increase' },
+              { slug: 'sportsmans-automation', client: "Sportsman's Warehouse", title: 'Automation Retrofit', metric: '3x faster fulfillment' },
+              { slug: 'frito-lay-optimization', client: 'Frito-Lay', title: 'Distribution Optimization', metric: '25% fewer stockouts' },
+            ].map(c => (
+              <Link key={c.slug} href={`/case-studies/${c.slug}`} className="bg-white rounded-xl border p-6 hover:shadow-lg transition-shadow" style={{ borderColor: '#E5E7EB' }}>
+                <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: '#F5920B' }}>{c.client}</p>
+                <h3 className="text-sm font-bold mb-2" style={{ color: '#1B2A4A' }}>{c.title}</h3>
+                <p className="text-lg font-extrabold" style={{ fontFamily: "'Outfit', sans-serif", color: '#2A9D8F' }}>{c.metric}</p>
+              </Link>
             ))}
           </div>
+          <div className="text-center mt-8">
+            <Link href="/case-studies" className="text-sm font-medium" style={{ color: '#F5920B' }}>View All Case Studies →</Link>
+          </div>
         </div>
       </section>
 
-      {/* ── PRICING ─────────────────────────────────────── */}
-      <section className="py-24 px-6 sm:px-8" style={{ background: '#FAFBFC' }}>
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-10">
-            <p className="text-xs font-bold uppercase tracking-[3px] mb-3" style={{ color: '#2A9D8F' }}>Simple Pricing</p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold" style={{ color: '#1B2A4A' }}>Choose Your Team Size</h2>
-            <p className="mt-4 text-[#9CA3AF] max-w-xl mx-auto">Every plan includes a 14-day free trial. No credit card required to start.</p>
-          </div>
-
-          {/* Monthly/Annual toggle */}
-          <div className="flex items-center justify-center gap-3 mb-12">
-            <span className={`text-sm font-medium ${!annual ? 'text-[#1B2A4A]' : 'text-[#9CA3AF]'}`}>Monthly</span>
-            <button
-              onClick={() => setAnnual(!annual)}
-              className="relative w-12 h-6 rounded-full transition-colors"
-              style={{ background: annual ? '#2A9D8F' : '#E5E7EB' }}
-            >
-              <div
-                className="absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform"
-                style={{ left: annual ? '26px' : '2px' }}
-              />
-            </button>
-            <span className={`text-sm font-medium ${annual ? 'text-[#1B2A4A]' : 'text-[#9CA3AF]'}`}>
-              Annual <span className="text-[10px] font-bold text-emerald-600 ml-1">Save 20%</span>
-            </span>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 max-w-[1300px] mx-auto">
-            {DEFAULT_TIERS.map((t, i) => (
-              <div
-                key={i}
-                className={`p-8 rounded-3xl border-2 transition-all hover:shadow-xl ${t.featured ? 'lg:scale-[1.03] shadow-xl' : ''}`}
-                style={{
-                  background: t.featured ? '#1B2A4A' : '#FFFFFF',
-                  borderColor: t.featured ? '#F5920B' : '#E5E7EB',
-                  color: t.featured ? '#fff' : '#1A1A2E',
-                }}
-              >
-                {t.featured && (
-                  <span className="inline-block text-[10px] font-bold uppercase tracking-[1.5px] px-3.5 py-1 rounded-full mb-4" style={{ background: 'rgba(245,146,11,0.15)', color: '#F5920B' }}>
-                    Most Popular
-                  </span>
-                )}
-                <h3 className="text-[20px] font-extrabold" style={{ fontFamily: "'Outfit', sans-serif", color: t.featured ? '#fff' : '#1B2A4A' }}>{t.name}</h3>
-                <p className={`text-[12px] mt-1 ${t.featured ? 'text-white/60' : 'text-[#9CA3AF]'}`}>{t.desc}</p>
-
-                <div className="mt-5">
-                  {t.price ? (
-                    <>
-                      <p className="text-4xl font-black tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
-                        {annual && t.annual ? '$' + Math.round(parseInt(t.annual.replace(/[$,]/g, '')) / 12).toLocaleString() : t.price}
-                        <span className={`text-sm font-normal ${t.featured ? 'text-white/40' : 'text-[#9CA3AF]'}`}>/mo</span>
-                      </p>
-                      {annual && t.annual && (
-                        <p className={`text-[11px] mt-0.5 ${t.featured ? 'text-white/40' : 'text-[#9CA3AF]'}`}>
-                          {t.annual}/yr billed annually
-                        </p>
-                      )}
-                    </>
-                  ) : (
-                    <p className="text-2xl font-black mt-1" style={{ fontFamily: "'Outfit', sans-serif" }}>Contact Sales</p>
-                  )}
-                </div>
-
-                <ul className="mt-6 flex flex-col gap-3">
-                  {t.features.map((f, j) => (
-                    <li key={j} className="flex items-center gap-2.5 text-[13px]">
-                      <span className="w-[18px] h-[18px] rounded-full flex items-center justify-center flex-shrink-0" style={{ background: t.featured ? 'rgba(245,146,11,0.2)' : 'rgba(42,157,143,0.1)' }}>
-                        <Check color={t.featured ? '#F5920B' : '#2A9D8F'} />
-                      </span>
-                      <span className={t.featured ? 'text-white/75' : 'text-[#6B7280]'}>{f}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <Link
-                  href={t.href}
-                  className="block text-center mt-7 py-3 rounded-2xl text-[14px] font-bold transition-all hover:-translate-y-px"
-                  style={{
-                    background: t.featured ? '#F5920B' : !t.price ? '#1B2A4A' : 'transparent',
-                    color: t.featured || !t.price ? '#fff' : '#1B2A4A',
-                    border: t.featured || !t.price ? 'none' : '2px solid #1B2A4A',
-                    boxShadow: t.featured ? '0 4px 16px rgba(245,146,11,0.3)' : 'none',
-                  }}
-                >
-                  {t.cta}
+      {/* PRICING PREVIEW */}
+      <section className="py-20 px-6 bg-white">
+        <div className="max-w-5xl mx-auto text-center">
+          <p className="text-xs font-bold uppercase tracking-[3px] mb-3" style={{ color: '#F5920B' }}>Pricing</p>
+          <h2 className="text-3xl font-extrabold mb-10" style={{ fontFamily: "'Outfit', sans-serif", color: '#1B2A4A' }}>
+            Simple, Transparent Pricing
+          </h2>
+          <div className="grid md:grid-cols-4 gap-4">
+            {[
+              { name: 'Starter', price: '$497', agents: '3 AI Employees', actions: '500 actions/mo' },
+              { name: 'Growth', price: '$1,497', agents: '10 AI Employees', actions: '2,000 actions/mo', popular: true },
+              { name: 'Professional', price: '$2,997', agents: 'All 21 AI Employees', actions: '10,000 actions/mo' },
+              { name: 'Enterprise', price: 'Custom', agents: 'All + Custom', actions: 'Unlimited' },
+            ].map(t => (
+              <div key={t.name} className={`rounded-xl border p-6 ${t.popular ? 'ring-2' : ''}`}
+                style={{ borderColor: t.popular ? '#F5920B' : '#E5E7EB', ...(t.popular ? { boxShadow: '0 8px 32px rgba(245,146,11,0.12)' } : {}) }}>
+                {t.popular && <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: '#F5920B' }}>Most Popular</p>}
+                <p className="text-sm font-bold mb-1" style={{ color: '#1B2A4A' }}>{t.name}</p>
+                <p className="text-2xl font-extrabold mb-3" style={{ fontFamily: "'Outfit', sans-serif", color: '#1B2A4A' }}>
+                  {t.price}<span className="text-xs font-normal text-gray-400">{t.price !== 'Custom' ? '/mo' : ''}</span>
+                </p>
+                <p className="text-xs mb-1" style={{ color: '#6B7280' }}>{t.agents}</p>
+                <p className="text-xs mb-4" style={{ color: '#9CA3AF' }}>{t.actions}</p>
+                <Link href={t.name === 'Enterprise' ? '/contact?interest=enterprise' : '/pricing'}
+                  className="block text-center text-xs font-bold py-2.5 rounded-lg"
+                  style={t.popular ? { background: '#F5920B', color: 'white' } : { border: '1px solid #E5E7EB', color: '#1B2A4A' }}>
+                  {t.name === 'Enterprise' ? 'Contact Sales' : 'Get Started'}
                 </Link>
               </div>
             ))}
           </div>
-
-          <p className="text-center text-sm text-[#6B7280] mt-8">
-            Need something custom? <Link href="/contact" className="font-semibold" style={{ color: '#F5920B' }}>Contact our team</Link>
-          </p>
-        </div>
-      </section>
-
-      {/* ── CTA ──────────────────────────────────────── */}
-      <section className="py-24 px-6 sm:px-8">
-        <div className="max-w-[1100px] mx-auto p-12 sm:p-[72px] rounded-3xl text-center relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #132038 0%, #1B2A4A 60%, #233756 100%)' }}>
-          <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L35 10L45 15L35 20L30 30L25 20L15 15L25 10L30 0z' fill='%23F5920B' fill-opacity='1'/%3E%3C/svg%3E")` }} />
-          <div className="relative z-10">
-            <Image src="/woulf-badge.png" alt="Woulf Group" width={64} height={64} className="mx-auto mb-7 drop-shadow-xl" style={{ animation: 'float 4s ease-in-out infinite' }} />
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
-              Ready to Build<br />Your AI Team?
-            </h2>
-            <p className="mt-4 text-[#6B7280] max-w-lg mx-auto leading-relaxed">
-              Join forward-thinking companies using WoulfAI to hire AI employees that automate, optimize, and scale their warehouse and business operations.
-            </p>
-            <div className="mt-9 flex flex-wrap gap-4 justify-center">
-              <Link href="/register" className="px-9 py-4 rounded-2xl text-[15px] font-bold text-white transition-all hover:-translate-y-0.5" style={{ background: '#F5920B', boxShadow: '0 8px 32px rgba(245,146,11,0.35)' }}>
-                Start 14-Day Free Trial
-              </Link>
-              <Link href="/contact" className="px-9 py-4 rounded-2xl text-[15px] font-semibold text-white border border-white/15 hover:bg-white/[0.08] transition-all">
-                Talk to Sales
-              </Link>
-            </div>
+          <div className="mt-6">
+            <Link href="/pricing" className="text-sm font-medium" style={{ color: '#F5920B' }}>Compare All Features →</Link>
           </div>
         </div>
       </section>
 
-      {/* ── FOOTER ──────────────────────────────────────── */}
-      <footer className="py-16 px-6 sm:px-8" style={{ background: '#132038', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-        <div className="max-w-7xl mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-12">
-          <div>
-            <div className="flex items-center gap-3 mb-3">
-              <Image src="/woulf-badge.png" alt="Woulf Group" width={36} height={36} className="drop-shadow-lg" />
-              <span className="text-xl font-extrabold text-white" style={{ fontFamily: "'Outfit', sans-serif" }}>Woulf<span style={{ color: '#F5920B' }}>AI</span></span>
-            </div>
-            <p className="text-[13px] text-white/35 leading-relaxed">
-              AI employees built by Woulf Group. Warehouse systems integration meets artificial intelligence.
-            </p>
-            <p className="text-[11px] text-[#9CA3AF] mt-2">Grantsville, UT · woulfgroup.com</p>
+      {/* FAQ */}
+      <section className="py-20 px-6" style={{ background: '#F4F5F7' }}>
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-3xl font-extrabold text-center mb-10" style={{ fontFamily: "'Outfit', sans-serif", color: '#1B2A4A' }}>
+            Frequently Asked Questions
+          </h2>
+          <div className="space-y-3">
+            {[{"q":"What are AI Employees?","a":"AI Employees are specialized AI agents that handle specific business functions — like a CFO that analyzes cash flow, or a WMS agent that optimizes pick accuracy. They work 24/7, learn from your data, and deliver actionable recommendations."},{"q":"Do I need to install anything?","a":"No. WoulfAI is a cloud-based platform. Sign up, connect your business tools (QuickBooks, HubSpot, etc.), and your AI Employees start working immediately."},{"q":"How does the free trial work?","a":"You get 14 days of full access to your selected tier — no credit card required to start. If you choose not to continue, your account is simply paused."},{"q":"Can I change my plan later?","a":"Yes. Upgrade or downgrade anytime from your billing settings. Changes take effect at the start of your next billing cycle."},{"q":"Is my data secure?","a":"Absolutely. We use Supabase with row-level security, TLS 1.3 encryption, and Stripe for PCI-compliant payment processing. We never sell your data."},{"q":"What integrations do you support?","a":"We support 200+ integrations via Unified.to including QuickBooks, Xero, HubSpot, Salesforce, Odoo, Slack, BambooHR, Zendesk, and more."},{"q":"How is this different from ChatGPT?","a":"ChatGPT is a general conversational AI. WoulfAI provides 21 purpose-built AI agents with domain expertise in warehouse, logistics, finance, and operations — connected to your actual business data."},{"q":"Do you offer enterprise plans?","a":"Yes. Enterprise plans include unlimited AI actions, SSO, custom integrations, dedicated support, and SLA guarantees. Contact us for pricing."}].map((faq: { q: string; a: string }, i: number) => (
+              <div key={i} className="bg-white rounded-xl border overflow-hidden" style={{ borderColor: '#E5E7EB' }}>
+                <button onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                  className="w-full flex items-center justify-between px-5 py-4 text-left">
+                  <span className="text-sm font-semibold" style={{ color: '#1B2A4A' }}>{faq.q}</span>
+                  <span className="text-lg ml-4" style={{ color: '#9CA3AF' }}>{openFaq === i ? '−' : '+'}</span>
+                </button>
+                {openFaq === i && (
+                  <div className="px-5 pb-4">
+                    <p className="text-sm" style={{ color: '#6B7280' }}>{faq.a}</p>
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
-
-          {[
-            { title: 'Product', links: [{ href: '/demo', label: 'AI Employees' }, { href: '/pricing', label: 'Pricing' }, { href: '/solutions', label: 'Solutions' }, { href: '/settings/integrations', label: 'Integrations' }] },
-            { title: 'Company', links: [{ href: '/about', label: 'About' }, { href: '/case-studies', label: 'Case Studies' }, { href: '/contact', label: 'Contact' }, { href: 'https://woulfgroup.com', label: 'Woulf Group' }] },
-            { title: 'Legal', links: [{ href: '/terms', label: 'Terms of Service' }, { href: '/privacy', label: 'Privacy Policy' }, { href: '/security', label: 'Security' }] },
-          ].map(col => (
-            <div key={col.title}>
-              <h4 className="text-[13px] font-bold text-white/40 mb-4 uppercase tracking-wider">{col.title}</h4>
-              <ul className="flex flex-col gap-2.5">
-                {col.links.map(l => (
-                  <li key={l.href}>
-                    <Link href={l.href} className="text-[13px] text-white/35 hover:text-white/60 transition-colors">{l.label}</Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
         </div>
+      </section>
 
-        <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-[11px] text-[#9CA3AF]">&copy; 2026 WoulfAI by Woulf Group. All rights reserved.</p>
-          <p className="text-[11px] text-white/15">21 AI Employees working · Built in Grantsville, UT</p>
+      {/* FINAL CTA */}
+      <section className="py-20 px-6" style={{ background: '#1B2A4A' }}>
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4" style={{ fontFamily: "'Outfit', sans-serif" }}>
+            Ready to Hire Your AI Team?
+          </h2>
+          <p className="text-white/50 mb-8">Start your 14-day free trial. No credit card required.</p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link href="/register" className="text-sm font-bold text-white px-10 py-3.5 rounded-xl" style={{ background: '#F5920B', boxShadow: '0 4px 24px rgba(245,146,11,0.35)' }}>
+              Start Free Trial
+            </Link>
+            <Link href="/contact?interest=demo" className="text-sm font-medium text-white/50 hover:text-white px-6 py-3.5 border border-white/10 rounded-xl">
+              Book a Demo
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="py-10 px-6" style={{ background: '#0f1b33', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wider text-white/40 mb-3">Product</p>
+              <div className="space-y-2">
+                <Link href="/solutions" className="block text-sm text-white/50 hover:text-white/80">Solutions</Link>
+                <Link href="/pricing" className="block text-sm text-white/50 hover:text-white/80">Pricing</Link>
+                <Link href="/case-studies" className="block text-sm text-white/50 hover:text-white/80">Case Studies</Link>
+              </div>
+            </div>
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wider text-white/40 mb-3">Company</p>
+              <div className="space-y-2">
+                <Link href="/about" className="block text-sm text-white/50 hover:text-white/80">About</Link>
+                <Link href="/contact" className="block text-sm text-white/50 hover:text-white/80">Contact</Link>
+                <Link href="/security" className="block text-sm text-white/50 hover:text-white/80">Security</Link>
+              </div>
+            </div>
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wider text-white/40 mb-3">Legal</p>
+              <div className="space-y-2">
+                <Link href="/privacy" className="block text-sm text-white/50 hover:text-white/80">Privacy Policy</Link>
+                <Link href="/terms" className="block text-sm text-white/50 hover:text-white/80">Terms of Service</Link>
+              </div>
+            </div>
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wider text-white/40 mb-3">Get Started</p>
+              <div className="space-y-2">
+                <Link href="/register" className="block text-sm text-white/50 hover:text-white/80">Create Account</Link>
+                <Link href="/login" className="block text-sm text-white/50 hover:text-white/80">Sign In</Link>
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-6 border-t border-white/5">
+            <div className="flex items-center gap-2">
+              <Image src="/woulf-badge.png" alt="Woulf" width={20} height={20} />
+              <span className="text-xs font-bold text-white/40">WoulfAI by Woulf Group</span>
+            </div>
+            <p className="text-xs text-white/20">&copy; 2026 Woulf Group LLC. Grantsville, UT. All rights reserved.</p>
+          </div>
         </div>
       </footer>
     </div>

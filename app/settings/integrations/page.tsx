@@ -1,343 +1,138 @@
-'use client'
-import { useState, useEffect } from 'react'
-import { useSearchParams } from 'next/navigation'
+'use client';
+import { useState, useEffect } from 'react';
 
-interface Connection {
-  connection_id: string
-  provider: string
-  category: string
-  status: string
-  metadata: any
-  created_at: string
-}
+const INTEGRATIONS = [
+  { id: 'quickbooks', name: 'QuickBooks', icon: '📗', category: 'Accounting', desc: 'Sync invoices, expenses, and financial data' },
+  { id: 'xero', name: 'Xero', icon: '📘', category: 'Accounting', desc: 'Cloud accounting integration' },
+  { id: 'hubspot', name: 'HubSpot', icon: '🟠', category: 'CRM', desc: 'Contacts, deals, and pipeline sync' },
+  { id: 'salesforce', name: 'Salesforce', icon: '☁️', category: 'CRM', desc: 'Enterprise CRM integration' },
+  { id: 'odoo', name: 'Odoo', icon: '🟣', category: 'ERP', desc: 'Full ERP with inventory and manufacturing' },
+  { id: 'slack', name: 'Slack', icon: '💬', category: 'Communication', desc: 'Notifications and alerts' },
+  { id: 'bamboohr', name: 'BambooHR', icon: '🌿', category: 'HRIS', desc: 'Employee records and HR management' },
+  { id: 'zendesk', name: 'Zendesk', icon: '🎯', category: 'Support', desc: 'Ticket management and customer support' },
+];
 
-const CATEGORIES = [
-  {
-    id: 'accounting',
-    name: 'Accounting',
-    icon: '\uD83D\uDCB0',
-    description: 'Connect your accounting software for real-time financial intelligence',
-    agents: ['CFO Agent', 'FinOps Agent', 'Payables Agent'],
-    providers: [
-      { name: 'QuickBooks', logo: '\uD83D\uDFE2', popular: true },
-      { name: 'Xero', logo: '\uD83D\uDD35', popular: true },
-      { name: 'Odoo', logo: '\uD83D\uDFE3', popular: false },
-      { name: 'Sage', logo: '\uD83D\uDFE2', popular: false },
-      { name: 'NetSuite', logo: '\uD83D\uDFE0', popular: false },
-    ],
-  },
-  {
-    id: 'crm',
-    name: 'CRM',
-    icon: '\uD83E\uDD1D',
-    description: 'Connect your CRM for pipeline analytics and sales intelligence',
-    agents: ['Sales Agent', 'Sales Coach'],
-    providers: [
-      { name: 'HubSpot', logo: '\uD83D\uDFE0', popular: true },
-      { name: 'Salesforce', logo: '\uD83D\uDD35', popular: true },
-      { name: 'Pipedrive', logo: '\uD83D\uDFE2', popular: false },
-      { name: 'Zoho CRM', logo: '\uD83D\uDFE1', popular: false },
-    ],
-  },
-  {
-    id: 'hris',
-    name: 'HR & Payroll',
-    icon: '\uD83D\uDC65',
-    description: 'Connect your HR platform for workforce and compliance insights',
-    agents: ['HR Agent'],
-    providers: [
-      { name: 'BambooHR', logo: '\uD83D\uDFE2', popular: true },
-      { name: 'Gusto', logo: '\uD83D\uDFE0', popular: true },
-      { name: 'ADP', logo: '\uD83D\uDD34', popular: false },
-      { name: 'Rippling', logo: '\uD83D\uDFE3', popular: false },
-    ],
-  },
-  {
-    id: 'martech',
-    name: 'Marketing',
-    icon: '\uD83D\uDCE3',
-    description: 'Connect email and marketing tools for campaign intelligence',
-    agents: ['Marketing Agent', 'SEO Agent'],
-    providers: [
-      { name: 'Mailchimp', logo: '\uD83D\uDFE1', popular: true },
-      { name: 'Klaviyo', logo: '\uD83D\uDFE2', popular: true },
-      { name: 'ActiveCampaign', logo: '\uD83D\uDD35', popular: false },
-    ],
-  },
-  {
-    id: 'ticketing',
-    name: 'Support',
-    icon: '\uD83C\uDFAB',
-    description: 'Connect help desk for customer support analytics',
-    agents: ['Support Agent'],
-    providers: [
-      { name: 'Zendesk', logo: '\uD83D\uDFE2', popular: true },
-      { name: 'Freshdesk', logo: '\uD83D\uDD35', popular: false },
-      { name: 'Intercom', logo: '\uD83D\uDD35', popular: false },
-    ],
-  },
-  {
-    id: 'commerce',
-    name: 'E-Commerce',
-    icon: '\uD83D\uDED2',
-    description: 'Connect your store for order and inventory intelligence',
-    agents: ['Operations Agent', 'Supply Chain Agent'],
-    providers: [
-      { name: 'Shopify', logo: '\uD83D\uDFE2', popular: true },
-      { name: 'WooCommerce', logo: '\uD83D\uDFE3', popular: false },
-      { name: 'BigCommerce', logo: '\uD83D\uDD35', popular: false },
-    ],
-  },
-]
+interface Connection { integration_id: string; status: string; last_sync?: string; error?: string; }
 
-export default function IntegrationsSettingsPage() {
-  const [connections, setConnections] = useState<Connection[]>([])
-  const [loading, setLoading] = useState(true)
-  const [connecting, setConnecting] = useState<string | null>(null)
-  const [disconnecting, setDisconnecting] = useState<string | null>(null)
-  const [toast, setToast] = useState<string | null>(null)
-  const params = useSearchParams()
+export default function IntegrationsPage() {
+  const [connections, setConnections] = useState<Connection[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [connecting, setConnecting] = useState<string | null>(null);
 
-  const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(null), 4000) }
-
-  // Check for callback params
   useEffect(() => {
-    if (params.get('connected') === 'true') showToast('Integration connected successfully!')
-    if (params.get('error') === 'true') showToast('Connection failed. Please try again.')
-  }, [params])
+    fetch('/api/integrations/list')
+      .then(r => r.json())
+      .then(d => { setConnections(d.connections || []); setLoading(false); })
+      .catch(() => setLoading(false));
+  }, []);
 
-  // Load existing connections
-  const loadConnections = async () => {
-    try {
-      // Get company_id from session
-      const session = JSON.parse(localStorage.getItem('woulfai_session') || '{}')
-      const companyId = session?.company_id || session?.user?.user_metadata?.company_id
-      if (!companyId) { setLoading(false); return }
+  const getStatus = (id: string): Connection | undefined => connections.find(c => c.integration_id === id);
 
-      const r = await fetch(`/api/integrations/connect?company_id=${companyId}`)
-      const data = await r.json()
-      setConnections(data.local || [])
-    } catch {
-      // No connections yet
+  const getHealth = (conn?: Connection) => {
+    if (!conn || conn.status !== 'active') return { color: '#9CA3AF', label: 'Not connected', dot: '⚪' };
+    if (conn.error) return { color: '#DC2626', label: 'Error', dot: '🔴' };
+    if (conn.last_sync) {
+      const mins = (Date.now() - new Date(conn.last_sync).getTime()) / 60000;
+      if (mins < 60) return { color: '#2A9D8F', label: 'Healthy', dot: '🟢' };
+      if (mins < 1440) return { color: '#F5920B', label: 'Stale', dot: '🟡' };
+      return { color: '#DC2626', label: 'Stale (>24h)', dot: '🔴' };
     }
-    setLoading(false)
-  }
+    return { color: '#2A9D8F', label: 'Connected', dot: '🟢' };
+  };
 
-  useEffect(() => { loadConnections() }, [])
-
-  const getConnection = (category: string): Connection | undefined => {
-    return connections.find(c => c.category === category && c.status === 'active')
-  }
-
-  const handleConnect = async (categoryId: string) => {
-    setConnecting(categoryId)
+  const handleConnect = async (id: string) => {
+    setConnecting(id);
     try {
-      const session = JSON.parse(localStorage.getItem('woulfai_session') || '{}')
-      const companyId = session?.company_id || session?.user?.user_metadata?.company_id || 'demo'
-
-      const r = await fetch('/api/integrations/connect', {
+      const res = await fetch('/api/integrations/connect', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          companyId,
-          categories: [categoryId],
-          successRedirect: window.location.origin + '/settings/integrations?connected=true',
-        }),
-      })
-      const data = await r.json()
-      if (data.embedUrl) {
-        window.location.href = data.embedUrl
-      } else {
-        showToast('Failed to start connection. Please try again.')
-      }
-    } catch {
-      showToast('Connection error. Please try again.')
-    }
-    setConnecting(null)
-  }
+        body: JSON.stringify({ integration_id: id }),
+      });
+      const data = await res.json();
+      if (data.url) window.location.href = data.url;
+      else alert(data.error || 'Connection failed');
+    } catch { alert('Failed to connect'); }
+    finally { setConnecting(null); }
+  };
 
-  const handleDisconnect = async (conn: Connection) => {
-    if (!confirm(`Disconnect ${conn.provider}? Your AI Employees will lose access to this data.`)) return
-    setDisconnecting(conn.connection_id)
+  const handleDisconnect = async (id: string) => {
+    if (!confirm('Disconnect this integration? AI Employees using it will switch to demo data.')) return;
     try {
-      const session = JSON.parse(localStorage.getItem('woulfai_session') || '{}')
-      const companyId = session?.company_id || session?.user?.user_metadata?.company_id
-
-      await fetch('/api/integrations/connect', {
-        method: 'DELETE',
+      await fetch('/api/integrations/disconnect', {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ connectionId: conn.connection_id, companyId }),
-      })
-      showToast(`${conn.provider} disconnected`)
-      loadConnections()
-    } catch {
-      showToast('Failed to disconnect. Please try again.')
-    }
-    setDisconnecting(null)
-  }
+        body: JSON.stringify({ integration_id: id }),
+      });
+      setConnections(prev => prev.filter(c => c.integration_id !== id));
+    } catch { alert('Failed to disconnect'); }
+  };
 
   return (
-    <div className="max-w-[1000px] mx-auto py-8 px-4">
-      {toast && (
-        <div className="fixed top-4 right-4 z-50 px-4 py-2.5 rounded-xl text-sm font-medium shadow-lg"
-          style={{
-            background: toast.includes('success') || toast.includes('connected') ? '#ecfdf5' : '#fef2f2',
-            color: toast.includes('success') || toast.includes('connected') ? '#059669' : '#dc2626',
-            border: `1px solid ${toast.includes('success') || toast.includes('connected') ? 'rgba(5,150,105,0.2)' : 'rgba(220,38,38,0.2)'}`,
-          }}>
-          {toast}
-        </div>
-      )}
-
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-2xl font-extrabold" style={{ fontFamily: "'Outfit', sans-serif", color: '#1B2A4A' }}>Integrations</h1>
-        <p className="text-sm text-[#6B7280] mt-1">
-          Connect your business tools so your AI Employees can access real data. All connections use bank-grade OAuth {'\u2014'} we never see your credentials.
-        </p>
+    <div className="p-6 md:p-8 space-y-6" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+      <div>
+        <h1 className="text-xl font-extrabold" style={{ fontFamily: "'Outfit', sans-serif", color: '#1B2A4A' }}>Integrations</h1>
+        <p className="text-sm mt-1" style={{ color: '#9CA3AF' }}>Connect your business tools to power your AI Employees with live data.</p>
       </div>
 
-      {/* Connection summary */}
-      <div className="flex items-center gap-4 mb-8 p-4 rounded-xl border border-[#E5E7EB] bg-white">
-        <div className="flex items-center gap-2">
-          <span className="text-2xl font-bold" style={{ color: '#1B2A4A' }}>{connections.length}</span>
-          <span className="text-sm text-[#6B7280]">Active Connections</span>
-        </div>
-        <div className="h-8 w-px bg-[#E5E7EB]" />
-        <div className="flex items-center gap-2">
-          <span className="text-2xl font-bold" style={{ color: '#2A9D8F' }}>{CATEGORIES.length}</span>
-          <span className="text-sm text-[#6B7280]">Categories Available</span>
-        </div>
-        <div className="h-8 w-px bg-[#E5E7EB]" />
-        <div className="flex items-center gap-2">
-          <span className="text-2xl font-bold" style={{ color: '#F5920B' }}>412+</span>
-          <span className="text-sm text-[#6B7280]">Integrations via Unified.to</span>
-        </div>
-      </div>
-
-      {/* Loading */}
       {loading ? (
-        <div className="flex items-center justify-center py-20">
-          <div className="w-8 h-8 border-2 border-[#2A9D8F] border-t-transparent rounded-full animate-spin" />
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[1,2,3,4,5,6].map(i => <div key={i} className="h-48 bg-gray-100 rounded-xl animate-pulse" />)}
         </div>
       ) : (
-        <div className="space-y-5">
-          {CATEGORIES.map(cat => {
-            const conn = getConnection(cat.id)
-            const isConnected = !!conn
-            const isConnecting = connecting === cat.id
-
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {INTEGRATIONS.map(integ => {
+            const conn = getStatus(integ.id);
+            const health = getHealth(conn);
+            const isConnected = conn?.status === 'active';
             return (
-              <div
-                key={cat.id}
-                className="rounded-2xl border-2 overflow-hidden transition-all"
-                style={{
-                  borderColor: isConnected ? 'rgba(42,157,143,0.3)' : '#E5E7EB',
-                  background: isConnected ? 'linear-gradient(135deg, rgba(42,157,143,0.03), rgba(42,157,143,0.08))' : '#FFFFFF',
-                }}
-              >
-                <div className="p-6">
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-start gap-4">
-                      <div className="text-3xl">{cat.icon}</div>
+              <div key={integ.id} className="bg-white rounded-xl border p-5 flex flex-col justify-between" style={{ borderColor: isConnected ? '#2A9D8F40' : '#E5E7EB' }}>
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <span className="text-2xl">{integ.icon}</span>
                       <div>
-                        <div className="flex items-center gap-2">
-                          <h3 className="text-base font-bold" style={{ fontFamily: "'Outfit', sans-serif", color: '#1B2A4A' }}>{cat.name}</h3>
-                          {isConnected && (
-                            <span className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-500/20">
-                              <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
-                              Connected
-                            </span>
-                          )}
-                        </div>
-                        <p className="text-xs text-[#6B7280] mt-1">{cat.description}</p>
-
-                        {/* Connected provider info */}
-                        {isConnected && conn && (
-                          <div className="mt-3 flex items-center gap-3 text-xs">
-                            <span className="font-medium text-[#1B2A4A]">{conn.provider}</span>
-                            <span className="text-[#9CA3AF]">{'\u2022'}</span>
-                            <span className="text-[#9CA3AF]">Connected {new Date(conn.created_at).toLocaleDateString()}</span>
-                          </div>
-                        )}
-
-                        {/* Which agents use this */}
-                        <div className="mt-3 flex items-center gap-1.5">
-                          <span className="text-[10px] text-[#9CA3AF] mr-1">Powers:</span>
-                          {cat.agents.map(agent => (
-                            <span key={agent} className="text-[10px] px-2 py-0.5 rounded-full font-medium"
-                              style={{ background: 'rgba(27,42,74,0.06)', color: '#4B5563' }}>
-                              {agent}
-                            </span>
-                          ))}
-                        </div>
-
-                        {/* Popular providers */}
-                        {!isConnected && (
-                          <div className="mt-3 flex items-center gap-1.5">
-                            <span className="text-[10px] text-[#9CA3AF] mr-1">Popular:</span>
-                            {cat.providers.filter(p => p.popular).map(p => (
-                              <span key={p.name} className="text-[10px] px-2 py-0.5 rounded-full"
-                                style={{ background: 'rgba(0,0,0,0.04)', color: '#6B7280' }}>
-                                {p.logo} {p.name}
-                              </span>
-                            ))}
-                            {cat.providers.length > cat.providers.filter(p => p.popular).length && (
-                              <span className="text-[10px] text-[#9CA3AF]">
-                                +{cat.providers.length - cat.providers.filter(p => p.popular).length} more
-                              </span>
-                            )}
-                          </div>
-                        )}
+                        <p className="text-sm font-bold" style={{ color: '#1B2A4A' }}>{integ.name}</p>
+                        <p className="text-[10px] uppercase tracking-wider" style={{ color: '#9CA3AF' }}>{integ.category}</p>
                       </div>
                     </div>
-
-                    {/* Connect / Disconnect button */}
-                    <div className="flex-shrink-0">
-                      {isConnected ? (
-                        <button
-                          onClick={() => handleDisconnect(conn)}
-                          disabled={disconnecting === conn.connection_id}
-                          className="px-4 py-2 rounded-xl text-xs font-medium transition-all hover:-translate-y-px disabled:opacity-50"
-                          style={{ background: 'rgba(220,38,38,0.08)', color: '#dc2626', border: '1px solid rgba(220,38,38,0.15)' }}
-                        >
-                          {disconnecting === conn.connection_id ? 'Disconnecting...' : 'Disconnect'}
-                        </button>
-                      ) : (
-                        <button
-                          onClick={() => handleConnect(cat.id)}
-                          disabled={isConnecting}
-                          className="px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:-translate-y-px hover:shadow-lg disabled:opacity-50"
-                          style={{ background: '#1B2A4A', boxShadow: '0 2px 8px rgba(27,42,74,0.2)' }}
-                        >
-                          {isConnecting ? (
-                            <span className="flex items-center gap-2">
-                              <span className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                              Connecting...
-                            </span>
-                          ) : (
-                            'Connect'
-                          )}
-                        </button>
-                      )}
-                    </div>
+                    <span className="text-xs flex items-center gap-1" style={{ color: health.color }}>
+                      {health.dot} {health.label}
+                    </span>
                   </div>
+                  <p className="text-xs mb-4" style={{ color: '#6B7280' }}>{integ.desc}</p>
+                  {isConnected && conn?.last_sync && (
+                    <p className="text-[10px] mb-3" style={{ color: '#9CA3AF' }}>
+                      Last sync: {new Date(conn.last_sync).toLocaleString()}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  {isConnected ? (
+                    <button onClick={() => handleDisconnect(integ.id)}
+                      className="w-full text-xs font-medium py-2 rounded-lg border hover:bg-red-50 transition-colors"
+                      style={{ borderColor: '#FCA5A5', color: '#DC2626' }}>
+                      Disconnect
+                    </button>
+                  ) : (
+                    <button onClick={() => handleConnect(integ.id)} disabled={connecting === integ.id}
+                      className="w-full text-xs font-bold text-white py-2 rounded-lg disabled:opacity-50"
+                      style={{ background: '#2A9D8F' }}>
+                      {connecting === integ.id ? 'Connecting...' : 'Connect'}
+                    </button>
+                  )}
                 </div>
               </div>
-            )
+            );
           })}
         </div>
       )}
 
-      {/* Footer note */}
-      <div className="mt-10 text-center">
-        <p className="text-xs text-[#9CA3AF]">
-          Powered by <a href="https://unified.to" target="_blank" rel="noopener" className="text-[#2A9D8F] hover:underline">Unified.to</a> {'\u2022'} 412+ integrations across 25 categories {'\u2022'} SOC 2 compliant
-        </p>
-        <p className="text-xs text-[#9CA3AF] mt-1">
-          Need a custom integration? <a href="/contact?interest=integration" className="text-[#F5920B] hover:underline">Contact us</a>
+      <div className="bg-white rounded-xl border p-5" style={{ borderColor: '#E5E7EB' }}>
+        <p className="text-sm font-bold mb-1" style={{ color: '#1B2A4A' }}>Need a different integration?</p>
+        <p className="text-xs" style={{ color: '#9CA3AF' }}>
+          WoulfAI supports 200+ integrations via Unified.to. <a href="https://unified.to/integrations" target="_blank" rel="noopener noreferrer" className="underline" style={{ color: '#F5920B' }}>Browse the catalog</a> or <a href="/contact" className="underline" style={{ color: '#F5920B' }}>contact us</a> for custom integrations.
         </p>
       </div>
     </div>
-  )
+  );
 }

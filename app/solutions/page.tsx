@@ -1,243 +1,281 @@
 'use client';
-
 import Link from 'next/link';
 import Image from 'next/image';
-import {
-  Package, TrendingUp, DollarSign, FileText, GraduationCap, Megaphone,
-  Headphones, Users, ArrowRight, CheckCircle2, Building2,
-  Truck, ShoppingCart, Factory, Stethoscope, Scale,
-} from 'lucide-react';
-
-const employees = [
-  {
-    name: 'AI Financial Employee',
-    tagline: 'Financial Clarity, Automated',
-    description: 'See your cash position clearly with 13-week forecasts, automated AR/AP, and exception handling.',
-    icon: DollarSign,
-    href: '/demo/finance-ops',
-    color: '#F5920B',
-    features: ['13-week cash forecasting', 'Automated AR collections', 'AP approval workflows', 'Bank reconciliation', 'Financial anomaly detection'],
-    metrics: { label: 'Cash Visibility', value: '100%' },
-  },
-  {
-    name: 'AI WMS Employee',
-    tagline: 'Warehouse Management Reimagined',
-    description: 'Transform your warehouse operations with AI-powered inventory management, automated billing, and real-time visibility.',
-    icon: Package,
-    href: '/demo/wms-proof-billing',
-    color: '#2A9D8F',
-    features: ['Photo-verified receiving & shipping', 'Automated billing with proof', 'Real-time inventory tracking', 'Barcode/QR scanning integration', 'Odoo & QuickBooks sync'],
-    metrics: { label: 'Billing Time Reduction', value: '94%' },
-  },
-  {
-    name: 'AI Sales Employee',
-    tagline: 'Your AI Sales Coach',
-    description: 'Empower your sales team with pre-call intelligence, real-time coaching, and automated follow-ups.',
-    icon: TrendingUp,
-    href: '/demo/sales-field',
-    color: '#1B2A4A',
-    features: ['Pre-call company research', 'Real-time call coaching', 'CRM auto-updates', 'Pipeline forecasting', 'Meeting scheduling'],
-    metrics: { label: 'Close Rate Increase', value: '34%' },
-  },
-  {
-    name: 'AI Marketing Employee',
-    tagline: 'Campaigns That Convert',
-    description: 'Launch, test, and optimize marketing campaigns with AI-powered content and real-time analytics.',
-    icon: Megaphone,
-    href: '/demo/marketing',
-    color: '#F5920B',
-    features: ['AI content generation', 'A/B split testing', 'Multi-channel campaigns', 'Brand asset management', 'ROAS optimization'],
-    metrics: { label: 'ROAS Improvement', value: '5.2x' },
-  },
-  {
-    name: 'AI Support Employee',
-    tagline: '24/7 Customer Excellence',
-    description: 'Handle customer inquiries around the clock with intelligent routing, live chat, and ticket management.',
-    icon: Headphones,
-    href: '/demo/customer-support',
-    color: '#2A9D8F',
-    features: ['AI phone answering', 'Intelligent call routing', 'Live chat automation', 'Product knowledge base', 'Escalation management'],
-    metrics: { label: 'First Call Resolution', value: '78%' },
-  },
-  {
-    name: 'AI Research Employee',
-    tagline: 'Intelligence On Demand',
-    description: 'Get comprehensive company research, competitive analysis, and market insights in seconds.',
-    icon: FileText,
-    href: '/demo/research-intel',
-    color: '#1B2A4A',
-    features: ['Company deep-dives', 'Competitive analysis', 'Market trend tracking', 'News monitoring', 'Contact discovery'],
-    metrics: { label: 'Research Time Saved', value: '85%' },
-  },
-  {
-    name: 'AI Training Employee',
-    tagline: 'Employee Development Automated',
-    description: 'Manage employee training, certifications, and compliance with AI-powered learning paths and progress tracking.',
-    icon: GraduationCap,
-    href: '/demo/training',
-    color: '#2A9D8F',
-    features: ['AI course generation', 'Certification tracking', 'Compliance management', 'Progress dashboards', 'Quiz assessments'],
-    metrics: { label: 'Training Completion', value: '40%' },
-  },
-];
-
-const industries = [
-  { name: '3PL & Logistics', icon: Truck, description: 'Warehouse automation, billing, and customer portals' },
-  { name: 'Manufacturing', icon: Factory, description: 'Production tracking, quality control, and supply chain' },
-  { name: 'E-Commerce', icon: ShoppingCart, description: 'Order management, inventory, and fulfillment' },
-  { name: 'Professional Services', icon: Building2, description: 'Client management, billing, and project tracking' },
-  { name: 'Healthcare', icon: Stethoscope, description: 'Patient scheduling, billing, and compliance' },
-  { name: 'Legal', icon: Scale, description: 'Case management, document processing, and billing' },
-];
 
 export default function SolutionsPage() {
   return (
-    <div className="min-h-screen" style={{ background: '#F4F5F7', color: '#1A1A2E', fontFamily: "'DM Sans', -apple-system, sans-serif" }}>
-      <style>{`h1, h2, h3, h4 { font-family: 'Outfit', 'DM Sans', sans-serif; }`}</style>
+    <div className="min-h-screen" style={{ background: '#F4F5F7', fontFamily: "'DM Sans', sans-serif" }}>
+      
+  <nav className="sticky top-0 z-50" style={{ background: 'rgba(27,42,74,0.97)', backdropFilter: 'blur(16px)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+    <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+      <Link href="/" className="flex items-center gap-2">
+        <Image src="/woulf-badge.png" alt="WoulfAI" width={32} height={32} />
+        <span className="text-lg font-extrabold text-white" style={{ fontFamily: "'Outfit', sans-serif" }}>Woulf<span style={{ color: '#F5920B' }}>AI</span></span>
+      </Link>
+      <div className="hidden md:flex items-center gap-6">
+        <Link href="/solutions" className="text-sm text-gray-400 hover:text-white transition-colors">Solutions</Link>
+        <Link href="/pricing" className="text-sm text-gray-400 hover:text-white transition-colors">Pricing</Link>
+        <Link href="/case-studies" className="text-sm text-gray-400 hover:text-white transition-colors">Case Studies</Link>
+        <Link href="/about" className="text-sm text-gray-400 hover:text-white transition-colors">About</Link>
+      </div>
+      <div className="flex items-center gap-3">
+        <Link href="/login" className="text-sm text-gray-400 hover:text-white px-3 py-2">Sign In</Link>
+        <Link href="/register" className="text-sm font-bold text-white px-5 py-2.5 rounded-xl" style={{ background: '#F5920B' }}>Get Started</Link>
+      </div>
+    </div>
+  </nav>
+      
+      <section className="py-20 px-6">
+        <div className="max-w-4xl mx-auto">
+          <p className="text-xs font-bold uppercase tracking-[3px] mb-3 text-center" style={{ color: '#2A9D8F' }}>Solutions</p>
+          <h1 className="text-4xl font-extrabold mb-4 text-center" style={{ fontFamily: "'Outfit', sans-serif", color: '#1B2A4A' }}>
+            21 AI Employees Across 6 Departments
+          </h1>
+          <p className="text-center text-lg mb-12" style={{ color: '#6B7280' }}>
+            Each AI Employee is purpose-built for a specific business function. Click any to try a live demo.
+          </p>
+          <div>
+            
+            <div className="bg-white rounded-xl border p-6 mb-6" style={{ borderColor: '#E5E7EB' }}>
+              <h3 className="text-lg font-extrabold mb-4" style={{ fontFamily: "'Outfit', sans-serif", color: '#1B2A4A' }}>Finance Department</h3>
+              <div className="grid sm:grid-cols-2 gap-3">
+                
+                <Link href="/demo/cfo" className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors border" style={{ borderColor: '#F3F4F6' }}>
+                  <span className="text-xl">💰</span>
+                  <div>
+                    <p className="text-sm font-semibold" style={{ color: '#1B2A4A' }}>CFO</p>
+                    <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>Financial intelligence, cash flow analysis, AR/AP management, and AI-powered recommendations.</p>
+                  </div>
+                </Link>
+                <Link href="/demo/collections" className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors border" style={{ borderColor: '#F3F4F6' }}>
+                  <span className="text-xl">💳</span>
+                  <div>
+                    <p className="text-sm font-semibold" style={{ color: '#1B2A4A' }}>Collections</p>
+                    <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>Automated AR tracking, aging analysis, follow-up scheduling, and collection optimization.</p>
+                  </div>
+                </Link>
+                <Link href="/demo/finops" className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors border" style={{ borderColor: '#F3F4F6' }}>
+                  <span className="text-xl">📊</span>
+                  <div>
+                    <p className="text-sm font-semibold" style={{ color: '#1B2A4A' }}>FinOps</p>
+                    <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>Budget vs actual tracking, financial forecasting, cost optimization, and operational finance.</p>
+                  </div>
+                </Link>
+                <Link href="/demo/payables" className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors border" style={{ borderColor: '#F3F4F6' }}>
+                  <span className="text-xl">🧾</span>
+                  <div>
+                    <p className="text-sm font-semibold" style={{ color: '#1B2A4A' }}>Payables</p>
+                    <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>Invoice processing, payment scheduling, vendor management, and early payment discounts.</p>
+                  </div>
+                </Link>
+              </div>
+            </div>
 
-      {/* NAV */}
-      <nav className="sticky top-0 z-50" style={{ background: 'rgba(27,42,74,0.97)', backdropFilter: 'blur(16px) saturate(1.6)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 flex items-center justify-between h-[64px]">
-          <Link href="/" className="flex items-center gap-3 group">
-            <Image src="/woulf-badge.png" alt="Woulf Group" width={36} height={36} className="drop-shadow-lg group-hover:scale-105 transition-transform" />
-            <span className="text-lg font-extrabold text-white tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
-              Woulf<span style={{ color: '#F5920B' }}>AI</span>
-            </span>
-          </Link>
-          <div className="hidden md:flex items-center gap-8">
-            <Link href="/solutions" className="text-sm text-white font-medium">Solutions</Link>
-            <Link href="/pricing" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] transition-colors">Pricing</Link>
-            <Link href="/case-studies" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] transition-colors">Case Studies</Link>
-            <Link href="/about" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] transition-colors">About</Link>
-            <Link href="/contact" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] transition-colors">Contact</Link>
+            <div className="bg-white rounded-xl border p-6 mb-6" style={{ borderColor: '#E5E7EB' }}>
+              <h3 className="text-lg font-extrabold mb-4" style={{ fontFamily: "'Outfit', sans-serif", color: '#1B2A4A' }}>Sales Department</h3>
+              <div className="grid sm:grid-cols-2 gap-3">
+                
+                <Link href="/demo/sales" className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors border" style={{ borderColor: '#F3F4F6' }}>
+                  <span className="text-xl">📈</span>
+                  <div>
+                    <p className="text-sm font-semibold" style={{ color: '#1B2A4A' }}>Sales Data</p>
+                    <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>Pipeline analytics, deal tracking, revenue forecasting, and performance dashboards.</p>
+                  </div>
+                </Link>
+                <Link href="/demo/sales-intel" className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors border" style={{ borderColor: '#F3F4F6' }}>
+                  <span className="text-xl">🔍</span>
+                  <div>
+                    <p className="text-sm font-semibold" style={{ color: '#1B2A4A' }}>Sales Intel</p>
+                    <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>Prospect research, intent signals, competitive intelligence, and lead scoring.</p>
+                  </div>
+                </Link>
+                <Link href="/demo/sales-coach" className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors border" style={{ borderColor: '#F3F4F6' }}>
+                  <span className="text-xl">🏆</span>
+                  <div>
+                    <p className="text-sm font-semibold" style={{ color: '#1B2A4A' }}>Sales Coach</p>
+                    <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>Rep performance, coaching plans, quota analysis, and skills development.</p>
+                  </div>
+                </Link>
+                <Link href="/demo/marketing" className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors border" style={{ borderColor: '#F3F4F6' }}>
+                  <span className="text-xl">📣</span>
+                  <div>
+                    <p className="text-sm font-semibold" style={{ color: '#1B2A4A' }}>Marketing</p>
+                    <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>Campaign analytics, lead generation, content performance, and marketing ROI.</p>
+                  </div>
+                </Link>
+                <Link href="/demo/seo" className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors border" style={{ borderColor: '#F3F4F6' }}>
+                  <span className="text-xl">🔎</span>
+                  <div>
+                    <p className="text-sm font-semibold" style={{ color: '#1B2A4A' }}>SEO</p>
+                    <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>Keyword rankings, organic traffic, technical SEO audits, and content optimization.</p>
+                  </div>
+                </Link>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl border p-6 mb-6" style={{ borderColor: '#E5E7EB' }}>
+              <h3 className="text-lg font-extrabold mb-4" style={{ fontFamily: "'Outfit', sans-serif", color: '#1B2A4A' }}>Operations Department</h3>
+              <div className="grid sm:grid-cols-2 gap-3">
+                
+                <Link href="/demo/warehouse" className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors border" style={{ borderColor: '#F3F4F6' }}>
+                  <span className="text-xl">🏭</span>
+                  <div>
+                    <p className="text-sm font-semibold" style={{ color: '#1B2A4A' }}>Warehouse</p>
+                    <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>Inventory management, order fulfillment, zone optimization, and warehouse KPIs.</p>
+                  </div>
+                </Link>
+                <Link href="/demo/supply-chain" className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors border" style={{ borderColor: '#F3F4F6' }}>
+                  <span className="text-xl">🔗</span>
+                  <div>
+                    <p className="text-sm font-semibold" style={{ color: '#1B2A4A' }}>Supply Chain</p>
+                    <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>Vendor performance, logistics tracking, lead times, and supply risk management.</p>
+                  </div>
+                </Link>
+                <Link href="/demo/wms" className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors border" style={{ borderColor: '#F3F4F6' }}>
+                  <span className="text-xl">📦</span>
+                  <div>
+                    <p className="text-sm font-semibold" style={{ color: '#1B2A4A' }}>WMS</p>
+                    <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>Pick accuracy, orders per hour, space utilization, and operations optimization.</p>
+                  </div>
+                </Link>
+                <Link href="/demo/operations" className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors border" style={{ borderColor: '#F3F4F6' }}>
+                  <span className="text-xl">⚙</span>
+                  <div>
+                    <p className="text-sm font-semibold" style={{ color: '#1B2A4A' }}>Operations</p>
+                    <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>Project management, resource allocation, equipment uptime, and efficiency tracking.</p>
+                  </div>
+                </Link>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl border p-6 mb-6" style={{ borderColor: '#E5E7EB' }}>
+              <h3 className="text-lg font-extrabold mb-4" style={{ fontFamily: "'Outfit', sans-serif", color: '#1B2A4A' }}>People Department</h3>
+              <div className="grid sm:grid-cols-2 gap-3">
+                
+                <Link href="/demo/hr" className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors border" style={{ borderColor: '#F3F4F6' }}>
+                  <span className="text-xl">👥</span>
+                  <div>
+                    <p className="text-sm font-semibold" style={{ color: '#1B2A4A' }}>HR</p>
+                    <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>Hiring pipeline, retention analytics, employee satisfaction, and workforce planning.</p>
+                  </div>
+                </Link>
+                <Link href="/demo/support" className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors border" style={{ borderColor: '#F3F4F6' }}>
+                  <span className="text-xl">🎧</span>
+                  <div>
+                    <p className="text-sm font-semibold" style={{ color: '#1B2A4A' }}>Support</p>
+                    <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>Ticket management, response times, CSAT scoring, and support optimization.</p>
+                  </div>
+                </Link>
+                <Link href="/demo/training" className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors border" style={{ borderColor: '#F3F4F6' }}>
+                  <span className="text-xl">🎓</span>
+                  <div>
+                    <p className="text-sm font-semibold" style={{ color: '#1B2A4A' }}>Training</p>
+                    <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>Course management, compliance tracking, skill assessments, and learning analytics.</p>
+                  </div>
+                </Link>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl border p-6 mb-6" style={{ borderColor: '#E5E7EB' }}>
+              <h3 className="text-lg font-extrabold mb-4" style={{ fontFamily: "'Outfit', sans-serif", color: '#1B2A4A' }}>Legal Department</h3>
+              <div className="grid sm:grid-cols-2 gap-3">
+                
+                <Link href="/demo/legal" className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors border" style={{ borderColor: '#F3F4F6' }}>
+                  <span className="text-xl">⚖</span>
+                  <div>
+                    <p className="text-sm font-semibold" style={{ color: '#1B2A4A' }}>Legal</p>
+                    <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>Contract management, risk assessment, compliance monitoring, and legal automation.</p>
+                  </div>
+                </Link>
+                <Link href="/demo/compliance" className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors border" style={{ borderColor: '#F3F4F6' }}>
+                  <span className="text-xl">🛡</span>
+                  <div>
+                    <p className="text-sm font-semibold" style={{ color: '#1B2A4A' }}>Compliance</p>
+                    <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>Regulatory tracking, audit preparation, policy management, and risk scoring.</p>
+                  </div>
+                </Link>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl border p-6 mb-6" style={{ borderColor: '#E5E7EB' }}>
+              <h3 className="text-lg font-extrabold mb-4" style={{ fontFamily: "'Outfit', sans-serif", color: '#1B2A4A' }}>Strategy Department</h3>
+              <div className="grid sm:grid-cols-2 gap-3">
+                
+                <Link href="/demo/research" className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors border" style={{ borderColor: '#F3F4F6' }}>
+                  <span className="text-xl">🔬</span>
+                  <div>
+                    <p className="text-sm font-semibold" style={{ color: '#1B2A4A' }}>Research</p>
+                    <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>Market analysis, competitive landscape, industry trends, and strategic insights.</p>
+                  </div>
+                </Link>
+                <Link href="/demo/org-lead" className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors border" style={{ borderColor: '#F3F4F6' }}>
+                  <span className="text-xl">🧭</span>
+                  <div>
+                    <p className="text-sm font-semibold" style={{ color: '#1B2A4A' }}>Org Lead</p>
+                    <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>OKR tracking, team health, initiative management, and decision velocity.</p>
+                  </div>
+                </Link>
+                <Link href="/demo/str" className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors border" style={{ borderColor: '#F3F4F6' }}>
+                  <span className="text-xl">🏠</span>
+                  <div>
+                    <p className="text-sm font-semibold" style={{ color: '#1B2A4A' }}>STR Analyst</p>
+                    <p className="text-xs mt-0.5" style={{ color: '#9CA3AF' }}>Short-term rental analytics, occupancy optimization, and portfolio performance.</p>
+                  </div>
+                </Link>
+              </div>
+            </div>
           </div>
-          <div className="flex items-center gap-3">
-            <Link href="/login" className="text-sm text-[#6B7280] hover:text-[#1B2A4A] px-4 py-2 transition-colors">Sign In</Link>
-            <Link href="/register" className="text-sm font-bold text-white px-5 py-2.5 rounded-xl transition-all hover:-translate-y-px"
-              style={{ background: '#F5920B', boxShadow: '0 4px 16px rgba(245,146,11,0.3)' }}>
-              Hire Your AI Team
+          <div className="text-center mt-8">
+            <Link href="/pricing" className="text-sm font-bold text-white px-8 py-3 rounded-xl inline-block" style={{ background: '#F5920B', boxShadow: '0 4px 16px rgba(245,146,11,0.3)' }}>
+              View Pricing
             </Link>
           </div>
         </div>
-      </nav>
-
-      {/* HERO */}
-      <section className="pt-20 pb-8 px-6 text-center">
-        <div className="max-w-4xl mx-auto">
-          <p className="text-xs font-bold uppercase tracking-[3px] mb-3" style={{ color: '#2A9D8F' }}>AI Workforce Solutions</p>
-          <h1 className="text-4xl sm:text-5xl lg:text-[56px] font-extrabold tracking-tight" style={{ color: '#1B2A4A' }}>
-            An AI Employee for<br />
-            <span style={{ color: '#F5920B' }}>Every Department</span>
-          </h1>
-          <p className="mt-5 text-lg text-[#9CA3AF] max-w-3xl mx-auto">
-            Purpose-built AI employees that understand your industry, integrate with your tools, and deliver measurable ROI.
-          </p>
-        </div>
       </section>
-
-      {/* EMPLOYEE CARDS */}
-      <section className="py-16 px-6">
-        <div className="max-w-7xl mx-auto space-y-6">
-          {employees.map((emp, i) => (
-            <div key={i} className="group p-8 sm:p-10 bg-white rounded-[20px] border border-gray-200/60 hover:border-[#2A9D8F]/30 hover:shadow-xl transition-all">
-              <div className="grid lg:grid-cols-3 gap-8 items-center">
-                <div className="lg:col-span-2">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="w-14 h-14 rounded-2xl flex items-center justify-center" style={{ background: `${emp.color}10` }}>
-                      <emp.icon className="w-7 h-7" style={{ color: emp.color }} />
-                    </div>
-                    <div>
-                      <h2 className="text-2xl font-extrabold" style={{ color: '#1B2A4A' }}>{emp.name}</h2>
-                      <p className="text-[#9CA3AF] text-sm">{emp.tagline}</p>
-                    </div>
-                  </div>
-                  <p className="text-[#6B7280] text-[15px] mb-6 leading-relaxed">{emp.description}</p>
-                  <div className="grid sm:grid-cols-2 gap-3">
-                    {emp.features.map((feature, j) => (
-                      <div key={j} className="flex items-center gap-2 text-[14px] text-[#9CA3AF]">
-                        <CheckCircle2 className="w-4 h-4 flex-shrink-0" style={{ color: '#2A9D8F' }} />
-                        <span>{feature}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="flex flex-col items-center lg:items-end gap-4">
-                  <div className="text-center lg:text-right">
-                    <div className="text-4xl font-extrabold" style={{ color: '#1B2A4A', fontFamily: "'Outfit', sans-serif" }}>{emp.metrics.value}</div>
-                    <div className="text-sm text-[#9CA3AF]">{emp.metrics.label}</div>
-                  </div>
-                  <Link href={emp.href}
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-[14px] text-white transition-all hover:-translate-y-px"
-                    style={{ background: '#1B2A4A', boxShadow: '0 2px 8px rgba(27,42,74,0.15)' }}>
-                    View Demo <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* INDUSTRIES */}
-      <section className="py-24 px-6" style={{ background: '#1B2A4A' }}>
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <p className="text-xs font-bold uppercase tracking-[3px] mb-3" style={{ color: '#F5920B' }}>Industry Solutions</p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white">Built for Your Industry</h2>
-            <p className="mt-4 text-[#6B7280] text-lg">Pre-configured AI employees for specific verticals</p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {industries.map((industry, i) => (
-              <div key={i} className="p-7 rounded-[20px] border border-white/[0.08] hover:border-white/15 hover:bg-white/[0.04] transition-all"
-                style={{ background: 'rgba(255,255,255,0.03)' }}>
-                <industry.icon className="w-10 h-10 mb-4" style={{ color: '#2A9D8F' }} />
-                <h3 className="text-xl font-bold text-white mb-2">{industry.name}</h3>
-                <p className="text-white/45 text-[14px]">{industry.description}</p>
-              </div>
-            ))}
+      
+  <footer className="py-10 px-6" style={{ background: '#0f1b33', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+    <div className="max-w-7xl mx-auto">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+        <div>
+          <p className="text-xs font-bold uppercase tracking-wider text-white/40 mb-3">Product</p>
+          <div className="space-y-2">
+            <Link href="/solutions" className="block text-sm text-white/50 hover:text-white/80">Solutions</Link>
+            <Link href="/pricing" className="block text-sm text-white/50 hover:text-white/80">Pricing</Link>
+            <Link href="/case-studies" className="block text-sm text-white/50 hover:text-white/80">Case Studies</Link>
           </div>
         </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-24 px-6">
-        <div className="max-w-[1100px] mx-auto p-12 sm:p-16 rounded-3xl text-center relative overflow-hidden"
-          style={{ background: 'linear-gradient(135deg, #132038 0%, #1B2A4A 60%, #233756 100%)' }}>
-          <div className="relative z-10">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
-              Not Sure Where to Start?
-            </h2>
-            <p className="mt-4 text-[#6B7280] text-lg max-w-xl mx-auto">
-              Book a free consultation. We&apos;ll analyze your workflows and recommend the best AI employees for your business.
-            </p>
-            <div className="mt-9 flex flex-wrap gap-4 justify-center">
-              <Link href="/contact"
-                className="inline-flex items-center gap-2 px-9 py-4 rounded-2xl text-[15px] font-bold text-white transition-all hover:-translate-y-0.5"
-                style={{ background: '#F5920B', boxShadow: '0 8px 32px rgba(245,146,11,0.35)' }}>
-                Schedule Consultation <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link href="/pricing" className="px-9 py-4 rounded-2xl text-[15px] font-semibold text-white border border-white/15 hover:bg-white/[0.08] transition-all">
-                View Pricing
-              </Link>
-            </div>
+        <div>
+          <p className="text-xs font-bold uppercase tracking-wider text-white/40 mb-3">Company</p>
+          <div className="space-y-2">
+            <Link href="/about" className="block text-sm text-white/50 hover:text-white/80">About</Link>
+            <Link href="/contact" className="block text-sm text-white/50 hover:text-white/80">Contact</Link>
+            <Link href="/security" className="block text-sm text-white/50 hover:text-white/80">Security</Link>
           </div>
         </div>
-      </section>
-
-      {/* FOOTER */}
-      <footer className="py-8 px-6 border-t" style={{ borderColor: '#E5E7EB' }}>
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Image src="/woulf-badge.png" alt="Woulf Group" width={20} height={20} className="opacity-50" />
-            <span className="text-[11px] text-[#6B7280]">© 2026 WoulfAI by Woulf Group</span>
-          </div>
-          <div className="flex gap-4">
-            <Link href="/privacy" className="text-[11px] text-[#6B7280] hover:text-[#6B7280]">Privacy</Link>
-            <Link href="/terms" className="text-[11px] text-[#6B7280] hover:text-[#6B7280]">Terms</Link>
+        <div>
+          <p className="text-xs font-bold uppercase tracking-wider text-white/40 mb-3">Legal</p>
+          <div className="space-y-2">
+            <Link href="/privacy" className="block text-sm text-white/50 hover:text-white/80">Privacy Policy</Link>
+            <Link href="/terms" className="block text-sm text-white/50 hover:text-white/80">Terms of Service</Link>
           </div>
         </div>
-      </footer>
+        <div>
+          <p className="text-xs font-bold uppercase tracking-wider text-white/40 mb-3">Get Started</p>
+          <div className="space-y-2">
+            <Link href="/register" className="block text-sm text-white/50 hover:text-white/80">Create Account</Link>
+            <Link href="/login" className="block text-sm text-white/50 hover:text-white/80">Sign In</Link>
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-6 border-t border-white/5">
+        <div className="flex items-center gap-2">
+          <Image src="/woulf-badge.png" alt="Woulf" width={20} height={20} />
+          <span className="text-xs font-bold text-white/40">WoulfAI</span>
+        </div>
+        <p className="text-xs text-white/20">&copy; 2026 Woulf Group LLC. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
     </div>
   );
 }
