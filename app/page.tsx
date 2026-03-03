@@ -11,17 +11,46 @@ import { getSupabaseBrowser } from '@/lib/supabase-browser';
    Language: "AI Employees" — never "agents", "bots", "tools"
    ═══════════════════════════════════════════════════════════ */
 
-const EMPLOYEES = [
-  { name: 'AI Financial Employee', icon: '💰', cat: 'Finance', desc: 'Financial intelligence, cash flow management, and automated reporting across all your accounts.' },
-  { name: 'AI WMS Employee', icon: '🏭', cat: 'Operations', desc: 'Warehouse management, inventory tracking, and real-time operational intelligence with live data.' },
-  { name: 'AI Sales Employee', icon: '🎯', cat: 'Revenue', desc: 'Pipeline intelligence, deal coaching, and competitive insights to close more business faster.' },
-  { name: 'AI Marketing Employee', icon: '📢', cat: 'Revenue', desc: 'Campaign strategy, content generation, SEO optimization, and performance analytics.' },
-  { name: 'AI Operations Employee', icon: '⚙️', cat: 'Operations', desc: 'Order fulfillment, logistics optimization, and daily operations management at scale.' },
-  { name: 'AI HR Employee', icon: '👥', cat: 'People', desc: 'Employee management, compliance tracking, policy assistance, and workforce analytics.' },
+const DEPARTMENTS = [
+  {
+    name: 'Finance',
+    icon: '💰',
+    color: '#2A9D8F',
+    employees: ['CFO', 'Collections', 'FinOps', 'Payables'],
+    desc: 'Financial intelligence, cash flow management, automated invoicing, and real-time reporting across all your accounts.',
+  },
+  {
+    name: 'Sales & Revenue',
+    icon: '🎯',
+    color: '#F5920B',
+    employees: ['Sales Intel', 'Sales Coach', 'Marketing', 'SEO'],
+    desc: 'Pipeline intelligence, deal coaching, campaign strategy, content generation, and competitive analysis.',
+  },
+  {
+    name: 'Operations',
+    icon: '⚙️',
+    color: '#1B2A4A',
+    employees: ['WMS', 'Warehouse', 'Supply Chain', 'Operations', 'Logistics'],
+    desc: 'Warehouse management, inventory tracking, order fulfillment, and daily logistics at scale.',
+  },
+  {
+    name: 'People',
+    icon: '👥',
+    color: '#6366F1',
+    employees: ['HR', 'Support', 'Training', 'Onboarding'],
+    desc: 'Employee management, compliance tracking, support automation, and workforce analytics.',
+  },
+  {
+    name: 'Strategy',
+    icon: '🧠',
+    color: '#EC4899',
+    employees: ['Research', 'Legal', 'Compliance', 'STR', 'Org Lead'],
+    desc: 'Market research, legal document analysis, regulatory compliance, and strategic planning.',
+  },
 ];
 
 const STATS = [
-  { value: '21', label: 'AI Employees', sub: 'Purpose-built for your business', featured: true },
+  { value: '21', label: 'AI Employees', sub: 'Across 5 departments', featured: true },
   { value: '1,200+', label: 'Projects', sub: '4M+ sq ft integrated', featured: false },
   { value: '6', label: 'Countries', sub: 'Global operations', featured: false },
   { value: '24/7', label: 'Always On', sub: 'Zero downtime', featured: false },
@@ -44,9 +73,46 @@ const STEPS = [
 ];
 
 const DEFAULT_TIERS = [
-  { name: 'Starter', price: '$499', desc: 'A small team to get started', features: ['3 AI Employees', '2 Seats', 'Basic analytics', 'Email support'], featured: false },
-  { name: 'Full Platform', price: '$3,499', desc: 'All 21 AI employees with priority support', features: ['All 21 AI Employees', 'Unlimited Seats', 'Advanced analytics', 'Priority support', 'Custom integrations'], featured: true },
-  { name: 'Enterprise', price: null, desc: 'Custom AI solutions with unified command center', features: ['Custom AI Solutions', 'Unified Business Dashboard', 'Cross-system Integration', 'Dedicated Success Manager', 'SLA Guarantee', 'White-glove Onboarding'], featured: false },
+  {
+    name: 'Starter',
+    price: '$497',
+    annual: '$4,764',
+    desc: 'A small team to get started',
+    features: ['3 AI Employees (you pick)', '2 team seats', '5,000 AI actions / month', '1 integration', 'Email support', '14-day free trial'],
+    featured: false,
+    cta: 'Start Free Trial',
+    href: '/pricing',
+  },
+  {
+    name: 'Growth',
+    price: '$1,997',
+    annual: '$19,164',
+    desc: 'Scale across departments with more power',
+    features: ['10 AI Employees (you pick)', '5 team seats', '25,000 AI actions / month', '3 integrations', 'Email + chat support', 'Overage billing available', '14-day free trial'],
+    featured: true,
+    cta: 'Start Free Trial',
+    href: '/register',
+  },
+  {
+    name: 'Professional',
+    price: '$4,997',
+    annual: '$47,964',
+    desc: 'Full platform with all 21 AI Employees',
+    features: ['All 21 AI Employees', 'Unlimited seats', '100,000 AI actions / month', 'Unlimited integrations', 'Phone + Slack support', 'API access', 'Custom agent training', '14-day free trial'],
+    featured: false,
+    cta: 'Start Free Trial',
+    href: '/pricing',
+  },
+  {
+    name: 'Enterprise',
+    price: null,
+    annual: null,
+    desc: 'Custom AI solutions with dedicated support',
+    features: ['All 21 AI Employees', 'Unlimited everything', 'Dedicated CSM', 'White-label eligible', 'Custom SLA (99.99%)', 'White-glove onboarding'],
+    featured: false,
+    cta: 'Contact Sales',
+    href: '/contact',
+  },
 ];
 
 const NAV_LINKS = [
@@ -67,15 +133,14 @@ const Star = () => (
 
 export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false);
-  const [tiers, setTiers] = useState(DEFAULT_TIERS);
   const [mobileMenu, setMobileMenu] = useState(false);
+  const [annual, setAnnual] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-  useEffect(() => {    const fetchBundles = async () => {      try {        const sb = getSupabaseBrowser();        const { data } = await sb.from('agent_bundles' as any).select('slug,display_name,description,price_monthly_cents,is_featured,target_tier').eq('is_active', true).order('display_order') as any;        if (data && data.length > 0) {          const mapped = data.map((b: any) => ({            name: b.display_name,            price: b.target_tier === 'enterprise' ? null : '$' + (b.price_monthly_cents / 100).toLocaleString('en-US', { maximumFractionDigits: 0 }),            desc: b.description,            features: DEFAULT_TIERS.find((t: any) => t.name === b.display_name)?.features || [],            featured: b.is_featured,          }));          if (mapped.length > 0) setTiers(mapped);        }      } catch {}    };    fetchBundles();  }, []);
 
   return (
     <div className="min-h-screen" style={{ background: '#F4F5F7', color: '#1A1A2E' }}>
@@ -163,7 +228,7 @@ export default function LandingPage() {
           <div>
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6" style={{ background: 'rgba(42,157,143,0.12)', color: '#3BB5A6', border: '1px solid rgba(42,157,143,0.25)' }}>
               <span className="w-2 h-2 rounded-full" style={{ background: '#2A9D8F', animation: 'pulse-dot 2s infinite' }} />
-              21 AI Employees Ready to Hire
+              21 AI Employees · 5 Departments · 14-Day Free Trial
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-[56px] font-black text-white leading-[1.08] tracking-tight">
@@ -182,18 +247,18 @@ export default function LandingPage() {
                 className="px-9 py-4 rounded-2xl text-[15px] font-bold text-white transition-all hover:-translate-y-0.5"
                 style={{ background: '#F5920B', boxShadow: '0 8px 32px rgba(245,146,11,0.35)' }}
               >
-                Hire Your First AI Employee
+                Start 14-Day Free Trial
               </Link>
               <Link
-                href="/demo/marketing"
+                href="/demo"
                 className="px-9 py-4 rounded-2xl text-[15px] font-semibold text-white border border-white/15 hover:bg-white/[0.08] transition-all"
               >
-                ▶ Watch Demo
+                Explore Demos
               </Link>
             </div>
 
             <div className="mt-10 flex flex-wrap gap-6">
-              {['SOC 2 Ready', 'Tenant Isolated', 'Enterprise Grade'].map(b => (
+              {['SOC 2 Ready', 'No Credit Card Required', '14-Day Free Trial'].map(b => (
                 <div key={b} className="flex items-center gap-2">
                   <Star />
                   <span className="text-xs text-white/45 font-medium">{b}</span>
@@ -217,44 +282,48 @@ export default function LandingPage() {
                 <p className="text-[11px] text-white/35 mt-0.5">{s.sub}</p>
               </div>
             ))}
-          
 
-          {/* Client Trust Bar */}
-          <div className="mt-14 pt-8 border-t border-white/[0.06]">
-            <p className="text-[10px] text-white/25 uppercase tracking-[3px] text-center mb-5">Trusted by warehouse &amp; logistics leaders</p>
-            <div className="flex flex-wrap justify-center gap-x-12 gap-y-3">
-              {["Cabela\u2019s", "Sportsman\u2019s Warehouse", "Frito-Lay", "US Military", "Amazon"].map(c => (
-                <span key={c} className="text-sm font-semibold text-white/20">{c}</span>
-              ))}
+            {/* Client Trust Bar */}
+            <div className="col-span-2 mt-6 pt-6 border-t border-white/[0.06]">
+              <p className="text-[10px] text-white/25 uppercase tracking-[3px] text-center mb-4">Trusted by warehouse &amp; logistics leaders</p>
+              <div className="flex flex-wrap justify-center gap-x-10 gap-y-3">
+                {["Cabela\u2019s", "Sportsman\u2019s Warehouse", "Frito-Lay", "US Military", "Amazon"].map(c => (
+                  <span key={c} className="text-sm font-semibold text-white/20">{c}</span>
+                ))}
+              </div>
             </div>
-          </div></div>
+          </div>
         </div>
       </section>
 
-      {/* ── AI EMPLOYEES ──────────────────────────────────── */}
+      {/* ── DEPARTMENTS (replaces 6-card employees) ─────── */}
       <section className="py-24 px-6 sm:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <p className="text-xs font-bold uppercase tracking-[3px] mb-3" style={{ color: '#2A9D8F' }}>Your AI Workforce</p>
-            <h2 className="text-3xl sm:text-4xl font-extrabold" style={{ color: '#1B2A4A' }}>An AI Employee for Every Department</h2>
+            <h2 className="text-3xl sm:text-4xl font-extrabold" style={{ color: '#1B2A4A' }}>21 AI Employees Across 5 Departments</h2>
             <p className="mt-4 text-[#9CA3AF] max-w-2xl mx-auto">Each AI employee is purpose-built for its role — trained on industry best practices and integrated with your existing tools.</p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {EMPLOYEES.map((a, i) => (
+            {DEPARTMENTS.map((d, i) => (
               <div
                 key={i}
-                className="group p-7 rounded-[20px] bg-white border border-gray-200/60 hover:border-[#2A9D8F] hover:shadow-xl transition-all duration-300 hover:-translate-y-[3px] relative overflow-hidden"
+                className={`group p-7 rounded-[20px] bg-white border border-gray-200/60 hover:shadow-xl transition-all duration-300 hover:-translate-y-[3px] relative overflow-hidden ${i >= 3 ? 'lg:col-span-1' : ''}`}
+                style={{ borderTopColor: d.color, borderTopWidth: '3px' }}
               >
-                <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#2A9D8F] to-[#3BB5A6] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" />
                 <div className="flex items-start gap-4">
-                  <span className="text-[32px]">{a.icon}</span>
+                  <span className="text-[32px]">{d.icon}</span>
                   <div className="flex-1">
-                    <div className="flex items-center justify-between gap-2">
-                      <h3 className="font-bold" style={{ color: '#1B2A4A' }}>{a.name}</h3>
-                      <span className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full uppercase tracking-wider" style={{ background: 'rgba(42,157,143,0.08)', color: '#2A9D8F' }}>{a.cat}</span>
+                    <h3 className="font-bold text-lg" style={{ color: '#1B2A4A' }}>{d.name}</h3>
+                    <p className="text-[13px] text-[#9CA3AF] mt-2 leading-relaxed">{d.desc}</p>
+                    <div className="flex flex-wrap gap-1.5 mt-4">
+                      {d.employees.map(e => (
+                        <span key={e} className="text-[10px] font-semibold px-2.5 py-1 rounded-full" style={{ background: 'rgba(42,157,143,0.08)', color: '#2A9D8F' }}>
+                          {e}
+                        </span>
+                      ))}
                     </div>
-                    <p className="text-[13px] text-[#9CA3AF] mt-2 leading-relaxed">{a.desc}</p>
                   </div>
                 </div>
               </div>
@@ -262,8 +331,8 @@ export default function LandingPage() {
           </div>
 
           <div className="text-center mt-10">
-            <Link href="/agents" className="inline-flex items-center gap-1.5 text-sm font-bold hover:gap-2.5 transition-all" style={{ color: '#F5920B' }}>
-              Meet all 21 AI Employees →
+            <Link href="/demo" className="inline-flex items-center gap-1.5 text-sm font-bold hover:gap-2.5 transition-all" style={{ color: '#F5920B' }}>
+              Explore all 21 AI Employees →
             </Link>
           </div>
         </div>
@@ -326,16 +395,35 @@ export default function LandingPage() {
       {/* ── PRICING ─────────────────────────────────────── */}
       <section className="py-24 px-6 sm:px-8" style={{ background: '#FAFBFC' }}>
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
+          <div className="text-center mb-10">
             <p className="text-xs font-bold uppercase tracking-[3px] mb-3" style={{ color: '#2A9D8F' }}>Simple Pricing</p>
             <h2 className="text-3xl sm:text-4xl font-extrabold" style={{ color: '#1B2A4A' }}>Choose Your Team Size</h2>
+            <p className="mt-4 text-[#9CA3AF] max-w-xl mx-auto">Every plan includes a 14-day free trial. No credit card required to start.</p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[1200px] mx-auto">
-            {tiers.map((t, i) => (
+          {/* Monthly/Annual toggle */}
+          <div className="flex items-center justify-center gap-3 mb-12">
+            <span className={`text-sm font-medium ${!annual ? 'text-[#1B2A4A]' : 'text-[#9CA3AF]'}`}>Monthly</span>
+            <button
+              onClick={() => setAnnual(!annual)}
+              className="relative w-12 h-6 rounded-full transition-colors"
+              style={{ background: annual ? '#2A9D8F' : '#E5E7EB' }}
+            >
+              <div
+                className="absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform"
+                style={{ left: annual ? '26px' : '2px' }}
+              />
+            </button>
+            <span className={`text-sm font-medium ${annual ? 'text-[#1B2A4A]' : 'text-[#9CA3AF]'}`}>
+              Annual <span className="text-[10px] font-bold text-emerald-600 ml-1">Save 20%</span>
+            </span>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 max-w-[1300px] mx-auto">
+            {DEFAULT_TIERS.map((t, i) => (
               <div
                 key={i}
-                className={`p-10 rounded-3xl border-2 transition-all hover:shadow-xl ${t.featured ? 'lg:scale-[1.03] shadow-xl' : ''}`}
+                className={`p-8 rounded-3xl border-2 transition-all hover:shadow-xl ${t.featured ? 'lg:scale-[1.03] shadow-xl' : ''}`}
                 style={{
                   background: t.featured ? '#1B2A4A' : '#FFFFFF',
                   borderColor: t.featured ? '#F5920B' : '#E5E7EB',
@@ -347,19 +435,30 @@ export default function LandingPage() {
                     Most Popular
                   </span>
                 )}
-                <h3 className="text-[22px] font-extrabold" style={{ fontFamily: "'Outfit', sans-serif", color: t.featured ? '#fff' : '#1B2A4A' }}>{t.name}</h3>
-                <p className={`text-[13px] mt-1 ${t.featured ? 'text-white/60' : 'text-[#9CA3AF]'}`}>{t.desc}</p>
-                <p className="text-5xl font-black mt-5 tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
-                {t.price ? (
-                  <>{t.price}<span className={`text-sm font-normal ${t.featured ? 'text-[#6B7280]' : 'text-[#6B7280]'}`}>/mo</span></>
-                ) : (
-                  <span className="text-3xl">Contact Sales</span>
-                )}
-                </p>
+                <h3 className="text-[20px] font-extrabold" style={{ fontFamily: "'Outfit', sans-serif", color: t.featured ? '#fff' : '#1B2A4A' }}>{t.name}</h3>
+                <p className={`text-[12px] mt-1 ${t.featured ? 'text-white/60' : 'text-[#9CA3AF]'}`}>{t.desc}</p>
 
-                <ul className="mt-7 flex flex-col gap-3.5">
+                <div className="mt-5">
+                  {t.price ? (
+                    <>
+                      <p className="text-4xl font-black tracking-tight" style={{ fontFamily: "'Outfit', sans-serif" }}>
+                        {annual && t.annual ? '$' + Math.round(parseInt(t.annual.replace(/[$,]/g, '')) / 12).toLocaleString() : t.price}
+                        <span className={`text-sm font-normal ${t.featured ? 'text-white/40' : 'text-[#9CA3AF]'}`}>/mo</span>
+                      </p>
+                      {annual && t.annual && (
+                        <p className={`text-[11px] mt-0.5 ${t.featured ? 'text-white/40' : 'text-[#9CA3AF]'}`}>
+                          {t.annual}/yr billed annually
+                        </p>
+                      )}
+                    </>
+                  ) : (
+                    <p className="text-2xl font-black mt-1" style={{ fontFamily: "'Outfit', sans-serif" }}>Contact Sales</p>
+                  )}
+                </div>
+
+                <ul className="mt-6 flex flex-col gap-3">
                   {t.features.map((f, j) => (
-                    <li key={j} className="flex items-center gap-2.5 text-sm">
+                    <li key={j} className="flex items-center gap-2.5 text-[13px]">
                       <span className="w-[18px] h-[18px] rounded-full flex items-center justify-center flex-shrink-0" style={{ background: t.featured ? 'rgba(245,146,11,0.2)' : 'rgba(42,157,143,0.1)' }}>
                         <Check color={t.featured ? '#F5920B' : '#2A9D8F'} />
                       </span>
@@ -369,8 +468,8 @@ export default function LandingPage() {
                 </ul>
 
                 <Link
-                  href={t.featured ? '/register' : !t.price ? '/contact' : '/pricing'}
-                  className="block text-center mt-8 py-3.5 rounded-2xl text-[15px] font-bold transition-all hover:-translate-y-px"
+                  href={t.href}
+                  className="block text-center mt-7 py-3 rounded-2xl text-[14px] font-bold transition-all hover:-translate-y-px"
                   style={{
                     background: t.featured ? '#F5920B' : !t.price ? '#1B2A4A' : 'transparent',
                     color: t.featured || !t.price ? '#fff' : '#1B2A4A',
@@ -378,7 +477,7 @@ export default function LandingPage() {
                     boxShadow: t.featured ? '0 4px 16px rgba(245,146,11,0.3)' : 'none',
                   }}
                 >
-                  {t.featured ? 'Start Free Trial' : !t.price ? 'Contact Sales' : 'View Details'}
+                  {t.cta}
                 </Link>
               </div>
             ))}
@@ -404,7 +503,7 @@ export default function LandingPage() {
             </p>
             <div className="mt-9 flex flex-wrap gap-4 justify-center">
               <Link href="/register" className="px-9 py-4 rounded-2xl text-[15px] font-bold text-white transition-all hover:-translate-y-0.5" style={{ background: '#F5920B', boxShadow: '0 8px 32px rgba(245,146,11,0.35)' }}>
-                Hire Your First AI Employee
+                Start 14-Day Free Trial
               </Link>
               <Link href="/contact" className="px-9 py-4 rounded-2xl text-[15px] font-semibold text-white border border-white/15 hover:bg-white/[0.08] transition-all">
                 Talk to Sales
@@ -429,7 +528,7 @@ export default function LandingPage() {
           </div>
 
           {[
-            { title: 'Product', links: [{ href: '/agents', label: 'All AI Employees' }, { href: '/pricing', label: 'Pricing' }, { href: '/solutions', label: 'Solutions' }, { href: '/demo/marketing', label: 'Demos' }, { href: '/warehouse', label: 'Warehouse Portal' }] },
+            { title: 'Product', links: [{ href: '/demo', label: 'AI Employees' }, { href: '/pricing', label: 'Pricing' }, { href: '/solutions', label: 'Solutions' }, { href: '/settings/integrations', label: 'Integrations' }] },
             { title: 'Company', links: [{ href: '/about', label: 'About' }, { href: '/case-studies', label: 'Case Studies' }, { href: '/contact', label: 'Contact' }, { href: 'https://woulfgroup.com', label: 'Woulf Group' }] },
             { title: 'Legal', links: [{ href: '/terms', label: 'Terms of Service' }, { href: '/privacy', label: 'Privacy Policy' }, { href: '/security', label: 'Security' }] },
           ].map(col => (
@@ -447,7 +546,7 @@ export default function LandingPage() {
         </div>
 
         <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-[11px] text-[#9CA3AF]">© 2026 WoulfAI by Woulf Group. All rights reserved.</p>
+          <p className="text-[11px] text-[#9CA3AF]">&copy; 2026 WoulfAI by Woulf Group. All rights reserved.</p>
           <p className="text-[11px] text-white/15">21 AI Employees working · Built in Grantsville, UT</p>
         </div>
       </footer>
