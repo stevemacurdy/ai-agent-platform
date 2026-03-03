@@ -6,8 +6,10 @@ export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import { getHubSpotClient } from '@/lib/hubspot';
 import { analyzePipeline, generateCallPrep, scoreLeads } from '@/lib/openai';
+import { trackUsage } from '@/lib/usage-tracker';
 
 export async function GET(request: NextRequest) {
+  trackUsage(request, 'sales');
   const { searchParams } = new URL(request.url);
   const action = searchParams.get('action') || 'dashboard';
 
@@ -79,6 +81,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  trackUsage(request, 'sales', 'chat');
   const body = await request.json();
   const { action } = body;
 

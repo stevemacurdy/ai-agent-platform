@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic';
 import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
+import { trackUsage } from '@/lib/usage-tracker';
 
 function supabaseAdmin() {
   return createClient(
@@ -74,6 +75,7 @@ RULES:
 
 export async function POST(request: NextRequest) {
   try {
+    trackUsage(request, 'sales-coach', 'chat');
     const { messages, session_id, rep_name } = await request.json();
 
     if (!messages || !Array.isArray(messages)) {

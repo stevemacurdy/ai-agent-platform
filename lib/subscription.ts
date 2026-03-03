@@ -253,7 +253,7 @@ export async function recordUsage(
       agent_slug: agentSlug,
       action_type: actionType,
       action_count: actionCount,
-      recorded_at: new Date().toISOString(),
+      created_at: new Date().toISOString(),
     });
   } catch (err) {
     console.error('[usage] Failed to record:', err);
@@ -285,7 +285,7 @@ export async function checkUsage(
     .from('usage_events')
     .select('action_count')
     .eq('company_id', companyId)
-    .gte('recorded_at', startOfMonth.toISOString());
+    .gte('created_at', startOfMonth.toISOString());
 
   const used = (data || []).reduce((sum, e) => sum + (e.action_count || 1), 0);
   const limit = limits.max_ai_actions_per_month;

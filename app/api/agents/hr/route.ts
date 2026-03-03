@@ -1,8 +1,10 @@
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server'
 import { getHRData } from '@/lib/hr/hr-data'
+import { trackUsage } from '@/lib/usage-tracker';
 
 export async function GET(request: NextRequest) {
+  trackUsage(request, 'hr');
   const companyId = request.nextUrl.searchParams.get('companyId') || 'woulf'
   const data = getHRData(companyId)
   return NextResponse.json({ success: true, data })
@@ -10,6 +12,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    trackUsage(request, 'hr', 'chat');
     const body = await request.json()
     const { action } = body
     if (action === 'approve_insight') return NextResponse.json({ success: true, message: 'Insight approved' })

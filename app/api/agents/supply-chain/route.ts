@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getUser, getUserCompanyId, getSupabase } from '@/lib/wms/agent-auth';
 import { getInventorySummary, getLowStock } from '@/lib/wms/wms-tools';
 import { runAgentChat } from '@/lib/wms/agent-chat';
+import { trackUsage } from '@/lib/usage-tracker';
 
 const SYSTEM_PROMPT = `You are the Supply Chain Agent for Woulf Group. You focus on inventory health, replenishment, vendor relationships, and inbound logistics.
 
@@ -27,6 +28,7 @@ When presenting supply chain data:
 
 // GET — Live supply chain KPIs
 export async function GET(request: NextRequest) {
+  trackUsage(request, 'supply-chain');
   const user = await getUser(request);
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
@@ -59,6 +61,7 @@ export async function GET(request: NextRequest) {
 
 // POST — AI chat
 export async function POST(request: NextRequest) {
+  trackUsage(request, 'supply-chain', 'chat');
   const user = await getUser(request);
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 

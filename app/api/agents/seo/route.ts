@@ -1,8 +1,10 @@
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server'
 import { getSeoData } from '@/lib/seo/seo-data'
+import { trackUsage } from '@/lib/usage-tracker';
 
 export async function GET(request: NextRequest) {
+  trackUsage(request, 'seo');
   const companyId = request.nextUrl.searchParams.get('companyId') || 'woulf'
   const data = getSeoData(companyId)
   return NextResponse.json({ success: true, data })
@@ -10,6 +12,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    trackUsage(request, 'seo', 'chat');
     const body = await request.json()
     const { action, actionId, companyId } = body
 

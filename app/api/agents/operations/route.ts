@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getUser, getUserCompanyId } from '@/lib/wms/agent-auth';
 import { getOrderSummary, getInventorySummary } from '@/lib/wms/wms-tools';
 import { runAgentChat } from '@/lib/wms/agent-chat';
+import { trackUsage } from '@/lib/usage-tracker';
 
 const SYSTEM_PROMPT = `You are the Operations Agent for Woulf Group's warehouse operations. You focus on operational execution, order fulfillment, and daily logistics.
 
@@ -25,6 +26,7 @@ When presenting operational data:
 
 // GET — Live operational KPIs
 export async function GET(request: NextRequest) {
+  trackUsage(request, 'operations');
   const user = await getUser(request);
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
@@ -53,6 +55,7 @@ export async function GET(request: NextRequest) {
 
 // POST — AI chat
 export async function POST(request: NextRequest) {
+  trackUsage(request, 'operations', 'chat');
   const user = await getUser(request);
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 

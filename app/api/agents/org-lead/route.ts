@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getUser, getUserCompanyId, getSupabase } from '@/lib/wms/agent-auth';
 import { getInventorySummary, getOrderSummary, getLowStock } from '@/lib/wms/wms-tools';
 import { runAgentChat } from '@/lib/wms/agent-chat';
+import { trackUsage } from '@/lib/usage-tracker';
 
 const SYSTEM_PROMPT = `You are the Organization Lead Agent for Woulf Group. You provide a high-level, cross-functional view of warehouse operations for leadership and strategic decision-making.
 
@@ -28,6 +29,7 @@ When presenting to leadership:
 
 // GET — Executive-level KPIs
 export async function GET(request: NextRequest) {
+  trackUsage(request, 'org-lead');
   const user = await getUser(request);
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
@@ -75,6 +77,7 @@ export async function GET(request: NextRequest) {
 
 // POST — AI chat
 export async function POST(request: NextRequest) {
+  trackUsage(request, 'org-lead', 'chat');
   const user = await getUser(request);
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 

@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getUser, getUserCompanyId } from '@/lib/wms/agent-auth';
 import { getInventorySummary, getOrderSummary } from '@/lib/wms/wms-tools';
 import { runAgentChat } from '@/lib/wms/agent-chat';
+import { trackUsage } from '@/lib/usage-tracker';
 
 const SYSTEM_PROMPT = `You are the WMS (Warehouse Management System) AI agent for Woulf Group. You have direct access to live warehouse data through tool functions.
 
@@ -26,6 +27,7 @@ Guidelines:
 
 // GET — Live warehouse KPIs
 export async function GET(request: NextRequest) {
+  trackUsage(request, 'wms');
   const user = await getUser(request);
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
@@ -58,6 +60,7 @@ export async function GET(request: NextRequest) {
 
 // POST — AI chat
 export async function POST(request: NextRequest) {
+  trackUsage(request, 'wms', 'chat');
   const user = await getUser(request);
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 

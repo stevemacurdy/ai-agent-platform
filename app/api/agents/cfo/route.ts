@@ -6,8 +6,10 @@ export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import { getOdooClient } from '@/lib/odoo';
 import { analyzeCashFlow, generateCollectionStrategy } from '@/lib/openai';
+import { trackUsage } from '@/lib/usage-tracker';
 
 export async function GET(request: NextRequest) {
+  trackUsage(request, 'cfo');
   const { searchParams } = new URL(request.url);
   const action = searchParams.get('action') || 'dashboard';
 
@@ -65,6 +67,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  trackUsage(request, 'cfo', 'chat');
   const body = await request.json();
   const { action } = body;
 
