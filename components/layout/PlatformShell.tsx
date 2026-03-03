@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import SidebarNav from '@/components/dashboard/sidebar-nav';
+import UsageBanner from '@/components/usage/UsageBanner';
 
 export default function PlatformShell({ children }: { children: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -32,7 +33,10 @@ export default function PlatformShell({ children }: { children: React.ReactNode 
         </div>
       )}
 
-      {/* Main content */}
+      {/* Usage Banner */}
+        <UsageBanner />
+
+        {/* Main content */}
       <main className="flex-1 min-w-0 overflow-y-auto">
         {/* Mobile header */}
         <div className="lg:hidden flex items-center gap-3 px-4 py-3 border-b border-[#E5E7EB] bg-white sticky top-0 z-30">

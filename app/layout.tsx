@@ -3,6 +3,7 @@ import { CompanyProvider } from '@/lib/company-context';
 import "./globals.css";
 import { TenantProvider } from "@/lib/providers/tenant-provider";
 import ChatWidget from '@/components/chat-widget';
+import { JSON_LD } from '@/lib/seo';
 import CartDrawer from '@/components/cart-drawer';
 
 export const metadata: Metadata = {
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }} />
         {/* ── Global Fonts (loaded once, inherited everywhere) ── */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
