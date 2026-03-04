@@ -28,6 +28,36 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ job });
   }
 
+  // List all real jobs (console dashboard)
+  if (view === 'jobs') {
+    try {
+      const sb = supabaseAdmin();
+      const { data: jobs } = await sb
+        .from('video_jobs')
+        .select('id, mode, status, source_filename, source_size_bytes, error, processing_seconds, created_at, completed_at')
+        .order('created_at', { ascending: false })
+        .limit(100);
+
+      // Get clip counts for completed jobs
+      const allJobs = jobs || [];
+      const completedIds = allJobs.filter(j => j.status === 'complete').map(j => j.id);
+      const clipCounts: Record<string, number> = {};
+      if (completedIds.length > 0) {
+        const { data: clips } = await sb
+          .from('video_clips')
+          .select('job_id')
+          .in('job_id', completedIds);
+        (clips || []).forEach(c => { clipCounts[c.job_id] = (clipCounts[c.job_id] || 0) + 1; });
+      }
+
+      const enriched = allJobs.map(j => ({ ...j, clip_count: clipCounts[j.id] || 0 }));
+      return NextResponse.json({ success: true, jobs: enriched });
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : 'Unknown error';
+      return NextResponse.json({ error: msg }, { status: 500 });
+    }
+  }
+
   // Demo / dashboard view
   if (companyId === 'woulf' || view === 'demo') {
     const data = getVideoEditorDemoData();
