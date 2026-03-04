@@ -27,3 +27,4 @@ import './compliance';
 import './research';
 import './org-lead';
 import './str';
+import './video-editor';
