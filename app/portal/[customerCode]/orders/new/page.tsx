@@ -3,12 +3,14 @@
 import { useState, useMemo } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import {
-  DEMO_INVENTORY, PRODUCT_TYPE_CONFIG,
+  PRODUCT_TYPE_CONFIG,
   generateOrderNumber, generatePONumber, generateBOLNumber,
 } from '@/lib/3pl-portal-data';
 import type { InventoryItem, CartItem, UnitOfMeasure } from '@/lib/3pl-portal-data';
+import { usePortalData } from '@/lib/portal-data-context';
 import CartSidebar from '@/components/portal/CartSidebar';
 import DocumentUpload from '@/components/portal/DocumentUpload';
+import { usePortal } from '@/lib/portal-context';
 
 const SHIP_METHODS = [
   { value: 'ground', label: 'Ground' },
@@ -24,6 +26,8 @@ export default function PlaceOrderPage() {
   const params = useParams();
   const router = useRouter();
   const customerCode = params.customerCode as string;
+  const { basePath } = usePortal();
+  const { inventory: inventoryItems } = usePortalData();
   const [step, setStep] = useState(1);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
@@ -46,7 +50,7 @@ export default function PlaceOrderPage() {
   const [submitting, setSubmitting] = useState(false);
 
   const filtered = useMemo(() => {
-    let items = [...DEMO_INVENTORY].filter(i => i.quantity_available > 0);
+    let items = [...inventoryItems].filter(i => i.quantity_available > 0);
     if (search) { const q = search.toLowerCase(); items = items.filter(i => i.sku.toLowerCase().includes(q) || i.description.toLowerCase().includes(q)); }
     if (typeFilter) items = items.filter(i => i.product_type === typeFilter);
     return items;
@@ -93,7 +97,7 @@ export default function PlaceOrderPage() {
             <div className="flex justify-between text-sm"><span className="text-gray-500">Items</span><span className="font-semibold">{cart.length} lines, {totalCases} units</span></div>
             <div className="flex justify-between text-sm"><span className="text-gray-500">Weight</span><span className="font-semibold">{totalWeight.toFixed(0)} lbs ({estimatedPallets} pallets)</span></div>
           </div>
-          <button onClick={() => router.push(`/portal/${customerCode}/orders`)} className="px-6 py-2.5 bg-[#1B2A4A] text-white rounded-xl text-sm font-semibold hover:bg-[#1B2A4A]/90 transition-colors">View Orders</button>
+          <button onClick={() => router.push(`${basePath}/orders`)} className="px-6 py-2.5 bg-[#1B2A4A] text-white rounded-xl text-sm font-semibold hover:bg-[#1B2A4A]/90 transition-colors">View Orders</button>
         </div>
       </div>
     );

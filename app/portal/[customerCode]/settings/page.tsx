@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
-import { DEMO_CUSTOMER, formatCurrency, formatDate } from '@/lib/3pl-portal-data';
+import { usePortalData } from '@/lib/portal-data-context';
+import { formatCurrency, formatDate } from '@/lib/3pl-portal-data';
 
 function SectionCard({ title, description, children }: { title: string; description?: string; children: React.ReactNode }) {
   return (
@@ -34,7 +35,7 @@ function InputField({ label, value, onChange, type = 'text', disabled = false }:
 export default function SettingsPage() {
   const params = useParams();
   const customerCode = params.customerCode as string;
-  const customer = DEMO_CUSTOMER;
+  const { customer } = usePortalData();
 
   const [contactName, setContactName] = useState(customer.contact_name || '');
   const [contactEmail, setContactEmail] = useState(customer.contact_email || '');

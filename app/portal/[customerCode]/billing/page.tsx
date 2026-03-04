@@ -2,10 +2,9 @@
 
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
+import { usePortalData } from '@/lib/portal-data-context';
 import {
-  DEMO_CUSTOMER, DEMO_INVOICES, DEMO_PAYMENTS,
   INVOICE_STATUS_CONFIG, formatCurrency, formatDate, formatDateShort,
-  getPaymentChartData,
 } from '@/lib/3pl-portal-data';
 import type { Invoice, Payment, PaymentTimeliness } from '@/lib/3pl-portal-data';
 import PaymentModal from '@/components/portal/PaymentModal';
@@ -39,10 +38,7 @@ function StatCard({ label, value, sub, color }: { label: string; value: string; 
 export default function BillingPage() {
   const params = useParams();
   const customerCode = params.customerCode as string;
-  const customer = DEMO_CUSTOMER;
-  const invoices = DEMO_INVOICES;
-  const payments = DEMO_PAYMENTS;
-  const paymentChartData = getPaymentChartData();
+  const { customer, invoices, payments, paymentChartData } = usePortalData();
 
   const [statusFilter, setStatusFilter] = useState('all');
   const [payingInvoice, setPayingInvoice] = useState<Invoice | null>(null);

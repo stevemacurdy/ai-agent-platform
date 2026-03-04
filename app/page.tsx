@@ -225,6 +225,14 @@ export default function HomePage() {
                     </div>
                     <span className="text-xs text-white/20 group-hover:text-orange-400 transition-colors">Try Demo →</span>
                   </a>
+                  <a href="/portal/MWS-001" className="flex items-center gap-3 p-3 rounded-lg bg-gradient-to-r from-[#F5920B]/10 to-[#2A9D8F]/10 hover:from-[#F5920B]/20 hover:to-[#2A9D8F]/20 border border-[#F5920B]/20 hover:border-[#F5920B]/40 transition-all group">
+                    <span className="text-xl">🛡</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-white">3PL Customer Portal</p>
+                      <p className="text-[11px] text-[#F5920B]/60 truncate">Full multi-page portal</p>
+                    </div>
+                    <span className="text-xs text-orange-400 font-semibold group-hover:text-orange-300 transition-colors">Try Demo →</span>
+                  </a>
                 </div>
               </div>
 

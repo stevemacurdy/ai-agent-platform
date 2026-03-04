@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { usePortalData } from '@/lib/portal-data-context';
 
 const NAV_ITEMS = [
   { label: 'Dashboard', href: '', icon: 'home' },
@@ -26,9 +27,11 @@ const ICONS: Record<string, JSX.Element> = {
   gear: <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>,
 };
 
-export default function PortalNav({ customerCode, customerName }: { customerCode: string; customerName: string }) {
+export default function PortalNav({ customerCode, customerName, basePath }: { customerCode: string; customerName: string; basePath?: string }) {
   const pathname = usePathname();
-  const base = `/portal/${customerCode}`;
+  const portalData = usePortalData();
+  const displayName = portalData.customer?.customer_name || customerName;
+  const base = basePath || `/portal/${customerCode}`;
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
@@ -40,7 +43,7 @@ export default function PortalNav({ customerCode, customerName }: { customerCode
             <div className="w-8 h-8 rounded-lg bg-[#F5920B] flex items-center justify-center text-sm font-bold">3P</div>
             <span className="font-semibold text-sm tracking-wide opacity-80">Clutch 3PL</span>
           </div>
-          <p className="text-white/60 text-xs mt-2 truncate">{customerName}</p>
+          <p className="text-white/60 text-xs mt-2 truncate">{displayName}</p>
         </div>
         <nav className="flex-1 py-4 px-3 space-y-1">
           {NAV_ITEMS.map(item => {

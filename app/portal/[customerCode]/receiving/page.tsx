@@ -2,8 +2,9 @@
 
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
+import { usePortalData } from '@/lib/portal-data-context';
 import {
-  DEMO_RECEIVING, formatDate, formatDateShort,
+  formatDate, formatDateShort,
   PRODUCT_TYPE_CONFIG,
 } from '@/lib/3pl-portal-data';
 import type { ReceivingRecord } from '@/lib/3pl-portal-data';
@@ -28,10 +29,11 @@ function StatCard({ label, value, sub }: { label: string; value: string; sub?: s
 export default function ReceivingPage() {
   const params = useParams();
   const customerCode = params.customerCode as string;
+  const { receiving } = usePortalData();
   const [statusFilter, setStatusFilter] = useState('all');
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  const records = DEMO_RECEIVING;
+  const records = receiving;
   const filtered = statusFilter === 'all' ? records : records.filter(r => r.status === statusFilter);
 
   const totalPallets = records.reduce((s, r) => s + r.pallet_count, 0);

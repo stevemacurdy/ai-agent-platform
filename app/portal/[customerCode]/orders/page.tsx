@@ -3,11 +3,13 @@
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import { usePortalData } from '@/lib/portal-data-context';
 import {
-  DEMO_ORDERS, ORDER_STATUS_CONFIG, PRODUCT_TYPE_CONFIG, formatDate,
+  ORDER_STATUS_CONFIG, PRODUCT_TYPE_CONFIG, formatDate,
 } from '@/lib/3pl-portal-data';
 import type { OrderStatus } from '@/lib/3pl-portal-data';
 import PhotoGallery from '@/components/portal/PhotoGallery';
+import { usePortal } from '@/lib/portal-context';
 
 const STATUS_FLOW: OrderStatus[] = ['pending', 'processing', 'picking', 'packed', 'shipped', 'delivered'];
 
@@ -29,11 +31,13 @@ function OrderTimeline({ status }: { status: OrderStatus }) {
 export default function OrdersPage() {
   const params = useParams();
   const customerCode = params.customerCode as string;
+  const { basePath } = usePortal();
+  const { orders: allOrders } = usePortalData();
   const [statusFilter, setStatusFilter] = useState('');
   const [search, setSearch] = useState('');
   const [expanded, setExpanded] = useState<string | null>(null);
 
-  const filtered = DEMO_ORDERS.filter(o => {
+  const filtered = allOrders.filter(o => {
     if (statusFilter && o.status !== statusFilter) return false;
     if (search) { const q = search.toLowerCase(); return o.order_number.toLowerCase().includes(q) || o.po_number.toLowerCase().includes(q) || o.ship_to_name.toLowerCase().includes(q); }
     return true;
@@ -46,7 +50,7 @@ export default function OrdersPage() {
           <h1 className="text-xl font-bold text-gray-900" style={{ fontFamily: 'Outfit, sans-serif' }}>Orders</h1>
           <p className="text-sm text-gray-500 mt-0.5">Track and manage your outbound shipments</p>
         </div>
-        <Link href={`/portal/${customerCode}/orders/new`} className="flex items-center gap-2 px-4 py-2 bg-[#F5920B] text-white rounded-xl text-sm font-semibold hover:bg-[#E08209] transition-colors">
+        <Link href={`${basePath}/orders/new`} className="flex items-center gap-2 px-4 py-2 bg-[#F5920B] text-white rounded-xl text-sm font-semibold hover:bg-[#E08209] transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
           New Order
         </Link>

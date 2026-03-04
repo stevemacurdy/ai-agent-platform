@@ -2,12 +2,14 @@
 
 import { useState, useMemo } from 'react';
 import { useParams } from 'next/navigation';
+import { usePortalData } from '@/lib/portal-data-context';
 import {
-  DEMO_INVENTORY, PRODUCT_TYPE_CONFIG, formatDate, daysUntil,
+  PRODUCT_TYPE_CONFIG, formatDate, daysUntil,
 } from '@/lib/3pl-portal-data';
 import type { InventoryItem, ProductType, CartItem, UnitOfMeasure } from '@/lib/3pl-portal-data';
 import CartSidebar from '@/components/portal/CartSidebar';
 import PhotoGallery from '@/components/portal/PhotoGallery';
+import { usePortal } from '@/lib/portal-context';
 
 function TypeBadge({ type }: { type: ProductType }) {
   const cfg = PRODUCT_TYPE_CONFIG[type];
@@ -29,6 +31,8 @@ function ExpirationBadge({ date }: { date: string | null }) {
 export default function InventoryPage() {
   const params = useParams();
   const customerCode = params.customerCode as string;
+  const { basePath } = usePortal();
+  const { inventory: inventoryItems } = usePortalData();
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState<string>('');
   const [mfgFilter, setMfgFilter] = useState<string>('');
@@ -40,10 +44,10 @@ export default function InventoryPage() {
   const [addQty, setAddQty] = useState<Record<string, number>>({});
   const [addUnit, setAddUnit] = useState<Record<string, string>>({});
 
-  const manufacturers = useMemo(() => [...new Set(DEMO_INVENTORY.map(i => i.manufacturer))], []);
+  const manufacturers = useMemo(() => [...new Set(inventoryItems.map(i => i.manufacturer))], []);
 
   const filtered = useMemo(() => {
-    let items = [...DEMO_INVENTORY];
+    let items = [...inventoryItems];
     if (search) {
       const q = search.toLowerCase();
       items = items.filter(i => i.sku.toLowerCase().includes(q) || i.description.toLowerCase().includes(q) || i.lot_number.toLowerCase().includes(q));
@@ -203,7 +207,7 @@ export default function InventoryPage() {
         </div>
       )}
 
-      <CartSidebar items={cart} onUpdateQuantity={(id, qty) => setCart(cart.map(c => c.inventory_id === id ? { ...c, quantity: qty } : c))} onRemove={id => setCart(cart.filter(c => c.inventory_id !== id))} onCheckout={() => { window.location.href = `/portal/${customerCode}/orders/new`; }} open={cartOpen} onClose={() => setCartOpen(false)} />
+      <CartSidebar items={cart} onUpdateQuantity={(id, qty) => setCart(cart.map(c => c.inventory_id === id ? { ...c, quantity: qty } : c))} onRemove={id => setCart(cart.filter(c => c.inventory_id !== id))} onCheckout={() => { window.location.href = `${basePath}/orders/new`; }} open={cartOpen} onClose={() => setCartOpen(false)} />
     </div>
   );
 }
