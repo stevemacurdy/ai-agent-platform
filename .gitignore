@@ -22,6 +22,7 @@ archive/
 
 # Stray working files
 *.sql
+!supabase/migrations/*.sql
 cfo-data.ts
 cfo-route.ts
 stripe.ts
@@ -39,6 +40,7 @@ mnt/
 # Stray working files
 mnt/
 *.sql
+!supabase/migrations/*.sql
 cfo-data.ts
 cfo-route.ts
 stripe.ts
