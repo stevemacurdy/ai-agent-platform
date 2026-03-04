@@ -1,72 +1,92 @@
-// @ts-nocheck
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
-import { getUser, getUserCompanyId } from '@/lib/wms/agent-auth';
-import { getOrderSummary, getInventorySummary } from '@/lib/wms/wms-tools';
-import { runAgentChat } from '@/lib/wms/agent-chat';
+import { createClient } from '@supabase/supabase-js';
+import { withTierEnforcement } from '@/lib/usage-enforcement';
 import { trackUsage } from '@/lib/usage-tracker';
+import { getWmsData } from '@/lib/wms/wms-data';
 
-const SYSTEM_PROMPT = `You are the Operations Agent for Woulf Group's warehouse operations. You focus on operational execution, order fulfillment, and daily logistics.
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 
-Your areas of focus:
-- Order fulfillment pipeline: drafts → submitted → confirmed → picking → packed → shipped → delivered
-- Shipping and carrier performance
-- Order throughput and bottlenecks
-- Daily operational status and priorities
-- Resource allocation and workload distribution
-
-You have access to live warehouse data through tools. Always query real data before answering.
-
-When presenting operational data:
-- Lead with actionable insights (e.g. "You have 3 orders stuck in picking status")
-- Flag orders approaching their ship date that haven't shipped
-- Highlight any bottlenecks in the fulfillment pipeline
-- Be direct and concise — operations managers need quick answers
-- Suggest next steps when you see issues`;
-
-// GET — Live operational KPIs
-export async function GET(request: NextRequest) {
+async function _GET(request: NextRequest) {
   trackUsage(request, 'operations');
-  const user = await getUser(request);
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
-  const companyId = await getUserCompanyId(user.id);
-  if (!companyId) return NextResponse.json({ error: 'No company found' }, { status: 404 });
-
-  const [orders, inventory] = await Promise.all([
-    getOrderSummary(companyId),
-    getInventorySummary(companyId),
-  ]);
-
-  const byStatus = orders.by_status || {};
-  const inPipeline = (byStatus.submitted || 0) + (byStatus.confirmed || 0) + (byStatus.picking || 0) + (byStatus.packed || 0);
-  const shipped = byStatus.shipped || 0;
-  const delivered = byStatus.delivered || 0;
-
-  const kpis = [
-    { label: 'In Pipeline', value: inPipeline.toString(), color: 'blue' },
-    { label: 'Shipped', value: shipped.toString(), color: 'green' },
-    { label: 'Delivered', value: delivered.toString(), color: 'emerald' },
-    { label: 'Total SKUs', value: inventory.total_skus.toLocaleString(), color: 'purple' },
-  ];
-
-  return NextResponse.json({ success: true, kpis, order_summary: orders, inventory_summary: inventory });
+  try {
+    const { data, error } = await supabase.from('agent_operations_data').select('*').limit(100);
+    if (error || !data?.length) {
+      const demoData = getWmsData('_default');
+      return NextResponse.json({ ...demoData, source: 'demo' });
+    }
+    return NextResponse.json({ items: data, source: 'live' });
+  } catch {
+    const demoData = getWmsData('_default');
+    return NextResponse.json({ ...demoData, source: 'demo' });
+  }
 }
+export const GET = withTierEnforcement(_GET);
 
-// POST — AI chat
 export async function POST(request: NextRequest) {
-  trackUsage(request, 'operations', 'chat');
-  const user = await getUser(request);
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
-  const companyId = await getUserCompanyId(user.id);
-  if (!companyId) return NextResponse.json({ error: 'No company found' }, { status: 404 });
-
-  const { message, history } = await request.json();
-  if (!message) return NextResponse.json({ error: 'message required' }, { status: 400 });
-
-  const result = await runAgentChat(SYSTEM_PROMPT, message, history, companyId);
-  if (!result.success) return NextResponse.json({ error: result.error }, { status: 500 });
-
-  return NextResponse.json({ success: true, response: result.response });
+  trackUsage(request, 'operations', 'action');
+  const body = await request.json();
+  const { action } = body;
+  switch (action) {
+    case 'create-project': {
+      const { projectName, dueDate, lead, budget, teamSize, priority } = body;
+      const { data, error } = await supabase.from('agent_operations_data').insert({ project_name: projectName, due_date: dueDate, lead, budget, team_size: teamSize, priority, status: 'planning' }).select().single();
+      if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ result: 'Project created', data });
+    }
+    case 'update-project': {
+      const { id, status, progress, notes } = body;
+      const updates: Record<string, unknown> = { updated_at: new Date().toISOString() };
+      if (status) updates.status = status;
+      if (progress !== undefined) updates.progress = progress;
+      if (notes) updates.description = notes;
+      const { error } = await supabase.from('agent_operations_data').update(updates).eq('id', id);
+      if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ result: 'Project updated' });
+    }
+    case 'status-report': {
+      const openai = new (await import('openai')).default({ apiKey: process.env.OPENAI_API_KEY });
+      const projects = JSON.stringify(body.projects || []);
+      const response = await openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [
+          { role: 'system', content: 'You are an operations management AI for a warehouse systems integration company. Provide specific, actionable analysis.' },
+          { role: 'user', content: `Project data: ${projects}\n\nGenerate a weekly executive status report covering: 1) Project status summary (on-track/at-risk/behind counts), 2) Key wins this week, 3) Risks and blockers requiring leadership attention, 4) Resource utilization concerns, 5) Equipment maintenance alerts, 6) Recommended decisions for this week.` }
+        ],
+        max_tokens: 1000, temperature: 0.3,
+      });
+      return NextResponse.json({ result: response.choices[0]?.message?.content || 'Unable to generate report.' });
+    }
+    case 'risk-assessment': {
+      const openai = new (await import('openai')).default({ apiKey: process.env.OPENAI_API_KEY });
+      const projects = JSON.stringify(body.projects || []);
+      const response = await openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [
+          { role: 'system', content: 'You are a project risk management AI for a warehouse systems integration company.' },
+          { role: 'user', content: `Project data: ${projects}\n\nFlag: 1) Projects at risk of missing deadlines (with specific reasons), 2) Budget overrun risks, 3) Resource conflicts between projects, 4) Equipment dependencies that could cause delays, 5) Mitigation actions for each risk. Rank by impact severity.` }
+        ],
+        max_tokens: 1000, temperature: 0.3,
+      });
+      return NextResponse.json({ result: response.choices[0]?.message?.content || 'Unable to assess risks.' });
+    }
+    case 'resource-plan': {
+      const openai = new (await import('openai')).default({ apiKey: process.env.OPENAI_API_KEY });
+      const teamData = JSON.stringify(body.teamData || []);
+      const response = await openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [
+          { role: 'system', content: 'You are a resource planning AI for a warehouse systems integration company.' },
+          { role: 'user', content: `Team data: ${teamData}\n\nAnalyze: 1) Over-allocated team members needing relief, 2) Under-utilized resources to reassign, 3) Skill gaps for upcoming projects, 4) Recommended reallocation plan, 5) Hiring needs if any.` }
+        ],
+        max_tokens: 1000, temperature: 0.3,
+      });
+      return NextResponse.json({ result: response.choices[0]?.message?.content || 'Unable to plan resources.' });
+    }
+    default:
+      return NextResponse.json({ error: 'Unknown action' }, { status: 400 });
+  }
 }
