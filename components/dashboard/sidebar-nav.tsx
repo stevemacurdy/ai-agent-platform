@@ -2,10 +2,17 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useAgents } from '@/lib/hooks/useAgents';
+import { useAgents, CATEGORY_LABELS } from '@/lib/hooks/useAgents';
 import { getSupabaseBrowser } from '@/lib/supabase-browser';
 
 interface UserInfo { role: string; email: string; approved_agents: string[]; }
+
+const DEPT_ORDER = ['finance', 'sales', 'marketing', 'operations', 'warehouse', 'hr', 'support', 'legal', 'compliance', 'research'];
+const DEPT_LABELS: Record<string, string> = {
+  finance: 'Finance', sales: 'Sales', marketing: 'Marketing', operations: 'Operations',
+  warehouse: 'Warehouse', hr: 'People', support: 'Support', legal: 'Legal',
+  compliance: 'Compliance', research: 'Strategy',
+};
 
 export default function SidebarNav() {
   const { agents: AGENTS } = useAgents();
@@ -45,7 +52,7 @@ export default function SidebarNav() {
 
   const navLink = (href: string, icon: string, label: string) => (
     <Link key={href} href={href}
-      className={'flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition ' +
+      className={'flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-sm transition ' +
         (isActive(href) ? 'bg-[#2A9D8F]/10 text-[#2A9D8F] font-medium' : 'text-[#6B7280] hover:bg-gray-100 hover:text-[#1B2A4A]')}>
       <span className="text-base">{icon}</span>
       <span className="truncate">{label}</span>
@@ -53,16 +60,24 @@ export default function SidebarNav() {
   );
 
   const sectionLabel = (text: string) => (
-    <div className="text-[9px] text-[#9CA3AF] uppercase font-semibold px-3 mb-2 mt-4 first:mt-0">{text}</div>
+    <div className="text-[9px] text-[#9CA3AF] uppercase font-semibold px-3 mb-1 mt-3 first:mt-0">{text}</div>
   );
+
+  // Group agents by category
+  const grouped: Record<string, typeof visibleAgents> = {};
+  visibleAgents.forEach(a => {
+    const cat = a.category || 'other';
+    if (!grouped[cat]) grouped[cat] = [];
+    grouped[cat].push(a);
+  });
 
   return (
     <nav className="flex flex-col h-full px-3 py-4 w-56 border-r border-[#E5E7EB] bg-white">
       {/* Logo */}
-      <Link href="/" className="flex items-center gap-2 px-3 mb-5">
+      <Link href="/" className="flex items-center gap-2 px-3 mb-4">
         <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center text-white font-bold text-sm">W</div>
         <span className="text-sm font-bold text-[#1B2A4A]">WoulfAI</span>
-        <span className="ml-auto text-[9px] px-1.5 py-0.5 bg-[#2A9D8F]/10 text-[#2A9D8F] rounded font-medium">{visibleAgents.length} Live</span>
+        <span className="ml-auto text-[9px] px-1.5 py-0.5 bg-[#2A9D8F]/10 text-[#2A9D8F] rounded font-medium">{visibleAgents.length}</span>
       </Link>
 
       {/* Home */}
@@ -70,38 +85,55 @@ export default function SidebarNav() {
       <div className="space-y-0.5">
         {navLink('/dashboard', '\uD83C\uDFE0', 'Dashboard')}
         {navLink('/portal', '\uD83D\uDCE6', 'Customer Portal')}
-        {navLink('/onboarding', '\uD83D\uDE80', 'Onboarding')}
       </div>
 
-      {/* Agent Consoles */}
-      {sectionLabel('Agent Consoles')}
-      <div className="space-y-0.5">
-        {navLink('/agents/cfo/console', '\uD83D\uDCB0', 'CFO Console')}
-        {navLink('/agents/sales/console', '\uD83E\uDD1D', 'Sales Console')}
-      </div>
-
-      {/* AI Employees */}
-      {sectionLabel('AI Employees')}
-      <div className="space-y-0.5 flex-1 overflow-y-auto">
+      {/* Agent Consoles grouped by department */}
+      <div className="flex-1 overflow-y-auto mt-1">
         {visibleAgents.length === 0 && !loading && (
           <div className="px-3 py-4 text-xs text-[#9CA3AF] text-center">No agents assigned yet.</div>
         )}
-        {visibleAgents.map(agent => (
-          <Link key={agent.slug} href={agent.liveRoute}
-            className={'flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition ' +
-              (isActive(agent.liveRoute) ? 'bg-[#2A9D8F]/10 text-[#2A9D8F] font-medium' : 'text-[#6B7280] hover:bg-gray-100 hover:text-[#1B2A4A]')}>
-            <span className="text-base">{agent.icon}</span>
-            <span className="truncate">{agent.name}</span>
-          </Link>
+        {DEPT_ORDER.filter(d => grouped[d]?.length).map(dept => (
+          <div key={dept}>
+            {sectionLabel(DEPT_LABELS[dept] || CATEGORY_LABELS[dept] || dept)}
+            <div className="space-y-0.5">
+              {grouped[dept].map(agent => (
+                <Link key={agent.slug} href={agent.liveRoute || `/agents/${agent.slug}/console`}
+                  className={'flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-sm transition ' +
+                    (isActive(agent.liveRoute || `/agents/${agent.slug}/console`) ? 'bg-[#2A9D8F]/10 text-[#2A9D8F] font-medium' : 'text-[#6B7280] hover:bg-gray-100 hover:text-[#1B2A4A]')}>
+                  <span className="text-base">{agent.icon}</span>
+                  <span className="truncate">{agent.name}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
         ))}
+        {/* Uncategorized agents */}
+        {Object.keys(grouped).filter(d => !DEPT_ORDER.includes(d)).map(dept => {
+          if (!grouped[dept]?.length) return null;
+          return (
+            <div key={dept}>
+              {sectionLabel(DEPT_LABELS[dept] || CATEGORY_LABELS[dept] || dept)}
+              <div className="space-y-0.5">
+                {grouped[dept].map(agent => (
+                  <Link key={agent.slug} href={agent.liveRoute || `/agents/${agent.slug}/console`}
+                    className={'flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-sm transition ' +
+                      (isActive(agent.liveRoute || `/agents/${agent.slug}/console`) ? 'bg-[#2A9D8F]/10 text-[#2A9D8F] font-medium' : 'text-[#6B7280] hover:bg-gray-100 hover:text-[#1B2A4A]')}>
+                    <span className="text-base">{agent.icon}</span>
+                    <span className="truncate">{agent.name}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       {/* Settings */}
       {sectionLabel('Settings')}
       <div className="space-y-0.5">
-        {navLink('/settings', '\u2699\uFE0F', 'Settings Hub')}
+        {navLink('/settings', '\u2699\uFE0F', 'Settings')}
         {navLink('/settings/integrations', '\uD83D\uDD17', 'Integrations')}
-        {navLink('/pricing', '\uD83D\uDCB2', 'Plans & Pricing')}
+        {navLink('/pricing', '\uD83D\uDCB2', 'Plans')}
       </div>
 
       {/* Admin */}
@@ -110,9 +142,8 @@ export default function SidebarNav() {
           {sectionLabel('Admin')}
           <div className="space-y-0.5 mb-2">
             {navLink('/admin', '\uD83C\uDFAF', 'Admin Console')}
-            {navLink('/admin/users', '\uD83D\uDC65', 'Manage Users')}
+            {navLink('/admin/users', '\uD83D\uDC65', 'Users')}
             {navLink('/admin/leads', '\uD83D\uDCEC', 'Leads')}
-            {navLink('/admin/chats', '\uD83D\uDCAC', 'Chat Sessions')}
             {navLink('/demo', '\uD83C\uDFAE', 'Demo Hub')}
           </div>
         </>
