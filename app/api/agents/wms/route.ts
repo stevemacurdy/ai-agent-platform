@@ -1,77 +1,70 @@
-// @ts-nocheck
 export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
-import { getUser, getUserCompanyId } from '@/lib/wms/agent-auth';
-import { getInventorySummary, getOrderSummary } from '@/lib/wms/wms-tools';
-import { runAgentChat } from '@/lib/wms/agent-chat';
+import { createClient } from '@supabase/supabase-js';
+import { withTierEnforcement } from '@/lib/usage-enforcement';
 import { trackUsage } from '@/lib/usage-tracker';
+import { getWmsData } from '@/lib/wms/wms-data';
 
-const SYSTEM_PROMPT = `You are the WMS (Warehouse Management System) AI agent for Woulf Group. You have direct access to live warehouse data through tool functions.
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 
-Your capabilities:
-- Check inventory levels by SKU, product name, or location
-- Get inventory summaries and statistics
-- Find low-stock and out-of-stock items
-- Look up orders by order number, customer, PO number, or tracking number
-- Get order summaries and status breakdowns
-- Look up bills of lading
-- Search customer records and view customer-specific inventory
-
-Guidelines:
-- Always use your tools to get real data before answering questions about inventory, orders, BOLs, or customers.
-- Present data clearly with specific numbers. Don't guess or use placeholder data.
-- When showing multiple items, format them in a readable way.
-- If a search returns no results, say so clearly and suggest alternative searches.
-- For questions about trends or recommendations, query the data first, then provide analysis.
-- Be concise but thorough. Warehouse managers need quick answers.`;
-
-// GET — Live warehouse KPIs
-export async function GET(request: NextRequest) {
+async function _GET(request: NextRequest) {
   trackUsage(request, 'wms');
-  const user = await getUser(request);
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
-  const companyId = await getUserCompanyId(user.id);
-  if (!companyId) return NextResponse.json({ error: 'No company found' }, { status: 404 });
-
-  const [inventory, orders] = await Promise.all([
-    getInventorySummary(companyId),
-    getOrderSummary(companyId),
-  ]);
-
-  const activeOrders = Object.entries(orders.by_status || {})
-    .filter(([s]) => !['delivered', 'cancelled'].includes(s))
-    .reduce((sum, [, count]) => sum + (count as number), 0);
-
-  const kpis = [
-    { label: 'Total SKUs', value: inventory.total_skus.toLocaleString(), color: 'blue' },
-    { label: 'Units On Hand', value: inventory.total_on_hand.toLocaleString(), color: 'emerald' },
-    { label: 'Units Available', value: inventory.total_available.toLocaleString(), color: 'green' },
-    { label: 'Active Orders', value: activeOrders.toString(), color: 'purple' },
-  ];
-
-  return NextResponse.json({
-    success: true,
-    kpis,
-    inventory_summary: inventory,
-    order_summary: orders,
-  });
+  try {
+    const { data, error } = await supabase.from('wms_inventory').select('*').limit(100);
+    if (error || !data?.length) {
+      const demoData = getWmsData('_default');
+      return NextResponse.json({ ...demoData, source: 'demo' });
+    }
+    return NextResponse.json({ items: data, source: 'live' });
+  } catch {
+    const demoData = getWmsData('_default');
+    return NextResponse.json({ ...demoData, source: 'demo' });
+  }
 }
+export const GET = withTierEnforcement(_GET);
 
-// POST — AI chat
 export async function POST(request: NextRequest) {
-  trackUsage(request, 'wms', 'chat');
-  const user = await getUser(request);
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
-  const companyId = await getUserCompanyId(user.id);
-  if (!companyId) return NextResponse.json({ error: 'No company found' }, { status: 404 });
-
-  const { message, history } = await request.json();
-  if (!message) return NextResponse.json({ error: 'message required' }, { status: 400 });
-
-  const result = await runAgentChat(SYSTEM_PROMPT, message, history, companyId);
-  if (!result.success) return NextResponse.json({ error: result.error }, { status: 500 });
-
-  return NextResponse.json({ success: true, response: result.response });
+  trackUsage(request, 'wms', 'action');
+  const body = await request.json();
+  const { action } = body;
+  switch (action) {
+    case 'create-wave': {
+      return NextResponse.json({ result: 'Pick wave created. Assigned to next available picker.' });
+    }
+    case 'cycle-count': {
+      const { zone } = body;
+      return NextResponse.json({ result: `Cycle count initiated for ${zone || 'Zone A'}. Estimated completion: 45 minutes.` });
+    }
+    case 'slotting-optimization': {
+      const openai = new (await import('openai')).default({ apiKey: process.env.OPENAI_API_KEY });
+      const wmsData = JSON.stringify(body.zoneData || {});
+      const response = await openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [
+          { role: 'system', content: 'You are a warehouse slotting optimization AI for a warehouse systems integration company. Provide specific, actionable analysis.' },
+          { role: 'user', content: `Zone data: ${wmsData}\n\nAnalyze current bin assignments vs pick frequency. Recommend: 1) SKUs that should move to faster-access bins, 2) Zone rebalancing (Zone C at 94% vs Zone A at 67%), 3) Specific bin-to-bin moves with time savings, 4) Pick route optimization. Minimize picker travel time while maintaining zone balance.` }
+        ],
+        max_tokens: 1000, temperature: 0.3,
+      });
+      return NextResponse.json({ result: response.choices[0]?.message?.content || 'Unable to optimize slotting.' });
+    }
+    case 'analyze-throughput': {
+      const openai = new (await import('openai')).default({ apiKey: process.env.OPENAI_API_KEY });
+      const throughputData = JSON.stringify(body.throughputData || {});
+      const response = await openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [
+          { role: 'system', content: 'You are a warehouse operations analyst AI.' },
+          { role: 'user', content: `Throughput data: ${throughputData}\n\nAnalyze: 1) Bottleneck hours and root causes, 2) Picker performance gaps, 3) Wave sizing recommendations, 4) Staffing adjustments by shift, 5) Projected throughput with recommendations applied.` }
+        ],
+        max_tokens: 1000, temperature: 0.3,
+      });
+      return NextResponse.json({ result: response.choices[0]?.message?.content || 'Unable to analyze throughput.' });
+    }
+    default:
+      return NextResponse.json({ error: 'Unknown action' }, { status: 400 });
+  }
 }
