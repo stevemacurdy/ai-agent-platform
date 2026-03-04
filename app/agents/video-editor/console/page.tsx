@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
+import { getSupabaseBrowser } from '@/lib/supabase-browser';
 
 /* ================================================================
    Types
@@ -175,15 +176,15 @@ export default function VideoEditorConsole() {
     };
   }, [activeJobId, pollJob]);
 
-  // --- Upload handler ---
+  // --- Upload handler (direct to Supabase Storage, supports up to 3GB) ---
   async function handleUpload(file: File) {
     setUploadFile(file);
     setUploadError(null);
     setUploadProgress(0);
 
-    const maxSize = 500 * 1024 * 1024;
+    const maxSize = 3 * 1024 * 1024 * 1024;
     if (file.size > maxSize) {
-      setUploadError('File too large. Maximum 500MB.');
+      setUploadError('File too large. Maximum 3GB.');
       return;
     }
     if (!/\.(mp4|mov|webm|avi)$/i.test(file.name)) {
@@ -191,30 +192,43 @@ export default function VideoEditorConsole() {
       return;
     }
 
-    // Simulated progress + real upload
+    // Progress tracker
     const progressInterval = setInterval(() => {
-      setUploadProgress(p => Math.min(p + Math.random() * 15, 90));
-    }, 300);
+      setUploadProgress(p => {
+        if (p >= 90) return p;
+        // Slower progress for larger files
+        const increment = file.size > 500 * 1024 * 1024 ? Math.random() * 3 : Math.random() * 10;
+        return Math.min(p + increment, 90);
+      });
+    }, 500);
 
     try {
-      const fd = new FormData();
-      fd.append('file', file);
-      fd.append('companyId', 'default');
-      const resp = await fetch('/api/agents/video-editor/upload', { method: 'POST', body: fd });
+      const sb = getSupabaseBrowser();
+      const timestamp = Date.now();
+      const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+      const remotePath = `default/${timestamp}-${safeName}`;
+
+      const { error: uploadErr } = await sb.storage
+        .from('video-uploads')
+        .upload(remotePath, file, {
+          contentType: file.type || 'video/mp4',
+          upsert: false,
+        });
+
       clearInterval(progressInterval);
 
-      if (!resp.ok) {
-        const err = await resp.json();
-        setUploadError(err.error || 'Upload failed');
+      if (uploadErr) {
+        setUploadError('Upload failed: ' + uploadErr.message);
         setUploadProgress(0);
         return;
       }
 
-      const data = await resp.json();
+      const { data: urlData } = sb.storage.from('video-uploads').getPublicUrl(remotePath);
+
       setUploadProgress(100);
-      setUploadedUrl(data.url);
-      setUploadedFilename(data.filename);
-      setUploadedSize(data.size);
+      setUploadedUrl(urlData.publicUrl);
+      setUploadedFilename(file.name);
+      setUploadedSize(file.size);
       setStep('configure');
 
       // Auto-transcribe for quote mode
@@ -224,7 +238,7 @@ export default function VideoEditorConsole() {
           const tResp = await fetch('/api/agents/video-editor/transcribe', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ sourceUrl: data.url }),
+            body: JSON.stringify({ sourceUrl: urlData.publicUrl }),
           });
           if (tResp.ok) {
             const tData = await tResp.json();
@@ -435,7 +449,7 @@ export default function VideoEditorConsole() {
                 <>
                   <div className="text-4xl mb-3">📹</div>
                   <p className="text-sm font-medium mb-1" style={{ color: NAVY }}>Drag & drop your video or click to browse</p>
-                  <p className="text-xs" style={{ color: '#9CA3AF' }}>MP4, MOV, WEBM, AVI up to 500MB</p>
+                  <p className="text-xs" style={{ color: '#9CA3AF' }}>MP4, MOV, WEBM, AVI up to 3GB</p>
                   <div className="flex items-center justify-center gap-2 mt-3">
                     {['MP4', 'MOV', 'WEBM'].map(f => (
                       <span key={f} className="text-[10px] font-bold px-2 py-1 rounded-md" style={{ background: '#F3F4F6', color: '#6B7280' }}>{f}</span>

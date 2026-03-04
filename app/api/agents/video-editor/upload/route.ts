@@ -11,7 +11,7 @@ function supabaseAdmin() {
 }
 
 const ALLOWED_TYPES = ['video/mp4', 'video/quicktime', 'video/webm', 'video/x-msvideo'];
-const MAX_SIZE = 500 * 1024 * 1024; // 500MB
+const MAX_SIZE = 3 * 1024 * 1024 * 1024; // 3GB
 
 export async function POST(request: NextRequest) {
   try {
