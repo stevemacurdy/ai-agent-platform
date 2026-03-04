@@ -14,13 +14,13 @@ WHERE slug = 'cfo';
 
 UPDATE agent_registry SET
   description = 'AP management, debt tracking, labor analysis, and forecasting',
-  component_path = 'agents/cfo/finops',
+  component_path = 'agents/finops/console',
   keywords = ARRAY['expenses', 'debt', 'labor', 'forecast', 'budget', 'cost', 'spend', 'ap']
 WHERE slug = 'finops';
 
 UPDATE agent_registry SET
   description = 'Invoice intake, approval workflows, payment processing',
-  component_path = 'agents/cfo/payables',
+  component_path = 'agents/payables/console',
   keywords = ARRAY['invoice', 'payment', 'bills', 'vendor', 'ap', 'approval', 'reconciliation']
 WHERE slug = 'payables';
 
@@ -38,13 +38,13 @@ WHERE slug = 'sales';
 
 UPDATE agent_registry SET
   description = 'Conversation intelligence, call analysis, and deal insights',
-  component_path = 'agents/sales/intel',
+  component_path = 'agents/sales-intel/console',
   keywords = ARRAY['calls', 'conversation', 'analysis', 'insights', 'competitor', 'intelligence']
 WHERE slug = 'sales-intel';
 
 UPDATE agent_registry SET
   description = 'Sales training and performance coaching',
-  component_path = 'agents/sales/coach',
+  component_path = 'agents/sales-coach/console',
   keywords = ARRAY['training', 'coaching', 'performance', 'skills', 'practice', 'roleplay']
 WHERE slug = 'sales-coach';
 
@@ -127,10 +127,10 @@ UPDATE agent_registry SET
 WHERE slug = 'str';
 
 UPDATE agent_registry SET
-  description = 'Video quote extraction and clip generation pipeline',
-  component_path = 'agents/videdit',
-  keywords = ARRAY['video', 'clips', 'quotes', 'transcription', 'media', 'extraction']
-WHERE slug = 'videdit';
+  description = 'AI-powered video editing — quote extraction, marketing clips, and professional cleanup',
+  component_path = 'agents/video-editor/console',
+  keywords = ARRAY['video', 'clips', 'quotes', 'transcription', 'media', 'extraction', 'editing', 'captions']
+WHERE slug = 'video-editor';
 
 -- ---------------------------------------------------------------------------
 -- 2. SEED CATEGORY MAPPINGS
@@ -200,7 +200,7 @@ WHERE a.slug = 'support' AND c.slug = 'support';
 INSERT INTO agent_category_map (agent_id, category_id, is_primary)
 SELECT a.id, c.id, true
 FROM agent_registry a, agent_categories c
-WHERE a.slug = 'videdit' AND c.slug = 'operations';
+WHERE a.slug = 'video-editor' AND c.slug = 'operations';
 
 -- SECONDARY CATEGORIES (agents that belong to multiple)
 INSERT INTO agent_category_map (agent_id, category_id, is_primary)
@@ -248,7 +248,7 @@ WHERE (a.slug, t.slug) IN (
   ('seo', 'analytics'), ('seo', 'reporting'),
   ('marketing', 'analytics'), ('marketing', 'automation'),
   ('support', 'customer-facing'), ('support', 'ai-powered'),
-  ('videdit', 'ai-powered'), ('videdit', 'automation'),
+  ('video-editor', 'ai-powered'), ('video-editor', 'automation'),
   ('operations', 'internal-only'), ('operations', 'reporting'),
   ('org-lead', 'enterprise'), ('org-lead', 'analytics'),
   ('str', 'automation'), ('str', 'customer-facing')
