@@ -26,9 +26,14 @@ export default function SidebarNav() {
       try {
         const sb = getSupabaseBrowser();
         const { data: { session } } = await sb.auth.getSession();
-        if (!session?.access_token) { setLoading(false); return; }
+        let token = session?.access_token || null;
+        // Fallback: check localStorage token
+        if (!token && typeof window !== 'undefined') {
+          token = localStorage.getItem('woulfai_token');
+        }
+        if (!token) { setLoading(false); return; }
         const res = await fetch('/api/auth/me', {
-          headers: { 'Authorization': 'Bearer ' + session.access_token },
+          headers: { 'Authorization': 'Bearer ' + token },
         });
         if (res.ok) {
           const data = await res.json();

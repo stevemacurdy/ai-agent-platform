@@ -16,17 +16,27 @@ export default function AuthGuard({ children, requiredRole = 'any', fallbackUrl 
   useEffect(() => {
     const check = async () => {
       try {
-        const sb = getSupabaseBrowser();
-        const { data: { session } } = await sb.auth.getSession();
+        // Try Supabase session first
+        let token: string | null = null;
+        try {
+          const sb = getSupabaseBrowser();
+          const { data: { session } } = await sb.auth.getSession();
+          token = session?.access_token || null;
+        } catch { /* fall through */ }
 
-        if (!session?.access_token) {
+        // Fallback: check localStorage token (set by lib/auth.ts login)
+        if (!token && typeof window !== 'undefined') {
+          token = localStorage.getItem('woulfai_token');
+        }
+
+        if (!token) {
           setStatus('denied');
           return;
         }
 
-        // Call /api/auth/me with the token
+        // Verify token with /api/auth/me
         const res = await fetch('/api/auth/me', {
-          headers: { 'Authorization': 'Bearer ' + session.access_token }
+          headers: { 'Authorization': 'Bearer ' + token }
         });
 
         if (!res.ok) { setStatus('denied'); return; }
@@ -61,9 +71,9 @@ export default function AuthGuard({ children, requiredRole = 'any', fallbackUrl 
 
   if (status === 'loading') {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-[#060910]">
+      <div className="flex items-center justify-center min-h-screen" style={{ background: '#F4F5F7' }}>
         <div className="text-center">
-          <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
+          <div className="w-8 h-8 border-2 border-[#2A9D8F] border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
           <p className="text-sm text-gray-500">Verifying access...</p>
         </div>
       </div>
@@ -72,7 +82,7 @@ export default function AuthGuard({ children, requiredRole = 'any', fallbackUrl 
 
   if (status === 'denied') {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-[#060910]">
+      <div className="flex items-center justify-center min-h-screen" style={{ background: '#F4F5F7' }}>
         <p className="text-sm text-gray-500">Redirecting...</p>
       </div>
     );

@@ -85,43 +85,42 @@ function writeLegacySession(user: AuthUser): void {
 // --- Auth Actions -----------------------------------------------------------
 export async function login(email: string, password: string): Promise<LoginResult> {
   try {
-    const res = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
+    // Sign in through the browser Supabase client directly.
+    // This ensures the session is natively persisted and getSession() works everywhere.
+    const { getSupabaseBrowser } = await import('@/lib/supabase-browser');
+    const sb = getSupabaseBrowser();
+    const { data, error } = await sb.auth.signInWithPassword({ email, password });
+
+    if (error || !data.session) {
+      return { success: false, error: error?.message || 'Invalid email or password' };
+    }
+
+    // Store our own copy of the token (used by some API calls)
+    setToken(data.session.access_token);
+
+    // Fetch profile from /api/auth/me to get role + approved_agents
+    const meRes = await fetch('/api/auth/me', {
+      headers: { 'Authorization': 'Bearer ' + data.session.access_token },
     });
-    const data = await res.json();
-    if (!res.ok || !data.success) {
-      return { success: false, error: data.error || 'Invalid email or password' };
-    }
-
-
-    // Store the access token (this is what /api/auth/me needs as Bearer)
-    if (data.session?.access_token) {
-      setToken(data.session.access_token);
-
-      // Also set the session on the browser Supabase client
-      // so AuthGuard's sb.auth.getSession() can find it
-      try {
-        const { getSupabaseBrowser } = await import('@/lib/supabase-browser');
-        const sb = getSupabaseBrowser();
-        await sb.auth.setSession({
-          access_token: data.session.access_token,
-          refresh_token: data.session.refresh_token,
-        });
-      } catch { /* non-critical */ }
-    }
+    const meData = meRes.ok ? await meRes.json() : { user: null };
+    const profile = meData.user;
 
     // Store user profile
     const user: AuthUser = {
       id: data.user.id,
-      email: data.user.email,
-      name: data.user.display_name || data.user.name || data.user.email.split('@')[0],
-      role: data.user.role || 'beta_tester',
-      company_id: data.user.company_id || null,
+      email: data.user.email || email,
+      name: profile?.display_name || profile?.full_name || email.split('@')[0],
+      role: profile?.role || 'free',
+      company_id: profile?.company_id || null,
+      approved_agents: profile?.approved_agents || [],
     };
     setUser(user);
     writeLegacySession(user);
+
+    // Check if password reset required
+    if (profile?.must_reset_password) {
+      return { success: true, must_reset_password: true, user };
+    }
 
     return { success: true, user };
   } catch (e: any) {
