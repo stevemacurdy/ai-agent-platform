@@ -5,12 +5,12 @@ import { withTierEnforcement } from '@/lib/usage-enforcement';
 import { trackUsage } from '@/lib/usage-tracker';
 import { getPayablesData } from '@/lib/payables-data';
 
-const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+function supabase() { return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!); }
 
 async function _GET(request: NextRequest) {
   trackUsage(request, 'payables');
   try {
-    const { data, error } = await supabase.from('agent_payables_data').select('*').order('due_date', { ascending: true }).limit(200);
+    const { data, error } = await supabase().from('agent_payables_data').select('*').order('due_date', { ascending: true }).limit(200);
     if (error || !data?.length) {
       const demo = await getPayablesData('demo');
       return NextResponse.json({ ...demo, source: 'demo' });
@@ -31,17 +31,17 @@ export async function POST(request: NextRequest) {
     switch (action) {
       case 'approve': {
         const { id, approvedBy } = body;
-        await supabase.from('agent_payables_data').update({ status: 'approved', approved_by: approvedBy }).eq('id', id);
+        await supabase().from('agent_payables_data').update({ status: 'approved', approved_by: approvedBy }).eq('id', id);
         return NextResponse.json({ success: true });
       }
       case 'schedule-payment': {
         const { id, paymentDate, method } = body;
-        await supabase.from('agent_payables_data').update({ status: 'scheduled', payment_method: method, notes: `Scheduled for ${paymentDate}` }).eq('id', id);
+        await supabase().from('agent_payables_data').update({ status: 'scheduled', payment_method: method, notes: `Scheduled for ${paymentDate}` }).eq('id', id);
         return NextResponse.json({ success: true });
       }
       case 'batch-approve': {
         const { ids } = body;
-        for (const id of ids || []) { await supabase.from('agent_payables_data').update({ status: 'approved' }).eq('id', id); }
+        for (const id of ids || []) { await supabase().from('agent_payables_data').update({ status: 'approved' }).eq('id', id); }
         return NextResponse.json({ success: true, count: (ids || []).length });
       }
       case 'analyze-discounts': {

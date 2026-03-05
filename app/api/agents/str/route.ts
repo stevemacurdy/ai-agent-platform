@@ -5,12 +5,12 @@ import { withTierEnforcement } from '@/lib/usage-enforcement';
 import { trackUsage } from '@/lib/usage-tracker';
 import { getSTRData } from '@/lib/str-data';
 
-const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+function supabase() { return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!); }
 
 async function _GET(request: NextRequest) {
   trackUsage(request, 'str');
   try {
-    const { data, error } = await supabase.from('agent_str_data').select('*').limit(100);
+    const { data, error } = await supabase().from('agent_str_data').select('*').limit(100);
     if (error || !data?.length) { const d = await getSTRData('_default'); return NextResponse.json({ ...d, source: 'demo' }); }
     return NextResponse.json({ items: data, source: 'live' });
   } catch { const d = await getSTRData('_default'); return NextResponse.json({ ...d, source: 'demo' }); }
@@ -24,13 +24,13 @@ export async function POST(request: NextRequest) {
   switch (action) {
     case 'add-property': {
       const { propertyName, location, nightlyRate, platform } = body;
-      const { data, error } = await supabase.from('agent_str_data').insert({ property_name: propertyName, location, nightly_rate: nightlyRate, platform, status: 'active' }).select().single();
+      const { data, error } = await supabase().from('agent_str_data').insert({ property_name: propertyName, location, nightly_rate: nightlyRate, platform, status: 'active' }).select().single();
       if (error) return NextResponse.json({ error: error.message }, { status: 500 });
       return NextResponse.json({ result: 'Property added', data });
     }
     case 'update-rates': {
       const { id, nightlyRate, notes } = body;
-      const { error } = await supabase.from('agent_str_data').update({ nightly_rate: nightlyRate, notes, updated_at: new Date().toISOString() }).eq('id', id);
+      const { error } = await supabase().from('agent_str_data').update({ nightly_rate: nightlyRate, notes, updated_at: new Date().toISOString() }).eq('id', id);
       if (error) return NextResponse.json({ error: error.message }, { status: 500 });
       return NextResponse.json({ result: 'Rates updated' });
     }

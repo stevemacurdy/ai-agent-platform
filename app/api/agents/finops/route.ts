@@ -5,15 +5,17 @@ import { withTierEnforcement } from '@/lib/usage-enforcement';
 import { trackUsage } from '@/lib/usage-tracker';
 import { getFinOpsData } from '@/lib/finops-data';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+function supabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+}
 
 async function _GET(request: NextRequest) {
   trackUsage(request, 'finops');
   try {
-    const { data, error } = await supabase
+    const { data, error } = await supabase()
       .from('agent_finops_data')
       .select('*')
       .order('created_at', { ascending: false })
@@ -39,7 +41,7 @@ export async function POST(request: NextRequest) {
     switch (action) {
       case 'create-entry': {
         const { department, category, period, budgetAmount, actualAmount, companyId } = body;
-        const { error } = await supabase.from('agent_finops_data').insert({
+        const { error } = await supabase().from('agent_finops_data').insert({
           company_id: companyId || null, department, category, period,
           budget_amount: budgetAmount, actual_amount: actualAmount,
         });
@@ -49,7 +51,7 @@ export async function POST(request: NextRequest) {
 
       case 'adjust-budget': {
         const { id, newAmount, reason } = body;
-        const { error } = await supabase.from('agent_finops_data')
+        const { error } = await supabase().from('agent_finops_data')
           .update({ budget_amount: newAmount, notes: reason })
           .eq('id', id);
         if (error) return NextResponse.json({ error: error.message }, { status: 500 });

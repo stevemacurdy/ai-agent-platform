@@ -1,9 +1,11 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+function supabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+}
 
 const UNIFIED_API = 'https://api.unified.to';
 const UNIFIED_KEY = process.env.UNIFIED_API_KEY || '';
@@ -13,7 +15,7 @@ const UNIFIED_KEY = process.env.UNIFIED_API_KEY || '';
 // ============================================================
 export async function getCRMConnection(companyId?: string) {
   if (!companyId) return null;
-  const { data } = await supabase
+  const { data } = await supabase()
     .from('integration_connections')
     .select('*')
     .eq('company_id', companyId)

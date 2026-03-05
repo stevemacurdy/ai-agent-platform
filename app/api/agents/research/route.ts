@@ -5,12 +5,12 @@ import { withTierEnforcement } from '@/lib/usage-enforcement';
 import { trackUsage } from '@/lib/usage-tracker';
 import { getResearchData } from '@/lib/research-data';
 
-const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+function supabase() { return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!); }
 
 async function _GET(request: NextRequest) {
   trackUsage(request, 'research');
   try {
-    const { data, error } = await supabase.from('agent_research_data').select('*').limit(100);
+    const { data, error } = await supabase().from('agent_research_data').select('*').limit(100);
     if (error || !data?.length) {
       const d = await getResearchData('_default');
       return NextResponse.json({ ...d, source: 'demo' });
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
   switch (action) {
     case 'add-competitor': {
       const { competitorName, marketShare, revenueEstimate, threatLevel } = body;
-      const { data, error } = await supabase.from('agent_research_data').insert({
+      const { data, error } = await supabase().from('agent_research_data').insert({
         competitor_name: competitorName, market_share: marketShare,
         revenue_estimate: revenueEstimate, threat_level: threatLevel || 'low',
       }).select().single();

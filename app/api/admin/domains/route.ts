@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
-const supabase = createClient(
+const supabase = () => createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
@@ -24,14 +24,14 @@ async function getUser(req: Request) {
     }
   }
   if (!token) return null;
-  const { data: { user } } = await supabase.auth.getUser(token);
+  const { data: { user } } = await supabase().auth.getUser(token);
   return user;
 }
 
 async function requireAdmin(req: Request) {
   const user = await getUser(req);
   if (!user) return { error: 'Authentication required', status: 401 };
-  const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+  const { data: profile } = await supabase().from('profiles').select('role').eq('id', user.id).single();
   if (!profile || !['super_admin', 'admin'].includes(profile.role)) {
     return { error: 'Forbidden', status: 403 };
   }
@@ -46,7 +46,7 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const companyId = searchParams.get('company_id');
 
-  let query = supabase.from('custom_domains').select(`
+  let query = supabase().from('custom_domains').select(`
     id, domain, status, verified_at, created_at, company_id,
     companies(name, slug)
   `).order('created_at', { ascending: false });
@@ -77,15 +77,15 @@ export async function POST(req: Request) {
   }
 
   // Check company exists
-  const { data: company } = await supabase.from('companies').select('id').eq('id', company_id).single();
+  const { data: company } = await supabase().from('companies').select('id').eq('id', company_id).single();
   if (!company) return NextResponse.json({ error: 'Company not found' }, { status: 404 });
 
   // Check domain not already taken
-  const { data: existing } = await supabase.from('custom_domains').select('id').eq('domain', domain).single();
+  const { data: existing } = await supabase().from('custom_domains').select('id').eq('domain', domain).single();
   if (existing) return NextResponse.json({ error: 'Domain already registered' }, { status: 409 });
 
   // Insert
-  const { data, error } = await supabase.from('custom_domains').insert({
+  const { data, error } = await supabase().from('custom_domains').insert({
     domain: domain.toLowerCase(),
     company_id,
     status: 'pending',
@@ -124,7 +124,7 @@ export async function PATCH(req: Request) {
   const update: any = { status, updated_at: new Date().toISOString() };
   if (status === 'active') update.verified_at = new Date().toISOString();
 
-  const { data, error } = await supabase.from('custom_domains')
+  const { data, error } = await supabase().from('custom_domains')
     .update(update).eq('id', id).select().single();
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
@@ -140,7 +140,7 @@ export async function DELETE(req: Request) {
   const id = searchParams.get('id');
   if (!id) return NextResponse.json({ error: 'id required' }, { status: 400 });
 
-  const { error } = await supabase.from('custom_domains').delete().eq('id', id);
+  const { error } = await supabase().from('custom_domains').delete().eq('id', id);
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
   return NextResponse.json({ deleted: true });
 }

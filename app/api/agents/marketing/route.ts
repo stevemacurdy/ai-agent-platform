@@ -5,15 +5,17 @@ import { withTierEnforcement } from '@/lib/usage-enforcement';
 import { trackUsage } from '@/lib/usage-tracker';
 import { getMarketingData } from '@/lib/marketing/marketing-data';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+function supabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+}
 
 async function _GET(request: NextRequest) {
   trackUsage(request, 'marketing');
   try {
-    const { data, error } = await supabase.from('agent_marketing_data').select('*').limit(100);
+    const { data, error } = await supabase().from('agent_marketing_data').select('*').limit(100);
     if (error || !data?.length) {
       const demoData = getMarketingData('_default');
       return NextResponse.json({ ...demoData, source: 'demo' });
@@ -33,7 +35,7 @@ export async function POST(request: NextRequest) {
   switch (action) {
     case 'create-campaign': {
       const { campaignName, channel, spend, startDate } = body;
-      const { data, error } = await supabase.from('agent_marketing_data').insert({ campaign_name: campaignName, channel, spend, start_date: startDate, status: 'draft' }).select().single();
+      const { data, error } = await supabase().from('agent_marketing_data').insert({ campaign_name: campaignName, channel, spend, start_date: startDate, status: 'draft' }).select().single();
       if (error) return NextResponse.json({ error: error.message }, { status: 500 });
       return NextResponse.json({ result: 'Campaign created', data });
     }
@@ -43,7 +45,7 @@ export async function POST(request: NextRequest) {
       if (status) updates.status = status;
       if (s !== undefined) updates.spend = s;
       if (notes) updates.notes = notes;
-      const { error } = await supabase.from('agent_marketing_data').update(updates).eq('id', id);
+      const { error } = await supabase().from('agent_marketing_data').update(updates).eq('id', id);
       if (error) return NextResponse.json({ error: error.message }, { status: 500 });
       return NextResponse.json({ result: 'Campaign updated' });
     }

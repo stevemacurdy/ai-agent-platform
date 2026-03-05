@@ -9,7 +9,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { createClient } from '@supabase/supabase-js';
 
-const supabase = createClient(
+const supabase = () => createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
     { auth: { autoRefreshToken: false, persistSession: false } }
@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate company exists
-    const { data: company, error } = await supabase
+    const { data: company, error } = await supabase()
       .from('companies')
       .select('id, name, slug')
       .eq('id', companyId)

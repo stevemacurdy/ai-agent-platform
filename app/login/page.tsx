@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { login as authLogin } from '@/lib/auth';
+import { getSupabaseBrowser } from '@/lib/supabase-browser';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -19,17 +19,41 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const result = await authLogin(email, password);
-      if (!result.success) {
-        setError(result.error || 'Invalid email or password');
+      // Sign in via Supabase browser client directly
+      // This ensures getSession() works in AuthGuard, SidebarNav, and all components
+      const sb = getSupabaseBrowser();
+      const { data, error: authError } = await sb.auth.signInWithPassword({ email, password });
+
+      if (authError || !data.session) {
+        setError(authError?.message || 'Invalid email or password');
         setLoading(false);
         return;
       }
-      if (result.must_reset_password) {
-        window.location.href = '/reset-password';
-        return;
-      }
-      const role = result.user?.role;
+
+      // Store in localStorage for backward compat
+      localStorage.setItem('woulfai_token', data.session.access_token);
+
+      // Fetch role from server
+      let role = 'free';
+      try {
+        const meRes = await fetch('/api/auth/me', {
+          headers: { 'Authorization': 'Bearer ' + data.session.access_token },
+        });
+        if (meRes.ok) {
+          const meData = await meRes.json();
+          role = meData.user?.role || 'free';
+          localStorage.setItem('woulfai_user', JSON.stringify({
+            id: data.user.id, email: data.user.email, role,
+            name: meData.user?.display_name || meData.user?.full_name || email.split('@')[0],
+          }));
+          if (meData.user?.must_reset_password) {
+            window.location.href = '/reset-password';
+            return;
+          }
+        }
+      } catch { /* role fetch failed, default to free */ }
+
+      // Redirect based on role
       if (role === 'super_admin' || role === 'admin') {
         window.location.href = '/admin';
       } else {
@@ -37,8 +61,8 @@ export default function LoginPage() {
       }
     } catch (err: any) {
       setError('Connection error. Please try again.');
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const inputStyle = { background: '#FFFFFF', border: '1.5px solid #E5E7EB', color: '#1A1A2E' };

@@ -5,15 +5,17 @@ import { withTierEnforcement } from '@/lib/usage-enforcement';
 import { trackUsage } from '@/lib/usage-tracker';
 import { getWmsData } from '@/lib/wms/wms-data';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+function supabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+}
 
 async function _GET(request: NextRequest) {
   trackUsage(request, 'supply-chain');
   try {
-    const { data, error } = await supabase.from('agent_supply_chain_data').select('*').limit(100);
+    const { data, error } = await supabase().from('agent_supply_chain_data').select('*').limit(100);
     if (error || !data?.length) {
       const demoData = getWmsData('_default');
       return NextResponse.json({ ...demoData, source: 'demo' });
@@ -33,7 +35,7 @@ export async function POST(request: NextRequest) {
   switch (action) {
     case 'add-vendor': {
       const { vendorName, category, contactEmail } = body;
-      const { data, error } = await supabase.from('agent_supply_chain_data').insert({ vendor_name: vendorName, category, contact_email: contactEmail, risk_level: 'low' }).select().single();
+      const { data, error } = await supabase().from('agent_supply_chain_data').insert({ vendor_name: vendorName, category, contact_email: contactEmail, risk_level: 'low' }).select().single();
       if (error) return NextResponse.json({ error: error.message }, { status: 500 });
       return NextResponse.json({ result: 'Vendor added', data });
     }
@@ -43,7 +45,7 @@ export async function POST(request: NextRequest) {
       if (onTimeRate !== undefined) updates.on_time_rate = onTimeRate;
       if (qualityScore !== undefined) updates.quality_score = qualityScore;
       if (riskLevel) updates.risk_level = riskLevel;
-      const { error } = await supabase.from('agent_supply_chain_data').update(updates).eq('id', id);
+      const { error } = await supabase().from('agent_supply_chain_data').update(updates).eq('id', id);
       if (error) return NextResponse.json({ error: error.message }, { status: 500 });
       return NextResponse.json({ result: 'Scorecard updated' });
     }

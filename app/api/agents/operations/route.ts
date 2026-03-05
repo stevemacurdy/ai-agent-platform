@@ -5,15 +5,17 @@ import { withTierEnforcement } from '@/lib/usage-enforcement';
 import { trackUsage } from '@/lib/usage-tracker';
 import { getWmsData } from '@/lib/wms/wms-data';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+function supabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+}
 
 async function _GET(request: NextRequest) {
   trackUsage(request, 'operations');
   try {
-    const { data, error } = await supabase.from('agent_operations_data').select('*').limit(100);
+    const { data, error } = await supabase().from('agent_operations_data').select('*').limit(100);
     if (error || !data?.length) {
       const demoData = getWmsData('_default');
       return NextResponse.json({ ...demoData, source: 'demo' });
@@ -33,7 +35,7 @@ export async function POST(request: NextRequest) {
   switch (action) {
     case 'create-project': {
       const { projectName, dueDate, lead, budget, teamSize, priority } = body;
-      const { data, error } = await supabase.from('agent_operations_data').insert({ project_name: projectName, due_date: dueDate, lead, budget, team_size: teamSize, priority, status: 'planning' }).select().single();
+      const { data, error } = await supabase().from('agent_operations_data').insert({ project_name: projectName, due_date: dueDate, lead, budget, team_size: teamSize, priority, status: 'planning' }).select().single();
       if (error) return NextResponse.json({ error: error.message }, { status: 500 });
       return NextResponse.json({ result: 'Project created', data });
     }
@@ -43,7 +45,7 @@ export async function POST(request: NextRequest) {
       if (status) updates.status = status;
       if (progress !== undefined) updates.progress = progress;
       if (notes) updates.description = notes;
-      const { error } = await supabase.from('agent_operations_data').update(updates).eq('id', id);
+      const { error } = await supabase().from('agent_operations_data').update(updates).eq('id', id);
       if (error) return NextResponse.json({ error: error.message }, { status: 500 });
       return NextResponse.json({ result: 'Project updated' });
     }

@@ -5,12 +5,12 @@ import { withTierEnforcement } from '@/lib/usage-enforcement';
 import { trackUsage } from '@/lib/usage-tracker';
 import { getComplianceData } from '@/lib/compliance-data';
 
-const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+function supabase() { return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!); }
 
 async function _GET(request: NextRequest) {
   trackUsage(request, 'compliance');
   try {
-    const { data, error } = await supabase.from('agent_compliance_data').select('*').limit(100);
+    const { data, error } = await supabase().from('agent_compliance_data').select('*').limit(100);
     if (error || !data?.length) { const d = await getComplianceData('_default'); return NextResponse.json({ ...d, source: 'demo' }); }
     return NextResponse.json({ items: data, source: 'live' });
   } catch { const d = await getComplianceData('_default'); return NextResponse.json({ ...d, source: 'demo' }); }
@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
   switch (action) {
     case 'add-item': {
       const { regulation, category, owner, nextAuditDate } = body;
-      const { data, error } = await supabase.from('agent_compliance_data').insert({ regulation, category, owner, next_audit_date: nextAuditDate, status: 'under-review' }).select().single();
+      const { data, error } = await supabase().from('agent_compliance_data').insert({ regulation, category, owner, next_audit_date: nextAuditDate, status: 'under-review' }).select().single();
       if (error) return NextResponse.json({ error: error.message }, { status: 500 });
       return NextResponse.json({ result: 'Item added', data });
     }
@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
       const updates: Record<string, unknown> = { updated_at: new Date().toISOString() };
       if (status) updates.status = status;
       if (notes) updates.notes = notes;
-      const { error } = await supabase.from('agent_compliance_data').update(updates).eq('id', id);
+      const { error } = await supabase().from('agent_compliance_data').update(updates).eq('id', id);
       if (error) return NextResponse.json({ error: error.message }, { status: 500 });
       return NextResponse.json({ result: 'Status updated' });
     }

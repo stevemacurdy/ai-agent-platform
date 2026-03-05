@@ -5,12 +5,12 @@ import { withTierEnforcement } from '@/lib/usage-enforcement';
 import { trackUsage } from '@/lib/usage-tracker';
 import { getSalesIntelData } from '@/lib/sales-intel-data';
 
-const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+function supabase() { return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!); }
 
 async function _GET(request: NextRequest) {
   trackUsage(request, 'sales-intel');
   try {
-    const { data, error } = await supabase.from('agent_sales_intel_data').select('*').order('lead_score', { ascending: false }).limit(200);
+    const { data, error } = await supabase().from('agent_sales_intel_data').select('*').order('lead_score', { ascending: false }).limit(200);
     if (error || !data?.length) {
       const demo = await getSalesIntelData('demo');
       return NextResponse.json({ ...demo, source: 'demo' });
@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
     switch (action) {
       case 'add-prospect': {
         const { prospectName, prospectCompany, industry, source: src } = body;
-        const { error } = await supabase.from('agent_sales_intel_data').insert({ prospect_name: prospectName, prospect_company: prospectCompany, industry, source: src, lead_score: 50 });
+        const { error } = await supabase().from('agent_sales_intel_data').insert({ prospect_name: prospectName, prospect_company: prospectCompany, industry, source: src, lead_score: 50 });
         if (error) return NextResponse.json({ error: error.message }, { status: 500 });
         return NextResponse.json({ success: true });
       }

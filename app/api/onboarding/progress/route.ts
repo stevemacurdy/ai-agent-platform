@@ -8,7 +8,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 
-const supabase = createClient(
+const supabase = () => createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
     { auth: { autoRefreshToken: false, persistSession: false } }
@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const query = supabase
+    const query = supabase()
       .from('onboarding_sessions')
       .select('*')
       .eq('agent_id', agentId)
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { error } = await supabase
+    const { error } = await supabase()
       .from('onboarding_sessions')
       .upsert({
         agent_id: agentId,
@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
 
     // If complete, also insert into user_agents for portal gating
     if (isComplete) {
-      await supabase.from('user_agents').upsert({
+      await supabase().from('user_agents').upsert({
         agent_slug: agentId,
         onboarded_at: new Date().toISOString(),
         config: dataPayload,

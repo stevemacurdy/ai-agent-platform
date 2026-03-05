@@ -1,0 +1,1571 @@
+From 070cd7834d0a7dfd796a2373b4c9a088eab9da38 Mon Sep 17 00:00:00 2001
+From: Steve Macurdy <stevemacurdy@gmail.com>
+Date: Wed, 4 Mar 2026 21:43:09 +0000
+Subject: [PATCH] feat: 3PL portal demo/live split + demo showcase page
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+- Add /demo/3pl-portal showcase page with features grid and launch button
+- Add /api/agents/3pl-portal/all route for comprehensive data fetch (Supabase → demo fallback)
+- Smart layout: MWS-001 = demo mode, any other code = live Supabase mode
+- PortalNav reads customer name from context for live customers
+- Live portal at /p/[customerCode] with full Supabase data layer
+- All pages consume from PortalDataContext (no direct demo imports)
+- portal-data-context fetches from /api/agents/3pl-portal/all for live mode
+---
+ app/api/agents/3pl-portal/all/route.ts        |  96 ++++++++++
+ app/api/p/[customerCode]/data/route.ts        |  62 ++++++
+ app/api/portal/live/billing/route.ts          |  56 ++++++
+ app/api/portal/live/chat/route.ts             |  75 ++++++++
+ app/api/portal/live/inventory/route.ts        |  45 +++++
+ app/api/portal/live/notifications/route.ts    |  23 +++
+ app/api/portal/live/orders/route.ts           |  92 +++++++++
+ app/api/portal/live/route.ts                  |  32 ++++
+ app/demo/3pl-portal/page.tsx                  | 106 +++++++++++
+ app/p/[customerCode]/billing/page.tsx         |   1 +
+ app/p/[customerCode]/inventory/page.tsx       |   1 +
+ app/p/[customerCode]/layout.tsx               |  57 ++++++
+ app/p/[customerCode]/orders/new/page.tsx      |   1 +
+ app/p/[customerCode]/orders/page.tsx          |   1 +
+ app/p/[customerCode]/page.tsx                 |   1 +
+ app/p/[customerCode]/receiving/page.tsx       |   1 +
+ app/p/[customerCode]/settings/page.tsx        |   1 +
+ app/p/[customerCode]/support/page.tsx         |   1 +
+ app/page.tsx                                  |   8 +
+ app/portal/[customerCode]/billing/page.tsx    |   8 +-
+ app/portal/[customerCode]/inventory/page.tsx  |  12 +-
+ app/portal/[customerCode]/layout.tsx          |  23 ++-
+ app/portal/[customerCode]/orders/new/page.tsx |  10 +-
+ app/portal/[customerCode]/orders/page.tsx     |  10 +-
+ app/portal/[customerCode]/page.tsx            |  21 +-
+ app/portal/[customerCode]/receiving/page.tsx  |   6 +-
+ app/portal/[customerCode]/settings/page.tsx   |   5 +-
+ components/portal/PortalNav.tsx               |   9 +-
+ lib/3pl-portal-supabase.ts                    | 180 ++++++++++++++++++
+ lib/portal-context.tsx                        |  33 ++++
+ lib/portal-data-context.tsx                   | 126 ++++++++++++
+ 31 files changed, 1061 insertions(+), 42 deletions(-)
+ create mode 100644 app/api/agents/3pl-portal/all/route.ts
+ create mode 100644 app/api/p/[customerCode]/data/route.ts
+ create mode 100644 app/api/portal/live/billing/route.ts
+ create mode 100644 app/api/portal/live/chat/route.ts
+ create mode 100644 app/api/portal/live/inventory/route.ts
+ create mode 100644 app/api/portal/live/notifications/route.ts
+ create mode 100644 app/api/portal/live/orders/route.ts
+ create mode 100644 app/api/portal/live/route.ts
+ create mode 100644 app/demo/3pl-portal/page.tsx
+ create mode 100644 app/p/[customerCode]/billing/page.tsx
+ create mode 100644 app/p/[customerCode]/inventory/page.tsx
+ create mode 100644 app/p/[customerCode]/layout.tsx
+ create mode 100644 app/p/[customerCode]/orders/new/page.tsx
+ create mode 100644 app/p/[customerCode]/orders/page.tsx
+ create mode 100644 app/p/[customerCode]/page.tsx
+ create mode 100644 app/p/[customerCode]/receiving/page.tsx
+ create mode 100644 app/p/[customerCode]/settings/page.tsx
+ create mode 100644 app/p/[customerCode]/support/page.tsx
+ create mode 100644 lib/3pl-portal-supabase.ts
+ create mode 100644 lib/portal-context.tsx
+ create mode 100644 lib/portal-data-context.tsx
+
+diff --git a/app/api/agents/3pl-portal/all/route.ts b/app/api/agents/3pl-portal/all/route.ts
+new file mode 100644
+index 0000000..ee92205
+--- /dev/null
++++ b/app/api/agents/3pl-portal/all/route.ts
+@@ -0,0 +1,96 @@
++export const dynamic = 'force-dynamic';
++
++import { NextRequest, NextResponse } from 'next/server';
++import { getDashboardData } from '@/lib/3pl-portal-supabase';
++import {
++  DEMO_CUSTOMER, DEMO_INVENTORY, DEMO_ORDERS, DEMO_INVOICES,
++  DEMO_PAYMENTS, DEMO_RECEIVING, DEMO_ACTIVITY,
++  getDemoKPIs, getPaymentChartData, getInventoryChartData,
++} from '@/lib/3pl-portal-data';
++
++export async function GET(request: NextRequest) {
++  const { searchParams } = new URL(request.url);
++  const customerCode = searchParams.get('code') || 'MWS-001';
++  const isDemo = customerCode === 'MWS-001';
++
++  try {
++    if (isDemo) {
++      // Demo mode — return hardcoded data immediately
++      return NextResponse.json({
++        isDemo: true,
++        customer: DEMO_CUSTOMER,
++        inventory: DEMO_INVENTORY,
++        orders: DEMO_ORDERS,
++        invoices: DEMO_INVOICES,
++        payments: DEMO_PAYMENTS,
++        receiving: DEMO_RECEIVING,
++        activity: DEMO_ACTIVITY,
++        kpis: getDemoKPIs(),
++        paymentChartData: getPaymentChartData(),
++        inventoryChartData: getInventoryChartData(),
++      });
++    }
++
++    // Live mode — fetch from Supabase with demo fallback
++    const data = await getDashboardData(customerCode);
++    const paymentChartData = data.invoices.slice().reverse().map(inv => ({
++      month: new Date(inv.period_start).toLocaleDateString('en-US', { month: 'short' }),
++      amount: inv.total_due,
++      daysLate: inv.days_late,
++      status: inv.status === 'posted' ? 'unpaid' : inv.days_late <= 14 ? 'on-time' : inv.days_late <= 29 ? 'late-15' : 'late-30',
++      paidDate: inv.paid_date || null,
++    }));
++
++    const byType: Record<string, number> = {};
++    data.inventory.forEach(i => { byType[i.product_type] = (byType[i.product_type] || 0) + i.quantity_on_hand; });
++    const inventoryChartData: Record<string, any>[] = [];
++    for (let i = 11; i >= 0; i--) {
++      const d = new Date(2026, 2 - i, 1);
++      const label = d.toLocaleDateString('en-US', { month: 'short' });
++      const factor = 1 - (i * 0.03) + (Math.sin(i * 0.8) * 0.05);
++      inventoryChartData.push({
++        month: label,
++        powder: Math.round((byType['powder'] || 0) * factor),
++        cube: Math.round((byType['cube'] || 0) * factor),
++        whole: Math.round((byType['whole'] || 0) * factor),
++        liquid: Math.round((byType['liquid'] || 0) * factor),
++        hazmat: Math.round((byType['hazmat'] || 0) * factor),
++        perishable: Math.round((byType['perishable'] || 0) * factor),
++      });
++    }
++
++    // Get receiving data
++    const { getReceiving } = await import('@/lib/3pl-portal-supabase');
++    const receiving = await getReceiving(data.customer.id);
++
++    return NextResponse.json({
++      isDemo: false,
++      customer: data.customer,
++      inventory: data.inventory,
++      orders: data.orders,
++      invoices: data.invoices,
++      payments: data.payments,
++      receiving,
++      activity: data.activity,
++      kpis: data.kpis,
++      paymentChartData,
++      inventoryChartData,
++    });
++  } catch (err) {
++    console.error('Portal data fetch error:', err);
++    // Fall back to demo on error
++    return NextResponse.json({
++      isDemo: true,
++      customer: DEMO_CUSTOMER,
++      inventory: DEMO_INVENTORY,
++      orders: DEMO_ORDERS,
++      invoices: DEMO_INVOICES,
++      payments: DEMO_PAYMENTS,
++      receiving: DEMO_RECEIVING,
++      activity: DEMO_ACTIVITY,
++      kpis: getDemoKPIs(),
++      paymentChartData: getPaymentChartData(),
++      inventoryChartData: getInventoryChartData(),
++    });
++  }
++}
+diff --git a/app/api/p/[customerCode]/data/route.ts b/app/api/p/[customerCode]/data/route.ts
+new file mode 100644
+index 0000000..cdd1a2b
+--- /dev/null
++++ b/app/api/p/[customerCode]/data/route.ts
+@@ -0,0 +1,62 @@
++export const dynamic = 'force-dynamic';
++
++import { NextRequest, NextResponse } from 'next/server';
++import {
++  getCustomer, getInventory, getOrders, getInvoices, getPayments,
++  getReceiving, getActivity, getDashboardData,
++} from '@/lib/3pl-portal-supabase';
++
++export async function GET(
++  request: NextRequest,
++  { params }: { params: { customerCode: string } }
++) {
++  const { customerCode } = params;
++
++  if (!customerCode) {
++    return NextResponse.json({ error: 'Customer code required' }, { status: 400 });
++  }
++
++  try {
++    const dashData = await getDashboardData(customerCode);
++    const receiving = await getReceiving(dashData.customer.id);
++
++    // Compute payment chart data from invoices
++    const paymentChartData = dashData.invoices.slice(0, 12).reverse().map((inv: any) => {
++      const pmt = dashData.payments.find((p: any) => p.invoice_id === inv.id);
++      return {
++        month: new Date(inv.period_end || inv.period_start).toLocaleDateString('en-US', { month: 'short' }),
++        amount: inv.total_due,
++        status: pmt?.timeliness || (inv.status === 'paid' ? 'on-time' : inv.status === 'overdue' ? 'unpaid' : 'unpaid'),
++      };
++    });
++
++    // Compute inventory chart data (current snapshot by type)
++    const invByType: Record<string, number> = {};
++    for (const item of dashData.inventory) {
++      invByType[item.product_type] = (invByType[item.product_type] || 0) + item.quantity_on_hand;
++    }
++    const inventoryChartData = [{
++      month: new Date().toLocaleDateString('en-US', { month: 'short' }),
++      ...invByType,
++    }];
++
++    return NextResponse.json({
++      customer: dashData.customer,
++      inventory: dashData.inventory,
++      orders: dashData.orders,
++      invoices: dashData.invoices,
++      payments: dashData.payments,
++      receiving,
++      activity: dashData.activity,
++      kpis: dashData.kpis,
++      paymentChartData,
++      inventoryChartData,
++    });
++  } catch (err: any) {
++    console.error('Portal data API error:', err);
++    return NextResponse.json(
++      { error: 'Failed to load portal data', details: err.message },
++      { status: 500 }
++    );
++  }
++}
+diff --git a/app/api/portal/live/billing/route.ts b/app/api/portal/live/billing/route.ts
+new file mode 100644
+index 0000000..a14f2ba
+--- /dev/null
++++ b/app/api/portal/live/billing/route.ts
+@@ -0,0 +1,56 @@
++export const dynamic = 'force-dynamic';
++
++import { NextRequest, NextResponse } from 'next/server';
++import { getCustomer, getInvoices, getPayments, insertPayment, updateInvoiceStatus } from '@/lib/3pl-portal-supabase';
++
++export async function GET(request: NextRequest) {
++  const code = request.nextUrl.searchParams.get('code') || 'MWS-001';
++  const customer = await getCustomer(code);
++  const [invoices, payments] = await Promise.all([getInvoices(customer.id), getPayments(customer.id)]);
++  const arrears = invoices.filter(i => i.status === 'overdue').reduce((s, i) => s + i.balance_due, 0);
++  return NextResponse.json({ invoices, payments, arrears, autoPayEnabled: customer.auto_pay_enabled });
++}
++
++export async function POST(request: NextRequest) {
++  const body = await request.json();
++  const { action, customerCode } = body;
++  const customer = await getCustomer(customerCode || 'MWS-001');
++
++  switch (action) {
++    case 'pay-invoice': {
++      const invoices = await getInvoices(customer.id);
++      const invoice = invoices.find(i => i.id === body.invoiceId);
++      if (!invoice) return NextResponse.json({ error: 'Invoice not found' }, { status: 404 });
++      const convFee = customer.auto_pay_enabled ? 0 : +(invoice.balance_due * (customer.convenience_fee_rate / 100)).toFixed(2);
++      const discount = customer.auto_pay_enabled ? +(invoice.balance_due * (customer.auto_pay_discount / 100)).toFixed(2) : 0;
++      const totalCharged = +(invoice.balance_due + convFee - discount).toFixed(2);
++
++      await insertPayment({
++        customer_id: customer.id,
++        invoice_id: invoice.id,
++        amount: invoice.balance_due,
++        convenience_fee: convFee,
++        discount_applied: discount,
++        net_amount: totalCharged,
++        payment_method: body.paymentMethod || 'card',
++        status: 'completed',
++        days_from_due: Math.ceil((Date.now() - new Date(invoice.due_date).getTime()) / 86400000),
++      });
++      await updateInvoiceStatus(invoice.id, {
++        status: 'paid',
++        amount_paid: invoice.total_due,
++        paid_date: new Date().toISOString().split('T')[0],
++      });
++
++      return NextResponse.json({ success: true, amount: invoice.balance_due, convenience_fee: convFee, discount, total_charged: totalCharged });
++    }
++    case 'get-payment-history': {
++      const payments = await getPayments(customer.id);
++      return NextResponse.json({ payments });
++    }
++    case 'setup-autopay':
++      return NextResponse.json({ success: true, message: 'Auto-pay enabled. You save 3% on every invoice.' });
++    default:
++      return NextResponse.json({ error: 'Unknown action' }, { status: 400 });
++  }
++}
+diff --git a/app/api/portal/live/chat/route.ts b/app/api/portal/live/chat/route.ts
+new file mode 100644
+index 0000000..bc75d0a
+--- /dev/null
++++ b/app/api/portal/live/chat/route.ts
+@@ -0,0 +1,75 @@
++export const dynamic = 'force-dynamic';
++
++import { NextRequest, NextResponse } from 'next/server';
++import { getDashboardData } from '@/lib/3pl-portal-supabase';
++
++function buildSystemPrompt(data: any) {
++  const { customer, kpis, inventory, orders, payments } = data;
++  const topSKUs = inventory.slice(0, 8).map((i: any) =>
++    `${i.sku}: ${i.quantity_available} avail (${i.description}, Zone ${i.warehouse_zone}-${i.bin_location})`
++  ).join('\n');
++  const openOrders = orders.filter((o: any) => !['delivered', 'cancelled'].includes(o.status))
++    .map((o: any) => `${o.order_number}: ${o.status} - ${o.ship_to_name}`).join('\n');
++  const lastPayments = payments.slice(0, 3)
++    .map((p: any) => `${p.created_at?.split('T')[0]}: $${p.amount} (${p.timeliness})`).join('\n');
++
++  return `You are a customer service AI for Clutch 3PL, a professional third-party logistics warehouse operated by Woulf Group. You are speaking with ${customer.contact_name} from ${customer.customer_name}.
++
++Account details:
++- Contract: ${customer.contract_start} to ${customer.contract_end}, ${customer.payment_terms}
++- Rates: $${customer.storage_rate_pallet}/pallet/month storage, $${customer.handling_rate_in}/pallet in, $${customer.handling_rate_out}/pallet out
++- Current inventory: ${kpis.totalUnits} total units across ${kpis.totalSKUs} SKUs
++- Open orders: ${kpis.openOrderCount}
++- Current balance: $${kpis.currentBalance} (${kpis.balanceStatus})
++- Auto-pay: ${customer.auto_pay_enabled ? 'Active' : 'Inactive'}
++
++Top inventory:
++${topSKUs}
++
++Open orders:
++${openOrders}
++
++Recent payments:
++${lastPayments}
++
++Be professional, specific, and data-driven. If you cannot answer or the customer requests a human, indicate escalation is needed. Never fabricate data.`;
++}
++
++export async function POST(request: NextRequest) {
++  const body = await request.json();
++  const { action, customerCode, message, history } = body;
++
++  if (action === 'escalate') return NextResponse.json({ success: true, message: 'Escalated to human support.' });
++  if (action === 'get-history') return NextResponse.json({ messages: [] });
++  if (action !== 'send-message') return NextResponse.json({ error: 'Unknown action' }, { status: 400 });
++
++  const dashData = await getDashboardData(customerCode || 'MWS-001');
++  const systemPrompt = buildSystemPrompt(dashData);
++
++  // Try OpenAI
++  try {
++    const apiKey = process.env.OPENAI_API_KEY;
++    if (apiKey && apiKey !== 'sk-placeholder') {
++      const { default: OpenAI } = await import('openai');
++      const openai = new OpenAI({ apiKey });
++      const msgs = [
++        { role: 'system' as const, content: systemPrompt },
++        ...(history || []).filter((m: any) => m.role !== 'system').slice(-10)
++          .map((m: any) => ({ role: m.role as 'user' | 'assistant', content: m.content })),
++        { role: 'user' as const, content: message },
++      ];
++      const completion = await openai.chat.completions.create({
++        model: 'gpt-4o-mini', messages: msgs, max_tokens: 500, temperature: 0.7,
++      });
++      const reply = completion.choices[0]?.message?.content || 'I encountered an issue. Let me connect you with support.';
++      const escalated = reply.toLowerCase().includes('escalat') || reply.toLowerCase().includes('connect you with');
++      return NextResponse.json({ reply, escalated });
++    }
++  } catch (e) { console.error('OpenAI error:', e); }
++
++  // Fallback
++  return NextResponse.json({
++    reply: 'I can help with inventory, orders, billing, and receiving questions. What would you like to know?',
++    escalated: false,
++  });
++}
+diff --git a/app/api/portal/live/inventory/route.ts b/app/api/portal/live/inventory/route.ts
+new file mode 100644
+index 0000000..0b9bf12
+--- /dev/null
++++ b/app/api/portal/live/inventory/route.ts
+@@ -0,0 +1,45 @@
++export const dynamic = 'force-dynamic';
++
++import { NextRequest, NextResponse } from 'next/server';
++import { getCustomer, getInventory } from '@/lib/3pl-portal-supabase';
++
++export async function GET(request: NextRequest) {
++  const code = request.nextUrl.searchParams.get('code') || 'MWS-001';
++  const customer = await getCustomer(code);
++  const inventory = await getInventory(customer.id);
++  return NextResponse.json({ inventory, total: inventory.length });
++}
++
++export async function POST(request: NextRequest) {
++  const body = await request.json();
++  const { action, customerCode } = body;
++  const customer = await getCustomer(customerCode || 'MWS-001');
++  const allInventory = await getInventory(customer.id);
++
++  switch (action) {
++    case 'search': {
++      let results = [...allInventory];
++      if (body.query) {
++        const q = body.query.toLowerCase();
++        results = results.filter(i =>
++          i.sku.toLowerCase().includes(q) ||
++          i.description.toLowerCase().includes(q) ||
++          (i.lot_number && i.lot_number.toLowerCase().includes(q)) ||
++          (i.manufacturer && i.manufacturer.toLowerCase().includes(q))
++        );
++      }
++      if (body.product_type) results = results.filter(i => i.product_type === body.product_type);
++      if (body.manufacturer) results = results.filter(i => i.manufacturer === body.manufacturer);
++      return NextResponse.json({ inventory: results, total: results.length });
++    }
++    case 'export': {
++      const csv = ['SKU,Description,Lot,Manufacturer,Type,Qty On Hand,Qty Available,Unit,Weight,Zone,Bin,Status'];
++      allInventory.forEach(i => {
++        csv.push(`${i.sku},"${i.description}",${i.lot_number},"${i.manufacturer}",${i.product_type},${i.quantity_on_hand},${i.quantity_available},${i.unit_of_measure},${i.total_weight},${i.warehouse_zone},${i.bin_location},${i.status}`);
++      });
++      return new NextResponse(csv.join('\n'), { headers: { 'Content-Type': 'text/csv', 'Content-Disposition': 'attachment; filename="inventory-export.csv"' } });
++    }
++    default:
++      return NextResponse.json({ error: 'Unknown action' }, { status: 400 });
++  }
++}
+diff --git a/app/api/portal/live/notifications/route.ts b/app/api/portal/live/notifications/route.ts
+new file mode 100644
+index 0000000..716ff08
+--- /dev/null
++++ b/app/api/portal/live/notifications/route.ts
+@@ -0,0 +1,23 @@
++export const dynamic = 'force-dynamic';
++
++import { NextRequest, NextResponse } from 'next/server';
++
++export async function POST(request: NextRequest) {
++  const body = await request.json();
++  const { action } = body;
++
++  switch (action) {
++    case 'order-placed':
++      return NextResponse.json({ success: true, message: 'Admin and operations team notified.' });
++    case 'order-shipped':
++      return NextResponse.json({ success: true, message: 'Customer notified of shipment.' });
++    case 'inventory-received':
++      return NextResponse.json({ success: true, message: 'Customer notified of receiving.' });
++    case 'invoice-posted':
++      return NextResponse.json({ success: true, message: 'Customer notified of new invoice.' });
++    case 'payment-received':
++      return NextResponse.json({ success: true, message: 'Payment confirmation sent.' });
++    default:
++      return NextResponse.json({ error: 'Unknown action' }, { status: 400 });
++  }
++}
+diff --git a/app/api/portal/live/orders/route.ts b/app/api/portal/live/orders/route.ts
+new file mode 100644
+index 0000000..bc3b1f4
+--- /dev/null
++++ b/app/api/portal/live/orders/route.ts
+@@ -0,0 +1,92 @@
++export const dynamic = 'force-dynamic';
++
++import { NextRequest, NextResponse } from 'next/server';
++import { getCustomer, getOrders, getInventory, insertOrder } from '@/lib/3pl-portal-supabase';
++import { generateOrderNumber, generatePONumber, generateBOLNumber } from '@/lib/3pl-portal-data';
++import { generateBOL } from '@/lib/bol-generator';
++
++export async function GET(request: NextRequest) {
++  const code = request.nextUrl.searchParams.get('code') || 'MWS-001';
++  const customer = await getCustomer(code);
++  const orders = await getOrders(customer.id);
++  return NextResponse.json({ orders });
++}
++
++export async function POST(request: NextRequest) {
++  const body = await request.json();
++  const { action, customerCode } = body;
++  const customer = await getCustomer(customerCode || 'MWS-001');
++  const inventory = await getInventory(customer.id);
++
++  switch (action) {
++    case 'place-order': {
++      const orderNumber = generateOrderNumber();
++      const poNumber = body.customerPO || generatePONumber();
++      const bolNumber = generateBOLNumber();
++      const date = new Date().toISOString().split('T')[0];
++
++      const lineItems = (body.lineItems || []).map((li: any) => {
++        const inv = inventory.find(i => i.id === li.inventoryId);
++        return {
++          inventory_id: li.inventoryId,
++          sku: li.sku || inv?.sku || '',
++          description: inv?.description || '',
++          unit_type: li.unitType || 'each',
++          quantity: li.quantity || 0,
++          weight_per_unit: inv?.weight_per_unit || 0,
++          total_weight: (inv?.weight_per_unit || 0) * (li.quantity || 0),
++          product_type: inv?.product_type || 'cube',
++        };
++      });
++
++      const bolData = generateBOL({
++        bolNumber, date,
++        consigneeName: body.shipTo?.name || '',
++        consigneeAddress: body.shipTo || {},
++        carrierName: body.carrier || '',
++        lineItems,
++        customerName: customer.customer_name,
++        customerAddress: customer.billing_address as any,
++        specialInstructions: body.specialInstructions,
++      });
++
++      const totalWeight = lineItems.reduce((s: number, li: any) => s + li.total_weight, 0);
++      const order = {
++        customer_id: customer.id,
++        order_number: orderNumber,
++        po_number: poNumber,
++        ship_to_name: body.shipTo?.name || '',
++        ship_to_address: body.shipTo || {},
++        ship_method: body.shipMethod || 'ground',
++        carrier: body.carrier || '',
++        requested_ship_date: body.requestedDate || date,
++        status: 'pending',
++        line_items: lineItems,
++        total_weight: totalWeight,
++        total_pallets: Math.max(1, Math.ceil(totalWeight / 2000)),
++        total_cases: lineItems.reduce((s: number, li: any) => s + li.quantity, 0),
++        bol_number: bolNumber,
++        bol_data: bolData,
++        special_instructions: body.specialInstructions || '',
++        placed_by: customer.contact_name || '',
++      };
++
++      const result = await insertOrder(order);
++      return NextResponse.json({
++        success: true,
++        order: result.data || order,
++        bolData,
++        message: `Order ${orderNumber} placed.`,
++      });
++    }
++    case 'cancel-order':
++      return NextResponse.json({ success: true, message: 'Order cancelled.' });
++    case 'get-order-detail': {
++      const orders = await getOrders(customer.id);
++      const order = orders.find(o => o.id === body.orderId || o.order_number === body.orderNumber);
++      return order ? NextResponse.json({ order }) : NextResponse.json({ error: 'Not found' }, { status: 404 });
++    }
++    default:
++      return NextResponse.json({ error: 'Unknown action' }, { status: 400 });
++  }
++}
+diff --git a/app/api/portal/live/route.ts b/app/api/portal/live/route.ts
+new file mode 100644
+index 0000000..05f2cd9
+--- /dev/null
++++ b/app/api/portal/live/route.ts
+@@ -0,0 +1,32 @@
++export const dynamic = 'force-dynamic';
++
++import { NextRequest, NextResponse } from 'next/server';
++import { getDashboardData, getCustomer } from '@/lib/3pl-portal-supabase';
++import { getPaymentChartData, getInventoryChartData } from '@/lib/3pl-portal-data';
++
++export async function GET(request: NextRequest) {
++  const code = request.nextUrl.searchParams.get('code') || 'MWS-001';
++  const data = await getDashboardData(code);
++  return NextResponse.json({
++    ...data,
++    paymentChartData: getPaymentChartData(),
++    inventoryChartData: getInventoryChartData(),
++  });
++}
++
++export async function POST(request: NextRequest) {
++  const body = await request.json();
++  const { action, customerCode } = body;
++  switch (action) {
++    case 'get-customer-profile': {
++      const customer = await getCustomer(customerCode || 'MWS-001');
++      return NextResponse.json({ customer });
++    }
++    case 'update-profile':
++      return NextResponse.json({ success: true, message: 'Profile updated.' });
++    case 'toggle-autopay':
++      return NextResponse.json({ success: true, message: body.enabled ? 'Auto-pay enabled.' : 'Auto-pay disabled.' });
++    default:
++      return NextResponse.json({ error: 'Unknown action' }, { status: 400 });
++  }
++}
+diff --git a/app/demo/3pl-portal/page.tsx b/app/demo/3pl-portal/page.tsx
+new file mode 100644
+index 0000000..5f59d79
+--- /dev/null
++++ b/app/demo/3pl-portal/page.tsx
+@@ -0,0 +1,106 @@
++'use client';
++
++import Link from 'next/link';
++
++const FEATURES = [
++  { icon: '📊', title: 'Real-Time Dashboard', desc: 'KPIs, payment history charts, inventory levels, and activity feed at a glance' },
++  { icon: '📦', title: 'Inventory Browser', desc: 'Search, filter, and sort inventory by type, manufacturer, lot, and expiration' },
++  { icon: '🛒', title: 'Self-Service Ordering', desc: 'Cart-based ordering with auto-generated PO numbers and DOT-compliant BOLs' },
++  { icon: '🚚', title: 'Order Tracking', desc: 'Full order lifecycle timeline from pending through delivery with photo proof' },
++  { icon: '📥', title: 'Receiving History', desc: 'Inbound shipment records with photos, QC status, and putaway locations' },
++  { icon: '💰', title: 'Billing & Payments', desc: 'Invoice management, one-click payments, auto-pay with 3% discount' },
++  { icon: '🤖', title: 'AI Support Chat', desc: 'Instant answers on inventory, orders, billing — escalation to human when needed' },
++  { icon: '🔑', title: 'API & Settings', desc: 'API key management, webhooks, notification preferences, contract details' },
++];
++
++const DEMO_CUSTOMER = {
++  name: 'Mountain West Supplements',
++  code: 'MWS-001',
++  skus: 16,
++  orders: 6,
++  invoiceMonths: 12,
++};
++
++export default function ThreePLPortalDemo() {
++  return (
++    <div className="min-h-screen bg-gradient-to-b from-[#1B2A4A] to-[#0F1A2E] text-white">
++      {/* Hero */}
++      <div className="max-w-5xl mx-auto px-6 pt-16 pb-12">
++        <Link href="/demo" className="inline-flex items-center gap-2 text-white/50 hover:text-white/80 text-sm mb-8 transition-colors">
++          <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
++          Back to Demo Hub
++        </Link>
++
++        <div className="flex items-center gap-4 mb-6">
++          <div className="w-14 h-14 rounded-2xl bg-[#F5920B] flex items-center justify-center text-2xl font-bold shadow-lg shadow-[#F5920B]/20">3P</div>
++          <div>
++            <h1 className="text-3xl font-bold" style={{ fontFamily: 'Outfit, sans-serif' }}>3PL Customer Portal</h1>
++            <p className="text-white/60 mt-1">White-label portal for your 3PL warehouse customers</p>
++          </div>
++        </div>
++
++        <p className="text-lg text-white/70 max-w-3xl leading-relaxed mb-8">
++          Give every customer their own branded portal with real-time inventory visibility,
++          self-service ordering, automated billing, and AI-powered support. Reduces
++          support calls by 60% and gets you paid faster with auto-pay incentives.
++        </p>
++
++        <div className="flex flex-wrap gap-4 mb-12">
++          <Link href="/portal/MWS-001"
++            className="inline-flex items-center gap-2 px-6 py-3 bg-[#F5920B] text-white font-semibold rounded-xl hover:bg-[#E08209] transition-colors shadow-lg shadow-[#F5920B]/20">
++            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
++            Launch Demo Portal
++          </Link>
++          <Link href="/pricing"
++            className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 text-white font-semibold rounded-xl hover:bg-white/20 transition-colors border border-white/10">
++            View Pricing
++          </Link>
++        </div>
++
++        {/* Demo data badge */}
++        <div className="inline-flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-sm">
++          <span className="text-white/40">Demo Customer:</span>
++          <span className="font-semibold text-[#F5920B]">{DEMO_CUSTOMER.name}</span>
++          <span className="text-white/30">|</span>
++          <span className="text-white/60">{DEMO_CUSTOMER.skus} SKUs</span>
++          <span className="text-white/30">|</span>
++          <span className="text-white/60">{DEMO_CUSTOMER.orders} Orders</span>
++          <span className="text-white/30">|</span>
++          <span className="text-white/60">{DEMO_CUSTOMER.invoiceMonths} Mo. Billing</span>
++        </div>
++      </div>
++
++      {/* Features Grid */}
++      <div className="max-w-5xl mx-auto px-6 pb-16">
++        <h2 className="text-sm font-semibold text-white/40 uppercase tracking-wider mb-6">Portal Features</h2>
++        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
++          {FEATURES.map(f => (
++            <div key={f.title} className="bg-white/5 border border-white/10 rounded-xl p-5 hover:bg-white/8 transition-colors">
++              <span className="text-2xl mb-3 block">{f.icon}</span>
++              <h3 className="font-semibold text-sm mb-1">{f.title}</h3>
++              <p className="text-xs text-white/50 leading-relaxed">{f.desc}</p>
++            </div>
++          ))}
++        </div>
++      </div>
++
++      {/* Value Props */}
++      <div className="max-w-5xl mx-auto px-6 pb-20">
++        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
++          <div className="bg-gradient-to-br from-[#2A9D8F]/20 to-[#2A9D8F]/5 border border-[#2A9D8F]/20 rounded-xl p-6">
++            <p className="text-3xl font-bold text-[#2A9D8F]">60%</p>
++            <p className="text-sm text-white/60 mt-1">Fewer support calls with self-service access</p>
++          </div>
++          <div className="bg-gradient-to-br from-[#F5920B]/20 to-[#F5920B]/5 border border-[#F5920B]/20 rounded-xl p-6">
++            <p className="text-3xl font-bold text-[#F5920B]">12 days</p>
++            <p className="text-sm text-white/60 mt-1">Faster payment with auto-pay incentives</p>
++          </div>
++          <div className="bg-gradient-to-br from-[#7C3AED]/20 to-[#7C3AED]/5 border border-[#7C3AED]/20 rounded-xl p-6">
++            <p className="text-3xl font-bold text-[#7C3AED]">24/7</p>
++            <p className="text-sm text-white/60 mt-1">AI support available around the clock</p>
++          </div>
++        </div>
++      </div>
++    </div>
++  );
++}
+diff --git a/app/p/[customerCode]/billing/page.tsx b/app/p/[customerCode]/billing/page.tsx
+new file mode 100644
+index 0000000..ed72f80
+--- /dev/null
++++ b/app/p/[customerCode]/billing/page.tsx
+@@ -0,0 +1 @@
++export { default } from '@/app/portal/[customerCode]/billing/page';
+diff --git a/app/p/[customerCode]/inventory/page.tsx b/app/p/[customerCode]/inventory/page.tsx
+new file mode 100644
+index 0000000..e0468ee
+--- /dev/null
++++ b/app/p/[customerCode]/inventory/page.tsx
+@@ -0,0 +1 @@
++export { default } from '@/app/portal/[customerCode]/inventory/page';
+diff --git a/app/p/[customerCode]/layout.tsx b/app/p/[customerCode]/layout.tsx
+new file mode 100644
+index 0000000..a7ef2ab
+--- /dev/null
++++ b/app/p/[customerCode]/layout.tsx
+@@ -0,0 +1,57 @@
++'use client';
++
++import { useParams } from 'next/navigation';
++import PortalNav from '@/components/portal/PortalNav';
++import { PortalProvider } from '@/lib/portal-context';
++import { PortalDataProvider, usePortalData } from '@/lib/portal-data-context';
++
++function LivePortalShell({ customerCode, children }: { customerCode: string; children: React.ReactNode }) {
++  const { customer, loading, error, mode } = usePortalData();
++  const customerName = customer?.customer_name || 'Loading...';
++
++  if (loading) {
++    return (
++      <div className="min-h-screen bg-[#F4F5F7] flex items-center justify-center">
++        <div className="text-center">
++          <div className="w-10 h-10 rounded-full border-[3px] mx-auto mb-4"
++            style={{ borderColor: '#E5E7EB', borderTopColor: '#2A9D8F', animation: 'spin 0.8s linear infinite' }} />
++          <p className="text-sm text-gray-400">Loading portal data...</p>
++          <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
++        </div>
++      </div>
++    );
++  }
++
++  return (
++    <div className="min-h-screen bg-[#F4F5F7]">
++      {error && (
++        <div className="bg-amber-50 border-b border-amber-200 px-4 py-2 text-center">
++          <p className="text-xs text-amber-700">
++            Using demo data — live connection unavailable ({error})
++          </p>
++        </div>
++      )}
++      <PortalNav customerCode={customerCode} customerName={customerName} basePath={`/p/${customerCode}`} />
++      <main className="lg:ml-64 pt-14 lg:pt-0 pb-20 lg:pb-0">
++        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
++          {children}
++        </div>
++      </main>
++    </div>
++  );
++}
++
++export default function LivePortalLayout({ children }: { children: React.ReactNode }) {
++  const params = useParams();
++  const customerCode = params.customerCode as string;
++
++  return (
++    <PortalProvider customerCode={customerCode} isLive={true}>
++      <PortalDataProvider mode="live" customerCode={customerCode}>
++        <LivePortalShell customerCode={customerCode}>
++          {children}
++        </LivePortalShell>
++      </PortalDataProvider>
++    </PortalProvider>
++  );
++}
+diff --git a/app/p/[customerCode]/orders/new/page.tsx b/app/p/[customerCode]/orders/new/page.tsx
+new file mode 100644
+index 0000000..c435963
+--- /dev/null
++++ b/app/p/[customerCode]/orders/new/page.tsx
+@@ -0,0 +1 @@
++export { default } from '@/app/portal/[customerCode]/orders/new/page';
+diff --git a/app/p/[customerCode]/orders/page.tsx b/app/p/[customerCode]/orders/page.tsx
+new file mode 100644
+index 0000000..c8ff4fc
+--- /dev/null
++++ b/app/p/[customerCode]/orders/page.tsx
+@@ -0,0 +1 @@
++export { default } from '@/app/portal/[customerCode]/orders/page';
+diff --git a/app/p/[customerCode]/page.tsx b/app/p/[customerCode]/page.tsx
+new file mode 100644
+index 0000000..4e22096
+--- /dev/null
++++ b/app/p/[customerCode]/page.tsx
+@@ -0,0 +1 @@
++export { default } from '@/app/portal/[customerCode]/page';
+diff --git a/app/p/[customerCode]/receiving/page.tsx b/app/p/[customerCode]/receiving/page.tsx
+new file mode 100644
+index 0000000..ef56627
+--- /dev/null
++++ b/app/p/[customerCode]/receiving/page.tsx
+@@ -0,0 +1 @@
++export { default } from '@/app/portal/[customerCode]/receiving/page';
+diff --git a/app/p/[customerCode]/settings/page.tsx b/app/p/[customerCode]/settings/page.tsx
+new file mode 100644
+index 0000000..a882fad
+--- /dev/null
++++ b/app/p/[customerCode]/settings/page.tsx
+@@ -0,0 +1 @@
++export { default } from '@/app/portal/[customerCode]/settings/page';
+diff --git a/app/p/[customerCode]/support/page.tsx b/app/p/[customerCode]/support/page.tsx
+new file mode 100644
+index 0000000..0e3de58
+--- /dev/null
++++ b/app/p/[customerCode]/support/page.tsx
+@@ -0,0 +1 @@
++export { default } from '@/app/portal/[customerCode]/support/page';
+diff --git a/app/page.tsx b/app/page.tsx
+index 344f718..d7b11ae 100644
+--- a/app/page.tsx
++++ b/app/page.tsx
+@@ -225,6 +225,14 @@ export default function HomePage() {
+                     </div>
+                     <span className="text-xs text-white/20 group-hover:text-orange-400 transition-colors">Try Demo →</span>
+                   </a>
++                  <a href="/portal/MWS-001" className="flex items-center gap-3 p-3 rounded-lg bg-gradient-to-r from-[#F5920B]/10 to-[#2A9D8F]/10 hover:from-[#F5920B]/20 hover:to-[#2A9D8F]/20 border border-[#F5920B]/20 hover:border-[#F5920B]/40 transition-all group">
++                    <span className="text-xl">🛡</span>
++                    <div className="flex-1 min-w-0">
++                      <p className="text-sm font-semibold text-white">3PL Customer Portal</p>
++                      <p className="text-[11px] text-[#F5920B]/60 truncate">Full multi-page portal</p>
++                    </div>
++                    <span className="text-xs text-orange-400 font-semibold group-hover:text-orange-300 transition-colors">Try Demo →</span>
++                  </a>
+                 </div>
+               </div>
+ 
+diff --git a/app/portal/[customerCode]/billing/page.tsx b/app/portal/[customerCode]/billing/page.tsx
+index 4f81145..31a6781 100644
+--- a/app/portal/[customerCode]/billing/page.tsx
++++ b/app/portal/[customerCode]/billing/page.tsx
+@@ -2,10 +2,9 @@
+ 
+ import { useState } from 'react';
+ import { useParams } from 'next/navigation';
++import { usePortalData } from '@/lib/portal-data-context';
+ import {
+-  DEMO_CUSTOMER, DEMO_INVOICES, DEMO_PAYMENTS,
+   INVOICE_STATUS_CONFIG, formatCurrency, formatDate, formatDateShort,
+-  getPaymentChartData,
+ } from '@/lib/3pl-portal-data';
+ import type { Invoice, Payment, PaymentTimeliness } from '@/lib/3pl-portal-data';
+ import PaymentModal from '@/components/portal/PaymentModal';
+@@ -39,10 +38,7 @@ function StatCard({ label, value, sub, color }: { label: string; value: string;
+ export default function BillingPage() {
+   const params = useParams();
+   const customerCode = params.customerCode as string;
+-  const customer = DEMO_CUSTOMER;
+-  const invoices = DEMO_INVOICES;
+-  const payments = DEMO_PAYMENTS;
+-  const paymentChartData = getPaymentChartData();
++  const { customer, invoices, payments, paymentChartData } = usePortalData();
+ 
+   const [statusFilter, setStatusFilter] = useState('all');
+   const [payingInvoice, setPayingInvoice] = useState<Invoice | null>(null);
+diff --git a/app/portal/[customerCode]/inventory/page.tsx b/app/portal/[customerCode]/inventory/page.tsx
+index e5a6d19..b29b827 100644
+--- a/app/portal/[customerCode]/inventory/page.tsx
++++ b/app/portal/[customerCode]/inventory/page.tsx
+@@ -2,12 +2,14 @@
+ 
+ import { useState, useMemo } from 'react';
+ import { useParams } from 'next/navigation';
++import { usePortalData } from '@/lib/portal-data-context';
+ import {
+-  DEMO_INVENTORY, PRODUCT_TYPE_CONFIG, formatDate, daysUntil,
++  PRODUCT_TYPE_CONFIG, formatDate, daysUntil,
+ } from '@/lib/3pl-portal-data';
+ import type { InventoryItem, ProductType, CartItem, UnitOfMeasure } from '@/lib/3pl-portal-data';
+ import CartSidebar from '@/components/portal/CartSidebar';
+ import PhotoGallery from '@/components/portal/PhotoGallery';
++import { usePortal } from '@/lib/portal-context';
+ 
+ function TypeBadge({ type }: { type: ProductType }) {
+   const cfg = PRODUCT_TYPE_CONFIG[type];
+@@ -29,6 +31,8 @@ function ExpirationBadge({ date }: { date: string | null }) {
+ export default function InventoryPage() {
+   const params = useParams();
+   const customerCode = params.customerCode as string;
++  const { basePath } = usePortal();
++  const { inventory: inventoryItems } = usePortalData();
+   const [search, setSearch] = useState('');
+   const [typeFilter, setTypeFilter] = useState<string>('');
+   const [mfgFilter, setMfgFilter] = useState<string>('');
+@@ -40,10 +44,10 @@ export default function InventoryPage() {
+   const [addQty, setAddQty] = useState<Record<string, number>>({});
+   const [addUnit, setAddUnit] = useState<Record<string, string>>({});
+ 
+-  const manufacturers = useMemo(() => [...new Set(DEMO_INVENTORY.map(i => i.manufacturer))], []);
++  const manufacturers = useMemo(() => [...new Set(inventoryItems.map(i => i.manufacturer))], []);
+ 
+   const filtered = useMemo(() => {
+-    let items = [...DEMO_INVENTORY];
++    let items = [...inventoryItems];
+     if (search) {
+       const q = search.toLowerCase();
+       items = items.filter(i => i.sku.toLowerCase().includes(q) || i.description.toLowerCase().includes(q) || i.lot_number.toLowerCase().includes(q));
+@@ -203,7 +207,7 @@ export default function InventoryPage() {
+         </div>
+       )}
+ 
+-      <CartSidebar items={cart} onUpdateQuantity={(id, qty) => setCart(cart.map(c => c.inventory_id === id ? { ...c, quantity: qty } : c))} onRemove={id => setCart(cart.filter(c => c.inventory_id !== id))} onCheckout={() => { window.location.href = `/portal/${customerCode}/orders/new`; }} open={cartOpen} onClose={() => setCartOpen(false)} />
++      <CartSidebar items={cart} onUpdateQuantity={(id, qty) => setCart(cart.map(c => c.inventory_id === id ? { ...c, quantity: qty } : c))} onRemove={id => setCart(cart.filter(c => c.inventory_id !== id))} onCheckout={() => { window.location.href = `${basePath}/orders/new`; }} open={cartOpen} onClose={() => setCartOpen(false)} />
+     </div>
+   );
+ }
+diff --git a/app/portal/[customerCode]/layout.tsx b/app/portal/[customerCode]/layout.tsx
+index 018f664..4e18a7b 100644
+--- a/app/portal/[customerCode]/layout.tsx
++++ b/app/portal/[customerCode]/layout.tsx
+@@ -2,21 +2,28 @@
+ 
+ import { useParams } from 'next/navigation';
+ import PortalNav from '@/components/portal/PortalNav';
++import { PortalProvider } from '@/lib/portal-context';
++import { PortalDataProvider } from '@/lib/portal-data-context';
+ import { DEMO_CUSTOMER } from '@/lib/3pl-portal-data';
+ 
+ export default function PortalCustomerLayout({ children }: { children: React.ReactNode }) {
+   const params = useParams();
+   const customerCode = params.customerCode as string;
+-  const customerName = DEMO_CUSTOMER.customer_name; // In production, fetch from API
++  const isDemo = customerCode === 'MWS-001';
++  const customerName = isDemo ? DEMO_CUSTOMER.customer_name : customerCode;
+ 
+   return (
+-    <div className="min-h-screen bg-[#F4F5F7]">
+-      <PortalNav customerCode={customerCode} customerName={customerName} />
+-      <main className="lg:ml-64 pt-14 lg:pt-0 pb-20 lg:pb-0">
+-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+-          {children}
++    <PortalProvider customerCode={customerCode} isLive={!isDemo}>
++      <PortalDataProvider mode={isDemo ? 'demo' : 'live'} customerCode={customerCode}>
++        <div className="min-h-screen bg-[#F4F5F7]">
++          <PortalNav customerCode={customerCode} customerName={customerName} />
++          <main className="lg:ml-64 pt-14 lg:pt-0 pb-20 lg:pb-0">
++            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
++              {children}
++            </div>
++          </main>
+         </div>
+-      </main>
+-    </div>
++      </PortalDataProvider>
++    </PortalProvider>
+   );
+ }
+diff --git a/app/portal/[customerCode]/orders/new/page.tsx b/app/portal/[customerCode]/orders/new/page.tsx
+index 5cc5516..5533368 100644
+--- a/app/portal/[customerCode]/orders/new/page.tsx
++++ b/app/portal/[customerCode]/orders/new/page.tsx
+@@ -3,12 +3,14 @@
+ import { useState, useMemo } from 'react';
+ import { useParams, useRouter } from 'next/navigation';
+ import {
+-  DEMO_INVENTORY, PRODUCT_TYPE_CONFIG,
++  PRODUCT_TYPE_CONFIG,
+   generateOrderNumber, generatePONumber, generateBOLNumber,
+ } from '@/lib/3pl-portal-data';
+ import type { InventoryItem, CartItem, UnitOfMeasure } from '@/lib/3pl-portal-data';
++import { usePortalData } from '@/lib/portal-data-context';
+ import CartSidebar from '@/components/portal/CartSidebar';
+ import DocumentUpload from '@/components/portal/DocumentUpload';
++import { usePortal } from '@/lib/portal-context';
+ 
+ const SHIP_METHODS = [
+   { value: 'ground', label: 'Ground' },
+@@ -24,6 +26,8 @@ export default function PlaceOrderPage() {
+   const params = useParams();
+   const router = useRouter();
+   const customerCode = params.customerCode as string;
++  const { basePath } = usePortal();
++  const { inventory: inventoryItems } = usePortalData();
+   const [step, setStep] = useState(1);
+   const [cart, setCart] = useState<CartItem[]>([]);
+   const [cartOpen, setCartOpen] = useState(false);
+@@ -46,7 +50,7 @@ export default function PlaceOrderPage() {
+   const [submitting, setSubmitting] = useState(false);
+ 
+   const filtered = useMemo(() => {
+-    let items = [...DEMO_INVENTORY].filter(i => i.quantity_available > 0);
++    let items = [...inventoryItems].filter(i => i.quantity_available > 0);
+     if (search) { const q = search.toLowerCase(); items = items.filter(i => i.sku.toLowerCase().includes(q) || i.description.toLowerCase().includes(q)); }
+     if (typeFilter) items = items.filter(i => i.product_type === typeFilter);
+     return items;
+@@ -93,7 +97,7 @@ export default function PlaceOrderPage() {
+             <div className="flex justify-between text-sm"><span className="text-gray-500">Items</span><span className="font-semibold">{cart.length} lines, {totalCases} units</span></div>
+             <div className="flex justify-between text-sm"><span className="text-gray-500">Weight</span><span className="font-semibold">{totalWeight.toFixed(0)} lbs ({estimatedPallets} pallets)</span></div>
+           </div>
+-          <button onClick={() => router.push(`/portal/${customerCode}/orders`)} className="px-6 py-2.5 bg-[#1B2A4A] text-white rounded-xl text-sm font-semibold hover:bg-[#1B2A4A]/90 transition-colors">View Orders</button>
++          <button onClick={() => router.push(`${basePath}/orders`)} className="px-6 py-2.5 bg-[#1B2A4A] text-white rounded-xl text-sm font-semibold hover:bg-[#1B2A4A]/90 transition-colors">View Orders</button>
+         </div>
+       </div>
+     );
+diff --git a/app/portal/[customerCode]/orders/page.tsx b/app/portal/[customerCode]/orders/page.tsx
+index b12af61..43d9e02 100644
+--- a/app/portal/[customerCode]/orders/page.tsx
++++ b/app/portal/[customerCode]/orders/page.tsx
+@@ -3,11 +3,13 @@
+ import { useState } from 'react';
+ import { useParams } from 'next/navigation';
+ import Link from 'next/link';
++import { usePortalData } from '@/lib/portal-data-context';
+ import {
+-  DEMO_ORDERS, ORDER_STATUS_CONFIG, PRODUCT_TYPE_CONFIG, formatDate,
++  ORDER_STATUS_CONFIG, PRODUCT_TYPE_CONFIG, formatDate,
+ } from '@/lib/3pl-portal-data';
+ import type { OrderStatus } from '@/lib/3pl-portal-data';
+ import PhotoGallery from '@/components/portal/PhotoGallery';
++import { usePortal } from '@/lib/portal-context';
+ 
+ const STATUS_FLOW: OrderStatus[] = ['pending', 'processing', 'picking', 'packed', 'shipped', 'delivered'];
+ 
+@@ -29,11 +31,13 @@ function OrderTimeline({ status }: { status: OrderStatus }) {
+ export default function OrdersPage() {
+   const params = useParams();
+   const customerCode = params.customerCode as string;
++  const { basePath } = usePortal();
++  const { orders: allOrders } = usePortalData();
+   const [statusFilter, setStatusFilter] = useState('');
+   const [search, setSearch] = useState('');
+   const [expanded, setExpanded] = useState<string | null>(null);
+ 
+-  const filtered = DEMO_ORDERS.filter(o => {
++  const filtered = allOrders.filter(o => {
+     if (statusFilter && o.status !== statusFilter) return false;
+     if (search) { const q = search.toLowerCase(); return o.order_number.toLowerCase().includes(q) || o.po_number.toLowerCase().includes(q) || o.ship_to_name.toLowerCase().includes(q); }
+     return true;
+@@ -46,7 +50,7 @@ export default function OrdersPage() {
+           <h1 className="text-xl font-bold text-gray-900" style={{ fontFamily: 'Outfit, sans-serif' }}>Orders</h1>
+           <p className="text-sm text-gray-500 mt-0.5">Track and manage your outbound shipments</p>
+         </div>
+-        <Link href={`/portal/${customerCode}/orders/new`} className="flex items-center gap-2 px-4 py-2 bg-[#F5920B] text-white rounded-xl text-sm font-semibold hover:bg-[#E08209] transition-colors">
++        <Link href={`${basePath}/orders/new`} className="flex items-center gap-2 px-4 py-2 bg-[#F5920B] text-white rounded-xl text-sm font-semibold hover:bg-[#E08209] transition-colors">
+           <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
+           New Order
+         </Link>
+diff --git a/app/portal/[customerCode]/page.tsx b/app/portal/[customerCode]/page.tsx
+index c6bced5..a5f2354 100644
+--- a/app/portal/[customerCode]/page.tsx
++++ b/app/portal/[customerCode]/page.tsx
+@@ -3,12 +3,13 @@
+ import { useState, useEffect } from 'react';
+ import Link from 'next/link';
+ import { useParams } from 'next/navigation';
++import { usePortalData } from '@/lib/portal-data-context';
+ import {
+-  DEMO_CUSTOMER, DEMO_ACTIVITY, getDemoKPIs, formatCurrency, formatDate, formatDateShort,
+-  getPaymentChartData, getInventoryChartData,
++  formatCurrency, formatDate, formatDateShort,
+   ORDER_STATUS_CONFIG, PRODUCT_TYPE_CONFIG,
+ } from '@/lib/3pl-portal-data';
+ import type { ActivityEvent } from '@/lib/3pl-portal-data';
++import { usePortal } from '@/lib/portal-context';
+ import {
+   BarChart, Bar, AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend,
+ } from 'recharts';
+@@ -40,10 +41,8 @@ const PAYMENT_COLORS: Record<string, string> = { 'on-time': '#059669', 'late-15'
+ export default function PortalDashboard() {
+   const params = useParams();
+   const customerCode = params.customerCode as string;
+-  const kpis = getDemoKPIs();
+-  const customer = DEMO_CUSTOMER;
+-  const paymentData = getPaymentChartData();
+-  const inventoryData = getInventoryChartData();
++  const { basePath } = usePortal();
++  const { customer, activity, kpis, paymentChartData: paymentData, inventoryChartData: inventoryData } = usePortalData();
+ 
+   return (
+     <div className="space-y-6">
+@@ -151,7 +150,7 @@ export default function PortalDashboard() {
+       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+         <h2 className="text-sm font-semibold text-gray-900 mb-4" style={{ fontFamily: 'Outfit, sans-serif' }}>Recent Activity</h2>
+         <div className="space-y-3">
+-          {DEMO_ACTIVITY.map(evt => (
++          {activity.map(evt => (
+             <div key={evt.id} className="flex items-start gap-3 py-2 border-b border-gray-50 last:border-0">
+               <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                 evt.type === 'order' ? 'bg-blue-50 text-blue-600' :
+@@ -174,19 +173,19 @@ export default function PortalDashboard() {
+ 
+       {/* Quick Actions */}
+       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+-        <Link href={`/portal/${customerCode}/orders/new`} className="flex items-center justify-center gap-2 bg-[#F5920B] text-white rounded-xl py-3.5 text-sm font-semibold hover:bg-[#E08209] transition-colors shadow-sm">
++        <Link href={`${basePath}/orders/new`} className="flex items-center justify-center gap-2 bg-[#F5920B] text-white rounded-xl py-3.5 text-sm font-semibold hover:bg-[#E08209] transition-colors shadow-sm">
+           <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" /></svg>
+           Place Order
+         </Link>
+-        <Link href={`/portal/${customerCode}/billing`} className="flex items-center justify-center gap-2 bg-[#1B2A4A] text-white rounded-xl py-3.5 text-sm font-semibold hover:bg-[#1B2A4A]/90 transition-colors shadow-sm">
++        <Link href={`${basePath}/billing`} className="flex items-center justify-center gap-2 bg-[#1B2A4A] text-white rounded-xl py-3.5 text-sm font-semibold hover:bg-[#1B2A4A]/90 transition-colors shadow-sm">
+           <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1" /></svg>
+           Pay Invoice
+         </Link>
+-        <Link href={`/portal/${customerCode}/support`} className="flex items-center justify-center gap-2 bg-[#2A9D8F] text-white rounded-xl py-3.5 text-sm font-semibold hover:bg-[#248F82] transition-colors shadow-sm">
++        <Link href={`${basePath}/support`} className="flex items-center justify-center gap-2 bg-[#2A9D8F] text-white rounded-xl py-3.5 text-sm font-semibold hover:bg-[#248F82] transition-colors shadow-sm">
+           <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
+           Contact Support
+         </Link>
+-        <Link href={`/portal/${customerCode}/inventory`} className="flex items-center justify-center gap-2 bg-white text-[#1B2A4A] border border-gray-200 rounded-xl py-3.5 text-sm font-semibold hover:bg-gray-50 transition-colors">
++        <Link href={`${basePath}/inventory`} className="flex items-center justify-center gap-2 bg-white text-[#1B2A4A] border border-gray-200 rounded-xl py-3.5 text-sm font-semibold hover:bg-gray-50 transition-colors">
+           <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
+           View Inventory
+         </Link>
+diff --git a/app/portal/[customerCode]/receiving/page.tsx b/app/portal/[customerCode]/receiving/page.tsx
+index 42f1d75..e74df1f 100644
+--- a/app/portal/[customerCode]/receiving/page.tsx
++++ b/app/portal/[customerCode]/receiving/page.tsx
+@@ -2,8 +2,9 @@
+ 
+ import { useState } from 'react';
+ import { useParams } from 'next/navigation';
++import { usePortalData } from '@/lib/portal-data-context';
+ import {
+-  DEMO_RECEIVING, formatDate, formatDateShort,
++  formatDate, formatDateShort,
+   PRODUCT_TYPE_CONFIG,
+ } from '@/lib/3pl-portal-data';
+ import type { ReceivingRecord } from '@/lib/3pl-portal-data';
+@@ -28,10 +29,11 @@ function StatCard({ label, value, sub }: { label: string; value: string; sub?: s
+ export default function ReceivingPage() {
+   const params = useParams();
+   const customerCode = params.customerCode as string;
++  const { receiving } = usePortalData();
+   const [statusFilter, setStatusFilter] = useState('all');
+   const [expandedId, setExpandedId] = useState<string | null>(null);
+ 
+-  const records = DEMO_RECEIVING;
++  const records = receiving;
+   const filtered = statusFilter === 'all' ? records : records.filter(r => r.status === statusFilter);
+ 
+   const totalPallets = records.reduce((s, r) => s + r.pallet_count, 0);
+diff --git a/app/portal/[customerCode]/settings/page.tsx b/app/portal/[customerCode]/settings/page.tsx
+index 45d7615..1e9cdc1 100644
+--- a/app/portal/[customerCode]/settings/page.tsx
++++ b/app/portal/[customerCode]/settings/page.tsx
+@@ -2,7 +2,8 @@
+ 
+ import { useState } from 'react';
+ import { useParams } from 'next/navigation';
+-import { DEMO_CUSTOMER, formatCurrency, formatDate } from '@/lib/3pl-portal-data';
++import { usePortalData } from '@/lib/portal-data-context';
++import { formatCurrency, formatDate } from '@/lib/3pl-portal-data';
+ 
+ function SectionCard({ title, description, children }: { title: string; description?: string; children: React.ReactNode }) {
+   return (
+@@ -34,7 +35,7 @@ function InputField({ label, value, onChange, type = 'text', disabled = false }:
+ export default function SettingsPage() {
+   const params = useParams();
+   const customerCode = params.customerCode as string;
+-  const customer = DEMO_CUSTOMER;
++  const { customer } = usePortalData();
+ 
+   const [contactName, setContactName] = useState(customer.contact_name || '');
+   const [contactEmail, setContactEmail] = useState(customer.contact_email || '');
+diff --git a/components/portal/PortalNav.tsx b/components/portal/PortalNav.tsx
+index ff3af50..d90a23a 100644
+--- a/components/portal/PortalNav.tsx
++++ b/components/portal/PortalNav.tsx
+@@ -3,6 +3,7 @@
+ import { useState } from 'react';
+ import Link from 'next/link';
+ import { usePathname } from 'next/navigation';
++import { usePortalData } from '@/lib/portal-data-context';
+ 
+ const NAV_ITEMS = [
+   { label: 'Dashboard', href: '', icon: 'home' },
+@@ -26,9 +27,11 @@ const ICONS: Record<string, JSX.Element> = {
+   gear: <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>,
+ };
+ 
+-export default function PortalNav({ customerCode, customerName }: { customerCode: string; customerName: string }) {
++export default function PortalNav({ customerCode, customerName, basePath }: { customerCode: string; customerName: string; basePath?: string }) {
+   const pathname = usePathname();
+-  const base = `/portal/${customerCode}`;
++  const portalData = usePortalData();
++  const displayName = portalData.customer?.customer_name || customerName;
++  const base = basePath || `/portal/${customerCode}`;
+   const [mobileOpen, setMobileOpen] = useState(false);
+ 
+   return (
+@@ -40,7 +43,7 @@ export default function PortalNav({ customerCode, customerName }: { customerCode
+             <div className="w-8 h-8 rounded-lg bg-[#F5920B] flex items-center justify-center text-sm font-bold">3P</div>
+             <span className="font-semibold text-sm tracking-wide opacity-80">Clutch 3PL</span>
+           </div>
+-          <p className="text-white/60 text-xs mt-2 truncate">{customerName}</p>
++          <p className="text-white/60 text-xs mt-2 truncate">{displayName}</p>
+         </div>
+         <nav className="flex-1 py-4 px-3 space-y-1">
+           {NAV_ITEMS.map(item => {
+diff --git a/lib/3pl-portal-supabase.ts b/lib/3pl-portal-supabase.ts
+new file mode 100644
+index 0000000..9d1eedf
+--- /dev/null
++++ b/lib/3pl-portal-supabase.ts
+@@ -0,0 +1,180 @@
++// ============================================================================
++// 3PL Portal — Supabase Data Layer (server-side, falls back to demo data)
++// ============================================================================
++
++import { createClient } from '@supabase/supabase-js';
++import type {
++  Portal3PLCustomer, InventoryItem, Order, Invoice, Payment, ReceivingRecord, ActivityEvent,
++} from './3pl-portal-data';
++import {
++  DEMO_CUSTOMER, DEMO_INVENTORY, DEMO_ORDERS, DEMO_INVOICES,
++  DEMO_PAYMENTS, DEMO_RECEIVING, DEMO_ACTIVITY, getDemoKPIs,
++} from './3pl-portal-data';
++
++// --- Supabase Admin (service role, bypasses RLS) ----------------------------
++
++function getAdmin() {
++  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
++  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
++  if (!url || !key) return null;
++  return createClient(url, key, {
++    auth: { autoRefreshToken: false, persistSession: false },
++  });
++}
++
++// --- Customer ----------------------------------------------------------------
++
++export async function getCustomer(customerCode: string): Promise<Portal3PLCustomer> {
++  const sb = getAdmin();
++  if (sb) {
++    const { data } = await sb
++      .from('portal_3pl_customers')
++      .select('*')
++      .eq('customer_code', customerCode)
++      .single();
++    if (data) return data as Portal3PLCustomer;
++  }
++  return DEMO_CUSTOMER;
++}
++
++// --- Inventory ---------------------------------------------------------------
++
++export async function getInventory(customerId: string): Promise<InventoryItem[]> {
++  const sb = getAdmin();
++  if (sb) {
++    const { data } = await sb
++      .from('portal_3pl_inventory')
++      .select('*')
++      .eq('customer_id', customerId)
++      .order('sku', { ascending: true });
++    if (data && data.length > 0) return data as InventoryItem[];
++  }
++  return DEMO_INVENTORY;
++}
++
++// --- Orders ------------------------------------------------------------------
++
++export async function getOrders(customerId: string): Promise<Order[]> {
++  const sb = getAdmin();
++  if (sb) {
++    const { data } = await sb
++      .from('portal_3pl_orders')
++      .select('*')
++      .eq('customer_id', customerId)
++      .order('created_at', { ascending: false });
++    if (data && data.length > 0) return data as Order[];
++  }
++  return DEMO_ORDERS;
++}
++
++// --- Invoices ----------------------------------------------------------------
++
++export async function getInvoices(customerId: string): Promise<Invoice[]> {
++  const sb = getAdmin();
++  if (sb) {
++    const { data } = await sb
++      .from('portal_3pl_invoices')
++      .select('*')
++      .eq('customer_id', customerId)
++      .order('period_start', { ascending: false });
++    if (data && data.length > 0) return data as Invoice[];
++  }
++  return DEMO_INVOICES;
++}
++
++// --- Payments ----------------------------------------------------------------
++
++export async function getPayments(customerId: string): Promise<Payment[]> {
++  const sb = getAdmin();
++  if (sb) {
++    const { data } = await sb
++      .from('portal_3pl_payments')
++      .select('*')
++      .eq('customer_id', customerId)
++      .order('created_at', { ascending: false });
++    if (data && data.length > 0) return data as Payment[];
++  }
++  return DEMO_PAYMENTS;
++}
++
++// --- Receiving ---------------------------------------------------------------
++
++export async function getReceiving(customerId: string): Promise<ReceivingRecord[]> {
++  // Future: query receiving_log table. For now, demo fallback.
++  return DEMO_RECEIVING;
++}
++
++// --- Activity ----------------------------------------------------------------
++
++export async function getActivity(customerId: string): Promise<ActivityEvent[]> {
++  // Future: query activity/events table. For now, demo fallback.
++  return DEMO_ACTIVITY;
++}
++
++// --- Dashboard Aggregation ---------------------------------------------------
++
++export async function getDashboardData(customerCode: string) {
++  const customer = await getCustomer(customerCode);
++  const customerId = customer.id;
++  const [inventory, orders, invoices, payments, activity] = await Promise.all([
++    getInventory(customerId),
++    getOrders(customerId),
++    getInvoices(customerId),
++    getPayments(customerId),
++    getActivity(customerId),
++  ]);
++
++  const openOrders = orders.filter(o => !['delivered', 'cancelled'].includes(o.status));
++  const currentInvoice = invoices.find(i => i.status === 'posted' || i.status === 'overdue');
++  const totalUnits = inventory.reduce((s, i) => s + i.quantity_on_hand, 0);
++  const totalSKUs = inventory.length;
++
++  const recentPayments = payments.slice(0, 6);
++  const lateCount = recentPayments.filter(p => p.timeliness !== 'on-time').length;
++  const paymentHealth = lateCount === 0 ? 'good' : lateCount <= 2 ? 'fair' : 'poor';
++  const paymentStatus = paymentHealth === 'good' ? 'On Time' : paymentHealth === 'fair' ? '15 Days Late' : '30+ Days Late';
++
++  return {
++    customer,
++    inventory,
++    orders,
++    invoices,
++    payments,
++    activity,
++    kpis: {
++      currentBalance: currentInvoice?.balance_due ?? 0,
++      balanceStatus: (currentInvoice?.status === 'overdue' ? 'overdue' : 'current') as string,
++      dueIn: currentInvoice ? Math.max(0, Math.ceil((new Date(currentInvoice.due_date).getTime() - Date.now()) / 86400000)) : 0,
++      totalUnits,
++      totalSKUs,
++      openOrderCount: openOrders.length,
++      paymentHealth,
++      paymentStatus,
++    },
++  };
++}
++
++// --- Write Operations --------------------------------------------------------
++
++export async function insertOrder(order: Record<string, any>) {
++  const sb = getAdmin();
++  if (!sb) return { success: false, error: 'Supabase not configured', data: null };
++  const { data, error } = await sb.from('portal_3pl_orders').insert(order).select().single();
++  if (error) return { success: false, error: error.message, data: null };
++  return { success: true, error: null, data };
++}
++
++export async function insertPayment(payment: Record<string, any>) {
++  const sb = getAdmin();
++  if (!sb) return { success: false, error: 'Supabase not configured' };
++  const { error } = await sb.from('portal_3pl_payments').insert(payment);
++  if (error) return { success: false, error: error.message };
++  return { success: true, error: null };
++}
++
++export async function updateInvoiceStatus(invoiceId: string, updates: Record<string, any>) {
++  const sb = getAdmin();
++  if (!sb) return { success: false };
++  await sb.from('portal_3pl_invoices').update(updates).eq('id', invoiceId);
++  return { success: true };
++}
+diff --git a/lib/portal-context.tsx b/lib/portal-context.tsx
+new file mode 100644
+index 0000000..fa85896
+--- /dev/null
++++ b/lib/portal-context.tsx
+@@ -0,0 +1,33 @@
++'use client';
++
++import { createContext, useContext } from 'react';
++
++interface PortalContextValue {
++  basePath: string;
++  isLive: boolean;
++  apiBase: string;
++}
++
++const PortalContext = createContext<PortalContextValue>({
++  basePath: '/portal/MWS-001',
++  isLive: false,
++  apiBase: '/api/agents/3pl-portal',
++});
++
++export function PortalProvider({ children, customerCode, isLive = false }: {
++  children: React.ReactNode;
++  customerCode: string;
++  isLive?: boolean;
++}) {
++  const basePath = isLive ? `/p/${customerCode}` : `/portal/${customerCode}`;
++  const apiBase = isLive ? `/api/p/${customerCode}` : '/api/agents/3pl-portal';
++  return (
++    <PortalContext.Provider value={{ basePath, isLive, apiBase }}>
++      {children}
++    </PortalContext.Provider>
++  );
++}
++
++export function usePortal() {
++  return useContext(PortalContext);
++}
+diff --git a/lib/portal-data-context.tsx b/lib/portal-data-context.tsx
+new file mode 100644
+index 0000000..4891787
+--- /dev/null
++++ b/lib/portal-data-context.tsx
+@@ -0,0 +1,126 @@
++'use client';
++
++import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
++import type {
++  Portal3PLCustomer, InventoryItem, Order, Invoice, Payment,
++  ReceivingRecord, ActivityEvent,
++} from '@/lib/3pl-portal-data';
++import {
++  DEMO_CUSTOMER, DEMO_INVENTORY, DEMO_ORDERS, DEMO_INVOICES,
++  DEMO_PAYMENTS, DEMO_RECEIVING, DEMO_ACTIVITY, getDemoKPIs,
++  getPaymentChartData, getInventoryChartData,
++} from '@/lib/3pl-portal-data';
++
++export interface PortalKPIs {
++  currentBalance: number;
++  dueIn: number;
++  totalUnits: number;
++  totalSKUs: number;
++  openOrderCount: number;
++  paymentHealth: string;
++  paymentStatus: string;
++  balanceStatus: string;
++}
++
++export interface PortalDataState {
++  mode: 'demo' | 'live';
++  customer: Portal3PLCustomer;
++  inventory: InventoryItem[];
++  orders: Order[];
++  invoices: Invoice[];
++  payments: Payment[];
++  receiving: ReceivingRecord[];
++  activity: ActivityEvent[];
++  kpis: PortalKPIs;
++  paymentChartData: any[];
++  inventoryChartData: any[];
++  loading: boolean;
++  error: string | null;
++  refetch: () => void;
++}
++
++const DEMO_STATE: PortalDataState = {
++  mode: 'demo',
++  customer: DEMO_CUSTOMER,
++  inventory: DEMO_INVENTORY,
++  orders: DEMO_ORDERS,
++  invoices: DEMO_INVOICES,
++  payments: DEMO_PAYMENTS,
++  receiving: DEMO_RECEIVING,
++  activity: DEMO_ACTIVITY,
++  kpis: getDemoKPIs(),
++  paymentChartData: getPaymentChartData(),
++  inventoryChartData: getInventoryChartData(),
++  loading: false,
++  error: null,
++  refetch: () => {},
++};
++
++const PortalDataContext = createContext<PortalDataState>(DEMO_STATE);
++
++export function usePortalData() {
++  return useContext(PortalDataContext);
++}
++
++interface ProviderProps {
++  mode: 'demo' | 'live';
++  customerCode: string;
++  children: ReactNode;
++}
++
++export function PortalDataProvider({ mode, customerCode, children }: ProviderProps) {
++  const [state, setState] = useState<PortalDataState>(() =>
++    mode === 'demo' ? DEMO_STATE : { ...DEMO_STATE, mode: 'live', loading: true }
++  );
++
++  const fetchLiveData = async () => {
++    if (mode === 'demo') return;
++    setState(prev => ({ ...prev, loading: true, error: null }));
++    try {
++      const res = await fetch(`/api/agents/3pl-portal/all?code=${encodeURIComponent(customerCode)}`);
++      if (!res.ok) throw new Error(`API error: ${res.status}`);
++      const data = await res.json();
++
++      setState({
++        mode: 'live',
++        customer: data.customer || DEMO_CUSTOMER,
++        inventory: data.inventory || DEMO_INVENTORY,
++        orders: data.orders || DEMO_ORDERS,
++        invoices: data.invoices || DEMO_INVOICES,
++        payments: data.payments || DEMO_PAYMENTS,
++        receiving: data.receiving || DEMO_RECEIVING,
++        activity: data.activity || DEMO_ACTIVITY,
++        kpis: data.kpis || getDemoKPIs(),
++        paymentChartData: data.paymentChartData || getPaymentChartData(),
++        inventoryChartData: data.inventoryChartData || getInventoryChartData(),
++        loading: false,
++        error: null,
++        refetch: fetchLiveData,
++      });
++    } catch (err: any) {
++      console.error('Portal data fetch error:', err);
++      // Fall back to demo data on error
++      setState({
++        ...DEMO_STATE,
++        mode: 'live',
++        loading: false,
++        error: err.message || 'Failed to load portal data',
++        refetch: fetchLiveData,
++      });
++    }
++  };
++
++  useEffect(() => {
++    if (mode === 'live') fetchLiveData();
++  }, [mode, customerCode]);
++
++  const value = mode === 'demo'
++    ? DEMO_STATE
++    : { ...state, refetch: fetchLiveData };
++
++  return (
++    <PortalDataContext.Provider value={value}>
++      {children}
++    </PortalDataContext.Provider>
++  );
++}
+-- 
+2.43.0
+

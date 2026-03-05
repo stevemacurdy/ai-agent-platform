@@ -5,12 +5,12 @@ import { withTierEnforcement } from '@/lib/usage-enforcement';
 import { trackUsage } from '@/lib/usage-tracker';
 import { getSalesCoachData } from '@/lib/sales-coach-data';
 
-const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+function supabase() { return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!); }
 
 async function _GET(request: NextRequest) {
   trackUsage(request, 'sales-coach');
   try {
-    const { data, error } = await supabase.from('agent_sales_coach_data').select('*').order('actual', { ascending: false }).limit(100);
+    const { data, error } = await supabase().from('agent_sales_coach_data').select('*').order('actual', { ascending: false }).limit(100);
     if (error || !data?.length) {
       const demo = await getSalesCoachData('demo');
       return NextResponse.json({ ...demo, source: 'demo' });
@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
     switch (action) {
       case 'log-session': {
         const { repName, notes, actionItems } = body;
-        await supabase.from('agent_sales_coach_data').update({ coaching_notes: notes }).eq('rep_name', repName);
+        await supabase().from('agent_sales_coach_data').update({ coaching_notes: notes }).eq('rep_name', repName);
         return NextResponse.json({ success: true });
       }
       case 'generate-coaching-plan': {

@@ -16,27 +16,16 @@ export default function AuthGuard({ children, requiredRole = 'any', fallbackUrl 
   useEffect(() => {
     const check = async () => {
       try {
-        // Try Supabase session first
-        let token: string | null = null;
-        try {
-          const sb = getSupabaseBrowser();
-          const { data: { session } } = await sb.auth.getSession();
-          token = session?.access_token || null;
-        } catch { /* fall through */ }
+        const sb = getSupabaseBrowser();
+        const { data: { session } } = await sb.auth.getSession();
 
-        // Fallback: check localStorage token (set by lib/auth.ts login)
-        if (!token && typeof window !== 'undefined') {
-          token = localStorage.getItem('woulfai_token');
-        }
-
-        if (!token) {
+        if (!session?.access_token) {
           setStatus('denied');
           return;
         }
 
-        // Verify token with /api/auth/me
         const res = await fetch('/api/auth/me', {
-          headers: { 'Authorization': 'Bearer ' + token }
+          headers: { 'Authorization': 'Bearer ' + session.access_token }
         });
 
         if (!res.ok) { setStatus('denied'); return; }
@@ -80,13 +69,7 @@ export default function AuthGuard({ children, requiredRole = 'any', fallbackUrl 
     );
   }
 
-  if (status === 'denied') {
-    return (
-      <div className="flex items-center justify-center min-h-screen" style={{ background: '#F4F5F7' }}>
-        <p className="text-sm text-gray-500">Redirecting...</p>
-      </div>
-    );
-  }
+  if (status === 'denied') return null;
 
   return <>{children}</>;
 }

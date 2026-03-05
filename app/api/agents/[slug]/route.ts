@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
-const supabase = createClient(
+const supabase = () => createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
     { auth: { autoRefreshToken: false, persistSession: false } }
@@ -51,7 +51,7 @@ export async function GET(
 
   try {
     // Fetch KPIs
-    const { data: kpiRows } = await supabase
+    const { data: kpiRows } = await supabase()
       .from(`${table}_kpis`)
       .select('*')
       .eq('company_id', companyId)
@@ -59,7 +59,7 @@ export async function GET(
       .limit(1);
 
     // Fetch data rows
-    const { data: dataRows } = await supabase
+    const { data: dataRows } = await supabase()
       .from(table)
       .select('*')
       .eq('company_id', companyId)
@@ -93,7 +93,7 @@ export async function POST(
   }
 
   try {
-    const { error } = await supabase
+    const { error } = await supabase()
       .from(table)
       .insert({
         company_id: companyId,

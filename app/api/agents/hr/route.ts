@@ -5,15 +5,17 @@ import { withTierEnforcement } from '@/lib/usage-enforcement';
 import { trackUsage } from '@/lib/usage-tracker';
 import { getHRData } from '@/lib/hr/hr-data';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+function supabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+}
 
 async function _GET(request: NextRequest) {
   trackUsage(request, 'hr');
   try {
-    const { data, error } = await supabase.from('agent_hr_data').select('*').limit(100);
+    const { data, error } = await supabase().from('agent_hr_data').select('*').limit(100);
     if (error || !data?.length) {
       const demoData = getHRData('_default');
       return NextResponse.json({ ...demoData, source: 'demo' });
@@ -33,7 +35,7 @@ export async function POST(request: NextRequest) {
   switch (action) {
     case 'create-position': {
       const { positionTitle, department, hiringManager, salaryRange } = body;
-      const { data, error } = await supabase.from('agent_hr_data').insert({
+      const { data, error } = await supabase().from('agent_hr_data').insert({
         position_title: positionTitle, department, hiring_manager: hiringManager,
         salary_range: salaryRange, status: 'draft',
       }).select().single();
@@ -45,7 +47,7 @@ export async function POST(request: NextRequest) {
       const updates: Record<string, unknown> = {};
       if (status) updates.status = status;
       if (notes) updates.notes = notes;
-      const { error } = await supabase.from('agent_hr_data').update(updates).eq('id', id);
+      const { error } = await supabase().from('agent_hr_data').update(updates).eq('id', id);
       if (error) return NextResponse.json({ error: error.message }, { status: 500 });
       return NextResponse.json({ result: 'Status updated' });
     }

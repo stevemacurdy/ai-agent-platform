@@ -5,15 +5,17 @@ import { withTierEnforcement } from '@/lib/usage-enforcement';
 import { trackUsage } from '@/lib/usage-tracker';
 import { getSeoData } from '@/lib/seo/seo-data';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+function supabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+}
 
 async function _GET(request: NextRequest) {
   trackUsage(request, 'seo');
   try {
-    const { data, error } = await supabase.from('agent_seo_data').select('*').limit(100);
+    const { data, error } = await supabase().from('agent_seo_data').select('*').limit(100);
     if (error || !data?.length) {
       const demoData = getSeoData('_default');
       return NextResponse.json({ ...demoData, source: 'demo' });
@@ -34,7 +36,7 @@ export async function POST(request: NextRequest) {
     case 'add-keyword': {
       const { keywords } = body;
       const rows = (keywords || []).map((k: string) => ({ keyword: k, current_position: null, search_volume: null, difficulty: null }));
-      const { error } = await supabase.from('agent_seo_data').insert(rows);
+      const { error } = await supabase().from('agent_seo_data').insert(rows);
       if (error) return NextResponse.json({ error: error.message }, { status: 500 });
       return NextResponse.json({ result: `Added ${rows.length} keywords` });
     }

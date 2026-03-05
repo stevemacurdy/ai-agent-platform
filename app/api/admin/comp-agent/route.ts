@@ -9,21 +9,20 @@ export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+function supabaseAdmin() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { autoRefreshToken: false, persistSession: false } }
+  );
+}
 
 
 // Auth guard - verify admin access
 async function verifyAdmin(req: NextRequest) {
   const token = req.headers.get('authorization')?.replace('Bearer ', '') || '';
   if (!token) return null;
-  const sb = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { auth: { autoRefreshToken: false, persistSession: false } }
-  );
+  const sb = supabaseAdmin();
   const { data: { user }, error } = await sb.auth.getUser(token);
   if (error || !user) return null;
   const { data: profile } = await sb.from('profiles').select('role').eq('id', user.id).single();
@@ -44,7 +43,7 @@ export async function POST(req: NextRequest) {
 
     // Verify caller is super_admin
     if (adminUserId) {
-      const { data: profile } = await supabase
+      const { data: profile } = await supabaseAdmin()
         .from('profiles')
         .select('role')
         .eq('id', adminUserId)
@@ -57,7 +56,7 @@ export async function POST(req: NextRequest) {
 
     if (compAll) {
       // Comp ALL agents for this company
-      const { data: agents } = await supabase
+      const { data: agents } = await supabaseAdmin()
         .from('agents')
         .select('slug')
         .eq('status', 'live');
@@ -71,7 +70,7 @@ export async function POST(req: NextRequest) {
           granted_at: new Date().toISOString(),
         }));
 
-        const { error } = await supabase
+        const { error } = await supabaseAdmin()
           .from('company_agent_access')
           .upsert(records, { onConflict: 'company_id,agent_slug' });
 
@@ -85,7 +84,7 @@ export async function POST(req: NextRequest) {
       }
     } else if (agentSlug) {
       // Comp single agent
-      const { error } = await supabase
+      const { error } = await supabaseAdmin()
         .from('company_agent_access')
         .upsert({
           company_id: companyId,

@@ -5,12 +5,12 @@ import { withTierEnforcement } from '@/lib/usage-enforcement';
 import { trackUsage } from '@/lib/usage-tracker';
 import { getWmsData } from '@/lib/wms/wms-data';
 
-const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+function supabase() { return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!); }
 
 async function _GET(request: NextRequest) {
   trackUsage(request, 'warehouse');
   try {
-    const { data, error } = await supabase.from('wms_inventory').select('*').limit(100);
+    const { data, error } = await supabase().from('wms_inventory').select('*').limit(100);
     if (error || !data?.length) { const d = getWmsData('_default'); return NextResponse.json({ ...d, source: 'demo' }); }
     return NextResponse.json({ items: data, source: 'live' });
   } catch { const d = getWmsData('_default'); return NextResponse.json({ ...d, source: 'demo' }); }

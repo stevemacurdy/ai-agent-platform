@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
-const supabase = createClient(
+const supabase = () => createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
     { auth: { autoRefreshToken: false, persistSession: false } }
@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
     
     // For now, return all companies the user has access to
     // TODO: Filter by user membership once auth is wired
-    const { data: companies, error } = await supabase
+    const { data: companies, error } = await supabase()
       .from('companies')
       .select('id, name, slug, logo_url')
       .order('name');

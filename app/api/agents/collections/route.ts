@@ -5,15 +5,17 @@ import { withTierEnforcement } from '@/lib/usage-enforcement';
 import { trackUsage } from '@/lib/usage-tracker';
 import { getCollectionsData } from '@/lib/collections-data';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+function supabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+}
 
 async function _GET(request: NextRequest) {
   trackUsage(request, 'collections');
   try {
-    const { data, error } = await supabase
+    const { data, error } = await supabase()
       .from('agent_collections_data')
       .select('*')
       .order('days_overdue', { ascending: false })
@@ -39,7 +41,7 @@ export async function POST(request: NextRequest) {
     switch (action) {
       case 'log-contact': {
         const { id, notes, outcome } = body;
-        await supabase
+        await supabase()
           .from('agent_collections_data')
           .update({ notes, next_action: outcome, last_contact_date: new Date().toISOString(), updated_at: new Date().toISOString() })
           .eq('id', id);
@@ -48,7 +50,7 @@ export async function POST(request: NextRequest) {
 
       case 'update-status': {
         const { id: sid, status } = body;
-        await supabase
+        await supabase()
           .from('agent_collections_data')
           .update({ status, updated_at: new Date().toISOString() })
           .eq('id', sid);
