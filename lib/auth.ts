@@ -101,25 +101,17 @@ export async function login(email: string, password: string): Promise<LoginResul
       setToken(data.session.access_token);
     }
 
-    // Step 3: Sync session to browser Supabase client so getSession() works everywhere
-    // This is critical — AuthGuard, sidebar, and 30+ components call getSession()
+    // Step 3: Sync session to browser Supabase client
+    // setSession is a fast local operation — safe to await
     if (data.session?.access_token && data.session?.refresh_token) {
       try {
         const { getSupabaseBrowser } = await import('@/lib/supabase-browser');
         const sb = getSupabaseBrowser();
-        // signInWithPassword on client side to natively persist the session
-        await sb.auth.signInWithPassword({ email, password });
-      } catch {
-        // If client-side sign-in fails, try setSession as fallback
-        try {
-          const { getSupabaseBrowser } = await import('@/lib/supabase-browser');
-          const sb = getSupabaseBrowser();
-          await sb.auth.setSession({
-            access_token: data.session.access_token,
-            refresh_token: data.session.refresh_token,
-          });
-        } catch { /* session sync failed — AuthGuard will fall back to localStorage */ }
-      }
+        await sb.auth.setSession({
+          access_token: data.session.access_token,
+          refresh_token: data.session.refresh_token,
+        });
+      } catch { /* localStorage fallback will handle it */ }
     }
 
     // Step 4: Store user profile

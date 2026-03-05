@@ -26,14 +26,14 @@ export default function LoginPage() {
         return;
       }
       if (result.must_reset_password) {
-        router.push('/reset-password');
+        window.location.href = '/reset-password';
         return;
       }
       const role = result.user?.role;
       if (role === 'super_admin' || role === 'admin') {
-        router.push('/admin');
+        window.location.href = '/admin';
       } else {
-        router.push('/dashboard');
+        window.location.href = '/dashboard';
       }
     } catch (err: any) {
       setError('Connection error. Please try again.');
