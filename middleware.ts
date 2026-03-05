@@ -18,6 +18,8 @@ const RATE_LIMITS: Record<string, { max: number; windowMs: number }> = {
   '/api/chat':                 { max: 20, windowMs: 60000 },   // 20/min
   '/api/chat/enterprise':      { max: 20, windowMs: 60000 },   // 20/min
   '/api/stripe/webhook':       { max: 100, windowMs: 60000 },  // 100/min (Stripe sends bursts)
+  '/api/usage/track':          { max: 60,  windowMs: 60000 },  // 60/min (fire-and-forget)
+  '/api/marketplace':          { max: 30,  windowMs: 60000 },  // 30/min
 };
 
 function getRateLimit(pathname: string): { max: number; windowMs: number } | null {
@@ -57,7 +59,7 @@ function cleanupRateLimitMap() {
 }
 
 // --- Route Protection -------------------------------------------------------
-const PUBLIC = ['/', '/login', '/pricing', '/contact', '/demo', '/solutions', '/case-studies', '/integrations', '/about', '/how-it-works', '/register', '/forgot-password', '/reset-password', '/careers', '/privacy', '/terms', '/security', '/beta', '/billing'];
+const PUBLIC = ['/', '/login', '/pricing', '/contact', '/demo', '/solutions', '/case-studies', '/integrations', '/about', '/how-it-works', '/register', '/forgot-password', '/reset-password', '/careers', '/privacy', '/terms', '/security', '/beta', '/billing', '/marketplace'];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;

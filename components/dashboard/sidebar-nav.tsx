@@ -128,6 +128,12 @@ export default function SidebarNav() {
         })}
       </div>
 
+      {/* Marketplace */}
+      {sectionLabel('Discover')}
+      <div className="space-y-0.5">
+        {navLink('/marketplace', '\uD83D\uDED2', 'Marketplace')}
+      </div>
+
       {/* Settings */}
       {sectionLabel('Settings')}
       <div className="space-y-0.5">
