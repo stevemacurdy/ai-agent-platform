@@ -29,7 +29,12 @@ export default function LoginPage() {
         router.push('/reset-password');
         return;
       }
-      router.push('/portal');
+      const role = result.user?.role;
+      if (role === 'super_admin' || role === 'admin') {
+        router.push('/admin');
+      } else {
+        router.push('/dashboard');
+      }
     } catch (err: any) {
       setError('Connection error. Please try again.');
     }
