@@ -85,40 +85,56 @@ function writeLegacySession(user: AuthUser): void {
 // --- Auth Actions -----------------------------------------------------------
 export async function login(email: string, password: string): Promise<LoginResult> {
   try {
-    // Sign in through the browser Supabase client directly.
-    // This ensures the session is natively persisted and getSession() works everywhere.
-    const { getSupabaseBrowser } = await import('@/lib/supabase-browser');
-    const sb = getSupabaseBrowser();
-    const { data, error } = await sb.auth.signInWithPassword({ email, password });
-
-    if (error || !data.session) {
-      return { success: false, error: error?.message || 'Invalid email or password' };
+    // Step 1: Sign in via server API (known working, gets role + profile)
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      return { success: false, error: data.error || 'Invalid email or password' };
     }
 
-    // Store our own copy of the token (used by some API calls)
-    setToken(data.session.access_token);
+    // Step 2: Store token in localStorage
+    if (data.session?.access_token) {
+      setToken(data.session.access_token);
+    }
 
-    // Fetch profile from /api/auth/me to get role + approved_agents
-    const meRes = await fetch('/api/auth/me', {
-      headers: { 'Authorization': 'Bearer ' + data.session.access_token },
-    });
-    const meData = meRes.ok ? await meRes.json() : { user: null };
-    const profile = meData.user;
+    // Step 3: Sync session to browser Supabase client so getSession() works everywhere
+    // This is critical — AuthGuard, sidebar, and 30+ components call getSession()
+    if (data.session?.access_token && data.session?.refresh_token) {
+      try {
+        const { getSupabaseBrowser } = await import('@/lib/supabase-browser');
+        const sb = getSupabaseBrowser();
+        // signInWithPassword on client side to natively persist the session
+        await sb.auth.signInWithPassword({ email, password });
+      } catch {
+        // If client-side sign-in fails, try setSession as fallback
+        try {
+          const { getSupabaseBrowser } = await import('@/lib/supabase-browser');
+          const sb = getSupabaseBrowser();
+          await sb.auth.setSession({
+            access_token: data.session.access_token,
+            refresh_token: data.session.refresh_token,
+          });
+        } catch { /* session sync failed — AuthGuard will fall back to localStorage */ }
+      }
+    }
 
-    // Store user profile
+    // Step 4: Store user profile
     const user: AuthUser = {
       id: data.user.id,
-      email: data.user.email || email,
-      name: profile?.display_name || profile?.full_name || email.split('@')[0],
-      role: profile?.role || 'free',
-      company_id: profile?.company_id || null,
-      approved_agents: profile?.approved_agents || [],
+      email: data.user.email,
+      name: data.user.display_name || data.user.name || email.split('@')[0],
+      role: data.user.role || 'free',
+      company_id: data.user.company_id || null,
+      approved_agents: data.user.approved_agents || [],
     };
     setUser(user);
     writeLegacySession(user);
 
-    // Check if password reset required
-    if (profile?.must_reset_password) {
+    if (data.user.must_reset_password) {
       return { success: true, must_reset_password: true, user };
     }
 
