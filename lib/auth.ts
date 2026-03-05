@@ -99,6 +99,17 @@ export async function login(email: string, password: string): Promise<LoginResul
     // Store the access token (this is what /api/auth/me needs as Bearer)
     if (data.session?.access_token) {
       setToken(data.session.access_token);
+
+      // Also set the session on the browser Supabase client
+      // so AuthGuard's sb.auth.getSession() can find it
+      try {
+        const { getSupabaseBrowser } = await import('@/lib/supabase-browser');
+        const sb = getSupabaseBrowser();
+        await sb.auth.setSession({
+          access_token: data.session.access_token,
+          refresh_token: data.session.refresh_token,
+        });
+      } catch { /* non-critical */ }
     }
 
     // Store user profile
