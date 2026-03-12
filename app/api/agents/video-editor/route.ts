@@ -40,6 +40,27 @@ export async function GET(request: NextRequest) {
 
       // Get clip counts for completed jobs
       const allJobs = jobs || [];
+
+      // Auto-fail stale jobs (stuck > 30 min)
+      const staleThreshold = 30 * 60 * 1000; // 30 minutes
+      const now = Date.now();
+      const staleIds = allJobs
+        .filter(j => (j.status === 'transcribing' || j.status === 'processing') &&
+          (now - new Date(j.created_at).getTime()) > staleThreshold)
+        .map(j => j.id);
+      if (staleIds.length > 0) {
+        await sb.from('video_jobs')
+          .update({ status: 'failed', error: 'Processing timed out. The video may be too large or the worker was unavailable. Please try again.' })
+          .in('id', staleIds);
+        // Update local data
+        allJobs.forEach(j => {
+          if (staleIds.includes(j.id)) {
+            j.status = 'failed';
+            j.error = 'Processing timed out';
+          }
+        });
+      }
+
       const completedIds = allJobs.filter(j => j.status === 'complete').map(j => j.id);
       const clipCounts: Record<string, number> = {};
       if (completedIds.length > 0) {
@@ -112,6 +133,21 @@ export async function POST(request: NextRequest) {
     if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
     // Dispatch to worker (fire and forget)
+    // Generate a signed URL so the worker can access the private bucket
+    let workerSourceUrl = sourceUrl;
+    try {
+      const pathMatch = sourceUrl.match(/\/storage\/v1\/object\/public\/video-uploads\/(.+)$/);
+      if (pathMatch) {
+        const storagePath = decodeURIComponent(pathMatch[1]);
+        const { data: signedData, error: signedErr } = await sb.storage
+          .from('video-uploads')
+          .createSignedUrl(storagePath, 3600 * 6); // 6 hours
+        if (signedData?.signedUrl && !signedErr) {
+          workerSourceUrl = signedData.signedUrl;
+        }
+      }
+    } catch { /* fall back to original URL */ }
+
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://www.woulfai.com';
     fetch(`${WORKER_URL}/process`, {
       method: 'POST',
@@ -122,7 +158,7 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify({
         jobId: job.id,
         mode,
-        sourceUrl,
+        sourceUrl: workerSourceUrl,
         quotes: quotes || [],
         clipMin: clipMin || 5,
         clipMax: clipMax || 30,
