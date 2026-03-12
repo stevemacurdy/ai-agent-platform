@@ -5,7 +5,8 @@ import { withTierEnforcement } from '@/lib/usage-enforcement';
 import { trackUsage } from '@/lib/usage-tracker';
 import { getWmsData } from '@/lib/wms/wms-data';
 
-function supabase() { return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!); }
+let _supabase: any = null;
+function supabase() { if (!_supabase) _supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!); return _supabase; }
 
 async function _GET(request: NextRequest) {
   trackUsage(request, 'org-lead');

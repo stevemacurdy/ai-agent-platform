@@ -7,11 +7,12 @@ export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
-const supabase = () => createClient(
+let _supabase: any = null;
+function supabase() { if (!_supabase) _supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
     { auth: { autoRefreshToken: false, persistSession: false } }
-  );
+  ); return _supabase; }
 
 export async function GET(request: NextRequest) {
   try {
@@ -28,7 +29,7 @@ export async function GET(request: NextRequest) {
     if (error) throw error;
 
     return NextResponse.json({
-      companies: (companies || []).map(c => ({
+      companies: (companies || []).map((c: any) => ({
         id: c.id,
         name: c.name,
         slug: c.slug,

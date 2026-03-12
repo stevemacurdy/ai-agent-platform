@@ -9,12 +9,17 @@ export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
-function supabaseAdmin() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { auth: { autoRefreshToken: false, persistSession: false } }
-  );
+// Lazy init — do NOT create at module scope or build will crash
+// when env vars aren't available during `next build` page collection.
+let _supabase: ReturnType<typeof createClient> | null = null;
+function getSupabase() {
+  if (!_supabase) {
+    _supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
+  }
+  return _supabase;
 }
 
 
@@ -22,7 +27,11 @@ function supabaseAdmin() {
 async function verifyAdmin(req: NextRequest) {
   const token = req.headers.get('authorization')?.replace('Bearer ', '') || '';
   if (!token) return null;
-  const sb = supabaseAdmin();
+  const sb = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { autoRefreshToken: false, persistSession: false } }
+  );
   const { data: { user }, error } = await sb.auth.getUser(token);
   if (error || !user) return null;
   const { data: profile } = await sb.from('profiles').select('role').eq('id', user.id).single();
@@ -43,11 +52,11 @@ export async function POST(req: NextRequest) {
 
     // Verify caller is super_admin
     if (adminUserId) {
-      const { data: profile } = await supabaseAdmin()
+      const { data: profile } = await getSupabase()
         .from('profiles')
         .select('role')
         .eq('id', adminUserId)
-        .single();
+        .single() as { data: { role: string } | null };
 
       if (profile?.role !== 'super_admin' && profile?.role !== 'admin') {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
@@ -56,10 +65,10 @@ export async function POST(req: NextRequest) {
 
     if (compAll) {
       // Comp ALL agents for this company
-      const { data: agents } = await supabaseAdmin()
+      const { data: agents } = await getSupabase()
         .from('agents')
         .select('slug')
-        .eq('status', 'live');
+        .eq('status', 'live') as { data: { slug: string }[] | null };
 
       if (agents) {
         const records = agents.map(a => ({
@@ -70,9 +79,9 @@ export async function POST(req: NextRequest) {
           granted_at: new Date().toISOString(),
         }));
 
-        const { error } = await supabaseAdmin()
+        const { error } = await getSupabase()
           .from('company_agent_access')
-          .upsert(records, { onConflict: 'company_id,agent_slug' });
+          .upsert(records as any, { onConflict: 'company_id,agent_slug' });
 
         if (error) throw error;
 
@@ -84,7 +93,7 @@ export async function POST(req: NextRequest) {
       }
     } else if (agentSlug) {
       // Comp single agent
-      const { error } = await supabaseAdmin()
+      const { error } = await getSupabase()
         .from('company_agent_access')
         .upsert({
           company_id: companyId,
@@ -92,7 +101,7 @@ export async function POST(req: NextRequest) {
           access_type: 'comp',
           status: 'active',
           granted_at: new Date().toISOString(),
-        }, { onConflict: 'company_id,agent_slug' });
+        } as any, { onConflict: 'company_id,agent_slug' });
 
       if (error) throw error;
 

@@ -7,11 +7,12 @@ export const dynamic = 'force-dynamic';
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
-const supabase = () => createClient(
+let _supabase: any = null;
+function supabase() { if (!_supabase) _supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
     { auth: { autoRefreshToken: false, persistSession: false } }
-  );
+  ); return _supabase; }
 
 const AGENT_TABLES: Record<string, string> = {
   'org-lead': 'agent_org_lead_data',
@@ -46,7 +47,7 @@ export async function GET(
   const headers = Object.keys(rows[0]);
   const csv = [
     headers.join(','),
-    ...rows.map(row => headers.map(h => JSON.stringify(row[h] ?? '')).join(','))
+    ...rows.map((row: any) => headers.map(h => JSON.stringify(row[h] ?? '')).join(','))
   ].join('\n');
 
   return new NextResponse(csv, {

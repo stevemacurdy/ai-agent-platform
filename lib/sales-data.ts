@@ -1,14 +1,13 @@
 import { createClient } from '@supabase/supabase-js';
 
-function supabase() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  );
-}
+let _supabase: any = null;
+function supabase() { if (!_supabase) _supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+); return _supabase; }
 
 const UNIFIED_API = 'https://api.unified.to';
-const UNIFIED_KEY = process.env.UNIFIED_API_KEY || '';
+function getUnifiedKey() { return process.env.UNIFIED_API_KEY || ''; }
 
 // ============================================================
 // CONNECTION LOOKUP
@@ -64,7 +63,7 @@ export async function getSalesData(companyId?: string) {
 async function unifiedGet(connectionId: string, path: string) {
   const res = await fetch(`${UNIFIED_API}${path}`, {
     headers: {
-      'Authorization': `Bearer ${UNIFIED_KEY}`,
+      'Authorization': `Bearer ${getUnifiedKey()}`,
       'x-connection-id': connectionId,
     },
   });
