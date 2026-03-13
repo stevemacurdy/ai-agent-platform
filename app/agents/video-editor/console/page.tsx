@@ -208,21 +208,48 @@ export default function VideoEditorConsole() {
     if (file.size > maxSize) { setUploadError('File too large. Maximum 3GB.'); return; }
     if (!/\.(mp4|mov|webm|avi)$/i.test(file.name)) { setUploadError('Unsupported format. Use MP4, MOV, WEBM, or AVI.'); return; }
 
-    const pi = setInterval(() => {
-      setUploadProgress(p => p >= 90 ? p : Math.min(p + (file.size > 500*1024*1024 ? Math.random()*3 : Math.random()*10), 90));
-    }, 500);
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+    const remotePath = `default/${Date.now()}-${safeName}`;
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+    const uploadUrl = `${supabaseUrl}/storage/v1/object/video-uploads/${remotePath}`;
 
     try {
-      const sb = getSupabaseBrowser();
-      const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-      const remotePath = `default/${Date.now()}-${safeName}`;
-      const { error: ue } = await sb.storage.from('video-uploads').upload(remotePath, file, { contentType: file.type || 'video/mp4', upsert: false });
-      clearInterval(pi);
-      if (ue) { setUploadError('Upload failed: ' + ue.message); setUploadProgress(0); return; }
+      // Use XMLHttpRequest for real progress tracking
+      const publicUrl = await new Promise<string>((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', uploadUrl);
+        xhr.setRequestHeader('Authorization', `Bearer ${supabaseKey}`);
+        xhr.setRequestHeader('Content-Type', file.type || 'video/mp4');
+        xhr.setRequestHeader('x-upsert', 'false');
 
-      const { data: urlData } = sb.storage.from('video-uploads').getPublicUrl(remotePath);
+        xhr.upload.onprogress = (e) => {
+          if (e.lengthComputable) {
+            const pct = Math.round((e.loaded / e.total) * 95); // 0-95% for upload
+            setUploadProgress(pct);
+          }
+        };
+
+        xhr.onload = () => {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            const sb = getSupabaseBrowser();
+            const { data: urlData } = sb.storage.from('video-uploads').getPublicUrl(remotePath);
+            resolve(urlData.publicUrl);
+          } else {
+            let msg = 'Upload failed';
+            try { const err = JSON.parse(xhr.responseText); msg = err.message || err.error || msg; } catch {}
+            reject(new Error(msg));
+          }
+        };
+
+        xhr.onerror = () => reject(new Error('Network error during upload'));
+        xhr.ontimeout = () => reject(new Error('Upload timed out'));
+        xhr.timeout = 1800000; // 30 min timeout
+        xhr.send(file);
+      });
+
       setUploadProgress(100);
-      setUploadedUrl(urlData.publicUrl);
+      setUploadedUrl(publicUrl);
       setUploadedFilename(file.name);
       setUploadedSize(file.size);
       setNpStep('configure');
@@ -232,13 +259,13 @@ export default function VideoEditorConsole() {
         try {
           const tResp = await fetch('/api/agents/video-editor/transcribe', {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ sourceUrl: urlData.publicUrl }),
+            body: JSON.stringify({ sourceUrl: publicUrl }),
           });
           if (tResp.ok) { const tData = await tResp.json(); setTranscript(tData.transcript || tData); }
         } catch { /* optional */ }
         setTranscribing(false);
       }
-    } catch { clearInterval(pi); setUploadError('Upload failed. Please try again.'); setUploadProgress(0); }
+    } catch (err) { setUploadError(err instanceof Error ? err.message : 'Upload failed. Please try again.'); setUploadProgress(0); }
   }
 
   /* ── Submit Job ────────────────────────────────────────────── */
@@ -474,7 +501,9 @@ export default function VideoEditorConsole() {
                       <div className="w-64 mx-auto rounded-full h-2" style={{ background: '#E5E7EB' }}>
                         <div className="rounded-full h-2 transition-all" style={{ width: uploadProgress + '%', background: ORANGE }} />
                       </div>
-                      <p className="text-xs mt-2" style={{ color: '#9CA3AF' }}>{Math.round(uploadProgress)}%</p>
+                      <p className="text-xs mt-2" style={{ color: '#9CA3AF' }}>
+                        {Math.round(uploadProgress)}%{uploadFile ? ` \u{2014} ${fmtBytes(Math.round(uploadFile.size * uploadProgress / 100))} of ${fmtBytes(uploadFile.size)}` : ''}
+                      </p>
                     </div>
                   ) : uploadProgress === 100 ? (
                     <div>
