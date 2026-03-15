@@ -4,6 +4,7 @@ import {
   BarChart, Bar, LineChart, Line, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend
 } from 'recharts';
+import { useTrackConsoleView } from '@/lib/hooks/useUsageTracking'
 
 const VENDORS = [
   { name: 'FastParts', onTime: 78, quality: 3.2, leadTime: 18, openPOs: 6, risk: 'high', trend: 'down', category: 'Electronics', email: 'orders@fastparts.com', contract: 'Expires Jun 2026', history: 'Was 92% on-time 6 months ago, steady decline' },
@@ -57,6 +58,7 @@ const badge = (v: string) => {
 };
 
 export default function SupplyChainConsole() {
+  useTrackConsoleView('supply-chain')
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState('vendors');

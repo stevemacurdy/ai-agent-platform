@@ -4,6 +4,7 @@ import {
   BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer, Legend
 } from 'recharts';
+import { useTrackConsoleView } from '@/lib/hooks/useUsageTracking'
 
 const PROJECTS = [
   { name: 'DC Expansion Phase 2', status: 'behind', progress: 62, due: '2026-03-28', lead: 'Sarah M.', budgetUsed: 78, budget: 420000, desc: 'Expanding distribution center by 50K sq ft including new racking, conveyors, and loading docks.', team: 'Sarah M., Mike R., James T., 4 contractors', milestones: 'Foundation: Done | Framing: Done | Electrical: In Progress | Racking: Pending', blocker: 'Electrical subcontractor 3 days behind schedule' },
@@ -71,6 +72,7 @@ const badge = (v: string) => {
 };
 
 export default function OperationsConsole() {
+  useTrackConsoleView('operations')
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState('projects');

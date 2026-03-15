@@ -70,7 +70,7 @@ export default function KpiCard({ kpi, active, onClick, accentColor }: KpiCardPr
   }, [animate]);
 
   const trendColor = kpi.trend === 'up' ? '#059669' : kpi.trend === 'down' ? '#DC2626' : '#9CA3AF';
-  const trendArrow = kpi.trend === 'up' ? '\u2191' : kpi.trend === 'down' ? '\u2193' : '\u2192';
+  const trendArrow = kpi.trend === 'up' ? '↑' : kpi.trend === 'down' ? '↓' : '→';
   const changeText = kpi.change > 0 ? '+' + kpi.change + '%' : kpi.change + '%';
 
   return (
@@ -90,7 +90,7 @@ export default function KpiCard({ kpi, active, onClick, accentColor }: KpiCardPr
         <span className="text-lg">{kpi.icon}</span>
       </div>
       <p className="text-2xl font-extrabold" style={{ fontFamily: "'Outfit', sans-serif", color: '#1B2A4A' }}>
-        {formatValue(displayValue, kpi.prefix, kpi.suffix)}
+        {kpi.textValue ? kpi.textValue : formatValue(displayValue, kpi.prefix, kpi.suffix)}
       </p>
       {kpi.change !== 0 && (
         <p className="text-xs font-medium mt-1.5 flex items-center gap-1" style={{ color: trendColor }}>

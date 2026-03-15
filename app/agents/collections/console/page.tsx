@@ -1,12 +1,13 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { useTrackConsoleView } from '@/lib/hooks/useUsageTracking'
 
 const TABS = [
-  { id: 'active', label: 'Active Collections', icon: '\u{1F4B3}' },
-  { id: 'aging', label: 'Aging Buckets', icon: '\u{1F4C5}' },
-  { id: 'followups', label: 'Follow-Up Queue', icon: '\u{1F4DE}' },
-  { id: 'performance', label: 'Performance', icon: '\u{1F4C8}' },
+  { id: 'active', label: 'Active Collections', icon: '💳' },
+  { id: 'aging', label: 'Aging Buckets', icon: '📅' },
+  { id: 'followups', label: 'Follow-Up Queue', icon: '📞' },
+  { id: 'performance', label: 'Performance', icon: '📈' },
 ];
 
 const PERF_DATA = [
@@ -35,6 +36,7 @@ function KPI({ label, value, sub, icon }: { label: string; value: string; sub?: 
 }
 
 export default function CollectionsConsole() {
+  useTrackConsoleView('collections')
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState('active');
@@ -87,7 +89,7 @@ export default function CollectionsConsole() {
 
   const Th = ({ k, children }: { k: string; children: React.ReactNode }) => (
     <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 cursor-pointer select-none hover:text-[#1B2A4A]" onClick={() => toggleSort(k)}>
-      {children} {sortKey === k ? (sortDir === 'asc' ? '\u2191' : '\u2193') : ''}
+      {children} {sortKey === k ? (sortDir === 'asc' ? '↑' : '↓') : ''}
     </th>
   );
 
@@ -100,7 +102,7 @@ export default function CollectionsConsole() {
     <div className="p-4 md:p-6 space-y-6 max-w-[1400px] mx-auto">
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div>
-          <h1 className="text-2xl font-bold text-[#1B2A4A] flex items-center gap-2">{'\u{1F4B3}'} Collections Agent</h1>
+          <h1 className="text-2xl font-bold text-[#1B2A4A] flex items-center gap-2">{'💳'} Collections Agent</h1>
           <p className="text-sm text-gray-500">Accounts receivable recovery and risk management</p>
         </div>
         <span className={`px-3 py-1 rounded-full text-xs font-semibold ${source === 'live' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'}`}>
@@ -109,10 +111,10 @@ export default function CollectionsConsole() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <KPI label="Total Outstanding" value={`$${Math.round(summary.totalAR || 0).toLocaleString()}`} icon={'\u{1F4B0}'} sub={`${summary.totalAccounts || 0} accounts`} />
-        <KPI label="Collection Rate" value={`${summary.collectionRate || 0}%`} icon={'\u{1F4C8}'} sub="Current vs overdue" />
-        <KPI label="Avg Days Overdue" value={`${summary.avgDSO || 0}`} icon={'\u{23F1}\u{FE0F}'} sub="Days sales outstanding" />
-        <KPI label="At Risk Accounts" value={`${summary.accountsAtRisk || 0}`} icon={'\u{26A0}\u{FE0F}'} sub={`$${Math.round(summary.totalOverdue || 0).toLocaleString()} overdue`} />
+        <KPI label="Total Outstanding" value={`$${Math.round(summary.totalAR || 0).toLocaleString()}`} icon={'💰'} sub={`${summary.totalAccounts || 0} accounts`} />
+        <KPI label="Collection Rate" value={`${summary.collectionRate || 0}%`} icon={'📈'} sub="Current vs overdue" />
+        <KPI label="Avg Days Overdue" value={`${summary.avgDSO || 0}`} icon={'⏱️'} sub="Days sales outstanding" />
+        <KPI label="At Risk Accounts" value={`${summary.accountsAtRisk || 0}`} icon={'⚠️'} sub={`$${Math.round(summary.totalOverdue || 0).toLocaleString()} overdue`} />
       </div>
 
       <div className="flex gap-1 border-b border-gray-200 overflow-x-auto">
@@ -168,10 +170,10 @@ export default function CollectionsConsole() {
       {/* Aging Buckets */}
       {tab === 'aging' && (<div className="space-y-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <KPI label="Total AR" value={`$${Math.round(summary.totalAR || 0).toLocaleString()}`} icon={'\u{1F4B0}'} />
-          <KPI label="Highest Risk" value={accounts.length ? [...accounts].sort((a: any, b: any) => (b.oldestOverdueDays || 0) - (a.oldestOverdueDays || 0))[0]?.client : '-'} icon={'\u{1F534}'} sub={accounts.length ? `$${(accounts[0]?.totalOwed || 0).toLocaleString()}` : ''} />
-          <KPI label="Avg Risk Score" value={`${accounts.length ? Math.round(accounts.reduce((s: number, a: any) => s + (100 - (a.reliabilityScore || 50)), 0) / accounts.length) : 0}`} icon={'\u{1F4CA}'} />
-          <KPI label="Write-Off Candidates" value={`${accounts.filter((a: any) => (a.oldestOverdueDays || 0) > 120).length}`} icon={'\u{26D4}'} />
+          <KPI label="Total AR" value={`$${Math.round(summary.totalAR || 0).toLocaleString()}`} icon={'💰'} />
+          <KPI label="Highest Risk" value={accounts.length ? [...accounts].sort((a: any, b: any) => (b.oldestOverdueDays || 0) - (a.oldestOverdueDays || 0))[0]?.client : '-'} icon={'🔴'} sub={accounts.length ? `$${(accounts[0]?.totalOwed || 0).toLocaleString()}` : ''} />
+          <KPI label="Avg Risk Score" value={`${accounts.length ? Math.round(accounts.reduce((s: number, a: any) => s + (100 - (a.reliabilityScore || 50)), 0) / accounts.length) : 0}`} icon={'📊'} />
+          <KPI label="Write-Off Candidates" value={`${accounts.filter((a: any) => (a.oldestOverdueDays || 0) > 120).length}`} icon={'⛔'} />
         </div>
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
           <h3 className="text-sm font-semibold text-[#1B2A4A] mb-3">Aging Distribution</h3>
@@ -224,10 +226,10 @@ export default function CollectionsConsole() {
       {/* Performance */}
       {tab === 'performance' && (<div className="space-y-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <KPI label="Collected This Month" value="$224,000" icon={'\u{1F4B0}'} sub="+5.7% vs last month" />
-          <KPI label="Recovery Rate" value="81%" icon={'\u{1F4C8}'} sub="Trending up" />
-          <KPI label="Avg Days to Resolve" value="28" icon={'\u{23F1}\u{FE0F}'} sub="-3 days improvement" />
-          <KPI label="Resolved This Month" value="12" icon={'\u{2705}'} sub="accounts closed" />
+          <KPI label="Collected This Month" value="$224,000" icon={'💰'} sub="+5.7% vs last month" />
+          <KPI label="Recovery Rate" value="81%" icon={'📈'} sub="Trending up" />
+          <KPI label="Avg Days to Resolve" value="28" icon={'⏱️'} sub="-3 days improvement" />
+          <KPI label="Resolved This Month" value="12" icon={'✅'} sub="accounts closed" />
         </div>
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
           <h3 className="text-sm font-semibold text-[#1B2A4A] mb-3">Collection Rate Trend (6 Months)</h3>

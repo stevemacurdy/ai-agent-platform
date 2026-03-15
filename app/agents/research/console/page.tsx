@@ -4,6 +4,7 @@ import {
   BarChart, Bar, PieChart, Pie, Cell, LineChart, Line,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend
 } from 'recharts';
+import { useTrackConsoleView } from '@/lib/hooks/useUsageTracking'
 
 const COMPETITORS = [
   { name: 'WareTech Pro', share: 18, revenue: '$756M', growth: 15, threat: 'High', move: 'Launched AI picking module', strengths: 'Market leader, deep enterprise relationships, 500+ deployments', weaknesses: 'Slow to innovate, legacy codebase, expensive onboarding' },
@@ -60,6 +61,7 @@ const badge = (v: string) => {
 };
 
 export default function ResearchConsole() {
+  useTrackConsoleView('research')
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState('overview');

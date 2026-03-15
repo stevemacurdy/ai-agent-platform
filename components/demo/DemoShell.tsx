@@ -56,7 +56,7 @@ export default function DemoShell({ data, allSlugs }: DemoShellProps) {
     openModal('Take Action', 'View full details and take action on this item.');
   };
 
-  const otherAgents = allSlugs.filter(a => a.slug !== meta.slug).slice(0, 8);
+  const otherAgents = allSlugs.filter(a => a.slug !== meta.slug);
 
   return (
     <div className="min-h-screen" style={{ background: '#F4F5F7', fontFamily: "'DM Sans', sans-serif" }}>

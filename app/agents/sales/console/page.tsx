@@ -1,10 +1,12 @@
 'use client'
 import { useState, useEffect } from 'react'
+import { useTrackConsoleView } from '@/lib/hooks/useUsageTracking'
 
 const fmt = (n: number) => '$' + n.toLocaleString()
 const pct = (n: number) => n + '%'
 
 export default function SalesConsole() {
+  useTrackConsoleView('sales')
   const [toast, setToast] = useState<string | null>(null)
   const showToast = (m: string) => { setToast(m); setTimeout(() => setToast(null), 3000) }
 
@@ -59,7 +61,7 @@ export default function SalesConsole() {
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-8 pb-8 overflow-y-auto" onClick={() => setModal(null)}>
       <div className="fixed inset-0 bg-black/70" />
       <div className={'relative bg-white border border-[#E5E7EB] rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto ' + (wide ? 'w-[900px]' : 'w-[720px]')} onClick={e => e.stopPropagation()}>
-        <button onClick={() => setModal(null)} className="absolute top-4 right-4 text-[#9CA3AF] hover:text-[#1B2A4A] text-lg z-10">{'\u2715'}</button>
+        <button onClick={() => setModal(null)} className="absolute top-4 right-4 text-[#9CA3AF] hover:text-[#1B2A4A] text-lg z-10">{'✕'}</button>
         <div className="p-6">{children}</div>
       </div>
     </div>
@@ -103,7 +105,7 @@ export default function SalesConsole() {
           {dataSource === 'live' ? (
             <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-500/20">
               <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-              Live {'\u2014'} {provider || 'CRM'}
+              Live {'—'} {provider || 'CRM'}
             </span>
           ) : dataSource === 'demo' ? (
             <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full bg-amber-50 text-amber-600 border border-amber-500/20">
@@ -137,11 +139,11 @@ export default function SalesConsole() {
       {/* Action Buttons */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {[
-          { view: 'pipeline', icon: '\uD83D\uDCC9', label: 'Pipeline View', desc: 'Stage breakdown with deal values', color: 'violet' },
-          { view: 'forecast', icon: '\uD83D\uDD2E', label: 'Revenue Forecast', desc: 'Weekly/monthly/quarterly projections', color: 'blue' },
-          { view: 'leaderboard', icon: '\uD83C\uDFC6', label: 'Rep Leaderboard', desc: 'Rankings by revenue and win rate', color: 'amber' },
-          { view: 'at-risk', icon: '\u26A0\uFE0F', label: 'At-Risk Deals', desc: 'Stale, overdue, and flagged deals', color: 'rose' },
-          { view: 'velocity', icon: '\u26A1', label: 'Sales Velocity', desc: 'Cycle time, deal size, throughput', color: 'emerald' },
+          { view: 'pipeline', icon: '📉', label: 'Pipeline View', desc: 'Stage breakdown with deal values', color: 'violet' },
+          { view: 'forecast', icon: '🔮', label: 'Revenue Forecast', desc: 'Weekly/monthly/quarterly projections', color: 'blue' },
+          { view: 'leaderboard', icon: '🏆', label: 'Rep Leaderboard', desc: 'Rankings by revenue and win rate', color: 'amber' },
+          { view: 'at-risk', icon: '⚠️', label: 'At-Risk Deals', desc: 'Stale, overdue, and flagged deals', color: 'rose' },
+          { view: 'velocity', icon: '⚡', label: 'Sales Velocity', desc: 'Cycle time, deal size, throughput', color: 'emerald' },
         ].map(b => (
           <button key={b.view} onClick={() => openModal(b.view)}
             className={`bg-gradient-to-br from-${b.color}-500/5 to-${b.color}-500/10 border border-${b.color}-500/20 rounded-xl p-4 text-left hover:border-${b.color}-500/40 transition-all`}>
@@ -165,7 +167,7 @@ export default function SalesConsole() {
                 <div key={d.id} className="flex items-center justify-between py-2 border-b border-[#F4F5F7] last:border-0">
                   <div>
                     <div className="text-xs font-medium text-[#1B2A4A]">{d.name}</div>
-                    <div className="text-[10px] text-[#9CA3AF]">{d.companyName} {'\u2022'} {d.ownerName}</div>
+                    <div className="text-[10px] text-[#9CA3AF]">{d.companyName} {'•'} {d.ownerName}</div>
                   </div>
                   <div className="text-right">
                     <div className="text-sm font-mono font-bold text-[#1B2A4A]">{fmt(d.amount)}</div>
@@ -179,7 +181,7 @@ export default function SalesConsole() {
 
         {/* Recent Wins */}
         <div className="bg-white border border-emerald-500/20 rounded-xl p-5">
-          <h3 className="text-sm font-semibold mb-3 text-emerald-700">Recent Wins {'\uD83C\uDF89'}</h3>
+          <h3 className="text-sm font-semibold mb-3 text-emerald-700">Recent Wins {'🎉'}</h3>
           {recentWins.length === 0 ? (
             <p className="text-xs text-[#9CA3AF]">No recent wins</p>
           ) : (
@@ -188,7 +190,7 @@ export default function SalesConsole() {
                 <div key={d.id} className="flex items-center justify-between py-2 border-b border-emerald-500/10 last:border-0">
                   <div>
                     <div className="text-xs font-medium text-[#1B2A4A]">{d.name}</div>
-                    <div className="text-[10px] text-[#9CA3AF]">{d.companyName} {'\u2022'} {d.ownerName}</div>
+                    <div className="text-[10px] text-[#9CA3AF]">{d.companyName} {'•'} {d.ownerName}</div>
                   </div>
                   <div className="text-right">
                     <div className="text-sm font-mono font-bold text-emerald-600">{fmt(d.amount)}</div>
@@ -204,7 +206,7 @@ export default function SalesConsole() {
       {/* AI Recommendations */}
       {recommendations.length > 0 && (
         <div className="bg-gradient-to-r from-[#1B2A4A] to-[#0f1b33] rounded-xl p-5">
-          <h3 className="text-sm font-semibold text-white mb-3">{'\uD83E\uDD16'} AI Recommendations</h3>
+          <h3 className="text-sm font-semibold text-white mb-3">{'🤖'} AI Recommendations</h3>
           <div className="space-y-2">
             {recommendations.map((r, i) => (
               <div key={i} className="flex items-start gap-3">
@@ -226,11 +228,11 @@ export default function SalesConsole() {
               <h3 className="text-lg font-bold text-[#1B2A4A] mb-1">Pipeline Breakdown</h3>
               <div className="flex gap-4 text-[10px] text-[#9CA3AF] mb-4">
                 <span>{modalData.pipeline?.totalOpen} open deals</span>
-                <span>{'\u2022'}</span>
+                <span>{'•'}</span>
                 <span>{fmt(modalData.pipeline?.totalOpenValue || 0)} total value</span>
-                <span>{'\u2022'}</span>
+                <span>{'•'}</span>
                 <span>{fmt(modalData.pipeline?.totalWeighted || 0)} weighted</span>
-                <span>{'\u2022'}</span>
+                <span>{'•'}</span>
                 <span>{pct(modalData.pipeline?.winRate || 0)} win rate</span>
               </div>
 
@@ -295,7 +297,7 @@ export default function SalesConsole() {
               <h3 className="text-lg font-bold text-[#1B2A4A] mb-1">Revenue Forecast</h3>
               <div className="flex gap-4 text-[10px] text-[#9CA3AF] mb-5">
                 <span>Best Case: {fmt(modalData.bestCase || 0)}</span>
-                <span>{'\u2022'}</span>
+                <span>{'•'}</span>
                 <span>Weighted: {fmt(modalData.weightedTotal || 0)}</span>
               </div>
 
@@ -305,7 +307,7 @@ export default function SalesConsole() {
                     <div className="text-[10px] text-[#9CA3AF] uppercase font-bold">{w.window}</div>
                     <div className="text-lg font-mono font-bold text-[#1B2A4A] mt-1">{fmt(w.weighted)}</div>
                     <div className="text-[10px] text-[#9CA3AF] mt-1">
-                      Best: {fmt(w.bestCase)} {'\u2022'} Commit: {fmt(w.commit)}
+                      Best: {fmt(w.bestCase)} {'•'} Commit: {fmt(w.commit)}
                     </div>
                     <div className="text-[10px] text-[#6B7280] mt-0.5">{w.dealCount} deals</div>
                   </div>
@@ -395,13 +397,13 @@ export default function SalesConsole() {
               <h3 className="text-lg font-bold text-[#1B2A4A] mb-1">At-Risk Deals</h3>
               <div className="flex gap-3 text-[10px] text-[#9CA3AF] mb-5">
                 <span>{(modalData.atRisk || []).length} deals flagged</span>
-                <span>{'\u2022'}</span>
+                <span>{'•'}</span>
                 <span>{fmt(modalData.totalAtRiskValue || 0)} at risk</span>
               </div>
 
               {(modalData.atRisk || []).length === 0 ? (
                 <div className="text-center py-10">
-                  <div className="text-3xl mb-2">{'\u2705'}</div>
+                  <div className="text-3xl mb-2">{'✅'}</div>
                   <p className="text-sm text-[#6B7280]">No at-risk deals detected. Pipeline looks healthy.</p>
                 </div>
               ) : (
@@ -414,7 +416,7 @@ export default function SalesConsole() {
                         <div className="flex items-center justify-between mb-2">
                           <div>
                             <span className="text-sm font-semibold text-[#1B2A4A]">{d.name}</span>
-                            <span className="text-[10px] text-[#9CA3AF] ml-2">{d.companyName} {'\u2022'} {d.ownerName}</span>
+                            <span className="text-[10px] text-[#9CA3AF] ml-2">{d.companyName} {'•'} {d.ownerName}</span>
                           </div>
                           <div className="text-right">
                             <div className="font-mono font-bold text-[#1B2A4A]">{fmt(d.amount)}</div>
@@ -465,7 +467,7 @@ export default function SalesConsole() {
                 </div>
               </div>
               <p className="text-xs text-[#6B7280] leading-relaxed">
-                Sales velocity measures revenue generated per day. Formula: (Open Deals {'\u00D7'} Avg Deal Size {'\u00D7'} Win Rate) {'\u00F7'} Avg Cycle Time.
+                Sales velocity measures revenue generated per day. Formula: (Open Deals {'×'} Avg Deal Size {'×'} Win Rate) {'÷'} Avg Cycle Time.
                 Improve velocity by increasing deal count, raising deal sizes, improving win rate, or shortening your sales cycle.
               </p>
             </>

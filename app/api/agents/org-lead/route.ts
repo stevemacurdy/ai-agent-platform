@@ -28,6 +28,14 @@ export async function POST(request: NextRequest) {
   trackUsage(request, 'org-lead', 'action');
   const body = await request.json();
   const { action } = body;
+  // Auth guard: AI actions require Bearer token (CRUD actions pass through)
+  const AI_ACTIONS = ['board-report', 'team-health-survey'];
+  if (AI_ACTIONS.includes(action)) {
+    const authHeader = request.headers.get('authorization');
+    if (!authHeader?.startsWith('Bearer ')) {
+      return NextResponse.json({ error: 'Authentication required for AI actions' }, { status: 401 });
+    }
+  }
   switch (action) {
     case 'create-okr': {
       const { objective, keyResults, owner, department, dueDate } = body;

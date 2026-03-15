@@ -1,12 +1,13 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { useTrackConsoleView } from '@/lib/hooks/useUsageTracking'
 
 const TABS = [
-  { id: 'prospects', label: 'Hot Prospects', icon: '\u{1F525}' },
-  { id: 'signals', label: 'Intent Signals', icon: '\u{1F4E1}' },
-  { id: 'competitors', label: 'Competitor Watch', icon: '\u{1F441}\u{FE0F}' },
-  { id: 'scoring', label: 'Lead Scoring', icon: '\u{1F3AF}' },
+  { id: 'prospects', label: 'Hot Prospects', icon: '🔥' },
+  { id: 'signals', label: 'Intent Signals', icon: '📡' },
+  { id: 'competitors', label: 'Competitor Watch', icon: '👁️' },
+  { id: 'scoring', label: 'Lead Scoring', icon: '🎯' },
 ];
 
 const PROSPECTS = [
@@ -70,6 +71,7 @@ function KPI({ label, value, sub, icon }: { label: string; value: string; sub?: 
 }
 
 export default function SalesIntelConsole() {
+  useTrackConsoleView('sales-intel')
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState('prospects');
@@ -103,7 +105,7 @@ export default function SalesIntelConsole() {
   const rows = sort(filtered);
 
   const Th = ({ k, children }: { k: string; children: React.ReactNode }) => (
-    <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 cursor-pointer select-none hover:text-[#1B2A4A]" onClick={() => toggleSort(k)}>{children} {sortKey === k ? (sortDir === 'asc' ? '\u2191' : '\u2193') : ''}</th>
+    <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 cursor-pointer select-none hover:text-[#1B2A4A]" onClick={() => toggleSort(k)}>{children} {sortKey === k ? (sortDir === 'asc' ? '↑' : '↓') : ''}</th>
   );
 
   const scoreBar = (score: number) => {
@@ -114,7 +116,7 @@ export default function SalesIntelConsole() {
   return (
     <div className="p-4 md:p-6 space-y-6 max-w-[1400px] mx-auto">
       <div className="flex items-center justify-between flex-wrap gap-2">
-        <div><h1 className="text-2xl font-bold text-[#1B2A4A] flex items-center gap-2">{'\u{1F50D}'} Sales Intel Agent</h1><p className="text-sm text-gray-500">Prospect intelligence and competitive monitoring</p></div>
+        <div><h1 className="text-2xl font-bold text-[#1B2A4A] flex items-center gap-2">{'🔍'} Sales Intel Agent</h1><p className="text-sm text-gray-500">Prospect intelligence and competitive monitoring</p></div>
         <span className={`px-3 py-1 rounded-full text-xs font-semibold ${source === 'live' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'}`}>{source === 'live' ? 'Live Data' : 'Demo Data'}</span>
       </div>
 
@@ -126,7 +128,7 @@ export default function SalesIntelConsole() {
       {/* Hot Prospects */}
       {tab === 'prospects' && (<div className="space-y-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <KPI label="Active Prospects" value={`${summary.totalLeads || 147}`} icon={'\u{1F465}'} /><KPI label="Ready-to-Buy Signals" value={`${summary.hotLeads || 12}`} icon={'\u{1F525}'} /><KPI label="Avg Lead Score" value={`${summary.avgLeadScore || 64}`} icon={'\u{1F3AF}'} /><KPI label="New This Week" value="28" icon={'\u{2728}'} />
+          <KPI label="Active Prospects" value={`${summary.totalLeads || 147}`} icon={'👥'} /><KPI label="Ready-to-Buy Signals" value={`${summary.hotLeads || 12}`} icon={'🔥'} /><KPI label="Avg Lead Score" value={`${summary.avgLeadScore || 64}`} icon={'🎯'} /><KPI label="New This Week" value="28" icon={'✨'} />
         </div>
         <div className="flex items-center gap-3 flex-wrap">
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search companies..." className="px-3 py-2 border rounded-lg text-sm w-64 focus:outline-none focus:ring-2 focus:ring-[#F5920B]/30" />
@@ -159,7 +161,7 @@ export default function SalesIntelConsole() {
       {/* Intent Signals */}
       {tab === 'signals' && (<div className="space-y-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <KPI label="Signals This Month" value={`${summary.activeSignals || 124}`} icon={'\u{1F4E1}'} /><KPI label="Pricing Page Visits" value="18" icon={'\u{1F4B0}'} /><KPI label="Demo Requests" value="7" icon={'\u{1F3AC}'} /><KPI label="Content Downloads" value="32" icon={'\u{1F4E5}'} />
+          <KPI label="Signals This Month" value={`${summary.activeSignals || 124}`} icon={'📡'} /><KPI label="Pricing Page Visits" value="18" icon={'💰'} /><KPI label="Demo Requests" value="7" icon={'🎬'} /><KPI label="Content Downloads" value="32" icon={'📥'} />
         </div>
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
           <h3 className="text-sm font-semibold text-[#1B2A4A] mb-3">New Signals Per Week (12 Weeks)</h3>
@@ -178,7 +180,7 @@ export default function SalesIntelConsole() {
       {/* Competitor Watch */}
       {tab === 'competitors' && (<div className="space-y-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <KPI label="Competitors Tracked" value="18" icon={'\u{1F441}\u{FE0F}'} /><KPI label="High Threats" value="3" icon={'\u{1F534}'} /><KPI label="Recent Moves" value="7" icon={'\u{1F4E2}'} /><KPI label="Market Share Change" value="-0.2%" icon={'\u{1F4C9}'} />
+          <KPI label="Competitors Tracked" value="18" icon={'👁️'} /><KPI label="High Threats" value="3" icon={'🔴'} /><KPI label="Recent Moves" value="7" icon={'📢'} /><KPI label="Market Share Change" value="-0.2%" icon={'📉'} />
         </div>
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-x-auto">
           <table className="w-full text-sm">
@@ -197,7 +199,7 @@ export default function SalesIntelConsole() {
       {/* Lead Scoring */}
       {tab === 'scoring' && (<div className="space-y-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <KPI label="Win Rate" value={`${summary.conversionRate || 32}%`} icon={'\u{1F3AF}'} /><KPI label="Top Loss Reason" value="Price" icon={'\u{1F4B8}'} /><KPI label="Avg Deal Cycle" value="42 days" icon={'\u{23F1}\u{FE0F}'} /><KPI label="Competitive Losses" value="8" icon={'\u{1F4C9}'} />
+          <KPI label="Win Rate" value={`${summary.conversionRate || 32}%`} icon={'🎯'} /><KPI label="Top Loss Reason" value="Price" icon={'💸'} /><KPI label="Avg Deal Cycle" value="42 days" icon={'⏱️'} /><KPI label="Competitive Losses" value="8" icon={'📉'} />
         </div>
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
           <h3 className="text-sm font-semibold text-[#1B2A4A] mb-3">Score Distribution</h3>

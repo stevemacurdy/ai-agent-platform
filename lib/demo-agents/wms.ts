@@ -4,7 +4,7 @@ registerAgent({
   meta: {
     slug: 'wms',
     name: 'WMS',
-    icon: '\u{1F4E6}',
+    icon: '📦',
     dept: 'Operations',
     deptColor: '#2A9D8F',
     description: 'AI-powered warehouse management system with real-time optimization',
@@ -17,10 +17,10 @@ registerAgent({
       id: 'live-operations',
       label: 'Live Operations',
       kpis: [
-        { label: 'Active Picks', value: 48, change: 6, trend: 'up', icon: '\u{1F3C3}' },
-        { label: 'Throughput/Hr', value: 312, change: 8, trend: 'up', icon: '\u{1F4CA}' },
-        { label: 'On-Time Rate', value: 96.2, suffix: '%', change: 1.4, trend: 'up', icon: '\u{2705}' },
-        { label: 'Error Rate', value: 0.4, suffix: '%', change: -0.2, trend: 'down', icon: '\u{1F3AF}' },
+        { label: 'Active Picks', value: 48, change: 6, trend: 'up', icon: '🏃' },
+        { label: 'Throughput/Hr', value: 312, change: 8, trend: 'up', icon: '📊' },
+        { label: 'On-Time Rate', value: 96.2, suffix: '%', change: 1.4, trend: 'up', icon: '✅' },
+        { label: 'Error Rate', value: 0.4, suffix: '%', change: -0.2, trend: 'down', icon: '🎯' },
       ],
       columns: [
         { key: 'wave', label: 'Wave', sortable: true },
@@ -71,10 +71,10 @@ registerAgent({
       id: 'receiving',
       label: 'Receiving',
       kpis: [
-        { label: 'Inbound Today', value: 6, change: 2, trend: 'up', icon: '\u{1F69B}' },
-        { label: 'Dock-to-Stock', value: 18, suffix: ' min', change: -12, trend: 'down', icon: '\u{23F1}\u{FE0F}' },
-        { label: 'Receiving Accuracy', value: 99.2, suffix: '%', change: 0.4, trend: 'up', icon: '\u{1F3AF}' },
-        { label: 'PO Discrepancies', value: 2, change: -1, trend: 'down', icon: '\u{26A0}\u{FE0F}' },
+        { label: 'Inbound Today', value: 6, change: 2, trend: 'up', icon: '🚛' },
+        { label: 'Dock-to-Stock', value: 18, suffix: ' min', change: -12, trend: 'down', icon: '⏱️' },
+        { label: 'Receiving Accuracy', value: 99.2, suffix: '%', change: 0.4, trend: 'up', icon: '🎯' },
+        { label: 'PO Discrepancies', value: 2, change: -1, trend: 'down', icon: '⚠️' },
       ],
       columns: [
         { key: 'po', label: 'PO #', sortable: true },
@@ -122,10 +122,10 @@ registerAgent({
       id: 'slotting',
       label: 'Slotting',
       kpis: [
-        { label: 'Optimized Slots', value: 82, suffix: '%', change: 6, trend: 'up', icon: '\u{1F4CA}' },
-        { label: 'Avg Pick Distance', value: 42, suffix: ' ft', change: -14, trend: 'down', icon: '\u{1F3C3}' },
-        { label: 'Hot Zone Items', value: 48, change: 4, trend: 'up', icon: '\u{1F525}' },
-        { label: 'Reslot Needed', value: 14, change: -6, trend: 'down', icon: '\u{1F504}' },
+        { label: 'Optimized Slots', value: 82, suffix: '%', change: 6, trend: 'up', icon: '📊' },
+        { label: 'Avg Pick Distance', value: 42, suffix: ' ft', change: -14, trend: 'down', icon: '🏃' },
+        { label: 'Hot Zone Items', value: 48, change: 4, trend: 'up', icon: '🔥' },
+        { label: 'Reslot Needed', value: 14, change: -6, trend: 'down', icon: '🔄' },
       ],
       columns: [
         { key: 'sku', label: 'SKU', sortable: true },
@@ -171,10 +171,10 @@ registerAgent({
       id: 'shipping',
       label: 'Shipping',
       kpis: [
-        { label: 'Shipped Today', value: 184, change: 12, trend: 'up', icon: '\u{1F69A}' },
-        { label: 'Ready to Ship', value: 28, change: -4, trend: 'down', icon: '\u{1F4E6}' },
-        { label: 'Carrier On-Time', value: 94, suffix: '%', change: 2, trend: 'up', icon: '\u{2705}' },
-        { label: 'Avg Ship Cost', value: 8.40, prefix: '$', change: -4, trend: 'down', icon: '\u{1F4B0}' },
+        { label: 'Shipped Today', value: 184, change: 12, trend: 'up', icon: '🚚' },
+        { label: 'Ready to Ship', value: 28, change: -4, trend: 'down', icon: '📦' },
+        { label: 'Carrier On-Time', value: 94, suffix: '%', change: 2, trend: 'up', icon: '✅' },
+        { label: 'Avg Ship Cost', value: 8.40, prefix: '$', change: -4, trend: 'down', icon: '💰' },
       ],
       columns: [
         { key: 'shipment', label: 'Shipment', sortable: true },

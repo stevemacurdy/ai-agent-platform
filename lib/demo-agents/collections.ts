@@ -4,7 +4,7 @@ registerAgent({
   meta: {
     slug: 'collections',
     name: 'Collections',
-    icon: '\u{1F4B3}',
+    icon: '💳',
     dept: 'Finance',
     deptColor: '#059669',
     description: 'AI-powered accounts receivable collection automation',
@@ -17,10 +17,10 @@ registerAgent({
       id: 'active-collections',
       label: 'Active Collections',
       kpis: [
-        { label: 'Total Outstanding', value: 1200000, prefix: '$', change: -4, trend: 'down', icon: '\u{1F4B0}' },
-        { label: 'Collection Rate', value: 87, suffix: '%', change: 3, trend: 'up', icon: '\u{1F4C8}' },
-        { label: 'Avg Days to Pay', value: 34, change: -5, trend: 'down', icon: '\u{23F1}\u{FE0F}' },
-        { label: 'Overdue Accounts', value: 23, change: -3, trend: 'down', icon: '\u{26A0}\u{FE0F}' },
+        { label: 'Total Outstanding', value: 1200000, prefix: '$', change: -4, trend: 'down', icon: '💰' },
+        { label: 'Collection Rate', value: 87, suffix: '%', change: 3, trend: 'up', icon: '📈' },
+        { label: 'Avg Days to Pay', value: 34, change: -5, trend: 'down', icon: '⏱️' },
+        { label: 'Overdue Accounts', value: 23, change: -3, trend: 'down', icon: '⚠️' },
       ],
       columns: [
         { key: 'customer', label: 'Customer', sortable: true },
@@ -72,10 +72,10 @@ registerAgent({
       id: 'aging-buckets',
       label: 'Aging Buckets',
       kpis: [
-        { label: 'Current', value: 284000, prefix: '$', change: 12, trend: 'up', icon: '\u{2705}' },
-        { label: '30-Day', value: 312000, prefix: '$', change: -6, trend: 'down', icon: '\u{1F7E1}' },
-        { label: '60-Day', value: 248000, prefix: '$', change: -3, trend: 'down', icon: '\u{1F7E0}' },
-        { label: '90+ Day', value: 158000, prefix: '$', change: -18, trend: 'down', icon: '\u{1F534}' },
+        { label: 'Current', value: 284000, prefix: '$', change: 12, trend: 'up', icon: '✅' },
+        { label: '30-Day', value: 312000, prefix: '$', change: -6, trend: 'down', icon: '🟡' },
+        { label: '60-Day', value: 248000, prefix: '$', change: -3, trend: 'down', icon: '🟠' },
+        { label: '90+ Day', value: 158000, prefix: '$', change: -18, trend: 'down', icon: '🔴' },
       ],
       columns: [
         { key: 'customer', label: 'Customer', sortable: true },
@@ -122,10 +122,10 @@ registerAgent({
       id: 'follow-up-queue',
       label: 'Follow-Up Queue',
       kpis: [
-        { label: 'Overdue Follow-Ups', value: 8, change: -2, trend: 'down', icon: '\u{1F4DE}' },
-        { label: 'Scheduled Today', value: 12, change: 4, trend: 'up', icon: '\u{1F4C5}' },
-        { label: 'Completed This Week', value: 34, change: 8, trend: 'up', icon: '\u{2705}' },
-        { label: 'Avg Response Rate', value: 42, suffix: '%', change: 6, trend: 'up', icon: '\u{1F4CA}' },
+        { label: 'Overdue Follow-Ups', value: 8, change: -2, trend: 'down', icon: '📞' },
+        { label: 'Scheduled Today', value: 12, change: 4, trend: 'up', icon: '📅' },
+        { label: 'Completed This Week', value: 34, change: 8, trend: 'up', icon: '✅' },
+        { label: 'Avg Response Rate', value: 42, suffix: '%', change: 6, trend: 'up', icon: '📊' },
       ],
       columns: [
         { key: 'customer', label: 'Customer', sortable: true },
@@ -170,10 +170,10 @@ registerAgent({
       id: 'performance',
       label: 'Performance',
       kpis: [
-        { label: 'Calls Made', value: 186, change: 12, trend: 'up', icon: '\u{1F4DE}' },
-        { label: 'Promises to Pay', value: 23, change: 8, trend: 'up', icon: '\u{1F91D}' },
-        { label: 'Dollars Recovered', value: 234000, prefix: '$', change: 18, trend: 'up', icon: '\u{1F4B0}' },
-        { label: 'Recovery Rate', value: 87, suffix: '%', change: 3, trend: 'up', icon: '\u{1F3AF}' },
+        { label: 'Calls Made', value: 186, change: 12, trend: 'up', icon: '📞' },
+        { label: 'Promises to Pay', value: 23, change: 8, trend: 'up', icon: '🤝' },
+        { label: 'Dollars Recovered', value: 234000, prefix: '$', change: 18, trend: 'up', icon: '💰' },
+        { label: 'Recovery Rate', value: 87, suffix: '%', change: 3, trend: 'up', icon: '🎯' },
       ],
       columns: [
         { key: 'rep', label: 'Rep', sortable: true },

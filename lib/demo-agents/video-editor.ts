@@ -4,7 +4,7 @@ registerAgent({
   meta: {
     slug: 'video-editor',
     name: 'Video Editor',
-    icon: '\u{1F3AC}',
+    icon: '🎬',
     dept: 'Operations',
     deptColor: '#7C3AED',
     description: 'AI-powered video editing: quote extraction, marketing clips, and professional cleanup',
@@ -17,10 +17,10 @@ registerAgent({
       id: 'overview',
       label: 'Overview',
       kpis: [
-        { label: 'Videos Processed', value: 47, change: 12, trend: 'up', icon: '\u{1F3AC}' },
-        { label: 'Clips Generated', value: 312, change: 28, trend: 'up', icon: '\u{2702}\u{FE0F}' },
-        { label: 'Avg Processing', value: 2.4, suffix: ' min', change: -18, trend: 'up', icon: '\u{23F1}\u{FE0F}' },
-        { label: 'Hours Saved', value: 94, change: 15, trend: 'up', icon: '\u{1F4B0}' },
+        { label: 'Videos Processed', value: 47, change: 12, trend: 'up', icon: '🎬' },
+        { label: 'Clips Generated', value: 312, change: 28, trend: 'up', icon: '✂️' },
+        { label: 'Avg Processing', value: 2.4, suffix: ' min', change: -18, trend: 'up', icon: '⏱️' },
+        { label: 'Hours Saved', value: 94, change: 15, trend: 'up', icon: '💰' },
       ],
       columns: [
         { key: 'filename', label: 'File', sortable: true },
@@ -70,10 +70,10 @@ registerAgent({
       id: 'quote-clips',
       label: 'Quote Clips',
       kpis: [
-        { label: 'Quotes Found', value: 89, suffix: '%', change: 4, trend: 'up', icon: '\u{1F4AC}' },
-        { label: 'Avg Confidence', value: 93, suffix: '%', change: 2, trend: 'up', icon: '\u{1F3AF}' },
-        { label: 'Clips Extracted', value: 186, change: 24, trend: 'up', icon: '\u{2702}\u{FE0F}' },
-        { label: 'Compilations', value: 12, change: 3, trend: 'up', icon: '\u{1F4F9}' },
+        { label: 'Quotes Found', value: 89, suffix: '%', change: 4, trend: 'up', icon: '💬' },
+        { label: 'Avg Confidence', value: 93, suffix: '%', change: 2, trend: 'up', icon: '🎯' },
+        { label: 'Clips Extracted', value: 186, change: 24, trend: 'up', icon: '✂️' },
+        { label: 'Compilations', value: 12, change: 3, trend: 'up', icon: '📹' },
       ],
       columns: [
         { key: 'quote', label: 'Quote', sortable: false },
@@ -117,10 +117,10 @@ registerAgent({
       id: 'power-clips',
       label: 'Power Clips',
       kpis: [
-        { label: 'Clips Generated', value: 126, change: 18, trend: 'up', icon: '\u{26A1}' },
-        { label: 'Formats Exported', value: 378, change: 54, trend: 'up', icon: '\u{1F4F1}' },
-        { label: 'Captions Burned', value: 98, suffix: '%', change: 0, trend: 'flat', icon: '\u{1F4DD}' },
-        { label: 'Avg Engagement Score', value: 8.4, suffix: '/10', change: 0.6, trend: 'up', icon: '\u{1F4CA}' },
+        { label: 'Clips Generated', value: 126, change: 18, trend: 'up', icon: '⚡' },
+        { label: 'Formats Exported', value: 378, change: 54, trend: 'up', icon: '📱' },
+        { label: 'Captions Burned', value: 98, suffix: '%', change: 0, trend: 'flat', icon: '📝' },
+        { label: 'Avg Engagement Score', value: 8.4, suffix: '/10', change: 0.6, trend: 'up', icon: '📊' },
       ],
       columns: [
         { key: 'clip', label: 'Clip', sortable: true },

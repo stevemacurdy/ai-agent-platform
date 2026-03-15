@@ -4,7 +4,7 @@ registerAgent({
   meta: {
     slug: 'cfo',
     name: 'CFO',
-    icon: '\u{1F4B0}',
+    icon: '💰',
     dept: 'Finance',
     deptColor: '#059669',
     description: 'AI-powered financial oversight and cash flow optimization',
@@ -17,10 +17,10 @@ registerAgent({
       id: 'cash-flow',
       label: 'Cash Flow',
       kpis: [
-        { label: 'Total Cash', value: 2400000, prefix: '$', change: 8, trend: 'up', icon: '\u{1F4B5}' },
-        { label: 'AR Outstanding', value: 847000, prefix: '$', change: -12, trend: 'down', icon: '\u{1F4C9}' },
-        { label: 'AP Due', value: 423000, prefix: '$', change: 0, trend: 'flat', icon: '\u{1F4CB}' },
-        { label: 'Net 30-Day Flow', value: 124000, prefix: '+$', change: 14, trend: 'up', icon: '\u{1F4C8}' },
+        { label: 'Total Cash', value: 2400000, prefix: '$', change: 8, trend: 'up', icon: '💵' },
+        { label: 'AR Outstanding', value: 847000, prefix: '$', change: -12, trend: 'down', icon: '📉' },
+        { label: 'AP Due', value: 423000, prefix: '$', change: 0, trend: 'flat', icon: '📋' },
+        { label: 'Net 30-Day Flow', value: 124000, prefix: '+$', change: 14, trend: 'up', icon: '📈' },
       ],
       columns: [
         { key: 'customer', label: 'Customer', sortable: true },
@@ -72,10 +72,10 @@ registerAgent({
       id: 'ar-aging',
       label: 'AR Aging',
       kpis: [
-        { label: 'Current', value: 412000, prefix: '$', change: 5, trend: 'up', icon: '\u{2705}' },
-        { label: '30-Day', value: 234000, prefix: '$', change: -8, trend: 'down', icon: '\u{1F7E1}' },
-        { label: '60-Day', value: 142000, prefix: '$', change: 3, trend: 'up', icon: '\u{1F7E0}' },
-        { label: '90+ Day', value: 59000, prefix: '$', change: -15, trend: 'down', icon: '\u{1F534}' },
+        { label: 'Current', value: 412000, prefix: '$', change: 5, trend: 'up', icon: '✅' },
+        { label: '30-Day', value: 234000, prefix: '$', change: -8, trend: 'down', icon: '🟡' },
+        { label: '60-Day', value: 142000, prefix: '$', change: 3, trend: 'up', icon: '🟠' },
+        { label: '90+ Day', value: 59000, prefix: '$', change: -15, trend: 'down', icon: '🔴' },
       ],
       columns: [
         { key: 'customer', label: 'Customer', sortable: true },
@@ -123,10 +123,10 @@ registerAgent({
       id: 'ap-overview',
       label: 'AP Overview',
       kpis: [
-        { label: 'Total Payables', value: 423000, prefix: '$', change: 2, trend: 'up', icon: '\u{1F4E4}' },
-        { label: 'Due This Week', value: 87000, prefix: '$', change: -5, trend: 'down', icon: '\u{1F4C5}' },
-        { label: 'Discounts Available', value: 6200, prefix: '$', change: 12, trend: 'up', icon: '\u{1F3AF}' },
-        { label: 'Overdue', value: 12000, prefix: '$', change: -22, trend: 'down', icon: '\u{26A0}\u{FE0F}' },
+        { label: 'Total Payables', value: 423000, prefix: '$', change: 2, trend: 'up', icon: '📤' },
+        { label: 'Due This Week', value: 87000, prefix: '$', change: -5, trend: 'down', icon: '📅' },
+        { label: 'Discounts Available', value: 6200, prefix: '$', change: 12, trend: 'up', icon: '🎯' },
+        { label: 'Overdue', value: 12000, prefix: '$', change: -22, trend: 'down', icon: '⚠️' },
       ],
       columns: [
         { key: 'vendor', label: 'Vendor', sortable: true },
@@ -172,10 +172,10 @@ registerAgent({
       id: 'ai-insights',
       label: 'AI Insights',
       kpis: [
-        { label: 'Forecast Accuracy', value: 94, suffix: '%', change: 2, trend: 'up', icon: '\u{1F3AF}' },
-        { label: 'Anomalies Detected', value: 3, change: -1, trend: 'down', icon: '\u{1F50D}' },
-        { label: 'Savings Identified', value: 18400, prefix: '$', change: 24, trend: 'up', icon: '\u{1F4A1}' },
-        { label: 'Reports Generated', value: 12, change: 8, trend: 'up', icon: '\u{1F4CA}' },
+        { label: 'Forecast Accuracy', value: 94, suffix: '%', change: 2, trend: 'up', icon: '🎯' },
+        { label: 'Anomalies Detected', value: 3, change: -1, trend: 'down', icon: '🔍' },
+        { label: 'Savings Identified', value: 18400, prefix: '$', change: 24, trend: 'up', icon: '💡' },
+        { label: 'Reports Generated', value: 12, change: 8, trend: 'up', icon: '📊' },
       ],
       columns: [
         { key: 'insight', label: 'Insight', sortable: true },

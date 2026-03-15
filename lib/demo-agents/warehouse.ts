@@ -4,7 +4,7 @@ registerAgent({
   meta: {
     slug: 'warehouse',
     name: 'Warehouse',
-    icon: '\u{1F3ED}',
+    icon: '🏭',
     dept: 'Operations',
     deptColor: '#2A9D8F',
     description: 'AI-powered warehouse floor management and optimization',
@@ -17,10 +17,10 @@ registerAgent({
       id: 'floor-dashboard',
       label: 'Floor Dashboard',
       kpis: [
-        { label: 'Orders Today', value: 342, change: 8, trend: 'up', icon: '\u{1F4E6}' },
-        { label: 'Pick Accuracy', value: 99.4, suffix: '%', change: 0.2, trend: 'up', icon: '\u{1F3AF}' },
-        { label: 'Units Shipped', value: 2847, change: 12, trend: 'up', icon: '\u{1F69A}' },
-        { label: 'Space Utilization', value: 78, suffix: '%', change: 3, trend: 'up', icon: '\u{1F4CA}' },
+        { label: 'Orders Today', value: 342, change: 8, trend: 'up', icon: '📦' },
+        { label: 'Pick Accuracy', value: 99.4, suffix: '%', change: 0.2, trend: 'up', icon: '🎯' },
+        { label: 'Units Shipped', value: 2847, change: 12, trend: 'up', icon: '🚚' },
+        { label: 'Space Utilization', value: 78, suffix: '%', change: 3, trend: 'up', icon: '📊' },
       ],
       columns: [
         { key: 'order', label: 'Order #', sortable: true },
@@ -76,10 +76,10 @@ registerAgent({
       id: 'inventory',
       label: 'Inventory',
       kpis: [
-        { label: 'Total SKUs', value: 4218, change: 3, trend: 'up', icon: '\u{1F4E6}' },
-        { label: 'Low Stock', value: 14, change: -4, trend: 'down', icon: '\u{26A0}\u{FE0F}' },
-        { label: 'Dead Stock', value: 47, change: -8, trend: 'down', icon: '\u{1F4A4}' },
-        { label: 'Inventory Value', value: 1800000, prefix: '$', change: 5, trend: 'up', icon: '\u{1F4B0}' },
+        { label: 'Total SKUs', value: 4218, change: 3, trend: 'up', icon: '📦' },
+        { label: 'Low Stock', value: 14, change: -4, trend: 'down', icon: '⚠️' },
+        { label: 'Dead Stock', value: 47, change: -8, trend: 'down', icon: '💤' },
+        { label: 'Inventory Value', value: 1800000, prefix: '$', change: 5, trend: 'up', icon: '💰' },
       ],
       columns: [
         { key: 'sku', label: 'SKU', sortable: true },
@@ -126,10 +126,10 @@ registerAgent({
       id: 'orders',
       label: 'Orders',
       kpis: [
-        { label: 'Open Orders', value: 89, change: -6, trend: 'down', icon: '\u{1F4CB}' },
-        { label: 'Shipped Today', value: 253, change: 14, trend: 'up', icon: '\u{1F69A}' },
-        { label: 'Late Orders', value: 3, change: -2, trend: 'down', icon: '\u{1F534}' },
-        { label: 'Avg Pick Time', value: 4.2, suffix: ' min', change: -8, trend: 'down', icon: '\u{23F1}\u{FE0F}' },
+        { label: 'Open Orders', value: 89, change: -6, trend: 'down', icon: '📋' },
+        { label: 'Shipped Today', value: 253, change: 14, trend: 'up', icon: '🚚' },
+        { label: 'Late Orders', value: 3, change: -2, trend: 'down', icon: '🔴' },
+        { label: 'Avg Pick Time', value: 4.2, suffix: ' min', change: -8, trend: 'down', icon: '⏱️' },
       ],
       columns: [
         { key: 'order', label: 'Order', sortable: true },
@@ -175,10 +175,10 @@ registerAgent({
       id: 'zones',
       label: 'Zone Performance',
       kpis: [
-        { label: 'Zones Active', value: 6, change: 0, trend: 'flat', icon: '\u{1F3D7}\u{FE0F}' },
-        { label: 'Best Zone', value: 48, suffix: ' picks/hr', change: 6, trend: 'up', icon: '\u{1F3C6}' },
-        { label: 'Avg Picks/Hr', value: 38, change: 4, trend: 'up', icon: '\u{1F4CA}' },
-        { label: 'Utilization', value: 78, suffix: '%', change: 3, trend: 'up', icon: '\u{1F4CA}' },
+        { label: 'Zones Active', value: 6, change: 0, trend: 'flat', icon: '🏗️' },
+        { label: 'Best Zone', value: 48, suffix: ' picks/hr', change: 6, trend: 'up', icon: '🏆' },
+        { label: 'Avg Picks/Hr', value: 38, change: 4, trend: 'up', icon: '📊' },
+        { label: 'Utilization', value: 78, suffix: '%', change: 3, trend: 'up', icon: '📊' },
       ],
       columns: [
         { key: 'zone', label: 'Zone', sortable: true },

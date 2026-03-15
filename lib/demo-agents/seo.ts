@@ -4,7 +4,7 @@ registerAgent({
   meta: {
     slug: 'seo',
     name: 'SEO',
-    icon: '\u{1F310}',
+    icon: '🌐',
     dept: 'Marketing',
     deptColor: '#EC4899',
     description: 'AI-powered search engine optimization and content strategy',
@@ -17,10 +17,10 @@ registerAgent({
       id: 'rankings',
       label: 'Rankings',
       kpis: [
-        { label: 'Keywords Tracked', value: 142, change: 12, trend: 'up', icon: '\u{1F50D}' },
-        { label: 'Page 1 Rankings', value: 24, change: 4, trend: 'up', icon: '\u{1F3C6}' },
-        { label: 'Organic Traffic', value: 8400, change: 18, trend: 'up', icon: '\u{1F4C8}' },
-        { label: 'Domain Authority', value: 42, change: 3, trend: 'up', icon: '\u{1F4CA}' },
+        { label: 'Keywords Tracked', value: 142, change: 12, trend: 'up', icon: '🔍' },
+        { label: 'Page 1 Rankings', value: 24, change: 4, trend: 'up', icon: '🏆' },
+        { label: 'Organic Traffic', value: 8400, change: 18, trend: 'up', icon: '📈' },
+        { label: 'Domain Authority', value: 42, change: 3, trend: 'up', icon: '📊' },
       ],
       columns: [
         { key: 'keyword', label: 'Keyword', sortable: true },
@@ -71,10 +71,10 @@ registerAgent({
       id: 'technical-seo',
       label: 'Technical SEO',
       kpis: [
-        { label: 'Health Score', value: 84, suffix: '/100', change: 6, trend: 'up', icon: '\u{2705}' },
-        { label: 'Errors', value: 8, change: -4, trend: 'down', icon: '\u{1F534}' },
-        { label: 'Warnings', value: 23, change: -8, trend: 'down', icon: '\u{1F7E1}' },
-        { label: 'Page Speed', value: 82, suffix: '/100', change: 4, trend: 'up', icon: '\u{26A1}' },
+        { label: 'Health Score', value: 84, suffix: '/100', change: 6, trend: 'up', icon: '✅' },
+        { label: 'Errors', value: 8, change: -4, trend: 'down', icon: '🔴' },
+        { label: 'Warnings', value: 23, change: -8, trend: 'down', icon: '🟡' },
+        { label: 'Page Speed', value: 82, suffix: '/100', change: 4, trend: 'up', icon: '⚡' },
       ],
       columns: [
         { key: 'issue', label: 'Issue', sortable: true },
@@ -123,10 +123,10 @@ registerAgent({
       id: 'backlinks',
       label: 'Backlinks',
       kpis: [
-        { label: 'Total Backlinks', value: 842, change: 12, trend: 'up', icon: '\u{1F517}' },
-        { label: 'Referring Domains', value: 124, change: 8, trend: 'up', icon: '\u{1F310}' },
-        { label: 'New This Month', value: 18, change: 4, trend: 'up', icon: '\u{1F195}' },
-        { label: 'Lost This Month', value: 4, change: -2, trend: 'down', icon: '\u{1F534}' },
+        { label: 'Total Backlinks', value: 842, change: 12, trend: 'up', icon: '🔗' },
+        { label: 'Referring Domains', value: 124, change: 8, trend: 'up', icon: '🌐' },
+        { label: 'New This Month', value: 18, change: 4, trend: 'up', icon: '🆕' },
+        { label: 'Lost This Month', value: 4, change: -2, trend: 'down', icon: '🔴' },
       ],
       columns: [
         { key: 'source', label: 'Source', sortable: true },
@@ -173,10 +173,10 @@ registerAgent({
       id: 'competitors-seo',
       label: 'Competitor SEO',
       kpis: [
-        { label: 'Keyword Overlap', value: 68, suffix: '%', change: 4, trend: 'up', icon: '\u{1F504}' },
-        { label: 'We Outrank', value: 38, suffix: '%', change: 6, trend: 'up', icon: '\u{1F4C8}' },
-        { label: 'Content Gap', value: 24, change: -4, trend: 'down', icon: '\u{1F4DD}' },
-        { label: 'DA Gap', value: -12, change: 3, trend: 'up', icon: '\u{1F4CA}' },
+        { label: 'Keyword Overlap', value: 68, suffix: '%', change: 4, trend: 'up', icon: '🔄' },
+        { label: 'We Outrank', value: 38, suffix: '%', change: 6, trend: 'up', icon: '📈' },
+        { label: 'Content Gap', value: 24, change: -4, trend: 'down', icon: '📝' },
+        { label: 'DA Gap', value: -12, change: 3, trend: 'up', icon: '📊' },
       ],
       columns: [
         { key: 'competitor', label: 'Competitor', sortable: true },

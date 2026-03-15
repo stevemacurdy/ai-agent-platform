@@ -4,6 +4,7 @@ import {
   BarChart, Bar, LineChart, Line, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend
 } from 'recharts';
+import { useTrackConsoleView } from '@/lib/hooks/useUsageTracking'
 
 const POSITIONS = [
   { title: 'Warehouse Associate', dept: 'Operations', applicants: 34, interviews: 8, offers: 1, daysOpen: 34, manager: 'Mike R.', status: 'open', salary: '$38K-$45K', reqs: 'Forklift certification, 1+ yr warehouse experience, able to lift 50lbs' },
@@ -59,6 +60,7 @@ const badge = (v: string) => {
 };
 
 export default function HrConsole() {
+  useTrackConsoleView('hr')
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState('workforce');

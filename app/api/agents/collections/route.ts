@@ -35,6 +35,14 @@ export async function POST(request: NextRequest) {
   trackUsage(request, 'collections', 'action');
   const body = await request.json();
   const { action } = body;
+  // Auth guard: AI actions require Bearer token (CRUD actions pass through)
+  const AI_ACTIONS = ['analyze', 'generate-letter'];
+  if (AI_ACTIONS.includes(action)) {
+    const authHeader = request.headers.get('authorization');
+    if (!authHeader?.startsWith('Bearer ')) {
+      return NextResponse.json({ error: 'Authentication required for AI actions' }, { status: 401 });
+    }
+  }
 
   try {
     switch (action) {

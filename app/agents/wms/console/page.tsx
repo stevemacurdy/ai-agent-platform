@@ -4,6 +4,7 @@ import {
   BarChart, Bar, AreaChart, Area, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer, Legend, ReferenceLine
 } from 'recharts';
+import { useTrackConsoleView } from '@/lib/hooks/useUsageTracking'
 
 const WAVES = [
   { wave: 'Wave-847', total: 120, picked: 98, remaining: 22, accuracy: 99.0, picker: 'Maria L.', elapsed: '1h 42m', status: 'In Progress', orders: 'ORD-4401, ORD-4402, ORD-4403 (3 orders)', errors: 'Line 42: wrong SKU scanned, corrected' },
@@ -60,6 +61,7 @@ const badge = (v: string) => {
 };
 
 export default function WmsConsole() {
+  useTrackConsoleView('wms')
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState('ops');
@@ -152,6 +154,7 @@ export default function WmsConsole() {
             </div>
           ); })()}
         </div>
+        <button className="px-4 py-2 bg-[#1B2A4A] text-white rounded-lg text-sm font-medium hover:bg-[#1B2A4A]/90" onClick={() => handleAi('create-wave')}>Create New Wave</button>
       </>}
 
       {tab === 'pickers' && <>
@@ -231,6 +234,7 @@ export default function WmsConsole() {
             ))}
           </tbody></table>
         </div>
+        <button className="px-4 py-2 bg-[#1B2A4A] text-white rounded-lg text-sm font-medium hover:bg-[#1B2A4A]/90" onClick={() => handleAi('cycle-count')}>Generate Cycle Count Plan</button>
       </>}
 
       {modalOpen && (

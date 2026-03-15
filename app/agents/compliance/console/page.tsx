@@ -4,6 +4,7 @@ import {
   BarChart, Bar, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
+import { useTrackConsoleView } from '@/lib/hooks/useUsageTracking'
 
 const REQS = [
   { req: 'Workplace Safety', framework: 'OSHA', status: 'Compliant', lastAudit: 'Jan 15', nextDue: 'Jul 15', owner: 'Mike R.', findings: 0, details: 'Full compliance achieved. Annual inspection passed with zero findings.' },
@@ -66,6 +67,7 @@ const badge = (v: string) => {
 };
 
 export default function ComplianceConsole() {
+  useTrackConsoleView('compliance')
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState('dashboard');

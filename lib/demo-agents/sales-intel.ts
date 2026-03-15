@@ -4,7 +4,7 @@ registerAgent({
   meta: {
     slug: 'sales-intel',
     name: 'Sales Intel',
-    icon: '\u{1F50D}',
+    icon: '🔍',
     dept: 'Sales',
     deptColor: '#F5920B',
     description: 'AI-powered competitive intelligence and market research',
@@ -17,10 +17,10 @@ registerAgent({
       id: 'competitor-tracker',
       label: 'Competitor Tracker',
       kpis: [
-        { label: 'Tracked Competitors', value: 8, change: 1, trend: 'up', icon: '\u{1F3AF}' },
-        { label: 'Intel Updates/Week', value: 24, change: 6, trend: 'up', icon: '\u{1F4F0}' },
-        { label: 'Win Rate vs Top 3', value: 38, suffix: '%', change: 4, trend: 'up', icon: '\u{1F4CA}' },
-        { label: 'Deals Lost to Comp', value: 3, change: -2, trend: 'down', icon: '\u{26A0}\u{FE0F}' },
+        { label: 'Tracked Competitors', value: 8, change: 1, trend: 'up', icon: '🎯' },
+        { label: 'Intel Updates/Week', value: 24, change: 6, trend: 'up', icon: '📰' },
+        { label: 'Win Rate vs Top 3', value: 38, suffix: '%', change: 4, trend: 'up', icon: '📊' },
+        { label: 'Deals Lost to Comp', value: 3, change: -2, trend: 'down', icon: '⚠️' },
       ],
       columns: [
         { key: 'competitor', label: 'Competitor', sortable: true },
@@ -68,10 +68,10 @@ registerAgent({
       id: 'market-signals',
       label: 'Market Signals',
       kpis: [
-        { label: 'Signals This Week', value: 18, change: 4, trend: 'up', icon: '\u{1F4E1}' },
-        { label: 'Opportunities Found', value: 6, change: 2, trend: 'up', icon: '\u{1F4A1}' },
-        { label: 'Industry Growth', value: 12, suffix: '%', change: 2, trend: 'up', icon: '\u{1F4C8}' },
-        { label: 'Alert Accuracy', value: 88, suffix: '%', change: 4, trend: 'up', icon: '\u{1F3AF}' },
+        { label: 'Signals This Week', value: 18, change: 4, trend: 'up', icon: '📡' },
+        { label: 'Opportunities Found', value: 6, change: 2, trend: 'up', icon: '💡' },
+        { label: 'Industry Growth', value: 12, suffix: '%', change: 2, trend: 'up', icon: '📈' },
+        { label: 'Alert Accuracy', value: 88, suffix: '%', change: 4, trend: 'up', icon: '🎯' },
       ],
       columns: [
         { key: 'signal', label: 'Signal', sortable: true },
@@ -114,10 +114,10 @@ registerAgent({
       id: 'prospect-intel',
       label: 'Prospect Intel',
       kpis: [
-        { label: 'Enriched Prospects', value: 142, change: 18, trend: 'up', icon: '\u{1F464}' },
-        { label: 'New Intent Signals', value: 9, change: 3, trend: 'up', icon: '\u{1F4E1}' },
-        { label: 'Avg Fit Score', value: 72, suffix: '/100', change: 4, trend: 'up', icon: '\u{1F3AF}' },
-        { label: 'Ready to Contact', value: 14, change: 5, trend: 'up', icon: '\u{1F4DE}' },
+        { label: 'Enriched Prospects', value: 142, change: 18, trend: 'up', icon: '👤' },
+        { label: 'New Intent Signals', value: 9, change: 3, trend: 'up', icon: '📡' },
+        { label: 'Avg Fit Score', value: 72, suffix: '/100', change: 4, trend: 'up', icon: '🎯' },
+        { label: 'Ready to Contact', value: 14, change: 5, trend: 'up', icon: '📞' },
       ],
       columns: [
         { key: 'company', label: 'Company', sortable: true },
@@ -163,10 +163,10 @@ registerAgent({
       id: 'win-loss',
       label: 'Win/Loss Analysis',
       kpis: [
-        { label: 'Overall Win Rate', value: 34, suffix: '%', change: 3, trend: 'up', icon: '\u{1F3C6}' },
-        { label: 'Deals Analyzed', value: 48, change: 8, trend: 'up', icon: '\u{1F4CA}' },
-        { label: 'Top Loss Reason', value: 0, change: 0, trend: 'flat', icon: '\u{1F4AC}' },
-        { label: 'Improvement YoY', value: 6, suffix: '%', change: 2, trend: 'up', icon: '\u{1F4C8}' },
+        { label: 'Overall Win Rate', value: 34, suffix: '%', change: 3, trend: 'up', icon: '🏆' },
+        { label: 'Deals Analyzed', value: 48, change: 8, trend: 'up', icon: '📊' },
+        { label: 'Top Loss Reason', value: 0, textValue: 'Price', change: 0, trend: 'flat', icon: '💬' },
+        { label: 'Improvement YoY', value: 6, suffix: '%', change: 2, trend: 'up', icon: '📈' },
       ],
       columns: [
         { key: 'deal', label: 'Deal', sortable: true },

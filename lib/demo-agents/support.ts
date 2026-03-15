@@ -4,7 +4,7 @@ registerAgent({
   meta: {
     slug: 'support',
     name: 'Support',
-    icon: '\u{1F3A7}',
+    icon: '🎧',
     dept: 'People',
     deptColor: '#6366F1',
     description: 'AI-powered customer support and ticket management',
@@ -17,10 +17,10 @@ registerAgent({
       id: 'ticket-queue',
       label: 'Ticket Queue',
       kpis: [
-        { label: 'Open Tickets', value: 47, change: -8, trend: 'down', icon: '\u{1F3AB}' },
-        { label: 'Avg Response', value: 2.4, suffix: ' hrs', change: -18, trend: 'down', icon: '\u{23F1}\u{FE0F}' },
-        { label: 'CSAT', value: 4.2, suffix: '/5', change: 7, trend: 'up', icon: '\u{2B50}' },
-        { label: 'Resolution Rate', value: 89, suffix: '%', change: 4, trend: 'up', icon: '\u{2705}' },
+        { label: 'Open Tickets', value: 47, change: -8, trend: 'down', icon: '🎫' },
+        { label: 'Avg Response', value: 2.4, suffix: ' hrs', change: -18, trend: 'down', icon: '⏱️' },
+        { label: 'CSAT', value: 4.2, suffix: '/5', change: 7, trend: 'up', icon: '⭐' },
+        { label: 'Resolution Rate', value: 89, suffix: '%', change: 4, trend: 'up', icon: '✅' },
       ],
       columns: [
         { key: 'ticketId', label: 'Ticket', sortable: true },
@@ -70,10 +70,10 @@ registerAgent({
       id: 'performance',
       label: 'Performance',
       kpis: [
-        { label: 'Tickets Resolved', value: 312, change: 8, trend: 'up', icon: '\u{2705}' },
-        { label: 'First Response', value: 1.8, suffix: ' hrs', change: -12, trend: 'down', icon: '\u{23F1}\u{FE0F}' },
-        { label: 'First Contact Resolution', value: 64, suffix: '%', change: 5, trend: 'up', icon: '\u{1F3AF}' },
-        { label: 'Agent Utilization', value: 84, suffix: '%', change: 3, trend: 'up', icon: '\u{1F4CA}' },
+        { label: 'Tickets Resolved', value: 312, change: 8, trend: 'up', icon: '✅' },
+        { label: 'First Response', value: 1.8, suffix: ' hrs', change: -12, trend: 'down', icon: '⏱️' },
+        { label: 'First Contact Resolution', value: 64, suffix: '%', change: 5, trend: 'up', icon: '🎯' },
+        { label: 'Agent Utilization', value: 84, suffix: '%', change: 3, trend: 'up', icon: '📊' },
       ],
       columns: [
         { key: 'agent', label: 'Agent', sortable: true },
@@ -116,10 +116,10 @@ registerAgent({
       id: 'customer-health',
       label: 'Customer Health',
       kpis: [
-        { label: 'Healthy', value: 68, suffix: '%', change: 4, trend: 'up', icon: '\u{1F49A}' },
-        { label: 'At Risk', value: 12, change: -2, trend: 'down', icon: '\u{1F7E1}' },
-        { label: 'Critical', value: 4, change: -1, trend: 'down', icon: '\u{1F534}' },
-        { label: 'Avg Health Score', value: 74, suffix: '/100', change: 3, trend: 'up', icon: '\u{1F4CA}' },
+        { label: 'Healthy', value: 68, suffix: '%', change: 4, trend: 'up', icon: '💚' },
+        { label: 'At Risk', value: 12, change: -2, trend: 'down', icon: '🟡' },
+        { label: 'Critical', value: 4, change: -1, trend: 'down', icon: '🔴' },
+        { label: 'Avg Health Score', value: 74, suffix: '/100', change: 3, trend: 'up', icon: '📊' },
       ],
       columns: [
         { key: 'customer', label: 'Customer', sortable: true },
@@ -164,10 +164,10 @@ registerAgent({
       id: 'knowledge-base',
       label: 'Knowledge Base',
       kpis: [
-        { label: 'Articles', value: 142, change: 8, trend: 'up', icon: '\u{1F4DA}' },
-        { label: 'Weekly Views', value: 4200, change: 14, trend: 'up', icon: '\u{1F441}\u{FE0F}' },
-        { label: 'Deflection Rate', value: 34, suffix: '%', change: 6, trend: 'up', icon: '\u{1F6E1}\u{FE0F}' },
-        { label: 'Outdated', value: 12, change: -4, trend: 'down', icon: '\u{26A0}\u{FE0F}' },
+        { label: 'Articles', value: 142, change: 8, trend: 'up', icon: '📚' },
+        { label: 'Weekly Views', value: 4200, change: 14, trend: 'up', icon: '👁️' },
+        { label: 'Deflection Rate', value: 34, suffix: '%', change: 6, trend: 'up', icon: '🛡️' },
+        { label: 'Outdated', value: 12, change: -4, trend: 'down', icon: '⚠️' },
       ],
       columns: [
         { key: 'article', label: 'Article', sortable: true },

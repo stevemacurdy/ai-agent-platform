@@ -4,7 +4,7 @@ registerAgent({
   meta: {
     slug: 'marketing',
     name: 'Marketing',
-    icon: '\u{1F4E3}',
+    icon: '📣',
     dept: 'Marketing',
     deptColor: '#EC4899',
     description: 'AI-powered marketing analytics, campaigns, and lead generation',
@@ -17,10 +17,10 @@ registerAgent({
       id: 'campaign-dashboard',
       label: 'Campaigns',
       kpis: [
-        { label: 'Active Campaigns', value: 6, change: 1, trend: 'up', icon: '\u{1F4E2}' },
-        { label: 'Monthly Leads', value: 284, change: 18, trend: 'up', icon: '\u{1F464}' },
-        { label: 'Cost Per Lead', value: 42, prefix: '$', change: -12, trend: 'down', icon: '\u{1F4B0}' },
-        { label: 'Pipeline Generated', value: 420000, prefix: '$', change: 22, trend: 'up', icon: '\u{1F4C8}' },
+        { label: 'Active Campaigns', value: 6, change: 1, trend: 'up', icon: '📢' },
+        { label: 'Monthly Leads', value: 284, change: 18, trend: 'up', icon: '👤' },
+        { label: 'Cost Per Lead', value: 42, prefix: '$', change: -12, trend: 'down', icon: '💰' },
+        { label: 'Pipeline Generated', value: 420000, prefix: '$', change: 22, trend: 'up', icon: '📈' },
       ],
       columns: [
         { key: 'campaign', label: 'Campaign', sortable: true },
@@ -71,10 +71,10 @@ registerAgent({
       id: 'lead-pipeline',
       label: 'Lead Pipeline',
       kpis: [
-        { label: 'New Leads', value: 284, change: 18, trend: 'up', icon: '\u{1F464}' },
-        { label: 'MQLs', value: 86, change: 12, trend: 'up', icon: '\u{2705}' },
-        { label: 'SQLs', value: 34, change: 8, trend: 'up', icon: '\u{1F3AF}' },
-        { label: 'MQL-to-SQL', value: 40, suffix: '%', change: 4, trend: 'up', icon: '\u{1F4CA}' },
+        { label: 'New Leads', value: 284, change: 18, trend: 'up', icon: '👤' },
+        { label: 'MQLs', value: 86, change: 12, trend: 'up', icon: '✅' },
+        { label: 'SQLs', value: 34, change: 8, trend: 'up', icon: '🎯' },
+        { label: 'MQL-to-SQL', value: 40, suffix: '%', change: 4, trend: 'up', icon: '📊' },
       ],
       columns: [
         { key: 'lead', label: 'Lead', sortable: true },
@@ -120,10 +120,10 @@ registerAgent({
       id: 'content-performance',
       label: 'Content',
       kpis: [
-        { label: 'Published', value: 24, change: 4, trend: 'up', icon: '\u{1F4DD}' },
-        { label: 'Total Views', value: 18400, change: 22, trend: 'up', icon: '\u{1F441}\u{FE0F}' },
-        { label: 'Avg Time', value: 3.4, suffix: ' min', change: 8, trend: 'up', icon: '\u{23F1}\u{FE0F}' },
-        { label: 'Conversion', value: 3.2, suffix: '%', change: 0.4, trend: 'up', icon: '\u{1F4CA}' },
+        { label: 'Published', value: 24, change: 4, trend: 'up', icon: '📝' },
+        { label: 'Total Views', value: 18400, change: 22, trend: 'up', icon: '👁️' },
+        { label: 'Avg Time', value: 3.4, suffix: ' min', change: 8, trend: 'up', icon: '⏱️' },
+        { label: 'Conversion', value: 3.2, suffix: '%', change: 0.4, trend: 'up', icon: '📊' },
       ],
       columns: [
         { key: 'title', label: 'Content', sortable: true },
@@ -167,10 +167,10 @@ registerAgent({
       id: 'email-metrics',
       label: 'Email',
       kpis: [
-        { label: 'Subscribers', value: 4200, change: 8, trend: 'up', icon: '\u{1F4E9}' },
-        { label: 'Open Rate', value: 34, suffix: '%', change: 2, trend: 'up', icon: '\u{1F4EC}' },
-        { label: 'Click Rate', value: 4.8, suffix: '%', change: 0.6, trend: 'up', icon: '\u{1F517}' },
-        { label: 'Unsubscribe', value: 0.3, suffix: '%', change: -0.1, trend: 'down', icon: '\u{1F4C9}' },
+        { label: 'Subscribers', value: 4200, change: 8, trend: 'up', icon: '📩' },
+        { label: 'Open Rate', value: 34, suffix: '%', change: 2, trend: 'up', icon: '📬' },
+        { label: 'Click Rate', value: 4.8, suffix: '%', change: 0.6, trend: 'up', icon: '🔗' },
+        { label: 'Unsubscribe', value: 0.3, suffix: '%', change: -0.1, trend: 'down', icon: '📉' },
       ],
       columns: [
         { key: 'campaign', label: 'Email', sortable: true },

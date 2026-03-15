@@ -84,62 +84,38 @@ export default function SidebarNav() {
       {sectionLabel('Home')}
       <div className="space-y-0.5">
         {navLink('/dashboard', '\uD83C\uDFE0', 'Dashboard')}
-        {navLink('/portal', '\uD83D\uDCE6', 'Customer Portal')}
       </div>
 
-      {/* Agent Consoles grouped by department */}
+      {/* Department Consoles */}
       <div className="flex-1 overflow-y-auto mt-1">
-        {visibleAgents.length === 0 && !loading && (
-          <div className="px-3 py-4 text-xs text-[#9CA3AF] text-center">No agents assigned yet.</div>
-        )}
-        {DEPT_ORDER.filter(d => grouped[d]?.length).map(dept => (
-          <div key={dept}>
-            {sectionLabel(DEPT_LABELS[dept] || CATEGORY_LABELS[dept] || dept)}
-            <div className="space-y-0.5">
-              {grouped[dept].map(agent => (
-                <Link key={agent.slug} href={agent.liveRoute || `/agents/${agent.slug}/console`}
-                  className={'flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-sm transition ' +
-                    (isActive(agent.liveRoute || `/agents/${agent.slug}/console`) ? 'bg-[#2A9D8F]/10 text-[#2A9D8F] font-medium' : 'text-[#6B7280] hover:bg-gray-100 hover:text-[#1B2A4A]')}>
-                  <span className="text-base">{agent.icon}</span>
-                  <span className="truncate">{agent.name}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        ))}
-        {/* Uncategorized agents */}
-        {Object.keys(grouped).filter(d => !DEPT_ORDER.includes(d)).map(dept => {
-          if (!grouped[dept]?.length) return null;
-          return (
-            <div key={dept}>
-              {sectionLabel(DEPT_LABELS[dept] || CATEGORY_LABELS[dept] || dept)}
-              <div className="space-y-0.5">
-                {grouped[dept].map(agent => (
-                  <Link key={agent.slug} href={agent.liveRoute || `/agents/${agent.slug}/console`}
-                    className={'flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-sm transition ' +
-                      (isActive(agent.liveRoute || `/agents/${agent.slug}/console`) ? 'bg-[#2A9D8F]/10 text-[#2A9D8F] font-medium' : 'text-[#6B7280] hover:bg-gray-100 hover:text-[#1B2A4A]')}>
-                    <span className="text-base">{agent.icon}</span>
-                    <span className="truncate">{agent.name}</span>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          );
-        })}
+        {sectionLabel('Departments')}
+        <div className="space-y-0.5">
+          {navLink('/departments/operations', '\u2699\uFE0F', 'Operations')}
+          {navLink('/departments/marketing', '\uD83D\uDCE3', 'Marketing & Web')}
+          {navLink('/departments/finance', '\uD83D\uDCB0', 'Finance')}
+          {navLink('/departments/hr', '\uD83D\uDC65', 'People / HR')}
+          {navLink('/departments/sales', '\uD83D\uDCC8', 'Sales')}
+        </div>
+
+        {sectionLabel('Quick Access')}
+        <div className="space-y-0.5">
+          {navLink('/portal', '\uD83D\uDCE6', 'Customer Portal')}
+          {navLink('/warehouse', '\uD83C\uDFED', 'Warehouse Ops')}
+        </div>
       </div>
 
       {/* Marketplace */}
       {sectionLabel('Discover')}
       <div className="space-y-0.5">
-        {navLink('/marketplace', '\uD83D\uDED2', 'Marketplace')}
+        {navLink('/marketplace', '🛒', 'Marketplace')}
       </div>
 
       {/* Settings */}
       {sectionLabel('Settings')}
       <div className="space-y-0.5">
-        {navLink('/settings', '\u2699\uFE0F', 'Settings')}
-        {navLink('/settings/integrations', '\uD83D\uDD17', 'Integrations')}
-        {navLink('/pricing', '\uD83D\uDCB2', 'Plans')}
+        {navLink('/settings', '⚙️', 'Settings')}
+        {navLink('/settings/integrations', '🔗', 'Integrations')}
+        {navLink('/pricing', '💲', 'Plans')}
       </div>
 
       {/* Admin */}
@@ -147,10 +123,10 @@ export default function SidebarNav() {
         <>
           {sectionLabel('Admin')}
           <div className="space-y-0.5 mb-2">
-            {navLink('/admin', '\uD83C\uDFAF', 'Admin Console')}
-            {navLink('/admin/users', '\uD83D\uDC65', 'Users')}
-            {navLink('/admin/leads', '\uD83D\uDCEC', 'Leads')}
-            {navLink('/demo', '\uD83C\uDFAE', 'Demo Hub')}
+            {navLink('/admin', '🎯', 'Admin Console')}
+            {navLink('/admin/users', '👥', 'Users')}
+            {navLink('/admin/leads', '📬', 'Leads')}
+            {navLink('/demo', '🎮', 'Demo Hub')}
           </div>
         </>
       )}

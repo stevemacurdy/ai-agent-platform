@@ -4,7 +4,7 @@ registerAgent({
   meta: {
     slug: 'research',
     name: 'Research',
-    icon: '\u{1F52C}',
+    icon: '🔬',
     dept: 'Strategy',
     deptColor: '#0EA5E9',
     description: 'AI-powered market research, competitive intelligence, and trend analysis',
@@ -17,10 +17,10 @@ registerAgent({
       id: 'market-overview',
       label: 'Market Overview',
       kpis: [
-        { label: 'TAM', value: 4200000000, prefix: '$', change: 8, trend: 'up', icon: '\u{1F30D}' },
-        { label: 'Market Growth', value: 12, suffix: '%', change: 2, trend: 'up', icon: '\u{1F4C8}' },
-        { label: 'Our Share', value: 0.3, suffix: '%', change: 18, trend: 'up', icon: '\u{1F3AF}' },
-        { label: 'Competitors Tracked', value: 24, change: 3, trend: 'up', icon: '\u{1F50D}' },
+        { label: 'TAM', value: 4200000000, prefix: '$', change: 8, trend: 'up', icon: '🌍' },
+        { label: 'Market Growth', value: 12, suffix: '%', change: 2, trend: 'up', icon: '📈' },
+        { label: 'Our Share', value: 0.3, suffix: '%', change: 18, trend: 'up', icon: '🎯' },
+        { label: 'Competitors Tracked', value: 24, change: 3, trend: 'up', icon: '🔍' },
       ],
       columns: [
         { key: 'segment', label: 'Segment', sortable: true },
@@ -67,10 +67,10 @@ registerAgent({
       id: 'competitors',
       label: 'Competitors',
       kpis: [
-        { label: 'Tracked', value: 24, change: 3, trend: 'up', icon: '\u{1F50D}' },
-        { label: 'Alerts This Week', value: 8, change: 2, trend: 'up', icon: '\u{1F514}' },
-        { label: 'Win Rate vs Top 5', value: 38, suffix: '%', change: 6, trend: 'up', icon: '\u{1F4CA}' },
-        { label: 'Intel Reports', value: 12, change: 4, trend: 'up', icon: '\u{1F4C4}' },
+        { label: 'Tracked', value: 24, change: 3, trend: 'up', icon: '🔍' },
+        { label: 'Alerts This Week', value: 8, change: 2, trend: 'up', icon: '🔔' },
+        { label: 'Win Rate vs Top 5', value: 38, suffix: '%', change: 6, trend: 'up', icon: '📊' },
+        { label: 'Intel Reports', value: 12, change: 4, trend: 'up', icon: '📄' },
       ],
       columns: [
         { key: 'competitor', label: 'Competitor', sortable: true },
@@ -116,10 +116,10 @@ registerAgent({
       id: 'trends',
       label: 'Trends',
       kpis: [
-        { label: 'Trends Tracked', value: 18, change: 4, trend: 'up', icon: '\u{1F4C8}' },
-        { label: 'Emerging', value: 5, change: 2, trend: 'up', icon: '\u{1F31F}' },
-        { label: 'Impact Score', value: 74, suffix: '/100', change: 6, trend: 'up', icon: '\u{1F4CA}' },
-        { label: 'Reports Generated', value: 8, change: 3, trend: 'up', icon: '\u{1F4C4}' },
+        { label: 'Trends Tracked', value: 18, change: 4, trend: 'up', icon: '📈' },
+        { label: 'Emerging', value: 5, change: 2, trend: 'up', icon: '🌟' },
+        { label: 'Impact Score', value: 74, suffix: '/100', change: 6, trend: 'up', icon: '📊' },
+        { label: 'Reports Generated', value: 8, change: 3, trend: 'up', icon: '📄' },
       ],
       columns: [
         { key: 'trend', label: 'Trend', sortable: true },
@@ -164,10 +164,10 @@ registerAgent({
       id: 'reports',
       label: 'Reports',
       kpis: [
-        { label: 'Published', value: 24, change: 4, trend: 'up', icon: '\u{1F4DA}' },
-        { label: 'In Progress', value: 3, change: 1, trend: 'up', icon: '\u{270D}\u{FE0F}' },
-        { label: 'Avg Views', value: 34, change: 12, trend: 'up', icon: '\u{1F441}\u{FE0F}' },
-        { label: 'Stakeholder NPS', value: 72, change: 8, trend: 'up', icon: '\u{2B50}' },
+        { label: 'Published', value: 24, change: 4, trend: 'up', icon: '📚' },
+        { label: 'In Progress', value: 3, change: 1, trend: 'up', icon: '✍️' },
+        { label: 'Avg Views', value: 34, change: 12, trend: 'up', icon: '👁️' },
+        { label: 'Stakeholder NPS', value: 72, change: 8, trend: 'up', icon: '⭐' },
       ],
       columns: [
         { key: 'report', label: 'Report', sortable: true },

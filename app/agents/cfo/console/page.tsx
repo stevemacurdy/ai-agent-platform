@@ -1,11 +1,13 @@
 'use client'
 import { useState, useEffect } from 'react'
+import { useTrackConsoleView } from '@/lib/hooks/useUsageTracking'
 
 function getEmail() { try { return JSON.parse(localStorage.getItem('woulfai_session') || '{}')?.user?.email || 'admin' } catch { return 'admin' } }
 const hdrs = () => ({ 'x-admin-email': getEmail(), 'Content-Type': 'application/json' })
 const fmt = (n: number) => '$' + n.toLocaleString()
 
 export default function CFOConsoleV2() {
+  useTrackConsoleView('cfo')
   const [toast, setToast] = useState<string | null>(null)
   const showToast = (m: string) => { setToast(m); setTimeout(() => setToast(null), 3000) }
 
@@ -135,7 +137,7 @@ export default function CFOConsoleV2() {
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-8 pb-8 overflow-y-auto" onClick={() => setModal(null)}>
       <div className="fixed inset-0 bg-black/70" />
       <div className={'relative bg-[#0B0F18] border border-[#E5E7EB] rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto ' + (wide ? 'w-[900px]' : 'w-[720px]')} onClick={e => e.stopPropagation()}>
-        <button onClick={() => setModal(null)} className="absolute top-4 right-4 text-[#9CA3AF] hover:text-[#1B2A4A] text-lg z-10">{'\u2715'}</button>
+        <button onClick={() => setModal(null)} className="absolute top-4 right-4 text-[#9CA3AF] hover:text-[#1B2A4A] text-lg z-10">{'✕'}</button>
         <div className="p-6">{children}</div>
       </div>
     </div>
@@ -182,7 +184,7 @@ export default function CFOConsoleV2() {
               className={'bg-white border rounded-xl p-4 text-left hover:bg-white shadow-sm transition-all cursor-pointer group ' + k.border}>
               <div className="text-[10px] text-[#9CA3AF] font-mono uppercase group-hover:text-[#4B5563]">{k.label}</div>
               <div className={`text-xl font-mono font-bold mt-1 ${k.color}`}>{k.noFmt ? k.value : fmt(k.value || 0)}</div>
-              <div className="text-[9px] text-gray-700 group-hover:text-[#9CA3AF] mt-1">Click for source invoices {'\u2192'}</div>
+              <div className="text-[9px] text-gray-700 group-hover:text-[#9CA3AF] mt-1">Click for source invoices {'→'}</div>
             </button>
           ))}
         </div>
@@ -191,24 +193,24 @@ export default function CFOConsoleV2() {
       {/* ====== ACTION BUTTONS ====== */}
       <div className="grid grid-cols-4 gap-3">
         <button onClick={runCashflow} className="bg-gradient-to-br from-blue-500/5 to-blue-500/10 border border-blue-500/20 rounded-xl p-5 text-left hover:border-blue-500/40 transition-all">
-          <div className="text-lg mb-1">{'\uD83D\uDCC8'}</div>
+          <div className="text-lg mb-1">{'📈'}</div>
           <div className="text-sm font-semibold">Cashflow Forecast</div>
           <div className="text-[10px] text-[#9CA3AF] mt-1">30/60/90-day projection with risk levels</div>
         </button>
         <button onClick={runCollections} className="bg-gradient-to-br from-rose-500/5 to-rose-500/10 border border-rose-500/20 rounded-xl p-5 text-left hover:border-rose-500/40 transition-all">
-          <div className="text-lg mb-1">{'\uD83D\uDCE8'}</div>
+          <div className="text-lg mb-1">{'📨'}</div>
           <div className="text-sm font-semibold">AI Collection Strategy</div>
           <div className="text-[10px] text-[#9CA3AF] mt-1">Prioritized debtor queue + recovery estimates</div>
         </button>
         <button onClick={runHealth} className="bg-gradient-to-br from-emerald-500/5 to-emerald-500/10 border border-emerald-500/20 rounded-xl p-5 text-left hover:border-emerald-500/40 transition-all">
-          <div className="text-lg mb-1">{'\uD83E\uDE7A'}</div>
+          <div className="text-lg mb-1">{'🩺'}</div>
           <div className="text-sm font-semibold">Financial Health</div>
           <div className="text-[10px] text-[#9CA3AF] mt-1">Health Score, Quick Ratio, DSO, Burn Rate</div>
         </button>
         <button onClick={() => window.location.href = '/agents/cfo/payables'} className="bg-gradient-to-br from-amber-500/5 to-amber-500/10 border border-amber-500/20 rounded-xl p-5 text-left hover:border-amber-500/40 transition-all">
-          <div className="text-lg mb-1">{'\uD83D\uDCB3'}</div>
+          <div className="text-lg mb-1">{'💳'}</div>
           <div className="text-sm font-semibold">Add Vendor Bill</div>
-          <div className="text-[10px] text-[#9CA3AF] mt-1">Upload/camera {'\u2192'} AI extract {'\u2192'} review {'\u2192'} pay</div>
+          <div className="text-[10px] text-[#9CA3AF] mt-1">Upload/camera {'→'} AI extract {'→'} review {'→'} pay</div>
         </button>
       </div>
 
@@ -226,7 +228,7 @@ export default function CFOConsoleV2() {
                 <td className="py-2.5">{inv.client}</td>
                 <td className="py-2.5 text-[#6B7280]">{inv.contactName}</td>
                 <td className="py-2.5 text-right font-mono font-bold">{fmt(inv.amount)}</td>
-                <td className="py-2.5 text-right font-mono text-[#9CA3AF]">{inv.amountPaid > 0 ? fmt(inv.amountPaid) : '\u2014'}</td>
+                <td className="py-2.5 text-right font-mono text-[#9CA3AF]">{inv.amountPaid > 0 ? fmt(inv.amountPaid) : '—'}</td>
                 <td className="py-2.5 text-right font-mono">{inv.dueDate} {inv.daysOverdue > 0 && <span className="text-rose-400 ml-1">({inv.daysOverdue}d)</span>}</td>
                 <td className="py-2.5 text-center"><span className={'text-[10px] px-2 py-0.5 rounded ' + (ST[inv.status] || '')}>{inv.status}</span></td>
               </tr>
@@ -243,7 +245,7 @@ export default function CFOConsoleV2() {
           <div className="flex items-start justify-between mb-5">
             <div>
               <div className="text-2xl font-bold font-mono text-blue-600">{selectedInv.number}</div>
-              <div className="text-sm text-[#6B7280] mt-1">{selectedInv.client} {'\u2014'} {selectedInv.contactName}</div>
+              <div className="text-sm text-[#6B7280] mt-1">{selectedInv.client} {'—'} {selectedInv.contactName}</div>
               <div className="flex gap-3 mt-2 text-xs">
                 <span className="text-[#9CA3AF]">Issued: <span className="font-mono">{selectedInv.issueDate}</span></span>
                 <span className="text-[#9CA3AF]">Due: <span className="font-mono">{selectedInv.dueDate}</span></span>
@@ -252,7 +254,7 @@ export default function CFOConsoleV2() {
             <div className="text-right">
               <span className={'text-xs px-3 py-1 rounded ' + (ST[selectedInv.status] || '')}>{selectedInv.status}</span>
               <div className="text-3xl font-mono font-bold mt-2">{fmt(selectedInv.amount)}</div>
-              {selectedInv.amountPaid > 0 && <div className="text-sm text-[#9CA3AF]">Paid: {fmt(selectedInv.amountPaid)} {'\u2014'} Balance: {fmt(selectedInv.amount - selectedInv.amountPaid)}</div>}
+              {selectedInv.amountPaid > 0 && <div className="text-sm text-[#9CA3AF]">Paid: {fmt(selectedInv.amountPaid)} {'—'} Balance: {fmt(selectedInv.amount - selectedInv.amountPaid)}</div>}
             </div>
           </div>
 
@@ -338,7 +340,7 @@ export default function CFOConsoleV2() {
             </div>
           ) : cashflow && (
             <>
-              <h3 className="text-lg font-bold mb-1">Cashflow Forecast {'\u2014'} 90 Day</h3>
+              <h3 className="text-lg font-bold mb-1">Cashflow Forecast {'—'} 90 Day</h3>
               <div className="flex gap-3 text-[10px] text-[#9CA3AF] mb-4">
                 <span>Source: {cashflow.source === 'live' ? 'Live accounting data' : 'Demo data'}</span>
               </div>
@@ -411,7 +413,7 @@ export default function CFOConsoleV2() {
                         <span className="text-[10px] font-mono font-bold uppercase">{s.urgency}</span>
                         <span className="text-sm font-mono text-blue-600 cursor-pointer hover:underline" onClick={() => { setModal(null); setTimeout(() => openInvoice(s.invoiceId), 100) }}>{s.invoiceNumber}</span>
                         <span className="text-sm">{s.client}</span>
-                        <span className="text-[10px] text-[#9CA3AF]">{'\u2014'} reliability: {s.reliabilityScore}/100</span>
+                        <span className="text-[10px] text-[#9CA3AF]">{'—'} reliability: {s.reliabilityScore}/100</span>
                       </div>
                       <div className="text-right">
                         <div className="font-mono font-bold">{fmt(s.outstanding)}</div>
@@ -420,7 +422,7 @@ export default function CFOConsoleV2() {
                     </div>
                     <div className="bg-black/20 rounded-lg p-3 text-xs mb-2">
                       <div className="font-medium text-amber-600 mb-1">{s.strategy}</div>
-                      <div className="text-[10px] text-[#6B7280]">Tone: {s.tone} {'\u2022'} Contact: {s.contactName} ({s.contactEmail})</div>
+                      <div className="text-[10px] text-[#6B7280]">Tone: {s.tone} {'•'} Contact: {s.contactName} ({s.contactEmail})</div>
                     </div>
                     {/* Action items */}
                     <div className="flex flex-wrap gap-1.5 mb-2">

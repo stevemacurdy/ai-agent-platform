@@ -4,6 +4,7 @@ import {
   BarChart, Bar, LineChart, Line, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend
 } from 'recharts';
+import { useTrackConsoleView } from '@/lib/hooks/useUsageTracking'
 
 const CAMPAIGNS = [
   { name: 'Warehouse Automation Guide', channel: 'Organic', spend: 0, leads: 89, cpl: 0, convRate: 4.8, roi: 1200, status: 'active', startDate: '2026-01-05', clicks: 3240, impressions: 28400 },
@@ -62,6 +63,7 @@ const badge = (v: string) => {
 };
 
 export default function MarketingConsole() {
+  useTrackConsoleView('marketing')
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState('campaigns');

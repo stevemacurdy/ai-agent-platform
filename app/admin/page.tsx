@@ -16,9 +16,11 @@ export default function AdminDashboard() {
   const [tab, setTab] = useState<'overview' | 'users' | 'agents' | 'revenue'>('overview');
 
   useEffect(() => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('woulfai_token') || '' : '';
+    const hdrs: Record<string, string> = token ? { 'Authorization': 'Bearer ' + token } : {};
     Promise.all([
-      fetch('/api/admin/usage-stats').then(r => r.json()).catch(() => ({})),
-      fetch('/api/admin/users').then(r => r.json()).catch(() => ({ users: [] })),
+      fetch('/api/admin/usage-stats', { headers: hdrs }).then(r => r.json()).catch(() => ({})),
+      fetch('/api/admin/users', { headers: hdrs }).then(r => r.json()).catch(() => ({ users: [] })),
     ]).then(([usage, users]) => {
       setStats({
         totalUsers: users?.users?.length || 0,

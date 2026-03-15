@@ -4,7 +4,7 @@ registerAgent({
   meta: {
     slug: 'str',
     name: 'STR',
-    icon: '\u{1F3E0}',
+    icon: '🏠',
     dept: 'Real Estate',
     deptColor: '#D97706',
     description: 'AI-powered short-term rental management and revenue optimization',
@@ -17,10 +17,10 @@ registerAgent({
       id: 'portfolio',
       label: 'Portfolio Overview',
       kpis: [
-        { label: 'Active Properties', value: 12, change: 2, trend: 'up', icon: '\u{1F3E0}' },
-        { label: 'Avg Occupancy', value: 78, suffix: '%', change: 6, trend: 'up', icon: '\u{1F4CA}' },
-        { label: 'Revenue (MTD)', value: 48600, prefix: '$', change: 14, trend: 'up', icon: '\u{1F4B0}' },
-        { label: 'Avg Rating', value: 4.7, suffix: '/5', change: 2, trend: 'up', icon: '\u{2B50}' },
+        { label: 'Active Properties', value: 12, change: 2, trend: 'up', icon: '🏠' },
+        { label: 'Avg Occupancy', value: 78, suffix: '%', change: 6, trend: 'up', icon: '📊' },
+        { label: 'Revenue (MTD)', value: 48600, prefix: '$', change: 14, trend: 'up', icon: '💰' },
+        { label: 'Avg Rating', value: 4.7, suffix: '/5', change: 2, trend: 'up', icon: '⭐' },
       ],
       columns: [
         { key: 'property', label: 'Property', sortable: true },
@@ -75,10 +75,10 @@ registerAgent({
       id: 'bookings',
       label: 'Bookings',
       kpis: [
-        { label: 'Upcoming', value: 34, change: 8, trend: 'up', icon: '\u{1F4C5}' },
-        { label: 'Check-ins Today', value: 3, change: 1, trend: 'up', icon: '\u{1F6CE}\u{FE0F}' },
-        { label: 'Avg Stay', value: 3.8, suffix: ' nights', change: 4, trend: 'up', icon: '\u{1F319}' },
-        { label: 'Cancellation Rate', value: 4.2, suffix: '%', change: -12, trend: 'down', icon: '\u{274C}' },
+        { label: 'Upcoming', value: 34, change: 8, trend: 'up', icon: '📅' },
+        { label: 'Check-ins Today', value: 3, change: 1, trend: 'up', icon: '🛎️' },
+        { label: 'Avg Stay', value: 3.8, suffix: ' nights', change: 4, trend: 'up', icon: '🌙' },
+        { label: 'Cancellation Rate', value: 4.2, suffix: '%', change: -12, trend: 'down', icon: '❌' },
       ],
       columns: [
         { key: 'guest', label: 'Guest', sortable: true },
@@ -129,10 +129,10 @@ registerAgent({
       id: 'pricing',
       label: 'Dynamic Pricing',
       kpis: [
-        { label: 'Avg Nightly Rate', value: 189, prefix: '$', change: 8, trend: 'up', icon: '\u{1F4B5}' },
-        { label: 'Rate Adjustments', value: 42, change: 12, trend: 'up', icon: '\u{1F4CA}' },
-        { label: 'Revenue Lift', value: 18, suffix: '%', change: 4, trend: 'up', icon: '\u{1F4C8}' },
-        { label: 'Comp Set Index', value: 108, change: 3, trend: 'up', icon: '\u{1F3AF}' },
+        { label: 'Avg Nightly Rate', value: 189, prefix: '$', change: 8, trend: 'up', icon: '💵' },
+        { label: 'Rate Adjustments', value: 42, change: 12, trend: 'up', icon: '📊' },
+        { label: 'Revenue Lift', value: 18, suffix: '%', change: 4, trend: 'up', icon: '📈' },
+        { label: 'Comp Set Index', value: 108, change: 3, trend: 'up', icon: '🎯' },
       ],
       columns: [
         { key: 'property', label: 'Property', sortable: true },
@@ -180,10 +180,10 @@ registerAgent({
       id: 'guest-experience',
       label: 'Guest Experience',
       kpis: [
-        { label: 'Overall Rating', value: 4.7, suffix: '/5', change: 2, trend: 'up', icon: '\u{2B50}' },
-        { label: 'Reviews (30d)', value: 28, change: 6, trend: 'up', icon: '\u{1F4DD}' },
-        { label: 'Response Rate', value: 98, suffix: '%', change: 1, trend: 'up', icon: '\u{1F4AC}' },
-        { label: 'Repeat Guests', value: 22, suffix: '%', change: 4, trend: 'up', icon: '\u{1F504}' },
+        { label: 'Overall Rating', value: 4.7, suffix: '/5', change: 2, trend: 'up', icon: '⭐' },
+        { label: 'Reviews (30d)', value: 28, change: 6, trend: 'up', icon: '📝' },
+        { label: 'Response Rate', value: 98, suffix: '%', change: 1, trend: 'up', icon: '💬' },
+        { label: 'Repeat Guests', value: 22, suffix: '%', change: 4, trend: 'up', icon: '🔄' },
       ],
       columns: [
         { key: 'property', label: 'Property', sortable: true },

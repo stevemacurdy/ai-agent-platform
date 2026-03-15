@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import AgentConsole from '@/components/consoles/AgentConsole';
 import type { KPICard, TableColumn, Recommendation, ConsoleTab } from '@/components/consoles/AgentConsole';
+import { useTrackConsoleView } from '@/lib/hooks/useUsageTracking'
 
 const TABS: ConsoleTab[] = [
   {
@@ -120,6 +121,7 @@ const COLUMNS: TableColumn[] = [
 ];
 
 export default function SupportConsole() {
+  useTrackConsoleView('support')
   const [tab, setTab] = useState('dashboard');
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);

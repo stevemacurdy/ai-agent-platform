@@ -1,6 +1,26 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
+import { createClient } from '@supabase/supabase-js';
 import '@/lib/demo-agents';
 import { getAllAgents, toggleAgent } from '@/lib/demo-registry';
+
+function supabaseAdmin() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { autoRefreshToken: false, persistSession: false } }
+  );
+}
+
+async function verifyAdmin(req: NextRequest) {
+  const token = req.headers.get('authorization')?.replace('Bearer ', '') || '';
+  if (!token) return null;
+  const sb = supabaseAdmin();
+  const { data: { user }, error } = await sb.auth.getUser(token);
+  if (error || !user) return null;
+  const { data: profile } = await sb.from('profiles').select('role').eq('id', user.id).single();
+  if (!profile || !['super_admin', 'admin'].includes(profile.role)) return null;
+  return user;
+}
 
 export async function GET() {
   const agents = getAllAgents().map(a => ({
@@ -15,7 +35,10 @@ export async function GET() {
   return NextResponse.json({ agents, total: agents.length, enabled: agents.filter(a => a.enabled).length });
 }
 
-export async function PATCH(request: Request) {
+export async function PATCH(request: NextRequest) {
+  const admin = await verifyAdmin(request);
+  if (!admin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
   try {
     const body = await request.json();
     const { slug, enabled } = body as { slug: string; enabled: boolean };

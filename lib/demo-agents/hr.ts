@@ -4,7 +4,7 @@ registerAgent({
   meta: {
     slug: 'hr',
     name: 'HR',
-    icon: '\u{1F465}',
+    icon: '👥',
     dept: 'People',
     deptColor: '#6366F1',
     description: 'AI-powered workforce management and people analytics',
@@ -17,10 +17,10 @@ registerAgent({
       id: 'workforce',
       label: 'Workforce Overview',
       kpis: [
-        { label: 'Headcount', value: 127, change: 4, trend: 'up', icon: '\u{1F465}' },
-        { label: 'Open Positions', value: 8, change: -2, trend: 'down', icon: '\u{1F4CB}' },
-        { label: 'Retention Rate', value: 91, suffix: '%', change: 2, trend: 'up', icon: '\u{1F4CA}' },
-        { label: 'Avg Tenure', value: 2.4, suffix: ' yrs', change: 4, trend: 'up', icon: '\u{23F3}' },
+        { label: 'Headcount', value: 127, change: 4, trend: 'up', icon: '👥' },
+        { label: 'Open Positions', value: 8, change: -2, trend: 'down', icon: '📋' },
+        { label: 'Retention Rate', value: 91, suffix: '%', change: 2, trend: 'up', icon: '📊' },
+        { label: 'Avg Tenure', value: 2.4, suffix: ' yrs', change: 4, trend: 'up', icon: '⏳' },
       ],
       columns: [
         { key: 'position', label: 'Position', sortable: true },
@@ -77,10 +77,10 @@ registerAgent({
       id: 'hiring',
       label: 'Hiring Pipeline',
       kpis: [
-        { label: 'Active Candidates', value: 84, change: 12, trend: 'up', icon: '\u{1F464}' },
-        { label: 'Interviews/Week', value: 12, change: 4, trend: 'up', icon: '\u{1F4DE}' },
-        { label: 'Offers Pending', value: 3, change: 1, trend: 'up', icon: '\u{1F4E8}' },
-        { label: 'Time-to-Fill', value: 28, suffix: ' days', change: -4, trend: 'down', icon: '\u{23F1}\u{FE0F}' },
+        { label: 'Active Candidates', value: 84, change: 12, trend: 'up', icon: '👤' },
+        { label: 'Interviews/Week', value: 12, change: 4, trend: 'up', icon: '📞' },
+        { label: 'Offers Pending', value: 3, change: 1, trend: 'up', icon: '📨' },
+        { label: 'Time-to-Fill', value: 28, suffix: ' days', change: -4, trend: 'down', icon: '⏱️' },
       ],
       columns: [
         { key: 'candidate', label: 'Candidate', sortable: true },
@@ -127,10 +127,10 @@ registerAgent({
       id: 'retention',
       label: 'Retention',
       kpis: [
-        { label: 'Annual Turnover', value: 14, suffix: '%', change: -2, trend: 'down', icon: '\u{1F4C9}' },
-        { label: 'Flight Risk', value: 6, change: -1, trend: 'down', icon: '\u{26A0}\u{FE0F}' },
-        { label: 'Exit Score', value: 3.1, suffix: '/5', change: 4, trend: 'up', icon: '\u{1F4CB}' },
-        { label: 'Regrettable Losses', value: 4, change: -2, trend: 'down', icon: '\u{1F614}' },
+        { label: 'Annual Turnover', value: 14, suffix: '%', change: -2, trend: 'down', icon: '📉' },
+        { label: 'Flight Risk', value: 6, change: -1, trend: 'down', icon: '⚠️' },
+        { label: 'Exit Score', value: 3.1, suffix: '/5', change: 4, trend: 'up', icon: '📋' },
+        { label: 'Regrettable Losses', value: 4, change: -2, trend: 'down', icon: '😔' },
       ],
       columns: [
         { key: 'employee', label: 'Employee', sortable: true },
@@ -177,10 +177,10 @@ registerAgent({
       id: 'satisfaction',
       label: 'Satisfaction',
       kpis: [
-        { label: 'eNPS', value: 42, change: 6, trend: 'up', icon: '\u{1F4CA}' },
-        { label: 'Response Rate', value: 78, suffix: '%', change: 4, trend: 'up', icon: '\u{1F4E9}' },
-        { label: 'Top Concern', value: 0, change: 0, trend: 'flat', icon: '\u{1F4AC}' },
-        { label: 'Satisfaction', value: 7.2, suffix: '/10', change: 3, trend: 'up', icon: '\u{2B50}' },
+        { label: 'eNPS', value: 42, change: 6, trend: 'up', icon: '📊' },
+        { label: 'Response Rate', value: 78, suffix: '%', change: 4, trend: 'up', icon: '📩' },
+        { label: 'Top Concern', value: 0, textValue: 'Workload', change: 0, trend: 'flat', icon: '💬' },
+        { label: 'Satisfaction', value: 7.2, suffix: '/10', change: 3, trend: 'up', icon: '⭐' },
       ],
       columns: [
         { key: 'department', label: 'Department', sortable: true },

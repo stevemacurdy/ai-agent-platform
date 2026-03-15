@@ -4,7 +4,7 @@ registerAgent({
   meta: {
     slug: 'training',
     name: 'Training',
-    icon: '\u{1F393}',
+    icon: '🎓',
     dept: 'People',
     deptColor: '#6366F1',
     description: 'AI-powered employee training, onboarding, and skill development',
@@ -17,10 +17,10 @@ registerAgent({
       id: 'programs',
       label: 'Programs',
       kpis: [
-        { label: 'Active Programs', value: 12, change: 2, trend: 'up', icon: '\u{1F4DA}' },
-        { label: 'Enrolled', value: 94, change: 14, trend: 'up', icon: '\u{1F464}' },
-        { label: 'Completion Rate', value: 78, suffix: '%', change: 6, trend: 'up', icon: '\u{2705}' },
-        { label: 'Avg Score', value: 84, suffix: '%', change: 3, trend: 'up', icon: '\u{1F3AF}' },
+        { label: 'Active Programs', value: 12, change: 2, trend: 'up', icon: '📚' },
+        { label: 'Enrolled', value: 94, change: 14, trend: 'up', icon: '👤' },
+        { label: 'Completion Rate', value: 78, suffix: '%', change: 6, trend: 'up', icon: '✅' },
+        { label: 'Avg Score', value: 84, suffix: '%', change: 3, trend: 'up', icon: '🎯' },
       ],
       columns: [
         { key: 'program', label: 'Program', sortable: true },
@@ -68,10 +68,10 @@ registerAgent({
       id: 'certifications',
       label: 'Certifications',
       kpis: [
-        { label: 'Active Certs', value: 142, change: 8, trend: 'up', icon: '\u{1F4DC}' },
-        { label: 'Expiring 30d', value: 8, change: -2, trend: 'down', icon: '\u{26A0}\u{FE0F}' },
-        { label: 'Expired', value: 2, change: -1, trend: 'down', icon: '\u{1F534}' },
-        { label: 'Compliance %', value: 96, suffix: '%', change: 2, trend: 'up', icon: '\u{2705}' },
+        { label: 'Active Certs', value: 142, change: 8, trend: 'up', icon: '📜' },
+        { label: 'Expiring 30d', value: 8, change: -2, trend: 'down', icon: '⚠️' },
+        { label: 'Expired', value: 2, change: -1, trend: 'down', icon: '🔴' },
+        { label: 'Compliance %', value: 96, suffix: '%', change: 2, trend: 'up', icon: '✅' },
       ],
       columns: [
         { key: 'employee', label: 'Employee', sortable: true },
@@ -112,10 +112,10 @@ registerAgent({
       id: 'onboarding',
       label: 'Onboarding',
       kpis: [
-        { label: 'Active Onboards', value: 5, change: 2, trend: 'up', icon: '\u{1F195}' },
-        { label: 'Avg Time-to-Productive', value: 18, suffix: ' days', change: -4, trend: 'down', icon: '\u{23F1}\u{FE0F}' },
-        { label: 'Satisfaction', value: 4.4, suffix: '/5', change: 3, trend: 'up', icon: '\u{2B50}' },
-        { label: 'Tasks Completed', value: 82, suffix: '%', change: 8, trend: 'up', icon: '\u{1F4CA}' },
+        { label: 'Active Onboards', value: 5, change: 2, trend: 'up', icon: '🆕' },
+        { label: 'Avg Time-to-Productive', value: 18, suffix: ' days', change: -4, trend: 'down', icon: '⏱️' },
+        { label: 'Satisfaction', value: 4.4, suffix: '/5', change: 3, trend: 'up', icon: '⭐' },
+        { label: 'Tasks Completed', value: 82, suffix: '%', change: 8, trend: 'up', icon: '📊' },
       ],
       columns: [
         { key: 'employee', label: 'New Hire', sortable: true },
@@ -158,10 +158,10 @@ registerAgent({
       id: 'skills-matrix',
       label: 'Skills Matrix',
       kpis: [
-        { label: 'Skills Tracked', value: 48, change: 4, trend: 'up', icon: '\u{1F4CA}' },
-        { label: 'Avg Proficiency', value: 3.4, suffix: '/5', change: 2, trend: 'up', icon: '\u{1F3AF}' },
-        { label: 'Skill Gaps', value: 12, change: -3, trend: 'down', icon: '\u{26A0}\u{FE0F}' },
-        { label: 'Cross-Trained', value: 34, suffix: '%', change: 6, trend: 'up', icon: '\u{1F504}' },
+        { label: 'Skills Tracked', value: 48, change: 4, trend: 'up', icon: '📊' },
+        { label: 'Avg Proficiency', value: 3.4, suffix: '/5', change: 2, trend: 'up', icon: '🎯' },
+        { label: 'Skill Gaps', value: 12, change: -3, trend: 'down', icon: '⚠️' },
+        { label: 'Cross-Trained', value: 34, suffix: '%', change: 6, trend: 'up', icon: '🔄' },
       ],
       columns: [
         { key: 'employee', label: 'Employee', sortable: true },

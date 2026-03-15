@@ -4,7 +4,7 @@ registerAgent({
   meta: {
     slug: 'supply-chain',
     name: 'Supply Chain',
-    icon: '\u{1F6E3}\u{FE0F}',
+    icon: '🛣️',
     dept: 'Operations',
     deptColor: '#2A9D8F',
     description: 'AI-powered supply chain visibility and optimization',
@@ -17,10 +17,10 @@ registerAgent({
       id: 'overview',
       label: 'Supply Chain Overview',
       kpis: [
-        { label: 'Active Suppliers', value: 34, change: 2, trend: 'up', icon: '\u{1F465}' },
-        { label: 'On-Time Delivery', value: 91, suffix: '%', change: 3, trend: 'up', icon: '\u{2705}' },
-        { label: 'Avg Lead Time', value: 14, suffix: ' days', change: -8, trend: 'down', icon: '\u{23F1}\u{FE0F}' },
-        { label: 'Risk Alerts', value: 4, change: -2, trend: 'down', icon: '\u{26A0}\u{FE0F}' },
+        { label: 'Active Suppliers', value: 34, change: 2, trend: 'up', icon: '👥' },
+        { label: 'On-Time Delivery', value: 91, suffix: '%', change: 3, trend: 'up', icon: '✅' },
+        { label: 'Avg Lead Time', value: 14, suffix: ' days', change: -8, trend: 'down', icon: '⏱️' },
+        { label: 'Risk Alerts', value: 4, change: -2, trend: 'down', icon: '⚠️' },
       ],
       columns: [
         { key: 'supplier', label: 'Supplier', sortable: true },
@@ -70,10 +70,10 @@ registerAgent({
       id: 'demand-planning',
       label: 'Demand Planning',
       kpis: [
-        { label: 'Forecast Accuracy', value: 86, suffix: '%', change: 4, trend: 'up', icon: '\u{1F3AF}' },
-        { label: 'SKUs Forecasted', value: 4218, change: 0, trend: 'flat', icon: '\u{1F4E6}' },
-        { label: 'Stockout Risk', value: 14, change: -4, trend: 'down', icon: '\u{26A0}\u{FE0F}' },
-        { label: 'Overstock Risk', value: 47, change: -8, trend: 'down', icon: '\u{1F4A4}' },
+        { label: 'Forecast Accuracy', value: 86, suffix: '%', change: 4, trend: 'up', icon: '🎯' },
+        { label: 'SKUs Forecasted', value: 4218, change: 0, trend: 'flat', icon: '📦' },
+        { label: 'Stockout Risk', value: 14, change: -4, trend: 'down', icon: '⚠️' },
+        { label: 'Overstock Risk', value: 47, change: -8, trend: 'down', icon: '💤' },
       ],
       columns: [
         { key: 'sku', label: 'SKU', sortable: true },
@@ -120,10 +120,10 @@ registerAgent({
       id: 'shipments',
       label: 'Inbound Shipments',
       kpis: [
-        { label: 'In Transit', value: 12, change: 2, trend: 'up', icon: '\u{1F69A}' },
-        { label: 'Arriving Today', value: 3, change: 1, trend: 'up', icon: '\u{1F4C5}' },
-        { label: 'Delayed', value: 2, change: -1, trend: 'down', icon: '\u{1F534}' },
-        { label: 'Avg Transit Days', value: 8, change: -1, trend: 'down', icon: '\u{23F1}\u{FE0F}' },
+        { label: 'In Transit', value: 12, change: 2, trend: 'up', icon: '🚚' },
+        { label: 'Arriving Today', value: 3, change: 1, trend: 'up', icon: '📅' },
+        { label: 'Delayed', value: 2, change: -1, trend: 'down', icon: '🔴' },
+        { label: 'Avg Transit Days', value: 8, change: -1, trend: 'down', icon: '⏱️' },
       ],
       columns: [
         { key: 'shipment', label: 'Shipment', sortable: true },
@@ -168,10 +168,10 @@ registerAgent({
       id: 'procurement',
       label: 'Procurement',
       kpis: [
-        { label: 'Open POs', value: 18, change: 2, trend: 'up', icon: '\u{1F4CB}' },
-        { label: 'PO Value', value: 342000, prefix: '$', change: 8, trend: 'up', icon: '\u{1F4B0}' },
-        { label: 'Savings This Quarter', value: 28000, prefix: '$', change: 14, trend: 'up', icon: '\u{1F4B5}' },
-        { label: 'Pending Approvals', value: 3, change: -1, trend: 'down', icon: '\u{23F3}' },
+        { label: 'Open POs', value: 18, change: 2, trend: 'up', icon: '📋' },
+        { label: 'PO Value', value: 342000, prefix: '$', change: 8, trend: 'up', icon: '💰' },
+        { label: 'Savings This Quarter', value: 28000, prefix: '$', change: 14, trend: 'up', icon: '💵' },
+        { label: 'Pending Approvals', value: 3, change: -1, trend: 'down', icon: '⏳' },
       ],
       columns: [
         { key: 'po', label: 'PO #', sortable: true },

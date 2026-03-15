@@ -129,7 +129,7 @@ export default function DemoTable({ columns, rows, expandedFields, onAction }: D
                 >
                   {col.label}
                   {sortKey === col.key && (
-                    <span className="ml-1">{sortDir === 'asc' ? '\u25B2' : '\u25BC'}</span>
+                    <span className="ml-1">{sortDir === 'asc' ? '▲' : '▼'}</span>
                   )}
                 </th>
               ))}

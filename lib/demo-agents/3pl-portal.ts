@@ -4,7 +4,7 @@ registerAgent({
   meta: {
     slug: '3pl-portal',
     name: '3PL Customer Portal',
-    icon: '\u{1F3D7}\u{FE0F}',
+    icon: '🏗️',
     dept: 'Operations',
     deptColor: '#7C3AED',
     description: 'White-label customer portal with inventory, ordering, billing, and AI support',
@@ -17,10 +17,10 @@ registerAgent({
       id: 'overview',
       label: 'Overview',
       kpis: [
-        { label: 'Active Customers', value: 12, change: 20, trend: 'up', icon: '\u{1F465}' },
-        { label: 'Inventory Units', value: 48300, change: 8, trend: 'up', icon: '\u{1F4E6}' },
-        { label: 'Open Orders', value: 23, change: 15, trend: 'up', icon: '\u{1F6D2}' },
-        { label: 'Monthly Revenue', value: 67400, prefix: '$', change: 11, trend: 'up', icon: '\u{1F4B0}' },
+        { label: 'Active Customers', value: 12, change: 20, trend: 'up', icon: '👥' },
+        { label: 'Inventory Units', value: 48300, change: 8, trend: 'up', icon: '📦' },
+        { label: 'Open Orders', value: 23, change: 15, trend: 'up', icon: '🛒' },
+        { label: 'Monthly Revenue', value: 67400, prefix: '$', change: 11, trend: 'up', icon: '💰' },
       ],
       columns: [
         { key: 'customer', label: 'Customer', sortable: true },
@@ -73,10 +73,10 @@ registerAgent({
       id: 'billing',
       label: 'Billing',
       kpis: [
-        { label: 'Total AR', value: 51677, prefix: '$', change: -4, trend: 'up', icon: '\u{1F4B3}' },
-        { label: 'Auto-Pay Rate', value: 57, suffix: '%', change: 8, trend: 'up', icon: '\u{1F504}' },
-        { label: 'Avg Days to Pay', value: 18, suffix: ' days', change: -12, trend: 'up', icon: '\u{23F1}\u{FE0F}' },
-        { label: 'Past Due', value: 34810, prefix: '$', change: -6, trend: 'up', icon: '\u{26A0}\u{FE0F}' },
+        { label: 'Total AR', value: 51677, prefix: '$', change: -4, trend: 'up', icon: '💳' },
+        { label: 'Auto-Pay Rate', value: 57, suffix: '%', change: 8, trend: 'up', icon: '🔄' },
+        { label: 'Avg Days to Pay', value: 18, suffix: ' days', change: -12, trend: 'up', icon: '⏱️' },
+        { label: 'Past Due', value: 34810, prefix: '$', change: -6, trend: 'up', icon: '⚠️' },
       ],
       columns: [
         { key: 'invoice', label: 'Invoice', sortable: true },
@@ -120,10 +120,10 @@ registerAgent({
       id: 'inventory',
       label: 'Inventory',
       kpis: [
-        { label: 'Total Pallets', value: 342, change: 6, trend: 'up', icon: '\u{1F4E6}' },
-        { label: 'Total SKUs', value: 116, change: 4, trend: 'up', icon: '\u{1F3F7}\u{FE0F}' },
-        { label: 'Space Utilization', value: 78, suffix: '%', change: 3, trend: 'up', icon: '\u{1F3ED}' },
-        { label: 'Items in QC', value: 4, change: -33, trend: 'up', icon: '\u{1F50D}' },
+        { label: 'Total Pallets', value: 342, change: 6, trend: 'up', icon: '📦' },
+        { label: 'Total SKUs', value: 116, change: 4, trend: 'up', icon: '🏷️' },
+        { label: 'Space Utilization', value: 78, suffix: '%', change: 3, trend: 'up', icon: '🏭' },
+        { label: 'Items in QC', value: 4, change: -33, trend: 'up', icon: '🔍' },
       ],
       columns: [
         { key: 'customer', label: 'Customer', sortable: true },

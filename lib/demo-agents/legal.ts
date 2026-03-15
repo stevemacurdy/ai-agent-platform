@@ -4,7 +4,7 @@ registerAgent({
   meta: {
     slug: 'legal',
     name: 'Legal',
-    icon: '\u{2696}\u{FE0F}',
+    icon: '⚖️',
     dept: 'Legal',
     deptColor: '#7C3AED',
     description: 'AI-powered contract management, risk analysis, and compliance tracking',
@@ -17,10 +17,10 @@ registerAgent({
       id: 'contracts',
       label: 'Contracts',
       kpis: [
-        { label: 'Active Contracts', value: 94, change: 6, trend: 'up', icon: '\u{1F4C4}' },
-        { label: 'Pending Review', value: 12, change: -3, trend: 'down', icon: '\u{23F3}' },
-        { label: 'Expiring (90d)', value: 8, change: 2, trend: 'up', icon: '\u{26A0}\u{FE0F}' },
-        { label: 'Avg Review Time', value: 3.2, suffix: ' days', change: -18, trend: 'down', icon: '\u{23F1}\u{FE0F}' },
+        { label: 'Active Contracts', value: 94, change: 6, trend: 'up', icon: '📄' },
+        { label: 'Pending Review', value: 12, change: -3, trend: 'down', icon: '⏳' },
+        { label: 'Expiring (90d)', value: 8, change: 2, trend: 'up', icon: '⚠️' },
+        { label: 'Avg Review Time', value: 3.2, suffix: ' days', change: -18, trend: 'down', icon: '⏱️' },
       ],
       columns: [
         { key: 'contract', label: 'Contract', sortable: true },
@@ -69,10 +69,10 @@ registerAgent({
       id: 'risk-register',
       label: 'Risk Register',
       kpis: [
-        { label: 'Open Risks', value: 14, change: -2, trend: 'down', icon: '\u{26A0}\u{FE0F}' },
-        { label: 'High Severity', value: 3, change: -1, trend: 'down', icon: '\u{1F534}' },
-        { label: 'Mitigated (Q)', value: 8, change: 4, trend: 'up', icon: '\u{2705}' },
-        { label: 'Insurance Coverage', value: 94, suffix: '%', change: 2, trend: 'up', icon: '\u{1F6E1}\u{FE0F}' },
+        { label: 'Open Risks', value: 14, change: -2, trend: 'down', icon: '⚠️' },
+        { label: 'High Severity', value: 3, change: -1, trend: 'down', icon: '🔴' },
+        { label: 'Mitigated (Q)', value: 8, change: 4, trend: 'up', icon: '✅' },
+        { label: 'Insurance Coverage', value: 94, suffix: '%', change: 2, trend: 'up', icon: '🛡️' },
       ],
       columns: [
         { key: 'risk', label: 'Risk', sortable: true },
@@ -118,10 +118,10 @@ registerAgent({
       id: 'obligations',
       label: 'Obligations',
       kpis: [
-        { label: 'Active Obligations', value: 42, change: 3, trend: 'up', icon: '\u{1F4CB}' },
-        { label: 'Due This Month', value: 6, change: 1, trend: 'up', icon: '\u{1F4C5}' },
-        { label: 'Overdue', value: 2, change: -1, trend: 'down', icon: '\u{1F534}' },
-        { label: 'Compliance Rate', value: 95, suffix: '%', change: 2, trend: 'up', icon: '\u{1F3AF}' },
+        { label: 'Active Obligations', value: 42, change: 3, trend: 'up', icon: '📋' },
+        { label: 'Due This Month', value: 6, change: 1, trend: 'up', icon: '📅' },
+        { label: 'Overdue', value: 2, change: -1, trend: 'down', icon: '🔴' },
+        { label: 'Compliance Rate', value: 95, suffix: '%', change: 2, trend: 'up', icon: '🎯' },
       ],
       columns: [
         { key: 'obligation', label: 'Obligation', sortable: true },
@@ -168,10 +168,10 @@ registerAgent({
       id: 'matter-tracker',
       label: 'Matters',
       kpis: [
-        { label: 'Open Matters', value: 7, change: -1, trend: 'down', icon: '\u{1F4C2}' },
-        { label: 'External Spend', value: 48000, prefix: '$', change: -8, trend: 'down', icon: '\u{1F4B0}' },
-        { label: 'Avg Resolution', value: 34, suffix: ' days', change: -12, trend: 'down', icon: '\u{23F3}' },
-        { label: 'In Litigation', value: 1, change: 0, trend: 'flat', icon: '\u{2696}\u{FE0F}' },
+        { label: 'Open Matters', value: 7, change: -1, trend: 'down', icon: '📂' },
+        { label: 'External Spend', value: 48000, prefix: '$', change: -8, trend: 'down', icon: '💰' },
+        { label: 'Avg Resolution', value: 34, suffix: ' days', change: -12, trend: 'down', icon: '⏳' },
+        { label: 'In Litigation', value: 1, change: 0, trend: 'flat', icon: '⚖️' },
       ],
       columns: [
         { key: 'matter', label: 'Matter', sortable: true },

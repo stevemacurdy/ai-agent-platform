@@ -4,7 +4,7 @@ registerAgent({
   meta: {
     slug: 'finops',
     name: 'FinOps',
-    icon: '\u{1F4B8}',
+    icon: '💸',
     dept: 'Finance',
     deptColor: '#059669',
     description: 'AI-powered financial operations and spend optimization',
@@ -17,10 +17,10 @@ registerAgent({
       id: 'spend-overview',
       label: 'Spend Overview',
       kpis: [
-        { label: 'Monthly Spend', value: 284000, prefix: '$', change: -4, trend: 'down', icon: '\u{1F4B0}' },
-        { label: 'Budget Variance', value: -3.2, suffix: '%', change: 2, trend: 'up', icon: '\u{1F4CA}' },
-        { label: 'Savings Found', value: 42000, prefix: '$', change: 18, trend: 'up', icon: '\u{1F4A1}' },
-        { label: 'Vendor Count', value: 87, change: -3, trend: 'down', icon: '\u{1F4CB}' },
+        { label: 'Monthly Spend', value: 284000, prefix: '$', change: -4, trend: 'down', icon: '💰' },
+        { label: 'Budget Variance', value: -3.2, suffix: '%', change: 2, trend: 'up', icon: '📊' },
+        { label: 'Savings Found', value: 42000, prefix: '$', change: 18, trend: 'up', icon: '💡' },
+        { label: 'Vendor Count', value: 87, change: -3, trend: 'down', icon: '📋' },
       ],
       columns: [
         { key: 'category', label: 'Category', sortable: true },
@@ -71,10 +71,10 @@ registerAgent({
       id: 'vendor-management',
       label: 'Vendor Management',
       kpis: [
-        { label: 'Active Vendors', value: 87, change: -3, trend: 'down', icon: '\u{1F465}' },
-        { label: 'Contracts Expiring', value: 6, change: 2, trend: 'up', icon: '\u{1F4C5}' },
-        { label: 'Avg Payment Terms', value: 34, suffix: ' days', change: 0, trend: 'flat', icon: '\u{23F3}' },
-        { label: 'Vendor Score', value: 78, suffix: '/100', change: 3, trend: 'up', icon: '\u{2B50}' },
+        { label: 'Active Vendors', value: 87, change: -3, trend: 'down', icon: '👥' },
+        { label: 'Contracts Expiring', value: 6, change: 2, trend: 'up', icon: '📅' },
+        { label: 'Avg Payment Terms', value: 34, suffix: ' days', change: 0, trend: 'flat', icon: '⏳' },
+        { label: 'Vendor Score', value: 78, suffix: '/100', change: 3, trend: 'up', icon: '⭐' },
       ],
       columns: [
         { key: 'vendor', label: 'Vendor', sortable: true },
@@ -118,10 +118,10 @@ registerAgent({
       id: 'budgets',
       label: 'Budgets',
       kpis: [
-        { label: 'Total Budget', value: 3400000, prefix: '$', change: 0, trend: 'flat', icon: '\u{1F4B0}' },
-        { label: 'YTD Spend', value: 1680000, prefix: '$', change: 2, trend: 'up', icon: '\u{1F4CA}' },
-        { label: 'Remaining', value: 1720000, prefix: '$', change: -2, trend: 'down', icon: '\u{1F4B5}' },
-        { label: 'Burn Rate', value: 280000, prefix: '$', change: 0, trend: 'flat', icon: '\u{1F525}' },
+        { label: 'Total Budget', value: 3400000, prefix: '$', change: 0, trend: 'flat', icon: '💰' },
+        { label: 'YTD Spend', value: 1680000, prefix: '$', change: 2, trend: 'up', icon: '📊' },
+        { label: 'Remaining', value: 1720000, prefix: '$', change: -2, trend: 'down', icon: '💵' },
+        { label: 'Burn Rate', value: 280000, prefix: '$', change: 0, trend: 'flat', icon: '🔥' },
       ],
       columns: [
         { key: 'department', label: 'Department', sortable: true },
@@ -169,10 +169,10 @@ registerAgent({
       id: 'automation',
       label: 'Automation',
       kpis: [
-        { label: 'Active Workflows', value: 24, change: 4, trend: 'up', icon: '\u{2699}\u{FE0F}' },
-        { label: 'Hours Saved/Mo', value: 186, change: 22, trend: 'up', icon: '\u{23F1}\u{FE0F}' },
-        { label: 'Error Rate', value: 0.8, suffix: '%', change: -34, trend: 'down', icon: '\u{1F3AF}' },
-        { label: 'Auto-Processed', value: 342, change: 12, trend: 'up', icon: '\u{1F4E8}' },
+        { label: 'Active Workflows', value: 24, change: 4, trend: 'up', icon: '⚙️' },
+        { label: 'Hours Saved/Mo', value: 186, change: 22, trend: 'up', icon: '⏱️' },
+        { label: 'Error Rate', value: 0.8, suffix: '%', change: -34, trend: 'down', icon: '🎯' },
+        { label: 'Auto-Processed', value: 342, change: 12, trend: 'up', icon: '📨' },
       ],
       columns: [
         { key: 'workflow', label: 'Workflow', sortable: true },

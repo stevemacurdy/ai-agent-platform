@@ -1,12 +1,13 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { useTrackConsoleView } from '@/lib/hooks/useUsageTracking'
 
 const TABS = [
-  { id: 'pending', label: 'Pending Invoices', icon: '\u{1F9FE}' },
-  { id: 'schedule', label: 'Payment Schedule', icon: '\u{1F4C5}' },
-  { id: 'vendors', label: 'Vendor Analytics', icon: '\u{1F4CA}' },
-  { id: 'discounts', label: 'Discount Opportunities', icon: '\u{1F4B5}' },
+  { id: 'pending', label: 'Pending Invoices', icon: '🧾' },
+  { id: 'schedule', label: 'Payment Schedule', icon: '📅' },
+  { id: 'vendors', label: 'Vendor Analytics', icon: '📊' },
+  { id: 'discounts', label: 'Discount Opportunities', icon: '💵' },
 ];
 
 const INVOICES = [
@@ -73,6 +74,7 @@ function KPI({ label, value, sub, icon }: { label: string; value: string; sub?: 
 }
 
 export default function PayablesConsole() {
+  useTrackConsoleView('payables')
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState('pending');
@@ -108,14 +110,14 @@ export default function PayablesConsole() {
 
   const Th = ({ k, children }: { k: string; children: React.ReactNode }) => (
     <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 cursor-pointer select-none hover:text-[#1B2A4A]" onClick={() => toggleSort(k)}>
-      {children} {sortKey === k ? (sortDir === 'asc' ? '\u2191' : '\u2193') : ''}
+      {children} {sortKey === k ? (sortDir === 'asc' ? '↑' : '↓') : ''}
     </th>
   );
 
   return (
     <div className="p-4 md:p-6 space-y-6 max-w-[1400px] mx-auto">
       <div className="flex items-center justify-between flex-wrap gap-2">
-        <div><h1 className="text-2xl font-bold text-[#1B2A4A] flex items-center gap-2">{'\u{1F9FE}'} Payables Agent</h1><p className="text-sm text-gray-500">Accounts payable optimization and vendor management</p></div>
+        <div><h1 className="text-2xl font-bold text-[#1B2A4A] flex items-center gap-2">{'🧾'} Payables Agent</h1><p className="text-sm text-gray-500">Accounts payable optimization and vendor management</p></div>
         <span className={`px-3 py-1 rounded-full text-xs font-semibold ${source === 'live' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'}`}>{source === 'live' ? 'Live Data' : 'Demo Data'}</span>
       </div>
 
@@ -127,10 +129,10 @@ export default function PayablesConsole() {
       {/* Pending Invoices */}
       {tab === 'pending' && (<div className="space-y-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <KPI label="Total Payables" value={`$${Math.round(summary.totalPayable || 423000).toLocaleString()}`} icon={'\u{1F4B0}'} />
-          <KPI label="Pending Approval" value={`${invoices.filter((i: any) => i.status === 'Pending').length}`} icon={'\u{1F4CB}'} sub="invoices" />
-          <KPI label="Early-Pay Savings" value={`$${Math.round(summary.potentialSavings || 8400).toLocaleString()}`} icon={'\u{1F4B5}'} sub="available" />
-          <KPI label="Past Due" value={`${invoices.filter((i: any) => i.status === 'Past Due' || i.status === 'overdue').length}`} icon={'\u{1F534}'} sub="invoices" />
+          <KPI label="Total Payables" value={`$${Math.round(summary.totalPayable || 423000).toLocaleString()}`} icon={'💰'} />
+          <KPI label="Pending Approval" value={`${invoices.filter((i: any) => i.status === 'Pending').length}`} icon={'📋'} sub="invoices" />
+          <KPI label="Early-Pay Savings" value={`$${Math.round(summary.potentialSavings || 8400).toLocaleString()}`} icon={'💵'} sub="available" />
+          <KPI label="Past Due" value={`${invoices.filter((i: any) => i.status === 'Past Due' || i.status === 'overdue').length}`} icon={'🔴'} sub="invoices" />
         </div>
         <div className="flex items-center gap-3 flex-wrap">
           <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search vendors..." className="px-3 py-2 border rounded-lg text-sm w-64 focus:outline-none focus:ring-2 focus:ring-[#F5920B]/30" />
@@ -172,7 +174,7 @@ export default function PayablesConsole() {
       {/* Payment Schedule */}
       {tab === 'schedule' && (<div className="space-y-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <KPI label="Due This Week" value="$87K" icon={'\u{1F4C5}'} /><KPI label="Due Next Week" value="$65K" icon={'\u{1F4C6}'} /><KPI label="Total Scheduled" value="$142K" icon={'\u{2705}'} /><KPI label="Unscheduled" value="$28K" icon={'\u{26A0}\u{FE0F}'} />
+          <KPI label="Due This Week" value="$87K" icon={'📅'} /><KPI label="Due Next Week" value="$65K" icon={'📆'} /><KPI label="Total Scheduled" value="$142K" icon={'✅'} /><KPI label="Unscheduled" value="$28K" icon={'⚠️'} />
         </div>
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
           <h3 className="text-sm font-semibold text-[#1B2A4A] mb-3">Payment Schedule (Next 4 Weeks)</h3>
@@ -193,7 +195,7 @@ export default function PayablesConsole() {
       {/* Vendor Analytics */}
       {tab === 'vendors' && (<div className="space-y-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <KPI label="Active Vendors" value={`${summary.vendorCount || 34}`} icon={'\u{1F3E2}'} /><KPI label="Avg Payment Terms" value="28 days" icon={'\u{1F4C5}'} /><KPI label="Vendor Satisfaction" value="4.1/5" icon={'\u{2B50}'} /><KPI label="Open Disputes" value="2" icon={'\u{26A0}\u{FE0F}'} />
+          <KPI label="Active Vendors" value={`${summary.vendorCount || 34}`} icon={'🏢'} /><KPI label="Avg Payment Terms" value="28 days" icon={'📅'} /><KPI label="Vendor Satisfaction" value="4.1/5" icon={'⭐'} /><KPI label="Open Disputes" value="2" icon={'⚠️'} />
         </div>
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
           <h3 className="text-sm font-semibold text-[#1B2A4A] mb-3">Spend Distribution by Vendor</h3>
@@ -218,7 +220,7 @@ export default function PayablesConsole() {
       {/* Discount Opportunities */}
       {tab === 'discounts' && (<div className="space-y-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <KPI label="Available Discounts" value="$8,400" icon={'\u{1F4B5}'} /><KPI label="Captured This Month" value="$3,200" icon={'\u{2705}'} /><KPI label="Missed This Month" value="$1,100" icon={'\u{274C}'} /><KPI label="Capture Rate" value="74%" icon={'\u{1F3AF}'} />
+          <KPI label="Available Discounts" value="$8,400" icon={'💵'} /><KPI label="Captured This Month" value="$3,200" icon={'✅'} /><KPI label="Missed This Month" value="$1,100" icon={'❌'} /><KPI label="Capture Rate" value="74%" icon={'🎯'} />
         </div>
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
           <h3 className="text-sm font-semibold text-[#1B2A4A] mb-3">Discount Capture Rate (6 Months)</h3>

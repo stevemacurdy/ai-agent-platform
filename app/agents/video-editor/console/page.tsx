@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { getSupabaseBrowser } from '@/lib/supabase-browser';
+import { useTrackConsoleView } from '@/lib/hooks/useUsageTracking'
 
 /* ================================================================
    Types
@@ -69,9 +70,9 @@ const GREEN = '#059669';
 const PURPLE = '#7C3AED';
 
 const MODE_INFO: Record<Mode, { icon: string; label: string; desc: string; color: string }> = {
-  quote: { icon: '\u{1F4AC}', label: 'Quote Clips', desc: 'Find and extract exact quotes from video', color: TEAL },
-  power: { icon: '\u{26A1}', label: 'Power Clips', desc: 'Auto-detect the best marketing moments', color: ORANGE },
-  cleanup: { icon: '\u{2728}', label: 'Video Cleanup', desc: 'Normalize audio, color, and stability', color: PURPLE },
+  quote: { icon: '💬', label: 'Quote Clips', desc: 'Find and extract exact quotes from video', color: TEAL },
+  power: { icon: '⚡', label: 'Power Clips', desc: 'Auto-detect the best marketing moments', color: ORANGE },
+  cleanup: { icon: '✨', label: 'Video Cleanup', desc: 'Normalize audio, color, and stability', color: PURPLE },
 };
 
 const STATUS_COLORS: Record<string, { bg: string; text: string; label: string }> = {
@@ -114,6 +115,7 @@ function timeAgo(d: string) {
    Main Component
    ================================================================ */
 export default function VideoEditorConsole() {
+  useTrackConsoleView('video-editor')
   // Navigation
   const [view, setView] = useState<View>('dashboard');
   const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
@@ -327,7 +329,7 @@ export default function VideoEditorConsole() {
             </Link>
             <span style={{ color: '#4B5563' }}>|</span>
             <button onClick={() => { setView('dashboard'); setSelectedJobId(null); }} className="text-sm font-bold text-white flex items-center gap-1.5">
-              {'\u{1F3AC}'} Video Editor
+              {'🎬'} Video Editor
             </button>
           </div>
           <button onClick={openNewProject} className="text-sm font-bold text-white px-4 py-2 rounded-lg flex items-center gap-2" style={{ background: ORANGE }}>
@@ -344,10 +346,10 @@ export default function VideoEditorConsole() {
             {/* KPIs */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
-                { label: 'Active Jobs', value: activeJobs.length, icon: '\u{1F504}', color: '#2563EB' },
-                { label: 'Completed', value: completedJobs.length, icon: '\u{2705}', color: GREEN },
-                { label: 'Total Clips', value: totalClips, icon: '\u{2702}\u{FE0F}', color: ORANGE },
-                { label: 'Failed', value: failedJobs.length, icon: '\u{274C}', color: RED },
+                { label: 'Active Jobs', value: activeJobs.length, icon: '🔄', color: '#2563EB' },
+                { label: 'Completed', value: completedJobs.length, icon: '✅', color: GREEN },
+                { label: 'Total Clips', value: totalClips, icon: '✂️', color: ORANGE },
+                { label: 'Failed', value: failedJobs.length, icon: '❌', color: RED },
               ].map((kpi, i) => (
                 <div key={i} className="p-4 rounded-xl border bg-white" style={{ borderColor: BORDER }}>
                   <p className="text-xs font-medium uppercase tracking-wider" style={{ color: '#9CA3AF' }}>
@@ -374,7 +376,7 @@ export default function VideoEditorConsole() {
                       className="w-full text-left p-3 rounded-lg border bg-white hover:shadow-md transition-shadow" style={{ borderColor: BORDER }}>
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
-                          <span>{MODE_INFO[j.mode as Mode]?.icon || '\u{1F3AC}'}</span>
+                          <span>{MODE_INFO[j.mode as Mode]?.icon || '🎬'}</span>
                           <span className="text-sm font-semibold" style={{ color: NAVY }}>{j.source_filename || 'Untitled'}</span>
                           <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: sc.bg, color: sc.text }}>{sc.label}</span>
                         </div>
@@ -402,7 +404,7 @@ export default function VideoEditorConsole() {
                 </div>
               ) : jobs.length === 0 ? (
                 <div className="p-12 text-center">
-                  <p className="text-4xl mb-3">{'\u{1F3AC}'}</p>
+                  <p className="text-4xl mb-3">{'🎬'}</p>
                   <p className="text-sm font-semibold" style={{ color: NAVY }}>No projects yet</p>
                   <p className="text-xs mt-1 mb-4" style={{ color: '#9CA3AF' }}>Upload a video to get started</p>
                   <button onClick={openNewProject} className="text-sm font-bold text-white px-6 py-2.5 rounded-lg" style={{ background: ORANGE }}>+ New Project</button>
@@ -426,7 +428,7 @@ export default function VideoEditorConsole() {
                             onClick={() => openJobDetail(j.id)}>
                             <td className="px-4 py-3 font-medium" style={{ color: NAVY }}>
                               <div className="flex items-center gap-2">
-                                <span>{mi?.icon || '\u{1F3AC}'}</span>
+                                <span>{mi?.icon || '🎬'}</span>
                                 <span className="truncate max-w-xs">{j.source_filename || 'Untitled'}</span>
                               </div>
                             </td>
@@ -437,10 +439,10 @@ export default function VideoEditorConsole() {
                                 {sc.label}
                               </span>
                             </td>
-                            <td className="px-4 py-3" style={{ color: '#4B5563' }}>{j.clip_count || '\u{2014}'}</td>
-                            <td className="px-4 py-3" style={{ color: '#9CA3AF' }}>{j.source_size_bytes ? fmtBytes(j.source_size_bytes) : '\u{2014}'}</td>
+                            <td className="px-4 py-3" style={{ color: '#4B5563' }}>{j.clip_count || '—'}</td>
+                            <td className="px-4 py-3" style={{ color: '#9CA3AF' }}>{j.source_size_bytes ? fmtBytes(j.source_size_bytes) : '—'}</td>
                             <td className="px-4 py-3" style={{ color: '#9CA3AF' }}>{fmtDate(j.created_at)}</td>
-                            <td className="px-4 py-3 text-right"><span className="text-xs font-medium" style={{ color: ORANGE }}>View \u{2192}</span></td>
+                            <td className="px-4 py-3 text-right"><span className="text-xs font-medium" style={{ color: ORANGE }}>View →</span></td>
                           </tr>
                         );
                       })}
@@ -456,7 +458,7 @@ export default function VideoEditorConsole() {
         {view === 'new-project' && (
           <div className="space-y-6">
             <div className="flex items-center gap-2 text-sm">
-              <button onClick={() => setView('dashboard')} className="font-medium" style={{ color: ORANGE }}>{'\u{2190}'} Back to Dashboard</button>
+              <button onClick={() => setView('dashboard')} className="font-medium" style={{ color: ORANGE }}>{'←'} Back to Dashboard</button>
               <span style={{ color: '#9CA3AF' }}>/ New Project</span>
             </div>
 
@@ -485,8 +487,8 @@ export default function VideoEditorConsole() {
             {npStep === 'upload' && mode && (
               <div>
                 <div className="flex items-center gap-2 mb-6">
-                  <button onClick={() => setNpStep('mode')} className="text-sm" style={{ color: '#9CA3AF' }}>{'\u{2190}'} Mode</button>
-                  <span className="text-sm font-bold" style={{ color: NAVY }}>{MODE_INFO[mode].icon} {MODE_INFO[mode].label} {'\u{2014}'} Upload Video</span>
+                  <button onClick={() => setNpStep('mode')} className="text-sm" style={{ color: '#9CA3AF' }}>{'←'} Mode</button>
+                  <span className="text-sm font-bold" style={{ color: NAVY }}>{MODE_INFO[mode].icon} {MODE_INFO[mode].label} {'—'} Upload Video</span>
                 </div>
                 <div className="border-2 border-dashed rounded-xl p-12 text-center cursor-pointer hover:border-orange-300 transition-colors bg-white"
                   style={{ borderColor: uploadError ? RED : BORDER }}
@@ -502,18 +504,18 @@ export default function VideoEditorConsole() {
                         <div className="rounded-full h-2 transition-all" style={{ width: uploadProgress + '%', background: ORANGE }} />
                       </div>
                       <p className="text-xs mt-2" style={{ color: '#9CA3AF' }}>
-                        {Math.round(uploadProgress)}%{uploadFile ? ` \u{2014} ${fmtBytes(Math.round(uploadFile.size * uploadProgress / 100))} of ${fmtBytes(uploadFile.size)}` : ''}
+                        {Math.round(uploadProgress)}%{uploadFile ? ` — ${fmtBytes(Math.round(uploadFile.size * uploadProgress / 100))} of ${fmtBytes(uploadFile.size)}` : ''}
                       </p>
                     </div>
                   ) : uploadProgress === 100 ? (
                     <div>
-                      <p className="text-3xl mb-2">{'\u{2705}'}</p>
+                      <p className="text-3xl mb-2">{'✅'}</p>
                       <p className="text-sm font-semibold" style={{ color: GREEN }}>{uploadedFilename} uploaded</p>
                       <p className="text-xs" style={{ color: '#9CA3AF' }}>{fmtBytes(uploadedSize)}</p>
                     </div>
                   ) : (
                     <div>
-                      <p className="text-4xl mb-3">{'\u{1F4C1}'}</p>
+                      <p className="text-4xl mb-3">{'📁'}</p>
                       <p className="text-sm font-semibold" style={{ color: NAVY }}>Drag & drop your video here or <span style={{ color: ORANGE }}>browse</span></p>
                       <p className="text-xs mt-1" style={{ color: '#9CA3AF' }}>MP4, MOV, WEBM, AVI up to 3GB</p>
                     </div>
@@ -527,12 +529,12 @@ export default function VideoEditorConsole() {
             {npStep === 'configure' && mode && (
               <div className="space-y-4">
                 <div className="flex items-center gap-2 mb-2">
-                  <button onClick={() => setNpStep('upload')} className="text-sm" style={{ color: '#9CA3AF' }}>{'\u{2190}'} Upload</button>
-                  <span className="text-sm font-bold" style={{ color: NAVY }}>{MODE_INFO[mode].icon} {MODE_INFO[mode].label} {'\u{2014}'} Configure</span>
+                  <button onClick={() => setNpStep('upload')} className="text-sm" style={{ color: '#9CA3AF' }}>{'←'} Upload</button>
+                  <span className="text-sm font-bold" style={{ color: NAVY }}>{MODE_INFO[mode].icon} {MODE_INFO[mode].label} {'—'} Configure</span>
                 </div>
 
                 <div className="p-3 rounded-lg border bg-white flex items-center gap-3" style={{ borderColor: BORDER }}>
-                  <span className="text-2xl">{'\u{1F4F9}'}</span>
+                  <span className="text-2xl">{'📹'}</span>
                   <div>
                     <p className="text-sm font-semibold" style={{ color: NAVY }}>{uploadedFilename}</p>
                     <p className="text-xs" style={{ color: '#9CA3AF' }}>{fmtBytes(uploadedSize)}</p>
@@ -549,11 +551,11 @@ export default function VideoEditorConsole() {
                         placeholder={"This system saved us over 200 hours per month\nWe saw ROI within the first 30 days\nBest investment we made all year"}
                         className="w-full border rounded-lg p-3 text-sm" style={{ borderColor: BORDER, color: NAVY }} />
                     </div>
-                    {transcribing && <p className="text-xs font-medium animate-pulse" style={{ color: TEAL }}>{'\u{1F399}\u{FE0F}'} Transcribing video...</p>}
+                    {transcribing && <p className="text-xs font-medium animate-pulse" style={{ color: TEAL }}>{'🎙️'} Transcribing video...</p>}
                     {transcript && (
                       <div>
                         <label className="text-xs font-bold uppercase tracking-wider" style={{ color: '#9CA3AF' }}>
-                          Transcript ({transcript.segments.length} segments) {'\u{2014}'} click to add
+                          Transcript ({transcript.segments.length} segments) {'—'} click to add
                         </label>
                         <div className="mt-1 max-h-40 overflow-y-auto border rounded-lg p-2 space-y-1" style={{ borderColor: BORDER, background: '#F9FAFB' }}>
                           {transcript.segments.map((seg, i) => (
@@ -635,7 +637,7 @@ export default function VideoEditorConsole() {
                 <div className="flex items-center gap-4">
                   <button onClick={submitJob} className="text-sm font-bold text-white px-8 py-3 rounded-xl"
                     style={{ background: ORANGE, boxShadow: '0 4px 16px rgba(245,146,11,0.3)' }}>
-                    {'\u{1F680}'} Start Processing
+                    {'🚀'} Start Processing
                   </button>
                   <button onClick={() => setView('dashboard')} className="text-sm" style={{ color: '#9CA3AF' }}>Cancel</button>
                 </div>
@@ -649,7 +651,7 @@ export default function VideoEditorConsole() {
           <div className="space-y-6">
             <div className="flex items-center gap-2 text-sm">
               <button onClick={() => { setView('dashboard'); setSelectedJobId(null); }} className="font-medium" style={{ color: ORANGE }}>
-                {'\u{2190}'} Back to Dashboard
+                {'←'} Back to Dashboard
               </button>
               <span style={{ color: '#9CA3AF' }}>/ {detailJob?.source_filename || 'Loading...'}</span>
             </div>
@@ -665,12 +667,12 @@ export default function VideoEditorConsole() {
                 <div className="rounded-xl border bg-white p-5" style={{ borderColor: BORDER }}>
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">
-                      <span className="text-2xl">{MODE_INFO[detailJob.mode as Mode]?.icon || '\u{1F3AC}'}</span>
+                      <span className="text-2xl">{MODE_INFO[detailJob.mode as Mode]?.icon || '🎬'}</span>
                       <div>
                         <h2 className="text-lg font-extrabold" style={{ fontFamily: "'Outfit', sans-serif", color: NAVY }}>{detailJob.source_filename || 'Untitled'}</h2>
                         <p className="text-xs" style={{ color: '#9CA3AF' }}>
-                          {MODE_INFO[detailJob.mode as Mode]?.label} {'\u{00B7}'} {fmtDate(detailJob.created_at)}
-                          {detailJob.source_size_bytes ? ` \u{00B7} ${fmtBytes(detailJob.source_size_bytes)}` : ''}
+                          {MODE_INFO[detailJob.mode as Mode]?.label} {'·'} {fmtDate(detailJob.created_at)}
+                          {detailJob.source_size_bytes ? ` · ${fmtBytes(detailJob.source_size_bytes)}` : ''}
                         </p>
                       </div>
                     </div>
@@ -691,7 +693,7 @@ export default function VideoEditorConsole() {
                         {STATUS_STEPS.map((s, i) => {
                           const current = STATUS_STEPS.indexOf(detailJob.status);
                           const done = i <= current;
-                          return <span key={s} className="text-xs font-medium" style={{ color: done ? TEAL : '#D1D5DB' }}>{done ? '\u{2713} ' : ''}{s.charAt(0).toUpperCase() + s.slice(1)}</span>;
+                          return <span key={s} className="text-xs font-medium" style={{ color: done ? TEAL : '#D1D5DB' }}>{done ? '✓ ' : ''}{s.charAt(0).toUpperCase() + s.slice(1)}</span>;
                         })}
                       </div>
                       <div className="w-full rounded-full h-2" style={{ background: '#E5E7EB' }}>
@@ -710,7 +712,7 @@ export default function VideoEditorConsole() {
                   {detailJob.status === 'complete' && detailJob.processing_seconds && (
                     <p className="text-xs mt-4" style={{ color: '#9CA3AF' }}>
                       Processed in {fmtDuration(detailJob.processing_seconds)}
-                      {detailJob.completed_at ? ` \u{00B7} Completed ${fmtDate(detailJob.completed_at)}` : ''}
+                      {detailJob.completed_at ? ` · Completed ${fmtDate(detailJob.completed_at)}` : ''}
                     </p>
                   )}
                 </div>
@@ -719,7 +721,7 @@ export default function VideoEditorConsole() {
                 {detailJob.video_clips && detailJob.video_clips.length > 0 && (
                   <div className="rounded-xl border bg-white p-5" style={{ borderColor: BORDER }}>
                     <h3 className="text-sm font-bold mb-4 flex items-center gap-2" style={{ color: NAVY }}>
-                      {'\u{2702}\u{FE0F}'} {detailJob.video_clips.length} Clip{detailJob.video_clips.length !== 1 ? 's' : ''} Generated
+                      {'✂️'} {detailJob.video_clips.length} Clip{detailJob.video_clips.length !== 1 ? 's' : ''} Generated
                     </h3>
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                       {detailJob.video_clips.sort((a, b) => a.clip_index - b.clip_index).map(clip => (
@@ -730,13 +732,13 @@ export default function VideoEditorConsole() {
                           <div className="p-3">
                             <div className="flex items-center justify-between mb-1">
                               <span className="text-xs font-bold" style={{ color: NAVY }}>Clip #{clip.clip_index + 1}</span>
-                              <span className="text-xs" style={{ color: '#9CA3AF' }}>{clip.format} {'\u{00B7}'} {fmtDuration(clip.duration_seconds)}</span>
+                              <span className="text-xs" style={{ color: '#9CA3AF' }}>{clip.format} {'·'} {fmtDuration(clip.duration_seconds)}</span>
                             </div>
                             {clip.matched_quote && <p className="text-xs italic mt-1" style={{ color: '#4B5563' }}>&quot;{clip.matched_quote}&quot;</p>}
                             {clip.confidence != null && <p className="text-xs mt-1" style={{ color: TEAL }}>{Math.round(clip.confidence * 100)}% match</p>}
                             {clip.download_url && (
                               <a href={clip.download_url} download className="inline-block mt-2 text-xs font-bold px-3 py-1.5 rounded-lg text-white" style={{ background: ORANGE }}>
-                                {'\u{2B07}'} Download
+                                {'⬇'} Download
                               </a>
                             )}
                           </div>
@@ -749,10 +751,10 @@ export default function VideoEditorConsole() {
                 {/* Cleanup output */}
                 {detailJob.mode === 'cleanup' && detailJob.status === 'complete' && detailJob.output_url && (
                   <div className="rounded-xl border bg-white p-5" style={{ borderColor: BORDER }}>
-                    <h3 className="text-sm font-bold mb-4" style={{ color: NAVY }}>{'\u{2728}'} Cleaned Video</h3>
+                    <h3 className="text-sm font-bold mb-4" style={{ color: NAVY }}>{'✨'} Cleaned Video</h3>
                     <video src={detailJob.output_url} controls className="w-full rounded-lg" style={{ maxHeight: 400 }} />
                     <a href={detailJob.output_url} download className="inline-block mt-3 text-sm font-bold px-5 py-2 rounded-lg text-white" style={{ background: ORANGE }}>
-                      {'\u{2B07}'} Download Cleaned Video
+                      {'⬇'} Download Cleaned Video
                     </a>
                   </div>
                 )}

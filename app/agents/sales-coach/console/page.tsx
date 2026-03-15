@@ -1,12 +1,13 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { useTrackConsoleView } from '@/lib/hooks/useUsageTracking'
 
 const TABS = [
-  { id: 'team', label: 'Team Performance', icon: '\u{1F3C6}' },
-  { id: 'scorecards', label: 'Rep Scorecards', icon: '\u{1F4CB}' },
-  { id: 'plans', label: 'Coaching Plans', icon: '\u{1F4DD}' },
-  { id: 'winloss', label: 'Win/Loss Analysis', icon: '\u{1F4CA}' },
+  { id: 'team', label: 'Team Performance', icon: '🏆' },
+  { id: 'scorecards', label: 'Rep Scorecards', icon: '📋' },
+  { id: 'plans', label: 'Coaching Plans', icon: '📝' },
+  { id: 'winloss', label: 'Win/Loss Analysis', icon: '📊' },
 ];
 
 const REPS = [
@@ -57,6 +58,7 @@ function KPI({ label, value, sub, icon }: { label: string; value: string; sub?: 
 }
 
 export default function SalesCoachConsole() {
+  useTrackConsoleView('sales-coach')
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState('team');
@@ -94,7 +96,7 @@ export default function SalesCoachConsole() {
   };
 
   const Th = ({ k, children }: { k: string; children: React.ReactNode }) => (
-    <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 cursor-pointer select-none hover:text-[#1B2A4A]" onClick={() => toggleSort(k)}>{children} {sortKey === k ? (sortDir === 'asc' ? '\u2191' : '\u2193') : ''}</th>
+    <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 cursor-pointer select-none hover:text-[#1B2A4A]" onClick={() => toggleSort(k)}>{children} {sortKey === k ? (sortDir === 'asc' ? '↑' : '↓') : ''}</th>
   );
 
   const rep = REPS[selectedRep];
@@ -102,7 +104,7 @@ export default function SalesCoachConsole() {
   return (
     <div className="p-4 md:p-6 space-y-6 max-w-[1400px] mx-auto">
       <div className="flex items-center justify-between flex-wrap gap-2">
-        <div><h1 className="text-2xl font-bold text-[#1B2A4A] flex items-center gap-2">{'\u{1F3C6}'} Sales Coach Agent</h1><p className="text-sm text-gray-500">Rep performance analysis and coaching intelligence</p></div>
+        <div><h1 className="text-2xl font-bold text-[#1B2A4A] flex items-center gap-2">{'🏆'} Sales Coach Agent</h1><p className="text-sm text-gray-500">Rep performance analysis and coaching intelligence</p></div>
         <span className={`px-3 py-1 rounded-full text-xs font-semibold ${source === 'live' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'}`}>{source === 'live' ? 'Live Data' : 'Demo Data'}</span>
       </div>
 
@@ -114,7 +116,7 @@ export default function SalesCoachConsole() {
       {/* Team Performance */}
       {tab === 'team' && (<div className="space-y-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <KPI label="Team Quota Attainment" value={`${summary.teamQuotaAttainment || 78}%`} icon={'\u{1F4CA}'} /><KPI label="Avg Win Rate" value={`${summary.avgWinRate || 32}%`} icon={'\u{1F3AF}'} /><KPI label="Coaching Sessions" value="8" icon={'\u{1F4DD}'} sub="this month" /><KPI label="Top Rep" value="Sarah M." icon={'\u{1F31F}'} sub="83% attainment" />
+          <KPI label="Team Quota Attainment" value={`${summary.teamQuotaAttainment || 78}%`} icon={'📊'} /><KPI label="Avg Win Rate" value={`${summary.avgWinRate || 32}%`} icon={'🎯'} /><KPI label="Coaching Sessions" value="8" icon={'📝'} sub="this month" /><KPI label="Top Rep" value="Sarah M." icon={'🌟'} sub="83% attainment" />
         </div>
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
           <h3 className="text-sm font-semibold text-[#1B2A4A] mb-3">Quota Attainment by Rep</h3>
@@ -186,7 +188,7 @@ export default function SalesCoachConsole() {
       {/* Coaching Plans */}
       {tab === 'plans' && (<div className="space-y-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <KPI label="Active Plans" value="5" icon={'\u{1F4DD}'} /><KPI label="On Track" value="3" icon={'\u{2705}'} /><KPI label="Needs Attention" value="2" icon={'\u{26A0}\u{FE0F}'} /><KPI label="Completed Q1" value="4" icon={'\u{1F3C6}'} />
+          <KPI label="Active Plans" value="5" icon={'📝'} /><KPI label="On Track" value="3" icon={'✅'} /><KPI label="Needs Attention" value="2" icon={'⚠️'} /><KPI label="Completed Q1" value="4" icon={'🏆'} />
         </div>
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-x-auto">
           <table className="w-full text-sm">
@@ -205,7 +207,7 @@ export default function SalesCoachConsole() {
       {/* Win/Loss Analysis */}
       {tab === 'winloss' && (<div className="space-y-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <KPI label="Win Rate" value={`${summary.avgWinRate || 32}%`} icon={'\u{1F3AF}'} /><KPI label="Top Loss Reason" value="Price" icon={'\u{1F4B8}'} sub="40% of losses" /><KPI label="Avg Deal Cycle" value="42 days" icon={'\u{23F1}\u{FE0F}'} /><KPI label="Competitive Losses" value="8" icon={'\u{1F4C9}'} />
+          <KPI label="Win Rate" value={`${summary.avgWinRate || 32}%`} icon={'🎯'} /><KPI label="Top Loss Reason" value="Price" icon={'💸'} sub="40% of losses" /><KPI label="Avg Deal Cycle" value="42 days" icon={'⏱️'} /><KPI label="Competitive Losses" value="8" icon={'📉'} />
         </div>
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
           <h3 className="text-sm font-semibold text-[#1B2A4A] mb-3">Win / Loss / Stalled Breakdown</h3>

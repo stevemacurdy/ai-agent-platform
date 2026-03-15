@@ -4,6 +4,7 @@ import {
   BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer, Legend
 } from 'recharts';
+import { useTrackConsoleView } from '@/lib/hooks/useUsageTracking'
 
 const RANKINGS = [
   { keyword: 'warehouse management software', pos: 14, prev: 8, vol: 4400, diff: 72, url: '/solutions/wms', serpFeatures: 'Featured Snippet, People Also Ask', competitors: 'SAP, Oracle, Manhattan Associates' },
@@ -58,6 +59,7 @@ const badge = (v: string) => {
 };
 
 export default function SeoConsole() {
+  useTrackConsoleView('seo')
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState('rankings');

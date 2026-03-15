@@ -4,7 +4,7 @@ registerAgent({
   meta: {
     slug: 'org-lead',
     name: 'Org Lead',
-    icon: '\u{1F3E2}',
+    icon: '🏢',
     dept: 'Strategy',
     deptColor: '#0EA5E9',
     description: 'AI-powered organizational leadership dashboard and strategic planning',
@@ -17,10 +17,10 @@ registerAgent({
       id: 'executive-summary',
       label: 'Executive Summary',
       kpis: [
-        { label: 'Revenue (MTD)', value: 842000, prefix: '$', change: 12, trend: 'up', icon: '\u{1F4B0}' },
-        { label: 'EBITDA Margin', value: 18.4, suffix: '%', change: 2, trend: 'up', icon: '\u{1F4CA}' },
-        { label: 'Headcount', value: 127, change: 4, trend: 'up', icon: '\u{1F465}' },
-        { label: 'Customer NPS', value: 62, change: 6, trend: 'up', icon: '\u{2B50}' },
+        { label: 'Revenue (MTD)', value: 842000, prefix: '$', change: 12, trend: 'up', icon: '💰' },
+        { label: 'EBITDA Margin', value: 18.4, suffix: '%', change: 2, trend: 'up', icon: '📊' },
+        { label: 'Headcount', value: 127, change: 4, trend: 'up', icon: '👥' },
+        { label: 'Customer NPS', value: 62, change: 6, trend: 'up', icon: '⭐' },
       ],
       columns: [
         { key: 'department', label: 'Department', sortable: true },
@@ -77,10 +77,10 @@ registerAgent({
       id: 'okrs',
       label: 'OKRs',
       kpis: [
-        { label: 'Company OKRs', value: 5, change: 0, trend: 'flat', icon: '\u{1F3AF}' },
-        { label: 'On Track', value: 3, change: 1, trend: 'up', icon: '\u{2705}' },
-        { label: 'At Risk', value: 2, change: -1, trend: 'down', icon: '\u{26A0}\u{FE0F}' },
-        { label: 'Avg Progress', value: 62, suffix: '%', change: 8, trend: 'up', icon: '\u{1F4CA}' },
+        { label: 'Company OKRs', value: 5, change: 0, trend: 'flat', icon: '🎯' },
+        { label: 'On Track', value: 3, change: 1, trend: 'up', icon: '✅' },
+        { label: 'At Risk', value: 2, change: -1, trend: 'down', icon: '⚠️' },
+        { label: 'Avg Progress', value: 62, suffix: '%', change: 8, trend: 'up', icon: '📊' },
       ],
       columns: [
         { key: 'objective', label: 'Objective', sortable: true },
@@ -126,10 +126,10 @@ registerAgent({
       id: 'strategic-initiatives',
       label: 'Initiatives',
       kpis: [
-        { label: 'Active Initiatives', value: 6, change: 1, trend: 'up', icon: '\u{1F680}' },
-        { label: 'On Schedule', value: 4, change: 0, trend: 'flat', icon: '\u{2705}' },
-        { label: 'Total Investment', value: 1200000, prefix: '$', change: 0, trend: 'flat', icon: '\u{1F4B0}' },
-        { label: 'Expected ROI', value: 340, suffix: '%', change: 12, trend: 'up', icon: '\u{1F4C8}' },
+        { label: 'Active Initiatives', value: 6, change: 1, trend: 'up', icon: '🚀' },
+        { label: 'On Schedule', value: 4, change: 0, trend: 'flat', icon: '✅' },
+        { label: 'Total Investment', value: 1200000, prefix: '$', change: 0, trend: 'flat', icon: '💰' },
+        { label: 'Expected ROI', value: 340, suffix: '%', change: 12, trend: 'up', icon: '📈' },
       ],
       columns: [
         { key: 'initiative', label: 'Initiative', sortable: true },
@@ -177,10 +177,10 @@ registerAgent({
       id: 'team-health',
       label: 'Team Health',
       kpis: [
-        { label: 'Overall Health', value: 78, suffix: '/100', change: 4, trend: 'up', icon: '\u{1F49A}' },
-        { label: 'Engagement', value: 74, suffix: '%', change: 6, trend: 'up', icon: '\u{1F4CA}' },
-        { label: 'Collaboration Score', value: 82, suffix: '/100', change: 3, trend: 'up', icon: '\u{1F91D}' },
-        { label: 'Leadership NPS', value: 54, change: 8, trend: 'up', icon: '\u{2B50}' },
+        { label: 'Overall Health', value: 78, suffix: '/100', change: 4, trend: 'up', icon: '💚' },
+        { label: 'Engagement', value: 74, suffix: '%', change: 6, trend: 'up', icon: '📊' },
+        { label: 'Collaboration Score', value: 82, suffix: '/100', change: 3, trend: 'up', icon: '🤝' },
+        { label: 'Leadership NPS', value: 54, change: 8, trend: 'up', icon: '⭐' },
       ],
       columns: [
         { key: 'team', label: 'Team', sortable: true },

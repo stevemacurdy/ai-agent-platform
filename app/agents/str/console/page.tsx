@@ -4,6 +4,7 @@ import {
   BarChart, Bar, LineChart, Line, AreaChart, Area,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend
 } from 'recharts';
+import { useTrackConsoleView } from '@/lib/hooks/useUsageTracking'
 
 const PROPERTIES = [
   { name: 'Mountain View Cabin', location: 'Park City', occ: 45, rate: 185, revenue: 2497, rating: 4.6, status: 'Active', reviews: 'Great views, cozy fireplace. Some noted dated kitchen.', rateHistory: '$165-$210 seasonal', calendar: '12 bookings next 30d' },
@@ -67,6 +68,7 @@ const stars = (n: number) => {
 };
 
 export default function STRConsole() {
+  useTrackConsoleView('str')
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState('portfolio');

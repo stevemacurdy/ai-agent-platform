@@ -4,7 +4,7 @@ registerAgent({
   meta: {
     slug: 'compliance',
     name: 'Compliance',
-    icon: '\u{1F6E1}\u{FE0F}',
+    icon: '🛡️',
     dept: 'Legal',
     deptColor: '#7C3AED',
     description: 'AI-powered regulatory compliance monitoring and audit management',
@@ -17,10 +17,10 @@ registerAgent({
       id: 'dashboard',
       label: 'Compliance Dashboard',
       kpis: [
-        { label: 'Overall Score', value: 87, suffix: '/100', change: 4, trend: 'up', icon: '\u{1F3AF}' },
-        { label: 'Open Findings', value: 12, change: -5, trend: 'down', icon: '\u{1F50D}' },
-        { label: 'Certifications', value: 6, change: 1, trend: 'up', icon: '\u{2705}' },
-        { label: 'Next Audit', value: 0, suffix: '', change: 0, trend: 'flat', icon: '\u{1F4C5}' },
+        { label: 'Overall Score', value: 87, suffix: '/100', change: 4, trend: 'up', icon: '🎯' },
+        { label: 'Open Findings', value: 12, change: -5, trend: 'down', icon: '🔍' },
+        { label: 'Certifications', value: 6, change: 1, trend: 'up', icon: '✅' },
+        { label: 'Next Audit', value: 3, suffix: ' weeks', change: 0, trend: 'flat', icon: '📅' },
       ],
       columns: [
         { key: 'framework', label: 'Framework', sortable: true },
@@ -70,10 +70,10 @@ registerAgent({
       id: 'findings',
       label: 'Findings',
       kpis: [
-        { label: 'Open', value: 12, change: -5, trend: 'down', icon: '\u{1F534}' },
-        { label: 'In Remediation', value: 8, change: 2, trend: 'up', icon: '\u{1F7E1}' },
-        { label: 'Closed (Quarter)', value: 18, change: 8, trend: 'up', icon: '\u{2705}' },
-        { label: 'Avg Close Time', value: 22, suffix: ' days', change: -14, trend: 'down', icon: '\u{23F1}\u{FE0F}' },
+        { label: 'Open', value: 12, change: -5, trend: 'down', icon: '🔴' },
+        { label: 'In Remediation', value: 8, change: 2, trend: 'up', icon: '🟡' },
+        { label: 'Closed (Quarter)', value: 18, change: 8, trend: 'up', icon: '✅' },
+        { label: 'Avg Close Time', value: 22, suffix: ' days', change: -14, trend: 'down', icon: '⏱️' },
       ],
       columns: [
         { key: 'finding', label: 'Finding', sortable: true },
@@ -121,10 +121,10 @@ registerAgent({
       id: 'policies',
       label: 'Policies',
       kpis: [
-        { label: 'Total Policies', value: 34, change: 4, trend: 'up', icon: '\u{1F4DA}' },
-        { label: 'Current', value: 28, change: 6, trend: 'up', icon: '\u{2705}' },
-        { label: 'Needs Review', value: 6, change: -2, trend: 'down', icon: '\u{26A0}\u{FE0F}' },
-        { label: 'Acknowledgment %', value: 86, suffix: '%', change: 8, trend: 'up', icon: '\u{1F4DD}' },
+        { label: 'Total Policies', value: 34, change: 4, trend: 'up', icon: '📚' },
+        { label: 'Current', value: 28, change: 6, trend: 'up', icon: '✅' },
+        { label: 'Needs Review', value: 6, change: -2, trend: 'down', icon: '⚠️' },
+        { label: 'Acknowledgment %', value: 86, suffix: '%', change: 8, trend: 'up', icon: '📝' },
       ],
       columns: [
         { key: 'policy', label: 'Policy', sortable: true },
@@ -170,10 +170,10 @@ registerAgent({
       id: 'training-compliance',
       label: 'Training',
       kpis: [
-        { label: 'Completion Rate', value: 82, suffix: '%', change: 6, trend: 'up', icon: '\u{1F393}' },
-        { label: 'Overdue', value: 14, change: -4, trend: 'down', icon: '\u{1F534}' },
-        { label: 'Courses Active', value: 8, change: 2, trend: 'up', icon: '\u{1F4DA}' },
-        { label: 'Avg Score', value: 88, suffix: '%', change: 3, trend: 'up', icon: '\u{1F3AF}' },
+        { label: 'Completion Rate', value: 82, suffix: '%', change: 6, trend: 'up', icon: '🎓' },
+        { label: 'Overdue', value: 14, change: -4, trend: 'down', icon: '🔴' },
+        { label: 'Courses Active', value: 8, change: 2, trend: 'up', icon: '📚' },
+        { label: 'Avg Score', value: 88, suffix: '%', change: 3, trend: 'up', icon: '🎯' },
       ],
       columns: [
         { key: 'course', label: 'Course', sortable: true },

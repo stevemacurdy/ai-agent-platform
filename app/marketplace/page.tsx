@@ -24,9 +24,9 @@ interface MarketplaceData {
 
 const DEPT_ORDER = ['Finance', 'Sales', 'Marketing', 'Operations', 'Warehouse', 'HR', 'People', 'Support', 'Legal', 'Compliance', 'Strategy', 'Other'];
 const DEPT_ICONS: Record<string, string> = {
-  Finance: '\uD83D\uDCB0', Sales: '\uD83D\uDCC8', Marketing: '\uD83D\uDCE3', Operations: '\u2699\uFE0F',
-  Warehouse: '\uD83C\uDFED', HR: '\uD83D\uDC65', People: '\uD83D\uDC65', Support: '\uD83C\uDFA7',
-  Legal: '\u2696\uFE0F', Compliance: '\uD83D\uDEE1\uFE0F', Strategy: '\uD83E\uDDED', Other: '\uD83E\uDD16',
+  Finance: '💰', Sales: '📈', Marketing: '📣', Operations: '⚙️',
+  Warehouse: '🏭', HR: '👥', People: '👥', Support: '🎧',
+  Legal: '⚖️', Compliance: '🛡️', Strategy: '🧭', Other: '🤖',
 };
 
 const ACCESS_COLORS: Record<string, { bg: string; text: string; border: string }> = {
@@ -162,7 +162,7 @@ export default function MarketplacePage() {
         {sortedDepts.map(dept => (
           <div key={dept}>
             <div className="flex items-center gap-2 mb-3 mt-6">
-              <span className="text-lg">{DEPT_ICONS[dept] || '\uD83E\uDD16'}</span>
+              <span className="text-lg">{DEPT_ICONS[dept] || '🤖'}</span>
               <h2 className="text-xs font-bold uppercase tracking-wider" style={{ color: '#9CA3AF' }}>
                 {dept} ({grouped[dept].length})
               </h2>

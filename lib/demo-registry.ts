@@ -28,6 +28,7 @@ export interface DemoTab {
 export interface DemoKpi {
   label: string;
   value: number;
+  textValue?: string;
   prefix?: string;
   suffix?: string;
   change: number;

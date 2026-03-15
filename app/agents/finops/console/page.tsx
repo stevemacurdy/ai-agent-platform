@@ -1,12 +1,13 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { BarChart, Bar, AreaChart, Area, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { useTrackConsoleView } from '@/lib/hooks/useUsageTracking'
 
 const TABS = [
-  { id: 'budget', label: 'Budget vs Actual', icon: '\u{1F4CA}' },
-  { id: 'forecasts', label: 'Forecasts', icon: '\u{1F52E}' },
-  { id: 'costcenters', label: 'Cost Centers', icon: '\u{1F4CB}' },
-  { id: 'runway', label: 'Runway', icon: '\u{2708}\u{FE0F}' },
+  { id: 'budget', label: 'Budget vs Actual', icon: '📊' },
+  { id: 'forecasts', label: 'Forecasts', icon: '🔮' },
+  { id: 'costcenters', label: 'Cost Centers', icon: '📋' },
+  { id: 'runway', label: 'Runway', icon: '✈️' },
 ];
 
 const DEPT_DATA = [
@@ -80,6 +81,7 @@ function KPI({ label, value, sub, icon }: { label: string; value: string; sub?: 
 }
 
 export default function FinOpsConsole() {
+  useTrackConsoleView('finops')
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState('budget');
@@ -121,7 +123,7 @@ export default function FinOpsConsole() {
   const costs = data?.costs || [];
   const Th = ({ k, children }: { k: string; children: React.ReactNode }) => (
     <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 cursor-pointer select-none hover:text-[#1B2A4A]" onClick={() => toggleSort(k)}>
-      {children} {sortKey === k ? (sortDir === 'asc' ? '\u2191' : '\u2193') : ''}
+      {children} {sortKey === k ? (sortDir === 'asc' ? '↑' : '↓') : ''}
     </th>
   );
 
@@ -134,7 +136,7 @@ export default function FinOpsConsole() {
     <div className="p-4 md:p-6 space-y-6 max-w-[1400px] mx-auto">
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div>
-          <h1 className="text-2xl font-bold text-[#1B2A4A] flex items-center gap-2">{'\u{1F4CA}'} FinOps Agent</h1>
+          <h1 className="text-2xl font-bold text-[#1B2A4A] flex items-center gap-2">{'📊'} FinOps Agent</h1>
           <p className="text-sm text-gray-500">Financial operations and spend optimization</p>
         </div>
         <span className={`px-3 py-1 rounded-full text-xs font-semibold ${source === 'live' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'}`}>
@@ -154,10 +156,10 @@ export default function FinOpsConsole() {
       {/* Budget vs Actual */}
       {tab === 'budget' && (<div className="space-y-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <KPI label="Monthly Burn" value="$284K" icon={'\u{1F525}'} sub="+5% vs last month" />
-          <KPI label="Revenue" value="$412K" icon={'\u{1F4B0}'} sub="+12% MoM" />
-          <KPI label="Gross Margin" value="67%" icon={'\u{1F4C8}'} sub="+2% improvement" />
-          <KPI label="Runway" value="18 months" icon={'\u{2708}\u{FE0F}'} sub="At current burn rate" />
+          <KPI label="Monthly Burn" value="$284K" icon={'🔥'} sub="+5% vs last month" />
+          <KPI label="Revenue" value="$412K" icon={'💰'} sub="+12% MoM" />
+          <KPI label="Gross Margin" value="67%" icon={'📈'} sub="+2% improvement" />
+          <KPI label="Runway" value="18 months" icon={'✈️'} sub="At current burn rate" />
         </div>
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
           <h3 className="text-sm font-semibold text-[#1B2A4A] mb-3">Budget vs Actual by Department</h3>
@@ -190,7 +192,7 @@ export default function FinOpsConsole() {
                     <td className="px-3 py-3 font-medium">${d.actual.toLocaleString()}</td>
                     <td className="px-3 py-3"><span className={variance > 0 ? 'text-rose-600' : 'text-emerald-600'}>{variance > 0 ? '+' : ''}${variance.toLocaleString()}</span></td>
                     <td className="px-3 py-3">{pctBar(d.pct)}</td>
-                    <td className="px-3 py-3">{variance > 0 ? '\u2191' : variance < 0 ? '\u2193' : '\u2192'}</td>
+                    <td className="px-3 py-3">{variance > 0 ? '↑' : variance < 0 ? '↓' : '→'}</td>
                   </tr>
                   {expanded === i && (
                     <tr key={`exp-${i}`}><td colSpan={6} className="bg-gray-50/50 px-4 py-4 text-xs">
@@ -211,10 +213,10 @@ export default function FinOpsConsole() {
       {/* Forecasts */}
       {tab === 'forecasts' && (<div className="space-y-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <KPI label="Q2 Revenue Forecast" value="$1.34M" icon={'\u{1F4B0}'} />
-          <KPI label="Q2 Expense Forecast" value="$890K" icon={'\u{1F4CA}'} />
-          <KPI label="Projected Margin" value="68%" icon={'\u{1F4C8}'} />
-          <KPI label="Forecast Confidence" value="82%" icon={'\u{1F3AF}'} />
+          <KPI label="Q2 Revenue Forecast" value="$1.34M" icon={'💰'} />
+          <KPI label="Q2 Expense Forecast" value="$890K" icon={'📊'} />
+          <KPI label="Projected Margin" value="68%" icon={'📈'} />
+          <KPI label="Forecast Confidence" value="82%" icon={'🎯'} />
         </div>
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
           <h3 className="text-sm font-semibold text-[#1B2A4A] mb-3">Revenue vs Expense Projection (6 Months)</h3>
@@ -244,10 +246,10 @@ export default function FinOpsConsole() {
       {/* Cost Centers */}
       {tab === 'costcenters' && (<div className="space-y-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <KPI label="Total Cost Centers" value="8" icon={'\u{1F3E2}'} />
-          <KPI label="Over Budget" value="2" icon={'\u{1F534}'} sub="Engineering, Marketing" />
-          <KPI label="Under Budget" value="4" icon={'\u{1F7E2}'} />
-          <KPI label="On Track" value="2" icon={'\u{2705}'} />
+          <KPI label="Total Cost Centers" value="8" icon={'🏢'} />
+          <KPI label="Over Budget" value="2" icon={'🔴'} sub="Engineering, Marketing" />
+          <KPI label="Under Budget" value="4" icon={'🟢'} />
+          <KPI label="On Track" value="2" icon={'✅'} />
         </div>
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
           <h3 className="text-sm font-semibold text-[#1B2A4A] mb-3">Spend Distribution by Category</h3>
@@ -292,10 +294,10 @@ export default function FinOpsConsole() {
       {/* Runway */}
       {tab === 'runway' && (<div className="space-y-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <KPI label="Current Runway" value="18 months" icon={'\u{2708}\u{FE0F}'} sub="At likely burn rate" />
-          <KPI label="Monthly Burn" value="$284K" icon={'\u{1F525}'} />
-          <KPI label="Cash Reserves" value="$5.1M" icon={'\u{1F3E6}'} />
-          <KPI label="Break-Even Revenue" value="$380K/mo" icon={'\u{1F3AF}'} />
+          <KPI label="Current Runway" value="18 months" icon={'✈️'} sub="At likely burn rate" />
+          <KPI label="Monthly Burn" value="$284K" icon={'🔥'} />
+          <KPI label="Cash Reserves" value="$5.1M" icon={'🏦'} />
+          <KPI label="Break-Even Revenue" value="$380K/mo" icon={'🎯'} />
         </div>
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
           <h3 className="text-sm font-semibold text-[#1B2A4A] mb-3">Cash Reserves Projection (3 Scenarios)</h3>

@@ -46,10 +46,12 @@ export async function POST(request: NextRequest) {
   const dashData = await getDashboardData(customerCode || 'MWS-001');
   const systemPrompt = buildSystemPrompt(dashData);
 
-  // Try OpenAI
+  // Try OpenAI (authenticated users only)
+  const authHeader = request.headers.get('authorization');
+  const isAuthenticated = authHeader?.startsWith('Bearer ');
   try {
     const apiKey = process.env.OPENAI_API_KEY;
-    if (apiKey && apiKey !== 'sk-placeholder') {
+    if (isAuthenticated && apiKey && apiKey !== 'sk-placeholder') {
       const { default: OpenAI } = await import('openai');
       const openai = new OpenAI({ apiKey });
       const msgs = [

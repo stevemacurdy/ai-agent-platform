@@ -4,7 +4,7 @@ registerAgent({
   meta: {
     slug: 'operations',
     name: 'Operations',
-    icon: '\u{2699}\u{FE0F}',
+    icon: '⚙️',
     dept: 'Operations',
     deptColor: '#2A9D8F',
     description: 'AI-powered project management, resources, and equipment tracking',
@@ -17,10 +17,10 @@ registerAgent({
       id: 'project-board',
       label: 'Project Board',
       kpis: [
-        { label: 'Active Projects', value: 8, change: 2, trend: 'up', icon: '\u{1F4CB}' },
-        { label: 'Resource Utilization', value: 76, suffix: '%', change: 4, trend: 'up', icon: '\u{1F4CA}' },
-        { label: 'On-Time Delivery', value: 88, suffix: '%', change: -3, trend: 'down', icon: '\u{23F0}' },
-        { label: 'Equipment Uptime', value: 94, suffix: '%', change: 1, trend: 'up', icon: '\u{2705}' },
+        { label: 'Active Projects', value: 8, change: 2, trend: 'up', icon: '📋' },
+        { label: 'Resource Utilization', value: 76, suffix: '%', change: 4, trend: 'up', icon: '📊' },
+        { label: 'On-Time Delivery', value: 88, suffix: '%', change: -3, trend: 'down', icon: '⏰' },
+        { label: 'Equipment Uptime', value: 94, suffix: '%', change: 1, trend: 'up', icon: '✅' },
       ],
       columns: [
         { key: 'project', label: 'Project', sortable: true },
@@ -71,10 +71,10 @@ registerAgent({
       id: 'resources',
       label: 'Resources',
       kpis: [
-        { label: 'Team Size', value: 34, change: 2, trend: 'up', icon: '\u{1F465}' },
-        { label: 'Utilization', value: 76, suffix: '%', change: 4, trend: 'up', icon: '\u{1F4CA}' },
-        { label: 'Bench', value: 4, change: -1, trend: 'down', icon: '\u{1F4A4}' },
-        { label: 'Overtime Hours', value: 126, change: -8, trend: 'down', icon: '\u{23F0}' },
+        { label: 'Team Size', value: 34, change: 2, trend: 'up', icon: '👥' },
+        { label: 'Utilization', value: 76, suffix: '%', change: 4, trend: 'up', icon: '📊' },
+        { label: 'Bench', value: 4, change: -1, trend: 'down', icon: '💤' },
+        { label: 'Overtime Hours', value: 126, change: -8, trend: 'down', icon: '⏰' },
       ],
       columns: [
         { key: 'name', label: 'Name', sortable: true },
@@ -120,10 +120,10 @@ registerAgent({
       id: 'equipment',
       label: 'Equipment',
       kpis: [
-        { label: 'Total Assets', value: 47, change: 3, trend: 'up', icon: '\u{1F6E0}\u{FE0F}' },
-        { label: 'Maintenance Due', value: 8, change: -2, trend: 'down', icon: '\u{1F527}' },
-        { label: 'Downtime', value: 14, suffix: ' hrs', change: -22, trend: 'down', icon: '\u{26A0}\u{FE0F}' },
-        { label: 'Avg Age', value: 3.2, suffix: ' yrs', change: 0, trend: 'flat', icon: '\u{1F4C5}' },
+        { label: 'Total Assets', value: 47, change: 3, trend: 'up', icon: '🛠️' },
+        { label: 'Maintenance Due', value: 8, change: -2, trend: 'down', icon: '🔧' },
+        { label: 'Downtime', value: 14, suffix: ' hrs', change: -22, trend: 'down', icon: '⚠️' },
+        { label: 'Avg Age', value: 3.2, suffix: ' yrs', change: 0, trend: 'flat', icon: '📅' },
       ],
       columns: [
         { key: 'asset', label: 'Asset', sortable: true },
@@ -177,10 +177,10 @@ registerAgent({
       id: 'efficiency',
       label: 'Efficiency',
       kpis: [
-        { label: 'Throughput Index', value: 87, change: 4, trend: 'up', icon: '\u{1F4C8}' },
-        { label: 'Cost Per Unit', value: 3.42, prefix: '$', change: -6, trend: 'down', icon: '\u{1F4B0}' },
-        { label: 'Cycle Time', value: 2.4, suffix: ' days', change: -8, trend: 'down', icon: '\u{23F1}\u{FE0F}' },
-        { label: 'Waste Rate', value: 2.1, suffix: '%', change: -12, trend: 'down', icon: '\u{267B}\u{FE0F}' },
+        { label: 'Throughput Index', value: 87, change: 4, trend: 'up', icon: '📈' },
+        { label: 'Cost Per Unit', value: 3.42, prefix: '$', change: -6, trend: 'down', icon: '💰' },
+        { label: 'Cycle Time', value: 2.4, suffix: ' days', change: -8, trend: 'down', icon: '⏱️' },
+        { label: 'Waste Rate', value: 2.1, suffix: '%', change: -12, trend: 'down', icon: '♻️' },
       ],
       columns: [
         { key: 'metric', label: 'Metric', sortable: true },

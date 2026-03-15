@@ -4,7 +4,7 @@ registerAgent({
   meta: {
     slug: 'payables',
     name: 'Payables',
-    icon: '\u{1F9FE}',
+    icon: '🧾',
     dept: 'Finance',
     deptColor: '#059669',
     description: 'AI-powered accounts payable automation and vendor management',
@@ -17,10 +17,10 @@ registerAgent({
       id: 'pending-invoices',
       label: 'Pending Invoices',
       kpis: [
-        { label: 'Total Payables', value: 423000, prefix: '$', change: 3, trend: 'up', icon: '\u{1F4B0}' },
-        { label: 'Pending Approval', value: 12, change: -3, trend: 'down', icon: '\u{1F4CB}' },
-        { label: 'Early-Pay Savings', value: 3400, prefix: '$', change: 18, trend: 'up', icon: '\u{1F4B5}' },
-        { label: 'Past Due', value: 3, change: -1, trend: 'down', icon: '\u{1F534}' },
+        { label: 'Total Payables', value: 423000, prefix: '$', change: 3, trend: 'up', icon: '💰' },
+        { label: 'Pending Approval', value: 12, change: -3, trend: 'down', icon: '📋' },
+        { label: 'Early-Pay Savings', value: 3400, prefix: '$', change: 18, trend: 'up', icon: '💵' },
+        { label: 'Past Due', value: 3, change: -1, trend: 'down', icon: '🔴' },
       ],
       columns: [
         { key: 'vendor', label: 'Vendor', sortable: true },
@@ -71,10 +71,10 @@ registerAgent({
       id: 'payment-schedule',
       label: 'Payment Schedule',
       kpis: [
-        { label: 'Due This Week', value: 67000, prefix: '$', change: -12, trend: 'down', icon: '\u{1F4C5}' },
-        { label: 'Due This Month', value: 198000, prefix: '$', change: 4, trend: 'up', icon: '\u{1F4C6}' },
-        { label: 'Scheduled', value: 156000, prefix: '$', change: 8, trend: 'up', icon: '\u{2705}' },
-        { label: 'Unscheduled', value: 42000, prefix: '$', change: -14, trend: 'down', icon: '\u{26A0}\u{FE0F}' },
+        { label: 'Due This Week', value: 67000, prefix: '$', change: -12, trend: 'down', icon: '📅' },
+        { label: 'Due This Month', value: 198000, prefix: '$', change: 4, trend: 'up', icon: '📆' },
+        { label: 'Scheduled', value: 156000, prefix: '$', change: 8, trend: 'up', icon: '✅' },
+        { label: 'Unscheduled', value: 42000, prefix: '$', change: -14, trend: 'down', icon: '⚠️' },
       ],
       columns: [
         { key: 'vendor', label: 'Vendor', sortable: true },
@@ -119,10 +119,10 @@ registerAgent({
       id: 'vendor-analytics',
       label: 'Vendor Analytics',
       kpis: [
-        { label: 'Active Vendors', value: 47, change: 3, trend: 'up', icon: '\u{1F465}' },
-        { label: 'Avg Terms', value: 32, suffix: ' days', change: 0, trend: 'flat', icon: '\u{1F4C5}' },
-        { label: 'On-Time Payment', value: 94, suffix: '%', change: 2, trend: 'up', icon: '\u{2705}' },
-        { label: 'Vendor Satisfaction', value: 4.1, suffix: '/5', change: 3, trend: 'up', icon: '\u{2B50}' },
+        { label: 'Active Vendors', value: 47, change: 3, trend: 'up', icon: '👥' },
+        { label: 'Avg Terms', value: 32, suffix: ' days', change: 0, trend: 'flat', icon: '📅' },
+        { label: 'On-Time Payment', value: 94, suffix: '%', change: 2, trend: 'up', icon: '✅' },
+        { label: 'Vendor Satisfaction', value: 4.1, suffix: '/5', change: 3, trend: 'up', icon: '⭐' },
       ],
       columns: [
         { key: 'vendor', label: 'Vendor', sortable: true },
@@ -168,10 +168,10 @@ registerAgent({
       id: 'discounts',
       label: 'Discounts',
       kpis: [
-        { label: 'Available Discounts', value: 3400, prefix: '$', change: 14, trend: 'up', icon: '\u{1F4B5}' },
-        { label: 'Captured YTD', value: 12000, prefix: '$', change: 22, trend: 'up', icon: '\u{2705}' },
-        { label: 'Missed YTD', value: 4200, prefix: '$', change: -8, trend: 'down', icon: '\u{1F534}' },
-        { label: 'Avg Discount', value: 2.1, suffix: '%', change: 0, trend: 'flat', icon: '\u{1F4CA}' },
+        { label: 'Available Discounts', value: 3400, prefix: '$', change: 14, trend: 'up', icon: '💵' },
+        { label: 'Captured YTD', value: 12000, prefix: '$', change: 22, trend: 'up', icon: '✅' },
+        { label: 'Missed YTD', value: 4200, prefix: '$', change: -8, trend: 'down', icon: '🔴' },
+        { label: 'Avg Discount', value: 2.1, suffix: '%', change: 0, trend: 'flat', icon: '📊' },
       ],
       columns: [
         { key: 'vendor', label: 'Vendor', sortable: true },

@@ -40,10 +40,12 @@ export async function POST(request: NextRequest) {
       const message = body.message || '';
       const history = body.history || [];
 
-      // Try OpenAI if key is available
+      // Try OpenAI if key is available AND user is authenticated
+      const authHeader = request.headers.get('authorization');
+      const isAuthenticated = authHeader?.startsWith('Bearer ');
       try {
         const apiKey = process.env.OPENAI_API_KEY;
-        if (apiKey && apiKey !== 'sk-placeholder') {
+        if (isAuthenticated && apiKey && apiKey !== 'sk-placeholder') {
           const { default: OpenAI } = await import('openai');
           const openai = new OpenAI({ apiKey });
           const messages = [

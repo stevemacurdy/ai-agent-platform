@@ -4,7 +4,7 @@ registerAgent({
   meta: {
     slug: 'sales-coach',
     name: 'Sales Coach',
-    icon: '\u{1F3C6}',
+    icon: '🏆',
     dept: 'Sales',
     deptColor: '#F5920B',
     description: 'AI-powered sales coaching, call analysis, and skill development',
@@ -17,10 +17,10 @@ registerAgent({
       id: 'call-analysis',
       label: 'Call Analysis',
       kpis: [
-        { label: 'Calls Analyzed', value: 148, change: 18, trend: 'up', icon: '\u{1F4DE}' },
-        { label: 'Avg Talk Ratio', value: 42, suffix: '%', change: -4, trend: 'down', icon: '\u{1F4CA}' },
-        { label: 'Avg Score', value: 74, suffix: '/100', change: 6, trend: 'up', icon: '\u{1F3AF}' },
-        { label: 'Coaching Alerts', value: 6, change: -2, trend: 'down', icon: '\u{26A0}\u{FE0F}' },
+        { label: 'Calls Analyzed', value: 148, change: 18, trend: 'up', icon: '📞' },
+        { label: 'Avg Talk Ratio', value: 42, suffix: '%', change: -4, trend: 'down', icon: '📊' },
+        { label: 'Avg Score', value: 74, suffix: '/100', change: 6, trend: 'up', icon: '🎯' },
+        { label: 'Coaching Alerts', value: 6, change: -2, trend: 'down', icon: '⚠️' },
       ],
       columns: [
         { key: 'rep', label: 'Rep', sortable: true },
@@ -68,10 +68,10 @@ registerAgent({
       id: 'skill-gaps',
       label: 'Skill Gaps',
       kpis: [
-        { label: 'Avg Discovery Score', value: 72, suffix: '/100', change: 8, trend: 'up', icon: '\u{1F50D}' },
-        { label: 'Avg Objection Handling', value: 64, suffix: '/100', change: 4, trend: 'up', icon: '\u{1F6E1}\u{FE0F}' },
-        { label: 'Avg Closing', value: 68, suffix: '/100', change: 6, trend: 'up', icon: '\u{1F91D}' },
-        { label: 'Avg Rapport', value: 78, suffix: '/100', change: 2, trend: 'up', icon: '\u{1F4AC}' },
+        { label: 'Avg Discovery Score', value: 72, suffix: '/100', change: 8, trend: 'up', icon: '🔍' },
+        { label: 'Avg Objection Handling', value: 64, suffix: '/100', change: 4, trend: 'up', icon: '🛡️' },
+        { label: 'Avg Closing', value: 68, suffix: '/100', change: 6, trend: 'up', icon: '🤝' },
+        { label: 'Avg Rapport', value: 78, suffix: '/100', change: 2, trend: 'up', icon: '💬' },
       ],
       columns: [
         { key: 'rep', label: 'Rep', sortable: true },
@@ -115,10 +115,10 @@ registerAgent({
       id: 'coaching-plans',
       label: 'Coaching Plans',
       kpis: [
-        { label: 'Active Plans', value: 4, change: 0, trend: 'flat', icon: '\u{1F4CB}' },
-        { label: 'Tasks Completed', value: 28, change: 6, trend: 'up', icon: '\u{2705}' },
-        { label: 'Avg Improvement', value: 14, suffix: '%', change: 4, trend: 'up', icon: '\u{1F4C8}' },
-        { label: 'Sessions/Week', value: 6, change: 1, trend: 'up', icon: '\u{1F4C5}' },
+        { label: 'Active Plans', value: 4, change: 0, trend: 'flat', icon: '📋' },
+        { label: 'Tasks Completed', value: 28, change: 6, trend: 'up', icon: '✅' },
+        { label: 'Avg Improvement', value: 14, suffix: '%', change: 4, trend: 'up', icon: '📈' },
+        { label: 'Sessions/Week', value: 6, change: 1, trend: 'up', icon: '📅' },
       ],
       columns: [
         { key: 'rep', label: 'Rep', sortable: true },
@@ -162,10 +162,10 @@ registerAgent({
       id: 'playbooks',
       label: 'Playbooks',
       kpis: [
-        { label: 'Active Playbooks', value: 8, change: 2, trend: 'up', icon: '\u{1F4D6}' },
-        { label: 'Adoption Rate', value: 72, suffix: '%', change: 8, trend: 'up', icon: '\u{1F4CA}' },
-        { label: 'Avg Win Rate Lift', value: 12, suffix: '%', change: 3, trend: 'up', icon: '\u{1F4C8}' },
-        { label: 'Scripts Used', value: 42, change: 8, trend: 'up', icon: '\u{1F4DD}' },
+        { label: 'Active Playbooks', value: 8, change: 2, trend: 'up', icon: '📖' },
+        { label: 'Adoption Rate', value: 72, suffix: '%', change: 8, trend: 'up', icon: '📊' },
+        { label: 'Avg Win Rate Lift', value: 12, suffix: '%', change: 3, trend: 'up', icon: '📈' },
+        { label: 'Scripts Used', value: 42, change: 8, trend: 'up', icon: '📝' },
       ],
       columns: [
         { key: 'playbook', label: 'Playbook', sortable: true },

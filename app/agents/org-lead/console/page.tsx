@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
+import { useTrackConsoleView } from '@/lib/hooks/useUsageTracking'
 
 const OKRS = [
   { objective: 'Reduce fulfillment time 20%', progress: 35, dept: 'Operations', owner: 'Mike R.', status: 'Behind', due: 'Mar 31', krs: [
@@ -68,6 +69,7 @@ const badge = (v: string) => {
 };
 
 export default function OrgLeadConsole() {
+  useTrackConsoleView('org-lead')
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState('okrs');

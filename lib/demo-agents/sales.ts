@@ -4,7 +4,7 @@ registerAgent({
   meta: {
     slug: 'sales',
     name: 'Sales Data',
-    icon: '\u{1F4C8}',
+    icon: '📈',
     dept: 'Sales',
     deptColor: '#F5920B',
     description: 'AI-powered pipeline management and revenue forecasting',
@@ -17,10 +17,10 @@ registerAgent({
       id: 'pipeline',
       label: 'Pipeline Overview',
       kpis: [
-        { label: 'Pipeline Value', value: 3200000, prefix: '$', change: 14, trend: 'up', icon: '\u{1F4B0}' },
-        { label: 'Win Rate', value: 32, suffix: '%', change: 4, trend: 'up', icon: '\u{1F3AF}' },
-        { label: 'Avg Deal Size', value: 47000, prefix: '$', change: 8, trend: 'up', icon: '\u{1F4CA}' },
-        { label: 'Q2 Forecast', value: 890000, prefix: '$', change: 12, trend: 'up', icon: '\u{1F4C8}' },
+        { label: 'Pipeline Value', value: 3200000, prefix: '$', change: 14, trend: 'up', icon: '💰' },
+        { label: 'Win Rate', value: 32, suffix: '%', change: 4, trend: 'up', icon: '🎯' },
+        { label: 'Avg Deal Size', value: 47000, prefix: '$', change: 8, trend: 'up', icon: '📊' },
+        { label: 'Q2 Forecast', value: 890000, prefix: '$', change: 12, trend: 'up', icon: '📈' },
       ],
       columns: [
         { key: 'company', label: 'Company', sortable: true },
@@ -71,10 +71,10 @@ registerAgent({
       id: 'deal-tracker',
       label: 'Deal Tracker',
       kpis: [
-        { label: 'Deals in Motion', value: 24, change: 6, trend: 'up', icon: '\u{1F504}' },
-        { label: 'Closing This Month', value: 6, change: 2, trend: 'up', icon: '\u{1F4C5}' },
-        { label: 'Avg Cycle', value: 42, suffix: ' days', change: -4, trend: 'down', icon: '\u{23F1}\u{FE0F}' },
-        { label: 'Stalled Deals', value: 5, change: -1, trend: 'down', icon: '\u{26A0}\u{FE0F}' },
+        { label: 'Deals in Motion', value: 24, change: 6, trend: 'up', icon: '🔄' },
+        { label: 'Closing This Month', value: 6, change: 2, trend: 'up', icon: '📅' },
+        { label: 'Avg Cycle', value: 42, suffix: ' days', change: -4, trend: 'down', icon: '⏱️' },
+        { label: 'Stalled Deals', value: 5, change: -1, trend: 'down', icon: '⚠️' },
       ],
       columns: [
         { key: 'company', label: 'Company', sortable: true },
@@ -121,10 +121,10 @@ registerAgent({
       id: 'forecast',
       label: 'Revenue Forecast',
       kpis: [
-        { label: 'Q2 Committed', value: 550000, prefix: '$', change: 8, trend: 'up', icon: '\u{1F512}' },
-        { label: 'Best Case', value: 890000, prefix: '$', change: 14, trend: 'up', icon: '\u{1F680}' },
-        { label: 'Target', value: 780000, prefix: '$', change: 0, trend: 'flat', icon: '\u{1F3AF}' },
-        { label: 'Coverage', value: 4.1, suffix: 'x', change: 10, trend: 'up', icon: '\u{1F4CA}' },
+        { label: 'Q2 Committed', value: 550000, prefix: '$', change: 8, trend: 'up', icon: '🔒' },
+        { label: 'Best Case', value: 890000, prefix: '$', change: 14, trend: 'up', icon: '🚀' },
+        { label: 'Target', value: 780000, prefix: '$', change: 0, trend: 'flat', icon: '🎯' },
+        { label: 'Coverage', value: 4.1, suffix: 'x', change: 10, trend: 'up', icon: '📊' },
       ],
       columns: [
         { key: 'month', label: 'Month', sortable: true },
@@ -168,10 +168,10 @@ registerAgent({
       id: 'leaderboard',
       label: 'Rep Leaderboard',
       kpis: [
-        { label: 'Top Rep', value: 142, suffix: '% quota', change: 12, trend: 'up', icon: '\u{1F3C6}' },
-        { label: 'Avg Attainment', value: 78, suffix: '%', change: 4, trend: 'up', icon: '\u{1F4CA}' },
-        { label: 'Ramp Reps', value: 3, change: 0, trend: 'flat', icon: '\u{1F331}' },
-        { label: 'Quota Coverage', value: 92, suffix: '%', change: 3, trend: 'up', icon: '\u{1F3AF}' },
+        { label: 'Top Rep', value: 142, suffix: '% quota', change: 12, trend: 'up', icon: '🏆' },
+        { label: 'Avg Attainment', value: 78, suffix: '%', change: 4, trend: 'up', icon: '📊' },
+        { label: 'Ramp Reps', value: 3, change: 0, trend: 'flat', icon: '🌱' },
+        { label: 'Quota Coverage', value: 92, suffix: '%', change: 3, trend: 'up', icon: '🎯' },
       ],
       columns: [
         { key: 'rep', label: 'Rep', sortable: true },

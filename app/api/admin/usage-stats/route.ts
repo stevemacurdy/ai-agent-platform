@@ -13,6 +13,18 @@ function supabaseAdmin() {
 // GET /api/admin/usage-stats — View usage tracking data
 // Query params: ?days=7 (default), ?company_id=xxx (optional)
 export async function GET(req: NextRequest) {
+  // Auth guard: admin only
+  const token = req.headers.get('authorization')?.replace('Bearer ', '') || '';
+  if (token) {
+    const sb2 = supabaseAdmin();
+    const { data: { user }, error } = await sb2.auth.getUser(token);
+    if (error || !user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const { data: profile } = await sb2.from('profiles').select('role').eq('id', user.id).single();
+    if (!profile || !['super_admin', 'admin'].includes(profile.role)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  } else {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const sb = supabaseAdmin();
   const days = parseInt(req.nextUrl.searchParams.get('days') || '7');
   const companyId = req.nextUrl.searchParams.get('company_id');
